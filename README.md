@@ -1,30 +1,55 @@
-# React + TypeScript + Vite
+# eCommerce Application 🛍️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description 🌐
+Developing an eCommerce Application using React during the final task of RS School according to [requirements](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/eCommerce-Application/Readme.md)
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technology Stack 💻
+ - React
+ - TypeScript
+ - Vite
+ - Eslint, Prettier, Husky
+ - Vitest
+ - SCSS, CSS
 
-## Expanding the ESLint configuration
+## How to run locally
+Simply clone this project to user's machine, navigate to project's folder under a terminal of his/her choice and then run the following commands:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Install dependencies   
+```npm install```
 
-- Configure the top-level `parserOptions` property like this:
+Run local server   
+```npm run dev```
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+Run in production mode   
+```npm run build```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+## Scripts for linting
+For running ESLint, Prettier, and Stylelint run the following commands:
+
+Run Eslint check   
+```npm run lint```
+
+Run Eslint check and fix errors   
+```npm run lint:fix```
+
+Run Prettier check   
+```npm run prettier```
+
+Run Prettier check and fix errors   
+```npm run prettier:fix```
+
+Run Stylelint check   
+```npm run stylelint```
+
+Run Stylelint check and fix errors   
+```npm run stylelint:fix```
+
+Run Eslint, Prettier, Stylelint check and fix errors   
+```npm run format```
+
+## Scripts for testing
+For running Vitest run the following command:
+
+```npm run test```
