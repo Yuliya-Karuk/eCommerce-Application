@@ -1,0 +1,5 @@
+{
+  "./src/**/*": "npm run prettier",
+  "./src/**/*.css": "npm run stylelint",
+  "./src/**/*.{ts,js}": "npm run lint"
+}
