@@ -20,13 +20,15 @@ module.exports = {
   parserOptions: {
     'ecmaVersion': 'latest',
     'sourceType': 'module',
-    'project': './tsconfig.json',
+    'project': ['./tsconfig.json'],
     'ecmaFeatures': {
       'jsx': true
     }
   },
   plugins: ['react', 'react-hooks', 'react-refresh', '@typescript-eslint', 'import', 'prettier'],
   rules: {
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
@@ -70,5 +72,6 @@ module.exports = {
         "allowedNames": ["context"]
       }
     ],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
   },
 }
