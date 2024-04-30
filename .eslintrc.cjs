@@ -47,21 +47,8 @@ module.exports = {
         "default": "array"
       }
     ],
-    "@typescript-eslint/explicit-member-accessibility": [
-      "error",
-      {
-        "accessibility": "explicit",
-        "overrides": {
-          "accessors": "explicit",
-          "constructors": "off",
-          "methods": "explicit",
-          "properties": "explicit",
-          "parameterProperties": "explicit"
-        }
-      }
-    ],
     "max-lines-per-function": ["error", { "max": 40, "skipBlankLines": true }],
-    "@typescript-eslint/explicit-function-return-type": "error",
+    "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-non-null-assertion": "error",
     "curly": ["error", "all"],
     "@typescript-eslint/lines-between-class-members": "off",
