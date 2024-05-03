@@ -9,4 +9,11 @@ export default defineConfig({
       'node-fetch': 'isomorphic-fetch',
     },
   },
+  css: {
+    modules: {
+      localsConvention: 'camelCase',
+      generateScopedName: '[local]',
+    },
+  },
+  base: ''
 })
