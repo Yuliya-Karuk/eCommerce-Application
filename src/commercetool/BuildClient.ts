@@ -12,7 +12,6 @@ const {
 const projectKey = VITE_CTP_PROJECT_KEY;
 const scopes = [VITE_CTP_SCOPES];
 
-// Configure authMiddlewareOptions
 const authMiddlewareOptions: AuthMiddlewareOptions = {
   projectKey,
   host: VITE_CTP_AUTH_URL,
@@ -24,16 +23,12 @@ const authMiddlewareOptions: AuthMiddlewareOptions = {
   fetch,
 };
 
-// Configure httpMiddlewareOptions
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: VITE_CTP_API_URL,
   fetch,
 };
 
-// Export the ClientBuilder
 export const ctpClient = new ClientBuilder()
-  .withProjectKey(projectKey) // .withProjectKey() is not required if the projectKey is included in authMiddlewareOptions
   .withClientCredentialsFlow(authMiddlewareOptions)
   .withHttpMiddleware(httpMiddlewareOptions)
-  .withLoggerMiddleware() // Include middleware for logging
   .build();
