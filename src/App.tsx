@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect} from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from './assets/vite.svg';
-import './App.css';
-import { apiRoot } from './commercetool/Client';
+import './styles/App.scss';
+import {apiRoot} from './commercetool/Client';
 
 function App() {
   const [count, setCount] = useState(0);

@@ -1,12 +1,12 @@
-import { defineConfig } from 'vitest/config';
+import {defineConfig} from 'vitest/config';
 
 export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: './src/jest/setup.ts',
+    setupFiles: './src/__test__/setup.ts',
     coverage: {
       provider: 'v8',
     },
   },
-})
+});
