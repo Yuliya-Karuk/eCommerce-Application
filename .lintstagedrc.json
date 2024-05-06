@@ -1,5 +1,5 @@
 {
-  "./src/**/*": "npm run prettier",
+  "./src/**/*": "npm run prettier:fix",
   "./src/**/*.{css,scss}": "npm run stylelint",
-  "./src/**/*.{tsx,jsx,ts}": "npm run lint"
+  "./src/**/*.{tsx,jsx,ts}": "npm run lint:fix"
 }

@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "lint": "eslint ./src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "lint:fix": "eslint . --fix",
+    "lint:fix": "eslint . --fix --color",
     "prettier": "prettier ./src --check",
     "prettier:fix": "prettier ./src --write",
     "stylelint": "stylelint ./src",
@@ -65,12 +65,5 @@
     "vite-plugin-imagemin": "^0.6.1",
     "vite-plugin-webfont-dl": "^3.9.4",
     "vitest": "^1.5.2"
-  },
-  "lint-staged": {
-    "./src/**/*.{ts, tsx}": [
-      "npm prettier:fix",
-      "npm run stylelint:fix",
-      "git add"
-    ]
   }
 }

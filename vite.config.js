@@ -1,7 +1,7 @@
-import {devConfig} from './config/tasks/dev.js';
-import {prodConfig} from './config/tasks/prod.js';
+import {devConfig} from './config/dev.js';
+import {prodConfig} from './config/prod.js';
 
-export default ({command, mode}) => {
+export default ({mode}) => {
   if (mode === 'development') {
     return devConfig;
   } else if (mode === 'production') {

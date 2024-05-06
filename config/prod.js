@@ -4,7 +4,7 @@ import webfontDownload from 'vite-plugin-webfont-dl';
 import viteImagemin from 'vite-plugin-imagemin';
 import cleanPlugin from 'vite-plugin-clean';
 import checker from 'vite-plugin-checker';
-import {path} from '../settings/path';
+import {paths} from './paths';
 
 export const prodConfig = {
   plugins: [
@@ -46,7 +46,7 @@ export const prodConfig = {
         ],
       },
     }),
-    vitePluginFaviconsInject(path.src.favIcon, {
+    vitePluginFaviconsInject(paths.src.favIcon, {
       icons: {
         favicons: true,
         appleIcon: true,
