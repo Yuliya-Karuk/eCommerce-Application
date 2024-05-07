@@ -10,4 +10,6 @@
 *.jpg
 *.jpeg
 *.gif
+*.json
 /node_modules
+/dist

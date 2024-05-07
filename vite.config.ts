@@ -14,5 +14,5 @@ export default defineConfig({
       generateScopedName: '[local]',
     },
   },
-  base: ''
-})
+  base: '',
+});
