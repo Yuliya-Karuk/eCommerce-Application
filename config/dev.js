@@ -7,7 +7,7 @@ export const devConfig = {
     open: '/',
     port: 5500,
   },
-  plugins: [react(), webfontDownload(), checker({typescript: true})],
+  plugins: [react(), webfontDownload(), checker({ typescript: true })],
   base: '',
   css: {
     devSourcemap: true,

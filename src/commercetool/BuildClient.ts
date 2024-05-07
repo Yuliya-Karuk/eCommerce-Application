@@ -1,4 +1,4 @@
-import {ClientBuilder, type AuthMiddlewareOptions, type HttpMiddlewareOptions} from '@commercetools/sdk-client-v2';
+import { ClientBuilder, type AuthMiddlewareOptions, type HttpMiddlewareOptions } from '@commercetools/sdk-client-v2';
 
 const {
   VITE_CTP_CLIENT_ID,
