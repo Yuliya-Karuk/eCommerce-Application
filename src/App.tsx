@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from './assets/vite.svg';
 import './styles/App.scss';
+import { Link } from 'react-router-dom';
+import { Product } from '@commercetools/platform-sdk';
 import { apiRoot } from './commercetool/Client';
+import { Routes } from './router/routes';
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  const [projectDetails, setProjectDetails] = useState({});
+  const [products, setProducts] = useState<Product[]>([]);
 
   const getProject = async () => {
     try {
-      const project = await apiRoot.get().execute();
+      const prods = await apiRoot.products().get().execute();
+      const preparedProducts = prods.body.results;
 
-      setProjectDetails(project.body);
+      setProducts(preparedProducts);
     } catch (error) {
       throw Error('test - error message');
     }
@@ -25,25 +25,17 @@ function App() {
 
   return (
     <>
+      <h1>Home Page</h1>
       <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        {products.slice(0, 4).map(product => (
+          <div key={product.key}>
+            <Link to={product.key ? `${Routes.PRODUCT_ROUTE}/${product.key}` : '/'}>
+              {product.masterData.current.name['en-US']}
+            </Link>
+          </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount(prev => prev + 1)} type="button">
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-        <p>{JSON.stringify(projectDetails)}</p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+      <Link to="/login">Login</Link>
     </>
   );
 }
