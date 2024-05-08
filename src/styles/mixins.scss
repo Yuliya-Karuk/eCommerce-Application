@@ -1,0 +1,42 @@
+$laptop: 1024px;
+$tablet: 768px;
+$mobile: 480px;
+
+@mixin font($font-size, $font-weight, $line-height, $letter-spacing: normal, $text-transform: none) {
+  font-size: $font-size;
+  font-weight: $font-weight;
+  line-height: $line-height;
+  text-transform: $text-transform;
+  letter-spacing: $letter-spacing;
+}
+
+@mixin flex($justify-content, $align-items, $flex-direction: row) {
+  display: flex;
+  flex-direction: $flex-direction;
+  align-items: $align-items;
+  justify-content: $justify-content;
+}
+
+@mixin media-hover {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+@mixin media-laptop {
+  @media (max-width: $laptop) {
+    @content;
+  }
+}
+
+@mixin media-tablet {
+  @media (max-width: $tablet) {
+    @content;
+  }
+}
+
+@mixin media-mobile {
+  @media (max-width: $mobile) {
+    @content;
+  }
+}

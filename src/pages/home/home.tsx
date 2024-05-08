@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import './styles/App.scss';
 import { Link } from 'react-router-dom';
 import { Product } from '@commercetools/platform-sdk';
-import { apiRoot } from './commercetool/Client';
-import { Routes } from './router/routes';
+import { apiRoot } from '../../commercetool/Client';
+import { Routes } from '../../router/routes';
 
-function App() {
+function Home() {
   const [products, setProducts] = useState<Product[]>([]);
 
   const getProject = async () => {
@@ -40,4 +39,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;
