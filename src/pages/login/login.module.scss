@@ -1,0 +1,59 @@
+@import '../../styles/colors.scss';
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 50vw;
+  padding: 5vw;
+  font-size: 1.6em;
+  text-align: center;
+  background-color: $bg-color;
+
+  .title {
+    margin: 53px 0 14px;
+    font-size: 4em;
+    font-weight: 200;
+    color: $text-color-light;
+  }
+
+  .link-wrapper {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+
+    .subtitle {
+      color: $text-color-light;
+    }
+
+    .link {
+      color: $text-color-light;
+    }
+  }
+
+  .form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    color: $text-color-light;
+
+    .label {
+      display: block;
+      text-align: left;
+    }
+
+    .input {
+      width: 100%;
+      padding: 10px;
+
+      &:required,
+      &:invalid {
+        box-shadow: 0 0 5px 10px red;
+      }
+    }
+
+    .submitButton {
+      margin: 10px 0 53px;
+    }
+  }
+}

@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --open",
     "build": "tsc && vite build",
     "lint": "eslint ./src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
@@ -49,6 +49,8 @@
     "jsdom": "^24.0.0",
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
+    "react-hook-form": "^7.51.4",
+    "react-router-dom": "^6.23.0",
     "sass": "^1.75.0",
     "stylelint": "^16.4.0",
     "stylelint-config-clean-order": "^5.4.2",

@@ -11,6 +11,17 @@
   font-synthesis: none;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 10px;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
