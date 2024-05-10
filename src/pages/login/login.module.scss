@@ -39,17 +39,30 @@
 
     .label {
       display: block;
+      margin-bottom: 15px;
       text-align: left;
+
+      .input {
+        width: 100%;
+        padding: 10px;
+
+        &:required,
+        &:invalid {
+          box-shadow: 0 0 10px 1px red;
+        }
+      }
+
+      .showPasswordWrapper {
+        display: flex;
+        justify-content: space-between;
+      }
     }
 
-    .input {
-      width: 100%;
-      padding: 10px;
-
-      &:required,
-      &:invalid {
-        box-shadow: 0 0 5px 10px red;
-      }
+    .errors {
+      margin-block: 0 1em;
+      color: red;
+      text-align: left;
+      text-shadow: 0 0 10px black;
     }
 
     .submitButton {
