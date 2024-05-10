@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 
-function ProductItem() {
+export function ProductItem() {
   const { slug } = useParams();
   // тут будет запрос на продукт чтобы получить все данные
   return (
@@ -9,5 +9,3 @@ function ProductItem() {
     </div>
   );
 }
-
-export default ProductItem;

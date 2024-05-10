@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import notFoundImage from '../../assets/404.svg';
-import styles from './notFound.module.scss';
 import { Routes } from '../../router/routes';
+import styles from './notFound.module.scss';
 
-function NotFoundPage() {
+export function NotFoundPage() {
   return (
     <div className={styles.notFound}>
       <img className={styles.notFoundImage} src={notFoundImage} alt="Icon Not Found" />
@@ -15,5 +15,3 @@ function NotFoundPage() {
     </div>
   );
 }
-
-export default NotFoundPage;

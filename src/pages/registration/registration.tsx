@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-function Registration() {
+export function Registration() {
   return (
     <div>
       <h1>Registration Page</h1>
@@ -8,5 +8,3 @@ function Registration() {
     </div>
   );
 }
-
-export default Registration;
