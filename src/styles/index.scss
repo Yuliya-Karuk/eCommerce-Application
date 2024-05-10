@@ -1,35 +1,7 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-  font-size: 10px;
-  color: var(--color-white);
-}
-
-body {
-  background-color: var(--color-bg-dark);
-}
-
-h1 {
-  @include font(9rem, 400, normal);
-  font-family: Forum, serif;
-}
-
-h2 {
-  @include font(6rem, 400, normal);
-  font-family: Forum, serif;
-}
-
-h3 {
-  @include font(4rem, 400, normal);
-  font-family: Forum, serif;
-}
-
-h4 {
-  @include font(2.1rem, 400, normal);
-  font-family: Questrial, serif;
-}
+@import 'normalize.scss';
+@import 'reset.scss';
+@import 'constants.scss';
+@import 'fonts.scss';
+@import 'mixins.scss';
+@import 'placeholders.scss';
+@import 'base.scss';

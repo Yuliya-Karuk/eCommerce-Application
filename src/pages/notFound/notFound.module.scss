@@ -22,12 +22,12 @@
 
   @include media-hover {
     &:hover {
-      background: var(--color-green-dark);
+      background: $color-green-dark;
     }
   }
   margin-top: 20px;
   padding: 10px 20px;
-  background: var(--color-primary-bright);
+  background: $color-primary-bright;
 
   &:not([disabled]):active {
     opacity: 0.7;

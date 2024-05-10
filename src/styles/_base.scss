@@ -1,0 +1,35 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 10px;
+  color: $color-white;
+}
+
+body {
+  background-color: $color-bg-dark;
+}
+
+h1 {
+  @include font(9rem, 400, normal);
+  font-family: Forum, serif;
+}
+
+h2 {
+  @include font(6rem, 400, normal);
+  font-family: Forum, serif;
+}
+
+h3 {
+  @include font(4rem, 400, normal);
+  font-family: Forum, serif;
+}
+
+h4 {
+  @include font(2.1rem, 400, normal);
+  font-family: Questrial, serif;
+}

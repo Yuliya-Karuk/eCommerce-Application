@@ -70,7 +70,7 @@ export const prodConfig = {
     },
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "../src/styles/mixins.scss"; @import "../src/styles/placeholders.scss";`,
+        additionalData: `@import "../src/styles/mixins.scss"; @import "../src/styles/placeholders.scss"; @import "../src/styles/constants.scss";`,
       },
     },
   },
