@@ -1,0 +1,35 @@
+.not-found {
+  @include flex(flex-start, center, column);
+  @include font(2rem, 400, normal);
+  width: 100vw;
+  height: 100vh;
+  font-family: Forum, serif;
+  background: center no-repeat url('../../assets/subscription.webp');
+  background-size: cover;
+}
+
+.not-found-image {
+  width: 40%;
+  height: auto;
+}
+
+.not-found-text {
+  margin-bottom: 20px;
+}
+
+.not-found-link {
+  @extend %transition;
+
+  @include media-hover {
+    &:hover {
+      background: $color-green-dark;
+    }
+  }
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: $color-primary-bright;
+
+  &:not([disabled]):active {
+    opacity: 0.7;
+  }
+}
