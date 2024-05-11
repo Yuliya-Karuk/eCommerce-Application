@@ -1,25 +1,19 @@
 import { Product } from '@commercetools/platform-sdk';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { apiRoot } from '../../commercetool/Client';
+import { sdkService } from '../../commercetool/sdk.service';
 import { Routes } from '../../router/routes';
 
 export function Home() {
   const [products, setProducts] = useState<Product[]>([]);
 
-  const getProject = async () => {
-    try {
-      const prods = await apiRoot.products().get().execute();
-      const preparedProducts = prods.body.results;
-
-      setProducts(preparedProducts);
-    } catch (error) {
-      throw Error('test - error message');
-    }
+  const getProds = async () => {
+    const data = await sdkService.getProducts();
+    setProducts(data);
   };
 
   useEffect(() => {
-    getProject();
+    getProds();
   }, []);
 
   return (
