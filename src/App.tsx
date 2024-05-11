@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg';
 import viteLogo from './assets/vite.svg';
 import './styles/App.scss';
 import { apiRoot } from './commercetool/Client';
-import { LoginForm } from './pages/login/login';
+import { Login } from './pages/login/login';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -45,7 +45,7 @@ function App() {
         <p>{JSON.stringify(projectDetails)}</p>
       </div>
       <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-      <LoginForm />
+      <Login />
     </>
   );
 }
