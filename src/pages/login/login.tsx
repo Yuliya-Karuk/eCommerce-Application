@@ -1,7 +1,9 @@
-import { useState } from 'react';
-// import { Link } from 'react-router-dom';
 import classNames from 'classnames';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import eyeOff from '../../assets/eye-off.svg';
+import eyeOn from '../../assets/eye-show.svg';
 import styles from './login.module.scss';
 
 function LoginFormHeader() {
@@ -9,10 +11,10 @@ function LoginFormHeader() {
     <>
       <h1 className={styles.title}>Log In</h1>
       <div className={styles.linkWrapper}>
-        <h2 className={styles.subtitle}>New to this site?</h2>
-        {/* <Link to="/registration" className={styles.link}>
+        <p className={styles.subtitle}>New to this site?</p>
+        <Link to="/registration" className={styles.link}>
           Sign Up
-        </Link> */}
+        </Link>
       </div>
     </>
   );
@@ -52,7 +54,7 @@ export function Login() {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<FormData>({ mode: 'onBlur' });
+  } = useForm<FormData>({ mode: 'onChange' });
 
   interface FormData {
     email: string;
@@ -63,57 +65,51 @@ export function Login() {
     console.log(data); // form submission logic here
   };
   return (
-    <div className={styles.wrapper}>
-      <LoginFormHeader />
-      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-        <label htmlFor="e-mail" className={styles.label}>
-          Email
-          <input
-            className={classNames(styles.input, { [styles.invalid]: errors.email })}
-            type="email"
-            id="e-mail"
-            placeholder="E-mail"
-            {...register('email', {
-              required: 'E-mail is required',
-              pattern: {
-                value: validEmailRegExp,
-                message: 'Invalid e-mail format',
-              },
-            })}
-            autoComplete="username"
-          />
-        </label>
+    <div className={styles.background}>
+      <div className={styles.wrapper}>
+        <LoginFormHeader />
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+          <label htmlFor="e-mail" className={styles.label}>
+            Email
+            <input
+              className={classNames(styles.input, { [styles.invalid]: errors.email })}
+              type="email"
+              id="e-mail"
+              placeholder="E-mail"
+              {...register('email', {
+                required: 'E-mail is required',
+                pattern: {
+                  value: validEmailRegExp,
+                  message: 'Invalid e-mail format',
+                },
+              })}
+              autoComplete="username"
+            />
+          </label>
 
-        {errors.email && <p className={styles.errors}>{errors.email.message}</p>}
+          {errors.email && <p className={styles.errors}>{errors.email.message}</p>}
 
-        <label htmlFor="password" className={styles.label}>
-          <div className={styles.showPasswordWrapper}>
-            Password
-            <label htmlFor="showPasswordCheckbox">
-              <input
-                type="checkbox"
-                id="showPasswordCheckbox"
-                checked={showPassword}
-                onChange={() => setShowPassword(!showPassword)}
-              />
-              Show Password
-            </label>
-          </div>
-          <input
-            className={classNames(styles.input, { [styles.invalid]: errors.password })}
-            type={showPassword ? 'text' : 'password'}
-            id="password"
-            placeholder="Password"
-            {...register('password', passwordValidationProps)}
-            autoComplete="current-password"
-          />
-        </label>
-        {errors.password && <p className={styles.errors}>{errors.password.message}</p>}
+          <label htmlFor="password" className={styles.label}>
+            <div className={styles.showPasswordWrapper}>Password</div>
+            <input
+              className={classNames(styles.input, { [styles.invalid]: errors.password })}
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              placeholder="Password"
+              {...register('password', passwordValidationProps)}
+              autoComplete="current-password"
+            />
+            <button type="button" onClick={() => setShowPassword(!showPassword)} className={styles.eye}>
+              <img src={showPassword ? eyeOn : eyeOff} alt="eye" />
+            </button>
+          </label>
+          {errors.password && <p className={styles.errors}>{errors.password.message}</p>}
 
-        <button type="submit" className={styles.submitButton} disabled={!isValid}>
-          Submit
-        </button>
-      </form>
+          <button type="submit" className={styles.submitButton} disabled={!isValid}>
+            Submit
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
