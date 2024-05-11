@@ -1,6 +1,6 @@
 {
   "editor.formatOnSave": true,
-  "[typescript]": {
+  "[typescript][typescriptreact]": {
     "editor.codeActionsOnSave": {
       "source.organizeImports": "explicit"
     }
