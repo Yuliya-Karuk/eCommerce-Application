@@ -1,4 +1,5 @@
 import {
+  type AnonymousAuthMiddlewareOptions,
   type AuthMiddlewareOptions,
   type HttpMiddlewareOptions,
   type PasswordAuthMiddlewareOptions,
@@ -28,6 +29,18 @@ export const authMiddlewareOptions: AuthMiddlewareOptions = {
 
 export const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: VITE_CTP_API_URL,
+  fetch,
+};
+
+export const anonymousMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
+  host: VITE_CTP_AUTH_URL,
+  projectKey: VITE_CTP_PROJECT_KEY,
+  credentials: {
+    clientId: VITE_CTP_CLIENT_ID,
+    clientSecret: VITE_CTP_CLIENT_SECRET,
+  },
+  scopes: [VITE_CTP_SCOPES],
+  tokenCache: tokenController,
   fetch,
 };
 

@@ -6,7 +6,7 @@ import {
 } from '@commercetools/platform-sdk';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
 import { CustomErrors } from '../types/enums';
-import { authMiddlewareOptions, httpMiddlewareOptions, passwordAuthMiddlewareOptions } from './middlewareOptions';
+import { anonymousMiddlewareOptions, httpMiddlewareOptions, passwordAuthMiddlewareOptions } from './middlewareOptions';
 import { tokenController } from './token.service';
 
 const { VITE_CTP_PROJECT_KEY } = import.meta.env;
@@ -18,11 +18,11 @@ export class SdkService {
 
   constructor() {
     this.clientBuilder = new ClientBuilder().withHttpMiddleware(httpMiddlewareOptions);
-    this.createCtpClient();
+    this.createAnonymousClient();
   }
 
-  private createCtpClient() {
-    this.client = this.clientBuilder.withClientCredentialsFlow(authMiddlewareOptions).build();
+  private createAnonymousClient() {
+    this.client = this.clientBuilder.withAnonymousSessionFlow(anonymousMiddlewareOptions).build();
 
     this.apiRoot = createApiBuilderFromCtpClient(this.client).withProjectKey({
       projectKey: VITE_CTP_PROJECT_KEY,
@@ -68,6 +68,10 @@ export class SdkService {
     }
   }
 
+  public logoutUser() {
+    this.createAnonymousClient();
+  }
+
   public async getProducts(): Promise<Product[]> {
     try {
       const data = await this.apiRoot.products().get().execute();
@@ -79,12 +83,3 @@ export class SdkService {
 }
 
 export const sdkService = new SdkService();
-
-// export const ctpClient = new ClientBuilder()
-//   .withClientCredentialsFlow(authMiddlewareOptions)
-//   .withHttpMiddleware(httpMiddlewareOptions)
-//   .build();
-
-// export const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
-//   projectKey: VITE_CTP_PROJECT_KEY,
-// });

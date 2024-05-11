@@ -3,7 +3,7 @@ import { TokenStore } from '@commercetools/sdk-client-v2';
 export class StorageService {
   private storageKey: string = 'sprout_token';
 
-  public saveTokenStore(token: TokenStore): void {
+  public setTokenStore(token: TokenStore): void {
     localStorage.setItem(this.storageKey, JSON.stringify(token));
   }
 
@@ -12,7 +12,7 @@ export class StorageService {
     return data ? JSON.parse(data) : null;
   }
 
-  public removeUserData(): void {
+  public removeTokenStore(): void {
     localStorage.removeItem(this.storageKey);
   }
 }

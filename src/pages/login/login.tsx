@@ -1,25 +1,22 @@
-import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { sdkService } from '../../commercetool/sdk.service';
-import { tokenController } from '../../commercetool/token.service';
+import { useAuth } from '../../providers/authProvider';
 import { testLoginUser } from '../../utils/constants';
-import { storage } from '../../utils/storage';
 
 export function Login() {
-  const [isLogined, setIsLogines] = useState(false);
+  const { isLogin, login } = useAuth();
 
-  const login = async () => {
-    const loginResult = await sdkService.loginUser(testLoginUser.email, testLoginUser.password);
-    storage.saveTokenStore(tokenController.get());
-    setIsLogines(loginResult);
+  const handleLogin = async () => {
+    await sdkService.loginUser(testLoginUser.email, testLoginUser.password);
+    login();
   };
 
   return (
     <div>
-      {isLogined && <Navigate to="/" replace />}
+      {isLogin && <Navigate to="/" replace />}
       <h1>Login Page</h1>
       <Link to="/registration">Link to Registration Page </Link>
-      <button style={{ padding: '10px 20px', border: '2px solid white' }} type="button" onClick={login}>
+      <button style={{ padding: '10px 20px', border: '2px solid white' }} type="button" onClick={handleLogin}>
         Login
       </button>
     </div>
