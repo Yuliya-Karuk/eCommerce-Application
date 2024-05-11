@@ -6,7 +6,13 @@ import {
 } from '@commercetools/platform-sdk';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
 import { CustomErrors } from '../types/enums';
-import { anonymousMiddlewareOptions, httpMiddlewareOptions, passwordAuthMiddlewareOptions } from './middlewareOptions';
+import { storage } from '../utils/storage';
+import {
+  anonymousMiddlewareOptions,
+  httpMiddlewareOptions,
+  passwordAuthMiddlewareOptions,
+  refreshAuthMiddlewareOption,
+} from './middlewareOptions';
 import { tokenController } from './token.service';
 
 const { VITE_CTP_PROJECT_KEY } = import.meta.env;
@@ -18,11 +24,25 @@ export class SdkService {
 
   constructor() {
     this.clientBuilder = new ClientBuilder().withHttpMiddleware(httpMiddlewareOptions);
-    this.createAnonymousClient();
+    if (storage.getTokenStore()) {
+      this.createRefreshedClient();
+    } else {
+      this.createAnonymousClient();
+    }
   }
 
   private createAnonymousClient() {
     this.client = this.clientBuilder.withAnonymousSessionFlow(anonymousMiddlewareOptions).build();
+
+    this.apiRoot = createApiBuilderFromCtpClient(this.client).withProjectKey({
+      projectKey: VITE_CTP_PROJECT_KEY,
+    });
+  }
+
+  private createRefreshedClient() {
+    const options = refreshAuthMiddlewareOption;
+    options.refreshToken = storage.getTokenStore()?.refreshToken as string;
+    this.client = this.clientBuilder.withRefreshTokenFlow(options).build();
 
     this.apiRoot = createApiBuilderFromCtpClient(this.client).withProjectKey({
       projectKey: VITE_CTP_PROJECT_KEY,

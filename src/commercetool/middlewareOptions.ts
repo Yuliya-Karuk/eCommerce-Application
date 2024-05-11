@@ -3,6 +3,7 @@ import {
   type AuthMiddlewareOptions,
   type HttpMiddlewareOptions,
   type PasswordAuthMiddlewareOptions,
+  type RefreshAuthMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
 import { tokenController } from './token.service';
 
@@ -57,4 +58,15 @@ export const passwordAuthMiddlewareOptions: PasswordAuthMiddlewareOptions = {
   },
   scopes: [VITE_CTP_SCOPES],
   tokenCache: tokenController,
+};
+
+export const refreshAuthMiddlewareOption: RefreshAuthMiddlewareOptions = {
+  host: VITE_CTP_AUTH_URL,
+  projectKey: VITE_CTP_PROJECT_KEY,
+  credentials: {
+    clientId: VITE_CTP_CLIENT_ID,
+    clientSecret: VITE_CTP_CLIENT_SECRET,
+  },
+  refreshToken: '',
+  fetch,
 };
