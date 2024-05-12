@@ -1,52 +1,25 @@
 .background {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex(center, center);
   height: 100vh;
   background-color: $color-bg-dark;
 
   .wrapper {
-    display: flex;
-    flex-direction: column;
     width: clamp(280px, 50vw, 600px);
     padding: 5vw;
-    font-size: 1.6em;
+    font-size: 1.6rem;
     text-align: center;
     background-color: $color-green-dark;
 
-    .title {
-      margin: 20px 0 10px;
-      font-size: 4em;
-      font-weight: 200;
-      color: $color-white;
-    }
-
-    .link-wrapper {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-
-      .subtitle {
-        color: $color-white;
-      }
-
-      .link {
-        color: $color-white;
-        text-decoration: underline;
-      }
-    }
-
     .form {
+      @include flex(flex-start, center, column);
       position: relative;
-      display: flex;
-      flex-direction: column;
       gap: 5px;
-      justify-content: flex-start;
       color: $color-white;
 
       .label {
         position: relative;
         display: block;
+        width: 100%;
         margin-top: 10px;
         text-align: left;
       }
@@ -56,24 +29,27 @@
         margin-top: 5px;
         padding: 10px;
         color: $color-white;
-        background-color: rgb(5 5 5 / 50%);
+        background-color: $color-semi-transparent-dark-gray;
         border: 2px solid $color-white;
         border-radius: 5px;
       }
 
       .invalid {
-        border-color: red;
+        border-color: $color-red;
       }
 
-      .showPasswordWrapper {
-        display: flex;
-        justify-content: space-between;
+      .show-password-wrapper {
+        @include flex(space-between, center);
       }
 
       .errors {
-        margin-block: 0 1em;
-        color: #ffa500;
-        text-align: left;
+        align-self: flex-start;
+        height: 2rem;
+        color: $color-orange;
+
+        &:nth-child(4) {
+          height: 4rem;
+        }
       }
 
       .eye {
@@ -82,15 +58,23 @@
         right: 10px;
       }
 
-      .submitButton {
+      .submit-button {
         @extend %transition;
+        width: 100%;
         margin: 20px 0 53px;
         padding: 10px 5px;
         background-color: $color-white;
+        border-radius: 5px;
 
         &:enabled:hover {
           color: $color-white;
-          background-color: rgb(5 5 5 / 50%);
+          background-color: $color-semi-transparent-dark-gray;
+        }
+
+        &:disabled {
+          cursor: default;
+          color: $color-gray-dark;
+          background-color: $color-gray-middle;
         }
       }
     }

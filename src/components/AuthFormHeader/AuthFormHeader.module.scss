@@ -1,0 +1,21 @@
+.title {
+  margin: 20px 0 10px;
+  font-size: 7rem;
+  font-weight: 200;
+  color: $color-white;
+}
+
+.link-wrapper {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+
+  .subtitle {
+    color: $color-white;
+  }
+
+  .link {
+    color: $color-white;
+    text-decoration: underline;
+  }
+}

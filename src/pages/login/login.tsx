@@ -1,40 +1,14 @@
 import classNames from 'classnames';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { RegisterOptions, useForm } from 'react-hook-form';
 import eyeOff from '../../assets/eye-off.svg';
 import eyeOn from '../../assets/eye-show.svg';
+import { AuthFormHeader } from '../../components/AuthFormHeader/AuthFormHeader';
 import styles from './login.module.scss';
-
-function LoginFormHeader() {
-  return (
-    <>
-      <h1 className={styles.title}>Log In</h1>
-      <div className={styles.linkWrapper}>
-        <p className={styles.subtitle}>New to this site?</p>
-        <Link to="/registration" className={styles.link}>
-          Sign Up
-        </Link>
-      </div>
-    </>
-  );
-}
 
 const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-interface PasswordValidationProps {
-  required: string;
-  minLength: { value: number; message: string };
-  validate: {
-    uppercase: (value: string) => boolean | string;
-    lowercase: (value: string) => boolean | string;
-    digit: (value: string) => boolean | string;
-    specialChar: (value: string) => boolean | string;
-    noWhitespace: (value: string) => boolean | string;
-  };
-}
-
-const passwordValidationProps: PasswordValidationProps = {
+const passwordValidationRules: RegisterOptions = {
   required: 'Password is required',
   minLength: { value: 8, message: 'Password must be at least 8 characters long' },
   validate: {
@@ -47,27 +21,40 @@ const passwordValidationProps: PasswordValidationProps = {
   },
 };
 
+const emailValidationRules: RegisterOptions = {
+  required: 'E-mail is required',
+  pattern: {
+    value: validEmailRegExp,
+    message: 'Invalid e-mail format',
+  },
+};
+
+export interface LoginFormData {
+  email: string;
+  password: string;
+}
+
 // eslint-disable-next-line max-lines-per-function
 export function Login() {
-  const [showPassword, setShowPassword] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<FormData>({ mode: 'onChange' });
+  } = useForm<LoginFormData>({ mode: 'onChange' });
 
-  interface FormData {
-    email: string;
-    password: string;
-  }
-
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: LoginFormData) => {
     console.log(data); // form submission logic here
   };
   return (
     <div className={styles.background}>
       <div className={styles.wrapper}>
-        <LoginFormHeader />
+        <AuthFormHeader
+          titleText="Log in"
+          linkDescription="New to this site?"
+          linkText="Sign Up"
+          linkTo="/registration"
+        />
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <label htmlFor="e-mail" className={styles.label}>
             Email
@@ -76,35 +63,27 @@ export function Login() {
               type="email"
               id="e-mail"
               placeholder="E-mail"
-              {...register('email', {
-                required: 'E-mail is required',
-                pattern: {
-                  value: validEmailRegExp,
-                  message: 'Invalid e-mail format',
-                },
-              })}
+              {...register('email', emailValidationRules)}
               autoComplete="username"
             />
           </label>
-
-          {errors.email && <p className={styles.errors}>{errors.email.message}</p>}
+          <p className={styles.errors}>{errors?.email?.message}</p>
 
           <label htmlFor="password" className={styles.label}>
             <div className={styles.showPasswordWrapper}>Password</div>
             <input
               className={classNames(styles.input, { [styles.invalid]: errors.password })}
-              type={showPassword ? 'text' : 'password'}
+              type={isPasswordVisible ? 'text' : 'password'}
               id="password"
               placeholder="Password"
-              {...register('password', passwordValidationProps)}
+              {...register('password', passwordValidationRules)}
               autoComplete="current-password"
             />
-            <button type="button" onClick={() => setShowPassword(!showPassword)} className={styles.eye}>
-              <img src={showPassword ? eyeOn : eyeOff} alt="eye" />
+            <button type="button" onClick={() => setIsPasswordVisible(!isPasswordVisible)} className={styles.eye}>
+              <img src={isPasswordVisible ? eyeOn : eyeOff} alt="eye" />
             </button>
           </label>
-          {errors.password && <p className={styles.errors}>{errors.password.message}</p>}
-
+          <p className={styles.errors}>{errors?.password?.message}</p>
           <button type="submit" className={styles.submitButton} disabled={!isValid}>
             Submit
           </button>
