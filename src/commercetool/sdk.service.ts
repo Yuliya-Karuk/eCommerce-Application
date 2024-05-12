@@ -75,7 +75,8 @@ export class SdkService {
       await this.apiRoot.me().login().post({ body: { email, password } }).execute();
       return true;
     } catch (error) {
-      throw Error(CustomErrors.LOGIN_ERROR);
+      return false;
+      // throw Error(CustomErrors.LOGIN_ERROR);
     }
   }
 
@@ -98,6 +99,25 @@ export class SdkService {
       return data.body.results;
     } catch (error) {
       throw Error(CustomErrors.SERVER_ERROR);
+    }
+  }
+
+  public async checkCustomerIsRegistered(userEmail: string): Promise<boolean> {
+    try {
+      const data = await this.apiRoot
+        .customers()
+        .get({
+          queryArgs: {
+            where: `email="${userEmail}"`,
+          },
+        })
+        .execute();
+      if (data.body.results.length !== 0) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      return false;
     }
   }
 }
