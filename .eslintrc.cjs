@@ -30,6 +30,7 @@ module.exports = {
     'react/jsx-uses-react': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/react-in-jsx-scope': 'off',
+    'react/require-default-props': 'off',
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     'no-debugger': 'off',
     'no-console': ['warn', { allow: ['warn', 'error'] }],

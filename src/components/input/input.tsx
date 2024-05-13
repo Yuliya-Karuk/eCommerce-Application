@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import { FieldValues, Path, RegisterOptions, UseFormRegister } from 'react-hook-form';
 import styles from './input.module.scss';
 
