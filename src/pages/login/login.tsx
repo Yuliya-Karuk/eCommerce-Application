@@ -1,9 +1,9 @@
-import classNames from 'classnames';
 import { useState } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';
 import eyeOff from '../../assets/eye-off.svg';
 import eyeOn from '../../assets/eye-show.svg';
 import { AuthFormHeader } from '../../components/AuthFormHeader/AuthFormHeader';
+import { Input } from '../../components/input/input';
 import styles from './login.module.scss';
 
 const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -56,34 +56,31 @@ export function Login() {
           linkTo="/registration"
         />
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-          <label htmlFor="e-mail" className={styles.label}>
-            Email
-            <input
-              className={classNames(styles.input, { [styles.invalid]: errors.email })}
-              type="email"
-              id="e-mail"
-              placeholder="E-mail"
-              {...register('email', emailValidationRules)}
-              autoComplete="username"
-            />
-          </label>
-          <p className={styles.errors}>{errors?.email?.message}</p>
+          <Input
+            name="email"
+            label="E-mail"
+            placeholder="E-mail"
+            register={register}
+            validationSchema={emailValidationRules}
+          />
 
-          <label htmlFor="password" className={styles.label}>
-            <div className={styles.showPasswordWrapper}>Password</div>
-            <input
-              className={classNames(styles.input, { [styles.invalid]: errors.password })}
-              type={isPasswordVisible ? 'text' : 'password'}
-              id="password"
-              placeholder="Password"
-              {...register('password', passwordValidationRules)}
-              autoComplete="current-password"
-            />
-            <button type="button" onClick={() => setIsPasswordVisible(!isPasswordVisible)} className={styles.eye}>
-              <img src={isPasswordVisible ? eyeOn : eyeOff} alt="eye" />
-            </button>
-          </label>
-          <p className={styles.errors}>{errors?.password?.message}</p>
+          <p className={styles.emailError}>{errors?.email?.message}</p>
+
+          <Input
+            name="password"
+            label="Password"
+            placeholder="Password"
+            type={isPasswordVisible ? 'text' : 'password'}
+            register={register}
+            validationSchema={passwordValidationRules}
+          />
+
+          <button type="button" onClick={() => setIsPasswordVisible(!isPasswordVisible)} className={styles.eye}>
+            <img src={isPasswordVisible ? eyeOn : eyeOff} alt="eye" />
+          </button>
+
+          <p className={styles.passwordError}>{errors?.password?.message}</p>
+
           <button type="submit" className={styles.submitButton} disabled={!isValid}>
             Submit
           </button>

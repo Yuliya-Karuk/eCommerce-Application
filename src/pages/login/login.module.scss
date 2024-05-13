@@ -16,45 +16,21 @@
       gap: 5px;
       color: $color-white;
 
-      .label {
-        position: relative;
-        display: block;
-        width: 100%;
-        margin-top: 10px;
-        text-align: left;
-      }
-
-      .input {
-        width: 100%;
-        margin-top: 5px;
-        padding: 10px;
-        color: $color-white;
-        background-color: $color-semi-transparent-dark-gray;
-        border: 2px solid $color-white;
-        border-radius: 5px;
-      }
-
-      .invalid {
-        border-color: $color-red;
-      }
-
-      .show-password-wrapper {
-        @include flex(space-between, center);
-      }
-
-      .errors {
+      .email-error {
         align-self: flex-start;
         height: 2rem;
-        color: $color-orange;
+        color: $color-error;
+      }
 
-        &:nth-child(4) {
-          height: 4rem;
-        }
+      .password-error {
+        height: 4rem;
+        color: $color-error;
+        text-align: left;
       }
 
       .eye {
         position: absolute;
-        top: 33px;
+        top: 159px;
         right: 10px;
       }
 
