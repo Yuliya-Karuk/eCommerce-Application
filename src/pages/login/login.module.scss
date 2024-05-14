@@ -1,0 +1,58 @@
+.background {
+  @include flex(center, center);
+  height: 100vh;
+  background-color: $color-bg-dark;
+
+  .wrapper {
+    width: clamp(280px, 50vw, 600px);
+    padding: 5vw;
+    font-size: 1.6rem;
+    text-align: center;
+    background-color: $color-green-dark;
+
+    .form {
+      @include flex(flex-start, center, column);
+      position: relative;
+      gap: 5px;
+      color: $color-white;
+
+      .email-error {
+        align-self: flex-start;
+        height: 2rem;
+        color: $color-error;
+      }
+
+      .password-error {
+        height: 4rem;
+        color: $color-error;
+        text-align: left;
+      }
+
+      .eye {
+        position: absolute;
+        top: 159px;
+        right: 10px;
+      }
+
+      .submit-button {
+        @extend %transition;
+        width: 100%;
+        margin: 20px 0 53px;
+        padding: 10px 5px;
+        background-color: $color-white;
+        border-radius: 5px;
+
+        &:enabled:hover {
+          color: $color-white;
+          background-color: $color-semi-transparent-dark-gray;
+        }
+
+        &:disabled {
+          cursor: default;
+          color: $color-gray-dark;
+          background-color: $color-gray-middle;
+        }
+      }
+    }
+  }
+}
