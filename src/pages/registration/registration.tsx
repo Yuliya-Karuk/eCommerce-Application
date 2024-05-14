@@ -12,8 +12,6 @@ export function Registration() {
       await sdkService.loginUser(testRegisterUser.email, testRegisterUser.password);
       login();
     }
-    // в then можно добавить всплытие модалки - что успешно
-    // или показывать в p
   };
 
   return (

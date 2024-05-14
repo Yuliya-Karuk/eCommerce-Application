@@ -38,7 +38,7 @@ export function Home() {
       <Link to="/login">Login</Link>
       <Link to="/registration">Registration</Link>
       {isLogin && (
-        <button type="button" onClick={handleLogout}>
+        <button type="button" onClick={handleLogout} style={{ color: 'white' }}>
           Logout
         </button>
       )}

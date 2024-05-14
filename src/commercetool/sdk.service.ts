@@ -31,7 +31,7 @@ export class SdkService {
     }
   }
 
-  private createAnonymousClient() {
+  public createAnonymousClient() {
     this.client = this.clientBuilder.withAnonymousSessionFlow(anonymousMiddlewareOptions).build();
 
     this.apiRoot = createApiBuilderFromCtpClient(this.client).withProjectKey({
@@ -76,7 +76,6 @@ export class SdkService {
       return true;
     } catch (error) {
       return false;
-      // throw Error(CustomErrors.LOGIN_ERROR);
     }
   }
 

@@ -38,7 +38,6 @@ export interface LoginFormData {
   password: string;
 }
 
-// eslint-disable-next-line max-lines-per-function
 export function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const {
@@ -62,6 +61,7 @@ export function Login() {
         login();
         setIsPasswordError(false);
       } else {
+        sdkService.createAnonymousClient();
         setIsPasswordError(true);
       }
     } else {

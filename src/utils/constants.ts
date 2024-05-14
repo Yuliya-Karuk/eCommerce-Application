@@ -1,6 +1,6 @@
 export const testRegisterUser = {
-  email: 'test4@gmail.com',
-  password: '123456',
+  email: 'test1@gmail.com',
+  password: '123456Qq!',
   addresses: [
     {
       country: 'BY',
@@ -20,9 +20,4 @@ export const testRegisterUser = {
   firstName: 'Test',
   lastName: 'Test',
   dateOfBirth: '1993-12-28',
-};
-
-export const testLoginUser = {
-  email: 'test4@gmail.com',
-  password: '123456',
 };
