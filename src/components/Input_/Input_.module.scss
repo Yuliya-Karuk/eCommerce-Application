@@ -20,6 +20,10 @@
   border-color: $color-invalid-input;
 }
 
+.orange {
+  color: $color-error;
+}
+
 .show-password-wrapper {
   @include flex(space-between, center);
 }
