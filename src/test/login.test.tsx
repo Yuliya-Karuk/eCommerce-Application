@@ -9,6 +9,8 @@ describe('Email input component', () => {
   const testCases = [
     { input: 'invalidgmail.com', expectedError: EmailLoginErrors.pattern },
     { input: 'user@domain', expectedError: EmailLoginErrors.pattern },
+    { input: ' test@gmail.com', expectedError: EmailLoginErrors.pattern },
+    { input: 'test@gmail.com ', expectedError: EmailLoginErrors.pattern },
   ];
 
   testCases.forEach(({ input, expectedError }) => {
@@ -25,7 +27,7 @@ describe('Email input component', () => {
       fireEvent.change(inputElement, { target: { value: input } });
 
       await waitFor(() => {
-        expect(screen.getByDisplayValue(input)).toBeInTheDocument();
+        expect(screen.getByDisplayValue(input.trim())).toBeInTheDocument();
         expect(screen.getByText(expectedError)).toBeInTheDocument();
         expect(button).toBeDisabled();
       });
@@ -67,6 +69,8 @@ describe('Password input component', () => {
     { input: '123456Aa', expectedError: PasswordLoginErrors.specialChar },
     { input: 'Aaaaaaaa', expectedError: PasswordLoginErrors.digit },
     { input: '123 5Aa!', expectedError: PasswordLoginErrors.noWhitespace },
+    { input: '1235Aa! ', expectedError: PasswordLoginErrors.noWhitespace },
+    { input: ' 1235Aa!', expectedError: PasswordLoginErrors.noWhitespace },
   ];
 
   testCases.forEach(({ input, expectedError }) => {
@@ -82,7 +86,7 @@ describe('Password input component', () => {
       fireEvent.change(inputElement, { target: { value: input } });
 
       await waitFor(() => {
-        expect(screen.getByDisplayValue(input)).toBeInTheDocument();
+        expect(screen.getByDisplayValue(input.trim())).toBeInTheDocument();
         expect(screen.getByText(expectedError)).toBeInTheDocument();
         expect(button).toBeDisabled();
       });
