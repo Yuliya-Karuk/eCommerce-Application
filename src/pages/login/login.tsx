@@ -4,28 +4,28 @@ import eyeOff from '../../assets/eye-off.svg';
 import eyeOn from '../../assets/eye-show.svg';
 import { AuthFormHeader } from '../../components/AuthFormHeader/AuthFormHeader';
 import { Input } from '../../components/input/input';
+import { EmailLoginErrors, PasswordLoginErrors } from '../../utils/validationConst';
 import styles from './login.module.scss';
 
 const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 const passwordValidationRules: RegisterOptions = {
-  required: 'Password is required',
-  minLength: { value: 8, message: 'Password must be at least 8 characters long' },
+  required: PasswordLoginErrors.required,
+  minLength: { value: 8, message: PasswordLoginErrors.minLength },
   validate: {
-    uppercase: value => /(?=.*[A-Z])/.test(value) || 'Password must contain at least one uppercase letter (A-Z)',
-    lowercase: value => /(?=.*[a-z])/.test(value) || 'Password must contain at least one lowercase letter (a-z)',
-    digit: value => /(?=.*\d)/.test(value) || 'Password must contain at least one digit (0-9)',
-    specialChar: value =>
-      /(?=.*[!@#$%^&*])/.test(value) || 'Password must contain at least one special character (e.g., !@#$%^&*)',
-    noWhitespace: value => !/\s/.test(value) || 'Password cannot contain leading or trailing whitespace',
+    uppercase: value => /(?=.*[A-Z])/.test(value) || PasswordLoginErrors.uppercase,
+    lowercase: value => /(?=.*[a-z])/.test(value) || PasswordLoginErrors.lowercase,
+    digit: value => /(?=.*\d)/.test(value) || PasswordLoginErrors.digit,
+    specialChar: value => /(?=.*[!@#$%^&*])/.test(value) || PasswordLoginErrors.specialChar,
+    noWhitespace: value => !/\s/.test(value) || PasswordLoginErrors.noWhitespace,
   },
 };
 
 const emailValidationRules: RegisterOptions = {
-  required: 'E-mail is required',
+  required: EmailLoginErrors.required,
   pattern: {
     value: validEmailRegExp,
-    message: 'Invalid e-mail format',
+    message: EmailLoginErrors.pattern,
   },
 };
 

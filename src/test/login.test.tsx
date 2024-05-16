@@ -3,11 +3,12 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it } from 'vitest';
 import { Login } from '../pages/login/login';
+import { EmailLoginErrors, PasswordLoginErrors } from '../utils/validationConst';
 
 describe('Email input component', () => {
   const testCases = [
-    { input: 'invalidgmail.com', expectedError: 'Invalid e-mail format' },
-    { input: 'user@domain', expectedError: 'Invalid e-mail format' },
+    { input: 'invalidgmail.com', expectedError: EmailLoginErrors.pattern },
+    { input: 'user@domain', expectedError: EmailLoginErrors.pattern },
   ];
 
   testCases.forEach(({ input, expectedError }) => {
@@ -43,15 +44,16 @@ describe('Email input component', () => {
     fireEvent.change(inputElement, { target: { value: 'test@gmail.com' } });
 
     await waitFor(() => {
-      expect(screen.queryByText('Invalid e-mail format')).not.toBeInTheDocument();
-      expect(screen.queryByText('E-mail is required')).not.toBeInTheDocument();
+      testCases.forEach(({ expectedError }) => {
+        expect(screen.queryByText(expectedError)).not.toBeInTheDocument();
+      });
       expect(screen.getByDisplayValue('test@gmail.com')).toBeInTheDocument();
     });
 
     fireEvent.change(inputElement, { target: { value: '' } });
 
     await waitFor(() => {
-      expect(screen.getByText(/E-mail is required/)).toBeInTheDocument();
+      expect(screen.getByText(EmailLoginErrors.required)).toBeInTheDocument();
       expect(button).toBeDisabled();
     });
   });
@@ -59,12 +61,12 @@ describe('Email input component', () => {
 
 describe('Password input component', () => {
   const testCases = [
-    { input: '1234567', expectedError: 'Password must be at least 8 characters long' },
-    { input: '12345678', expectedError: 'Password must contain at least one uppercase letter (A-Z)' },
-    { input: '1234567A', expectedError: 'Password must contain at least one lowercase letter (a-z)' },
-    { input: '123456Aa', expectedError: 'Password must contain at least one special character (e.g., !@#$%^&*)' },
-    { input: 'Aaaaaaaa', expectedError: 'Password must contain at least one digit (0-9)' },
-    { input: '123 5Aa!', expectedError: 'Password cannot contain leading or trailing whitespace' },
+    { input: '1234567', expectedError: PasswordLoginErrors.minLength },
+    { input: '12345678', expectedError: PasswordLoginErrors.uppercase },
+    { input: '1234567A', expectedError: PasswordLoginErrors.lowercase },
+    { input: '123456Aa', expectedError: PasswordLoginErrors.specialChar },
+    { input: 'Aaaaaaaa', expectedError: PasswordLoginErrors.digit },
+    { input: '123 5Aa!', expectedError: PasswordLoginErrors.noWhitespace },
   ];
 
   testCases.forEach(({ input, expectedError }) => {
@@ -99,21 +101,16 @@ describe('Password input component', () => {
     fireEvent.change(inputElement, { target: { value: '12345Aa!' } });
 
     await waitFor(() => {
+      testCases.forEach(({ expectedError }) => {
+        expect(screen.queryByText(expectedError)).not.toBeInTheDocument();
+      });
       expect(screen.getByDisplayValue('12345Aa!')).toBeInTheDocument();
-      expect(screen.queryByText('Password must be at least 8 characters long')).not.toBeInTheDocument();
-      expect(screen.queryByText('Password must contain at least one uppercase letter (A-Z)')).not.toBeInTheDocument();
-      expect(screen.queryByText('Password must contain at least one lowercase letter (a-z)')).not.toBeInTheDocument();
-      expect(
-        screen.queryByText('Password must contain at least one special character (e.g., !@#$%^&*)')
-      ).not.toBeInTheDocument();
-      expect(screen.queryByText('Password must contain at least one digit (0-9)')).not.toBeInTheDocument();
-      expect(screen.queryByText('Password cannot contain leading or trailing whitespace')).not.toBeInTheDocument();
     });
 
     fireEvent.change(inputElement, { target: { value: '' } });
 
     await waitFor(() => {
-      expect(screen.getByText(/Password is required/)).toBeInTheDocument();
+      expect(screen.getByText(PasswordLoginErrors.required)).toBeInTheDocument();
       expect(button).toBeDisabled();
     });
   });
