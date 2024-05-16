@@ -11,9 +11,16 @@
   margin-top: 5px;
   padding: 10px;
   color: $color-white;
-  background-color: $color-semi-transparent-dark-gray;
+  background-color: $color-input-bg;
   border: 2px solid $color-white;
   border-radius: 5px;
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:hover {
+    box-shadow: 0 0 0 50px $color-input-bg inset;
+    -webkit-text-fill-color: $color-white;
+  }
 }
 
 .invalid {

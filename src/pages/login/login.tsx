@@ -3,7 +3,7 @@ import { RegisterOptions, useForm } from 'react-hook-form';
 import eyeOff from '../../assets/eye-off.svg';
 import eyeOn from '../../assets/eye-show.svg';
 import { AuthFormHeader } from '../../components/AuthFormHeader/AuthFormHeader';
-import { Input } from '../../components/Input_/Input_';
+import { Input } from '../../components/Input/Input';
 import styles from './login.module.scss';
 
 const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

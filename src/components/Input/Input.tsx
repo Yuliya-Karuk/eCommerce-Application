@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import { FieldValues, Path, RegisterOptions, UseFormRegister } from 'react-hook-form';
-import styles from './Input_.module.scss';
+import styles from './Input.module.scss';
 
 interface InputProps<T extends FieldValues> {
   name: Path<T>;
