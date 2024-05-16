@@ -19,11 +19,14 @@ describe('Email input component', () => {
       );
 
       const inputElement = screen.getByPlaceholderText(/E-mail/i);
+      const button = screen.getByText('Submit', { selector: 'button[type="submit"]' });
+
       fireEvent.change(inputElement, { target: { value: input } });
 
       await waitFor(() => {
         expect(screen.getByDisplayValue(input)).toBeInTheDocument();
         expect(screen.getByText(expectedError)).toBeInTheDocument();
+        expect(button).toBeDisabled();
       });
     });
   });
@@ -35,33 +38,21 @@ describe('Email input component', () => {
       </BrowserRouter>
     );
 
-    const emailInput = screen.getByPlaceholderText(/E-mail/i);
-    fireEvent.change(emailInput, { target: { value: 'test@gmail.com' } });
-
-    await waitFor(() => {
-      expect(screen.getByDisplayValue('test@gmail.com')).toBeInTheDocument();
-    });
-
-    fireEvent.change(emailInput, { target: { value: '' } });
-
-    await waitFor(() => {
-      expect(screen.getByText(/E-mail is required/)).toBeInTheDocument();
-    });
-  });
-
-  it('displays no error message when email is valid', async () => {
-    render(
-      <BrowserRouter>
-        <Login />
-      </BrowserRouter>
-    );
-
-    const emailInput = screen.getByPlaceholderText(/E-mail/i);
-    fireEvent.change(emailInput, { target: { value: 'test@gmail.com' } });
+    const inputElement = screen.getByPlaceholderText(/E-mail/i);
+    const button = screen.getByText('Submit', { selector: 'button[type="submit"]' });
+    fireEvent.change(inputElement, { target: { value: 'test@gmail.com' } });
 
     await waitFor(() => {
       expect(screen.queryByText('Invalid e-mail format')).not.toBeInTheDocument();
       expect(screen.queryByText('E-mail is required')).not.toBeInTheDocument();
+      expect(screen.getByDisplayValue('test@gmail.com')).toBeInTheDocument();
+    });
+
+    fireEvent.change(inputElement, { target: { value: '' } });
+
+    await waitFor(() => {
+      expect(screen.getByText(/E-mail is required/)).toBeInTheDocument();
+      expect(button).toBeDisabled();
     });
   });
 });
@@ -85,11 +76,13 @@ describe('Password input component', () => {
       );
 
       const inputElement = screen.getByPlaceholderText(/Password/i);
+      const button = screen.getByText('Submit', { selector: 'button[type="submit"]' });
       fireEvent.change(inputElement, { target: { value: input } });
 
       await waitFor(() => {
         expect(screen.getByDisplayValue(input)).toBeInTheDocument();
         expect(screen.getByText(expectedError)).toBeInTheDocument();
+        expect(button).toBeDisabled();
       });
     });
   });
@@ -101,31 +94,12 @@ describe('Password input component', () => {
       </BrowserRouter>
     );
 
-    const emailInput = screen.getByPlaceholderText(/Password/i);
-    fireEvent.change(emailInput, { target: { value: '12345Aa!' } });
+    const inputElement = screen.getByPlaceholderText(/Password/i);
+    const button = screen.getByText('Submit', { selector: 'button[type="submit"]' });
+    fireEvent.change(inputElement, { target: { value: '12345Aa!' } });
 
     await waitFor(() => {
       expect(screen.getByDisplayValue('12345Aa!')).toBeInTheDocument();
-    });
-
-    fireEvent.change(emailInput, { target: { value: '' } });
-
-    await waitFor(() => {
-      expect(screen.getByText(/Password is required/)).toBeInTheDocument();
-    });
-  });
-
-  it('displays no error message when password is valid', async () => {
-    render(
-      <BrowserRouter>
-        <Login />
-      </BrowserRouter>
-    );
-
-    const emailInput = screen.getByPlaceholderText(/Password/i);
-    fireEvent.change(emailInput, { target: { value: '12345Aa!' } });
-
-    await waitFor(() => {
       expect(screen.queryByText('Password must be at least 8 characters long')).not.toBeInTheDocument();
       expect(screen.queryByText('Password must contain at least one uppercase letter (A-Z)')).not.toBeInTheDocument();
       expect(screen.queryByText('Password must contain at least one lowercase letter (a-z)')).not.toBeInTheDocument();
@@ -134,6 +108,33 @@ describe('Password input component', () => {
       ).not.toBeInTheDocument();
       expect(screen.queryByText('Password must contain at least one digit (0-9)')).not.toBeInTheDocument();
       expect(screen.queryByText('Password cannot contain leading or trailing whitespace')).not.toBeInTheDocument();
+    });
+
+    fireEvent.change(inputElement, { target: { value: '' } });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Password is required/)).toBeInTheDocument();
+      expect(button).toBeDisabled();
+    });
+  });
+});
+
+describe('Login component', () => {
+  it('Submit button is enabled, when login and password inputs are correct', async () => {
+    render(
+      <BrowserRouter>
+        <Login />
+      </BrowserRouter>
+    );
+
+    const emailInput = screen.getByPlaceholderText(/E-mail/i);
+    fireEvent.change(emailInput, { target: { value: 'test@gmail.com' } });
+    const passwordInput = screen.getByPlaceholderText(/Password/i);
+    fireEvent.change(passwordInput, { target: { value: '12345Aa!' } });
+    const button = screen.getByText('Submit', { selector: 'button[type="submit"]' });
+
+    await waitFor(() => {
+      expect(button).not.toBeDisabled();
     });
   });
 });
