@@ -13,7 +13,6 @@ import {
   passwordAuthMiddlewareOptions,
   refreshAuthMiddlewareOption,
 } from './middlewareOptions';
-import { tokenController } from './token.service';
 
 const { VITE_CTP_PROJECT_KEY } = import.meta.env;
 
@@ -67,11 +66,6 @@ export class SdkService {
     this.createWithPasswordClient(email, password);
 
     try {
-      tokenController.set({
-        token: '',
-        expirationTime: 0,
-        refreshToken: '',
-      });
       await this.apiRoot.me().login().post({ body: { email, password } }).execute();
       return true;
     } catch (error) {

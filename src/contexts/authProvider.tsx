@@ -2,32 +2,39 @@ import { createContext, ReactNode, useContext, useState } from 'react';
 import { tokenController } from '../commercetool/token.service';
 import { storage } from '../utils/storage';
 
-interface IContext {
-  isLogin: boolean;
+interface AuthContextValue {
+  isLoggedIn: boolean;
   login: () => void;
   logout: () => void;
 }
 
+const AuthContext = createContext<AuthContextValue>({} as AuthContextValue);
+
 interface AuthProviderProps {
   children: ReactNode;
 }
-const AuthContext = createContext<IContext>({} as IContext);
-
-export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const initialState = Boolean(storage.getTokenStore());
-  const [isLogin, setIsLogin] = useState(initialState);
+  const [isLoggedIn, setIsLoggedIn] = useState(initialState);
 
   const login = () => {
     storage.setTokenStore(tokenController.get());
-    setIsLogin(true);
+    setIsLoggedIn(true);
   };
 
   const logout = () => {
     storage.removeTokenStore();
-    setIsLogin(false);
+    setIsLoggedIn(false);
   };
 
-  return <AuthContext.Provider value={{ isLogin, login, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ isLoggedIn, login, logout }}>{children}</AuthContext.Provider>;
 }
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useCount must be used within a CountProvider');
+  }
+  return context;
+};

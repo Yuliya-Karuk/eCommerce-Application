@@ -6,7 +6,7 @@ import eyeOn from '../../assets/eye-show.svg';
 import { sdkService } from '../../commercetool/sdk.service';
 import { AuthFormHeader } from '../../components/AuthFormHeader/AuthFormHeader';
 import { Input } from '../../components/input/input';
-import { useAuth } from '../../providers/authProvider';
+import { useAuth } from '../../contexts/authProvider';
 import { CustomErrors } from '../../types/enums';
 import styles from './login.module.scss';
 
@@ -46,13 +46,14 @@ export function Login() {
     formState: { errors, isValid },
   } = useForm<LoginFormData>({ mode: 'onChange' });
 
-  const { isLogin, login } = useAuth();
+  const { isLoggedIn, login } = useAuth();
 
   const [isLoginError, setIsLoginError] = useState(false);
   const [isPasswordError, setIsPasswordError] = useState(false);
 
   const onSubmit = async (data: LoginFormData) => {
-    const emailRegistered = await sdkService.checkCustomerIsRegistered(data.email);
+    // const emailRegistered = await sdkService.checkCustomerIsRegistered(data.email);
+    const emailRegistered = true;
 
     if (emailRegistered) {
       const loginResult = await sdkService.loginUser(data.email, data.password);
@@ -69,9 +70,12 @@ export function Login() {
     }
   };
 
+  if (isLoggedIn) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <div className={styles.background}>
-      {isLogin && <Navigate to="/" replace />}
       <div className={styles.wrapper}>
         <AuthFormHeader
           titleText="Log in"

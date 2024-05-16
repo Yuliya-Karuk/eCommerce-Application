@@ -1,10 +1,10 @@
 import { Link, Navigate } from 'react-router-dom';
 import { sdkService } from '../../commercetool/sdk.service';
-import { useAuth } from '../../providers/authProvider';
+import { useAuth } from '../../contexts/authProvider';
 import { testRegisterUser } from '../../utils/constants';
 
 export function Registration() {
-  const { isLogin, login } = useAuth();
+  const { isLoggedIn, login } = useAuth();
 
   const register = async () => {
     const registerResult = await sdkService.register(testRegisterUser);
@@ -14,9 +14,12 @@ export function Registration() {
     }
   };
 
+  if (isLoggedIn) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <div>
-      {isLogin && <Navigate to="/" replace />}
       <h1>Registration Page</h1>
       <Link to="/login">Link to Login Page </Link>
       <button style={{ padding: '10px 20px', border: '2px solid white' }} type="button" onClick={register}>
