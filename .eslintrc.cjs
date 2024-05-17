@@ -35,7 +35,6 @@ module.exports = {
     'react/function-component-definition': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': 'off',
-    'react-hooks/exhaustive-deps': 'off',
     'no-debugger': 'off',
     'no-console': ['warn', { allow: ['warn', 'error'] }],
     'class-methods-use-this': 'off',

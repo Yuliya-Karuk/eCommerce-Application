@@ -27,6 +27,7 @@ export const Navigation: FC<NavigationProps> = ({ paths, className, id, isMenuOp
     return () => {
       burgerMedia.removeEventListener('change', burgerMediaChange);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <nav className={isMenuOpen ? `${className} active` : className} id={id} {...props}>
