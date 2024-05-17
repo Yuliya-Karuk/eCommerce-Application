@@ -15,6 +15,7 @@ import {
   passwordAuthMiddlewareOptions,
   refreshAuthMiddlewareOption,
 } from './middlewareOptions';
+import { tokenController } from './token.service';
 
 const { VITE_CTP_PROJECT_KEY } = import.meta.env;
 
@@ -67,17 +68,15 @@ export class SdkService {
   public async loginUser(email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> {
     this.createWithPasswordClient(email, password);
 
+    tokenController.refresh();
+
     const result = await this.apiRoot.me().login().post({ body: { email, password } }).execute();
     return result;
   }
 
-  public async register(userData: CustomerDraft): Promise<boolean> {
-    try {
-      await this.apiRoot.customers().post({ body: userData }).execute();
-      return true;
-    } catch (error) {
-      throw Error(CustomErrors.ALREADY_REGISTER_ERROR);
-    }
+  public async register(userData: CustomerDraft): Promise<ClientResponse<CustomerSignInResult>> {
+    const result = await this.apiRoot.customers().post({ body: userData }).execute();
+    return result;
   }
 
   public logoutUser() {

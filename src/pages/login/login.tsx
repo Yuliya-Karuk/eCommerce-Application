@@ -41,7 +41,6 @@ export interface LoginFormData {
 
 export function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 
   const {
     register,
@@ -53,15 +52,10 @@ export function Login() {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      setIsOverlayVisible(true);
       await sdkService.loginUser(data.email, data.password);
-      setTimeout(() => {
-        login();
-        setIsOverlayVisible(false);
-      }, 2000);
+      login();
     } catch (error) {
       sdkService.createAnonymousClient();
-      setIsOverlayVisible(false);
       const errorMessage = (error as Error).message || 'Unknown error';
       throw new Error(errorMessage);
     }
@@ -70,7 +64,6 @@ export function Login() {
   const notify = (userData: LoginFormData) =>
     toast.promise(() => onSubmit(userData), {
       pending: 'Registration in progress, wait, please',
-      success: 'Congratulations, you have successfully logged in!',
       error: {
         render({ data }) {
           return `${(data as Error).message}`;
@@ -84,7 +77,6 @@ export function Login() {
 
   return (
     <div className={styles.background}>
-      {isOverlayVisible && <div className={styles.overlay} />}
       <div className={styles.wrapper}>
         <AuthFormHeader
           titleText="Log in"

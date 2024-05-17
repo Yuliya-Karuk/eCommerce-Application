@@ -14,6 +14,14 @@ export class TokenCacheController implements TokenCache {
   public get(): TokenStore {
     return this.token;
   }
+
+  public refresh(): void {
+    this.token = {
+      token: '',
+      expirationTime: 0,
+      refreshToken: '',
+    };
+  }
 }
 
 export const tokenController = new TokenCacheController();

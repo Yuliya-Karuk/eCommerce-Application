@@ -1,5 +1,5 @@
 export const testRegisterUser = {
-  email: 'test1@gmail.com',
+  email: 'test2@gmail.com',
   password: '123456Qq!',
   addresses: [
     {
