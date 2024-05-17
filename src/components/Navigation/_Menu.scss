@@ -6,7 +6,6 @@
     background-color: $color-bg-dark-alpha-adaptive;
   }
   overflow: hidden;
-  padding: 5px;
   color: $color-white;
   background-color: $color-bg-dark-alpha;
   border: 1px solid $color-gray-dark;
@@ -20,21 +19,20 @@
       padding-left: 10px;
     }
     display: flex;
-    column-gap: 14px;
   }
 
   &__item {
     @include adaptiveValue('font-size', 16px, 14px);
 
     @include hover {
-      opacity: 0.7;
+      background-color: $color-primary-bright;
     }
 
     @include smalltablet {
       @include adaptiveValue('font-size', 32px, 24px);
     }
-    padding: 8px 10px;
+    padding: 13px 17px;
     font-family: Questrial, Arial, Helvetica, sans-serif;
-    transition: opacity 0.4s ease 0s;
+    transition: background-color 0.4s ease 0s;
   }
 }
