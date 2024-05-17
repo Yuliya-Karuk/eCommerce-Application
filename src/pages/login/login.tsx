@@ -64,6 +64,7 @@ export function Login() {
             validationSchema={emailValidationRules}
             isInvalid={!!errors.email}
             required
+            autocomplete="username"
           />
 
           <p className={styles.emailError}>{errors?.email?.message}</p>
@@ -77,6 +78,7 @@ export function Login() {
             validationSchema={passwordValidationRules}
             isInvalid={!!errors.password}
             required
+            autocomplete="current-password"
           />
 
           <button type="button" onClick={() => setIsPasswordVisible(!isPasswordVisible)} className={styles.eye}>

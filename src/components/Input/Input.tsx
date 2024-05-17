@@ -11,6 +11,7 @@ interface InputProps<T extends FieldValues> {
   placeholder?: string;
   isInvalid?: boolean;
   required?: boolean;
+  autocomplete?: string | undefined;
 }
 
 export function Input<T extends FieldValues>(props: InputProps<T>) {
@@ -23,6 +24,7 @@ export function Input<T extends FieldValues>(props: InputProps<T>) {
     placeholder = '',
     isInvalid = false,
     required = false,
+    autocomplete = undefined,
   } = props;
 
   return (
@@ -37,6 +39,7 @@ export function Input<T extends FieldValues>(props: InputProps<T>) {
         type={type}
         placeholder={placeholder}
         {...register(name, validationSchema)}
+        {...(autocomplete && { autoComplete: autocomplete })}
       />
     </>
   );

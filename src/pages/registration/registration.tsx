@@ -84,6 +84,7 @@ export function Registration() {
                 validationSchema={emailValidationRules}
                 isInvalid={!!errors.email}
                 required
+                autocomplete="username"
               />
               <p className={styles.emailError}>{errors?.email?.message}</p>
 
@@ -96,6 +97,7 @@ export function Registration() {
                 validationSchema={passwordValidationRules}
                 isInvalid={!!errors.password}
                 required
+                autocomplete="current-password"
               />
               <button type="button" onClick={() => setIsPasswordVisible(!isPasswordVisible)} className={styles.eye}>
                 <img src={isPasswordVisible ? eyeOn : eyeOff} alt="eye" />
