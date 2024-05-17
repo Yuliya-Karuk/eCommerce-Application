@@ -13,7 +13,6 @@ export const devConfig = {
     devSourcemap: true,
     modules: {
       localsConvention: 'camelCase',
-      // generateScopedName: '[local]',
     },
     preprocessorOptions: {
       scss: {

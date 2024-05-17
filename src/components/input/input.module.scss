@@ -1,0 +1,25 @@
+.label {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.input {
+  width: 100%;
+  margin-top: 5px;
+  padding: 10px;
+  color: $color-white;
+  background-color: $color-semi-transparent-dark-gray;
+  border: 2px solid $color-white;
+  border-radius: 5px;
+}
+
+.invalid {
+  border-color: $color-invalid-input;
+}
+
+.show-password-wrapper {
+  @include flex(space-between, center);
+}

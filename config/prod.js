@@ -66,7 +66,6 @@ export const prodConfig = {
   css: {
     modules: {
       localsConvention: 'camelCase',
-      // generateScopedName: '[local]',
     },
     preprocessorOptions: {
       scss: {
