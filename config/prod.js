@@ -66,11 +66,11 @@ export const prodConfig = {
   css: {
     modules: {
       localsConvention: 'camelCase',
-      generateScopedName: '[local]',
+      // generateScopedName: '[local]',
     },
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "../src/styles/mixins.scss"; @import "../src/styles/placeholders.scss"; @import "../src/styles/constants.scss";`,
+        additionalData: `@import "../src/styles/functions.scss"; @import "../src/styles/mixins.scss"; @import "../src/styles/extends.scss"; @import "../src/styles/placeholders.scss"; @import "../src/styles/constants.scss";`,
       },
     },
   },

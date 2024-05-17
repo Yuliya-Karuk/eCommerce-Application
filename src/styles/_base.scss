@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 *,
 *::before,
 *::after {
@@ -5,6 +7,7 @@
 }
 
 html {
+  @extend %smoothscroll;
   scroll-behavior: smooth;
   font-size: 10px;
   color: $color-white;
@@ -32,4 +35,50 @@ h3 {
 h4 {
   @include font(2.1rem, 400, normal);
   font-family: Questrial, serif;
+}
+
+.wrapper {
+  @include flex(null, null, column);
+  overflow-x: hidden;
+  min-height: 100%;
+
+  // Фикс для слайдеров
+  > * {
+    min-width: 0;
+  }
+}
+
+@if $responsiveType {
+  // Отзывчивая верстка без брейк-поинтов
+  .container,
+  [class*='__container'] {
+    @if $container>0 {
+      box-sizing: content-box;
+      max-width: $container;
+      margin: 0 auto;
+    }
+
+    @if $containerPadding>0 {
+      width: calc(100% - #{$containerPadding}px);
+      padding: 0 math.div($containerPadding, 2);
+    } @else {
+      width: 100%;
+    }
+  }
+} @else {
+  // Верстка адаптива вручную по брейк-поинтам
+  .container,
+  [class*='__container'] {
+    margin: 0 auto;
+
+    @if $container>0 {
+      max-width: $container;
+    }
+  }
+}
+
+// Блокировка прокрутки контента
+.lock {
+  touch-action: none !important;
+  overflow: hidden !important;
 }
