@@ -58,7 +58,8 @@ export function Registration() {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<CustomerDraft>({ mode: 'onChange' });
+    trigger,
+  } = useForm<CustomerDraft>({ mode: 'all' });
 
   const onSubmit = (data: CustomerDraft) => {
     console.log(data); // form submission logic here
@@ -97,7 +98,7 @@ export function Registration() {
                 validationSchema={passwordValidationRules}
                 isInvalid={!!errors.password}
                 required
-                autocomplete="current-password"
+                autocomplete="new-password"
               />
               <button type="button" onClick={() => setIsPasswordVisible(!isPasswordVisible)} className={styles.eye}>
                 <img src={isPasswordVisible ? eyeOn : eyeOff} alt="eye" />
@@ -138,10 +139,10 @@ export function Registration() {
               <p className={styles.dateOfBirthError}>{errors?.dateOfBirth?.message}</p>
             </section>
             <section className={styles.userShippingAddressSection}>
-              <AddressForm register={register} index={0} errors={errors} />
+              <AddressForm register={register} index={0} errors={errors} trigger={trigger} />
             </section>
             <section className={styles.userBillingAddressSection}>
-              <AddressForm register={register} index={1} errors={errors} />
+              <AddressForm register={register} index={1} errors={errors} trigger={trigger} />
             </section>
           </div>
           <button type="submit" className={styles.submitButton} disabled={!isValid}>

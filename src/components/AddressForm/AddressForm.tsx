@@ -1,6 +1,6 @@
 import { CustomerDraft } from '@commercetools/platform-sdk';
-import { useState } from 'react';
-import { FieldErrors, RegisterOptions, UseFormRegister } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { FieldErrors, RegisterOptions, UseFormRegister, UseFormTrigger } from 'react-hook-form';
 import { Input } from '../Input/Input';
 import styles from './AddressForm.module.scss';
 
@@ -8,6 +8,7 @@ interface AddressFormProps {
   register: UseFormRegister<CustomerDraft>;
   errors: FieldErrors<CustomerDraft>;
   index: 0 | 1;
+  trigger: UseFormTrigger<CustomerDraft>;
 }
 
 const onlyLatinLettersRegExp = /^[A-Za-z]+$/;
@@ -20,16 +21,16 @@ const cityValidationRules: RegisterOptions = {
   },
 };
 
-const countries = ['Europe', 'Belarus', 'Poland'];
+const countries = ['Germany', 'Belarus', 'Poland'];
 
 const getPostalCodeValidationRules = (selectedCountry: string): RegisterOptions => {
   switch (selectedCountry) {
-    case 'Europe':
+    case 'Germany':
       return {
         required: 'Postal code is required',
         pattern: {
-          value: /^[0-9]{5}$/, // Example pattern for Europe postal code
-          message: 'Invalid postal code format for Europe',
+          value: /^[0-9]{5}$/, // Example pattern for Germany postal code
+          message: 'Postal code format for Germany - 5 digits',
         },
       };
     case 'Belarus':
@@ -37,7 +38,7 @@ const getPostalCodeValidationRules = (selectedCountry: string): RegisterOptions 
         required: 'Postal code is required',
         pattern: {
           value: /^[0-9]{6}$/, // Example pattern for Belarus postal code
-          message: 'Invalid postal code format for Belarus',
+          message: 'Postal code format for Belarus - 6 digits',
         },
       };
     case 'Poland':
@@ -45,7 +46,7 @@ const getPostalCodeValidationRules = (selectedCountry: string): RegisterOptions 
         required: 'Postal code is required',
         pattern: {
           value: /^[0-9]{2}-[0-9]{3}$/, // Example pattern for Poland postal code
-          message: 'Invalid postal code format for Poland',
+          message: 'Postal code format for Poland - 2 digits, dash, 3 digits',
         },
       };
     default:
@@ -57,12 +58,19 @@ const getPostalCodeValidationRules = (selectedCountry: string): RegisterOptions 
 
 // eslint-disable-next-line max-lines-per-function
 export function AddressForm(props: AddressFormProps) {
-  const { register, errors, index } = props;
+  const { register, errors, index, trigger } = props;
   const [selectedCountry, setSelectedCountry] = useState<string>('');
 
-  const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleCountryChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCountry(event.target.value);
   };
+
+  useEffect(() => {
+    if (selectedCountry) {
+      trigger(`addresses.${index}.postalCode`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCountry]);
 
   return (
     <>
@@ -74,6 +82,7 @@ export function AddressForm(props: AddressFormProps) {
           {...register(`addresses.${index}.country`, { required: true })}
           defaultValue=""
           onChange={handleCountryChange}
+          autoComplete="off"
         >
           <option value="" disabled hidden>
             Select country
