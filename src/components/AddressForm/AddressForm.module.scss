@@ -40,3 +40,12 @@
 .orange {
   color: $color-error;
 }
+
+.checkbox-label {
+  align-self: flex-start;
+
+  .checkbox {
+    transform: scale(1.2);
+    margin-right: 8px;
+  }
+}

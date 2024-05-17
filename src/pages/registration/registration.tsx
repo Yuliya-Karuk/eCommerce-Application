@@ -59,6 +59,9 @@ export function Registration() {
     handleSubmit,
     formState: { errors, isValid },
     trigger,
+    setValue,
+    getValues,
+    unregister,
   } = useForm<CustomerDraft>({ mode: 'all' });
 
   const onSubmit = (data: CustomerDraft) => {
@@ -139,10 +142,26 @@ export function Registration() {
               <p className={styles.dateOfBirthError}>{errors?.dateOfBirth?.message}</p>
             </section>
             <section className={styles.userShippingAddressSection}>
-              <AddressForm register={register} index={0} errors={errors} trigger={trigger} />
+              <AddressForm
+                register={register}
+                index={0}
+                errors={errors}
+                trigger={trigger}
+                setValue={setValue}
+                unregister={unregister}
+                getValues={getValues}
+              />
             </section>
             <section className={styles.userBillingAddressSection}>
-              <AddressForm register={register} index={1} errors={errors} trigger={trigger} />
+              <AddressForm
+                register={register}
+                index={1}
+                errors={errors}
+                trigger={trigger}
+                setValue={setValue}
+                unregister={unregister}
+                getValues={getValues}
+              />
             </section>
           </div>
           <button type="submit" className={styles.submitButton} disabled={!isValid}>
