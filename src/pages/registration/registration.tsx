@@ -1,9 +1,9 @@
+import { sdkService } from '@commercetool/sdk.service';
+import { useAuth } from '@contexts//authProvider';
+import { testRegisterUser } from '@utils/constants';
 import { Link, Navigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { sdkService } from '../../commercetool/sdk.service';
-import { useAuth } from '../../contexts/authProvider';
-import { testRegisterUser } from '../../utils/constants';
 
 export function Registration() {
   const { isLoggedIn, login } = useAuth();

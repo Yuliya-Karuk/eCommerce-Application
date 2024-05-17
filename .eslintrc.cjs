@@ -26,6 +26,11 @@ module.exports = {
     },
   },
   plugins: ['react', 'react-hooks', 'react-refresh', '@typescript-eslint', 'import', 'prettier'],
+  settings: {
+    'import/resolver': {
+      typescript: {}
+    },
+  },
   rules: {
     'react/jsx-uses-react': 'off',
     'react/jsx-props-no-spreading': 'off',

@@ -1,3 +1,7 @@
+export const CustomErrors = {
+  SERVER_ERROR: 'Sorry, there is error with server response',
+};
+
 export const testRegisterUser = {
   email: 'test2@gmail.com',
   password: '123456Qq!',

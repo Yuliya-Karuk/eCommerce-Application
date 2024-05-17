@@ -1,14 +1,14 @@
+import eyeOff from '@assets/eye-off.svg';
+import eyeOn from '@assets/eye-show.svg';
+import { sdkService } from '@commercetool/sdk.service';
+import { AuthFormHeader } from '@components/AuthFormHeader/AuthFormHeader';
+import { Input } from '@components/input/input';
+import { useAuth } from '@contexts//authProvider';
 import { useState } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import eyeOff from '../../assets/eye-off.svg';
-import eyeOn from '../../assets/eye-show.svg';
-import { sdkService } from '../../commercetool/sdk.service';
-import { AuthFormHeader } from '../../components/AuthFormHeader/AuthFormHeader';
-import { Input } from '../../components/input/input';
-import { useAuth } from '../../contexts/authProvider';
 import styles from './login.module.scss';
 
 const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

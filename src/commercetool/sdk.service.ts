@@ -7,8 +7,8 @@ import {
   Product,
 } from '@commercetools/platform-sdk';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
-import { CustomErrors } from '../types/enums';
-import { storage } from '../utils/storage';
+import { CustomErrors } from '@utils/constants';
+import { storage } from '@utils/storage';
 import {
   anonymousMiddlewareOptions,
   httpMiddlewareOptions,
@@ -88,7 +88,7 @@ export class SdkService {
       const data = await this.apiRoot.products().get().execute();
       return data.body.results;
     } catch (error) {
-      throw Error(CustomErrors.SERVER_ERROR);
+      throw new Error(CustomErrors.SERVER_ERROR);
     }
   }
 }

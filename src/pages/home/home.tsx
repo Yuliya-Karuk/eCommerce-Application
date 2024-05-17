@@ -1,11 +1,11 @@
+import { sdkService } from '@commercetool/sdk.service';
 import { Product } from '@commercetools/platform-sdk';
+import { useAuth } from '@contexts//authProvider';
+import { AppRoutes } from '@router/routes';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { sdkService } from '../../commercetool/sdk.service';
-import { useAuth } from '../../contexts/authProvider';
-import { Routes } from '../../router/routes';
 
 export function Home() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -39,7 +39,7 @@ export function Home() {
       <div>
         {products.slice(0, 4).map(product => (
           <div key={product.key}>
-            <Link to={product.key ? `${Routes.PRODUCT_ROUTE}/${product.key}` : '/'}>
+            <Link to={product.key ? `${AppRoutes.PRODUCT_ROUTE}/${product.key}` : '/'}>
               {product.masterData.current.name['en-US']}
             </Link>
           </div>

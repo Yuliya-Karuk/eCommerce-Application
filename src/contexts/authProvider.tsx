@@ -1,6 +1,6 @@
+import { tokenController } from '@commercetool/token.service';
+import { storage } from '@utils/storage';
 import { createContext, ReactNode, useContext, useState } from 'react';
-import { tokenController } from '../commercetool/token.service';
-import { storage } from '../utils/storage';
 
 interface AuthContextValue {
   isLoggedIn: boolean;

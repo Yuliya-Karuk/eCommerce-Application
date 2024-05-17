@@ -5,10 +5,12 @@ import viteImagemin from 'vite-plugin-imagemin';
 import cleanPlugin from 'vite-plugin-clean';
 import checker from 'vite-plugin-checker';
 import { paths } from './paths';
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export const prodConfig = {
   plugins: [
     react(),
+    tsconfigPaths(),
     cleanPlugin(),
     webfontDownload(),
     checker({ typescript: true }),
