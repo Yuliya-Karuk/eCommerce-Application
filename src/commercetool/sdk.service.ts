@@ -1,7 +1,9 @@
 import {
   ByProjectKeyRequestBuilder,
+  ClientResponse,
   createApiBuilderFromCtpClient,
   CustomerDraft,
+  CustomerSignInResult,
   Product,
 } from '@commercetools/platform-sdk';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
@@ -62,15 +64,11 @@ export class SdkService {
     });
   }
 
-  public async loginUser(email: string, password: string): Promise<boolean> {
+  public async loginUser(email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> {
     this.createWithPasswordClient(email, password);
 
-    try {
-      await this.apiRoot.me().login().post({ body: { email, password } }).execute();
-      return true;
-    } catch (error) {
-      return false;
-    }
+    const result = await this.apiRoot.me().login().post({ body: { email, password } }).execute();
+    return result;
   }
 
   public async register(userData: CustomerDraft): Promise<boolean> {
@@ -92,25 +90,6 @@ export class SdkService {
       return data.body.results;
     } catch (error) {
       throw Error(CustomErrors.SERVER_ERROR);
-    }
-  }
-
-  public async checkCustomerIsRegistered(userEmail: string): Promise<boolean> {
-    try {
-      const data = await this.apiRoot
-        .customers()
-        .get({
-          queryArgs: {
-            where: `email="${userEmail}"`,
-          },
-        })
-        .execute();
-      if (data.body.results.length !== 0) {
-        return true;
-      }
-      return false;
-    } catch (error) {
-      return false;
     }
   }
 }

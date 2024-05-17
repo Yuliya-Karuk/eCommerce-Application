@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import eyeOff from '../../assets/eye-off.svg';
 import eyeOn from '../../assets/eye-show.svg';
 import { sdkService } from '../../commercetool/sdk.service';
 import { AuthFormHeader } from '../../components/AuthFormHeader/AuthFormHeader';
 import { Input } from '../../components/input/input';
 import { useAuth } from '../../contexts/authProvider';
-import { CustomErrors } from '../../types/enums';
 import styles from './login.module.scss';
 
 const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -40,6 +41,8 @@ export interface LoginFormData {
 
 export function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -48,27 +51,32 @@ export function Login() {
 
   const { isLoggedIn, login } = useAuth();
 
-  const [isLoginError, setIsLoginError] = useState(false);
-  const [isPasswordError, setIsPasswordError] = useState(false);
-
   const onSubmit = async (data: LoginFormData) => {
-    // const emailRegistered = await sdkService.checkCustomerIsRegistered(data.email);
-    const emailRegistered = true;
-
-    if (emailRegistered) {
-      const loginResult = await sdkService.loginUser(data.email, data.password);
-      setIsLoginError(false);
-      if (loginResult) {
+    try {
+      setIsOverlayVisible(true);
+      await sdkService.loginUser(data.email, data.password);
+      setTimeout(() => {
         login();
-        setIsPasswordError(false);
-      } else {
-        sdkService.createAnonymousClient();
-        setIsPasswordError(true);
-      }
-    } else {
-      setIsLoginError(true);
+        setIsOverlayVisible(false);
+      }, 2000);
+    } catch (error) {
+      sdkService.createAnonymousClient();
+      setIsOverlayVisible(false);
+      const errorMessage = (error as Error).message || 'Unknown error';
+      throw new Error(errorMessage);
     }
   };
+
+  const notify = (userData: LoginFormData) =>
+    toast.promise(() => onSubmit(userData), {
+      pending: 'Registration in progress, wait, please',
+      success: 'Congratulations, you have successfully logged in!',
+      error: {
+        render({ data }) {
+          return `${(data as Error).message}`;
+        },
+      },
+    });
 
   if (isLoggedIn) {
     return <Navigate to="/" replace />;
@@ -76,6 +84,7 @@ export function Login() {
 
   return (
     <div className={styles.background}>
+      {isOverlayVisible && <div className={styles.overlay} />}
       <div className={styles.wrapper}>
         <AuthFormHeader
           titleText="Log in"
@@ -83,7 +92,7 @@ export function Login() {
           linkText="Sign Up"
           linkTo="/registration"
         />
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        <form onSubmit={handleSubmit(notify)} className={styles.form}>
           <Input
             name="email"
             label="E-mail"
@@ -92,7 +101,7 @@ export function Login() {
             validationSchema={emailValidationRules}
           />
 
-          <p className={styles.emailError}>{isLoginError ? CustomErrors.LOGIN_ERROR : errors?.email?.message}</p>
+          <p className={styles.emailError}>{errors?.email?.message}</p>
 
           <Input
             name="password"
@@ -107,15 +116,14 @@ export function Login() {
             <img src={isPasswordVisible ? eyeOn : eyeOff} alt="eye" />
           </button>
 
-          <p className={styles.passwordError}>
-            {isPasswordError ? CustomErrors.PASSWORD_ERROR : errors?.password?.message}
-          </p>
+          <p className={styles.passwordError}>{errors?.password?.message}</p>
 
           <button type="submit" className={styles.submitButton} disabled={!isValid}>
             Submit
           </button>
         </form>
       </div>
+      <ToastContainer position="top-center" autoClose={2000} />
     </div>
   );
 }
