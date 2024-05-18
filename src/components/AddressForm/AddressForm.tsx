@@ -131,7 +131,8 @@ export function AddressForm(props: AddressFormProps) {
   }, [index, selectedCountry, trigger]);
 
   return (
-    <section className={index ? styles.userBillingAddressSection : styles.userShippingAddressSection}>
+    <fieldset className={index ? styles.userBillingAddressSection : styles.userShippingAddressSection}>
+      <legend>{index ? 'Billing Address' : 'Shipping Address'}</legend>
       <label htmlFor={`country-${index}`} className={styles.label}>
         Country:<span className={styles.orange}>*</span>
         <select
@@ -204,6 +205,6 @@ export function AddressForm(props: AddressFormProps) {
           Also use as billing address
         </label>
       )}
-    </section>
+    </fieldset>
   );
 }
