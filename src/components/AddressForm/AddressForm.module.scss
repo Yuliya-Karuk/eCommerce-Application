@@ -1,3 +1,35 @@
+.user-shipping-address-section {
+  @include flex(flex-start, left, column);
+  position: relative;
+  flex: 1 1 300px;
+  padding: 15px;
+  border: 1px solid $color-white;
+
+  &::before {
+    content: 'Shipping address';
+    position: absolute;
+    top: -10px;
+    padding: 0 10px;
+    background-color: $color-green-dark;
+  }
+}
+
+.user-billing-address-section {
+  @include flex(flex-start, left, column);
+  position: relative;
+  flex: 1 1 300px;
+  padding: 15px;
+  border: 1px solid $color-white;
+
+  &::before {
+    content: 'Billing address';
+    position: absolute;
+    top: -10px;
+    padding: 0 10px;
+    background-color: $color-green-dark;
+  }
+}
+
 .address-error {
   align-self: flex-start;
   height: 4rem;

@@ -8,7 +8,6 @@ interface InputProps<T extends FieldValues> {
   register: UseFormRegister<T>;
   validationSchema: RegisterOptions;
   type?: string;
-  placeholder?: string;
   isInvalid?: boolean;
   required?: boolean;
   autocomplete?: string | undefined;
@@ -21,7 +20,6 @@ export function Input<T extends FieldValues>(props: InputProps<T>) {
     register,
     validationSchema,
     type = 'text',
-    placeholder = '',
     isInvalid = false,
     required = false,
     autocomplete = undefined,
@@ -31,13 +29,17 @@ export function Input<T extends FieldValues>(props: InputProps<T>) {
     <>
       <label htmlFor={name} className={styles.label}>
         {label}
-        {required ? <span className={styles.orange}>*</span> : null}
+        {required ? (
+          <span className={styles.orange} role="presentation">
+            *
+          </span>
+        ) : null}
       </label>
       <input
         className={classnames(styles.input, { [styles.invalid]: isInvalid })}
         id={name}
+        required={required}
         type={type}
-        placeholder={placeholder}
         {...register(name, validationSchema)}
         {...(autocomplete && { autoComplete: autocomplete })}
       />

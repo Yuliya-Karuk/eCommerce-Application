@@ -59,7 +59,6 @@ export function Login() {
           <Input
             name="email"
             label="E-mail"
-            placeholder="E-mail"
             register={register}
             validationSchema={emailValidationRules}
             isInvalid={!!errors.email}
@@ -72,7 +71,6 @@ export function Login() {
           <Input
             name="password"
             label="Password"
-            placeholder="Password"
             type={isPasswordVisible ? 'text' : 'password'}
             register={register}
             validationSchema={passwordValidationRules}

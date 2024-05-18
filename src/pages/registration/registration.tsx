@@ -1,5 +1,5 @@
 import { CustomerDraft } from '@commercetools/platform-sdk';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';
 import eyeOff from '../../assets/eye-off.svg';
 import eyeOn from '../../assets/eye-show.svg';
@@ -60,13 +60,25 @@ export function Registration() {
     formState: { errors, isValid },
     trigger,
     setValue,
-    getValues,
     unregister,
   } = useForm<CustomerDraft>({ mode: 'all' });
 
-  const onSubmit = (data: CustomerDraft) => {
+  const [billingAddressIsSameAsShipping, setBillingAddressIsSameAsShipping] = useState<boolean>(false);
+
+  const onSubmit = async (data: CustomerDraft) => {
     console.log(data); // form submission logic here
   };
+
+  useEffect(() => {
+    setValue('shippingAddresses', [0]);
+
+    if (billingAddressIsSameAsShipping) {
+      setValue('billingAddresses', [0]);
+      unregister(`addresses.1`);
+    } else {
+      setValue('billingAddresses', [1]);
+    }
+  }, [billingAddressIsSameAsShipping, setValue, unregister]);
 
   return (
     <div className={styles.background}>
@@ -83,7 +95,6 @@ export function Registration() {
               <Input
                 name="email"
                 label="E-mail:"
-                placeholder="E-mail"
                 register={register}
                 validationSchema={emailValidationRules}
                 isInvalid={!!errors.email}
@@ -95,7 +106,6 @@ export function Registration() {
               <Input
                 name="password"
                 label="Password:"
-                placeholder="Password"
                 type={isPasswordVisible ? 'text' : 'password'}
                 register={register}
                 validationSchema={passwordValidationRules}
@@ -111,7 +121,6 @@ export function Registration() {
               <Input
                 name="firstName"
                 label="First name:"
-                placeholder="First name"
                 register={register}
                 validationSchema={nameValidationRules}
                 isInvalid={!!errors.firstName}
@@ -122,7 +131,6 @@ export function Registration() {
               <Input
                 name="lastName"
                 label="Last name:"
-                placeholder="Last name"
                 register={register}
                 validationSchema={nameValidationRules}
                 isInvalid={!!errors.lastName}
@@ -141,18 +149,21 @@ export function Registration() {
               />
               <p className={styles.dateOfBirthError}>{errors?.dateOfBirth?.message}</p>
             </section>
-            <section className={styles.userShippingAddressSection}>
-              <AddressForm
-                register={register}
-                index={0}
-                errors={errors}
-                trigger={trigger}
-                setValue={setValue}
-                unregister={unregister}
-                getValues={getValues}
-              />
-            </section>
-            <section className={styles.userBillingAddressSection}>
+
+            <AddressForm
+              register={register}
+              index={0}
+              errors={errors}
+              trigger={trigger}
+              setValue={setValue}
+              unregister={unregister}
+              billingAddressIsSameAsShipping={billingAddressIsSameAsShipping}
+              setBillingAddressIsSameAsShipping={setBillingAddressIsSameAsShipping}
+            />
+
+            {billingAddressIsSameAsShipping ? (
+              ''
+            ) : (
               <AddressForm
                 register={register}
                 index={1}
@@ -160,9 +171,10 @@ export function Registration() {
                 trigger={trigger}
                 setValue={setValue}
                 unregister={unregister}
-                getValues={getValues}
+                billingAddressIsSameAsShipping={billingAddressIsSameAsShipping}
+                setBillingAddressIsSameAsShipping={setBillingAddressIsSameAsShipping}
               />
-            </section>
+            )}
           </div>
           <button type="submit" className={styles.submitButton} disabled={!isValid}>
             Submit

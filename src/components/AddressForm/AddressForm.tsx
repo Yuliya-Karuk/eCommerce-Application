@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import {
   FieldErrors,
   RegisterOptions,
-  UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
   UseFormTrigger,
@@ -18,8 +17,9 @@ interface AddressFormProps {
   index: 0 | 1;
   trigger: UseFormTrigger<CustomerDraft>;
   setValue: UseFormSetValue<CustomerDraft>;
-  getValues: UseFormGetValues<CustomerDraft>;
   unregister: UseFormUnregister<CustomerDraft>;
+  billingAddressIsSameAsShipping: boolean;
+  setBillingAddressIsSameAsShipping: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const onlyLatinLettersRegExp = /^[A-Za-z]+$/;
@@ -78,7 +78,16 @@ const getPostalCodeValidationRules = (selectedCountry: string): RegisterOptions 
 
 // eslint-disable-next-line max-lines-per-function
 export function AddressForm(props: AddressFormProps) {
-  const { register, unregister, errors, index, trigger, setValue, getValues } = props;
+  const {
+    register,
+    unregister,
+    errors,
+    index,
+    trigger,
+    setValue,
+    billingAddressIsSameAsShipping,
+    setBillingAddressIsSameAsShipping,
+  } = props;
   const [selectedCountry, setSelectedCountry] = useState<string>('');
 
   const handleCountryChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -87,52 +96,46 @@ export function AddressForm(props: AddressFormProps) {
 
   const defaultAddressName = index === 0 ? 'defaultShippingAddress' : 'defaultBillingAddress';
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDefaultAddressCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       setValue(defaultAddressName, index);
+      if (billingAddressIsSameAsShipping) {
+        setValue('defaultBillingAddress', 0);
+      }
     } else {
       unregister(defaultAddressName);
+      if (billingAddressIsSameAsShipping) {
+        unregister('defaultBillingAddress');
+      }
     }
   };
 
-  const handleCopyAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCheckboxUseAsBillingAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      const values = getValues(`addresses.0`);
-      setValue(`addresses.1.country`, values.country);
-      setSelectedCountry(values.country);
-      setValue(`addresses.1.city`, values.city);
-      setValue(`addresses.1.postalCode`, values.postalCode);
-      setValue(`addresses.1.streetName`, values.streetName);
+      setBillingAddressIsSameAsShipping(true);
+      unregister(`addresses.1`);
     } else {
+      setBillingAddressIsSameAsShipping(false);
       setValue(`addresses.1.country`, '');
       setValue(`addresses.1.city`, '');
       setValue(`addresses.1.postalCode`, '');
       setValue(`addresses.1.streetName`, '');
+      trigger(`addresses.1`);
     }
-    trigger(`addresses.1.country`);
-    trigger(`addresses.1.city`);
-    trigger(`addresses.1.postalCode`);
-    trigger(`addresses.1.streetName`);
   };
 
   useEffect(() => {
     if (selectedCountry) {
       trigger(`addresses.${index}.postalCode`);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCountry]);
+  }, [index, selectedCountry, trigger]);
 
   return (
-    <>
-      {index === 1 && (
-        <label className={styles.checkboxLabel} htmlFor="copy-address">
-          <input className={styles.checkbox} id="copy-address" type="checkbox" onChange={handleCopyAddress} />
-          Copy from shipping address
-        </label>
-      )}
+    <section className={index ? styles.userBillingAddressSection : styles.userShippingAddressSection}>
       <label htmlFor={`country-${index}`} className={styles.label}>
         Country:<span className={styles.orange}>*</span>
         <select
+          required
           id={`country-${index}`}
           className={styles.select}
           {...register(`addresses.${index}.country`, { required: true })}
@@ -155,7 +158,6 @@ export function AddressForm(props: AddressFormProps) {
       <Input
         name={`addresses.${index}.city`}
         label="City:"
-        placeholder="City"
         register={register}
         validationSchema={cityValidationRules}
         isInvalid={!!errors.addresses?.[index]?.city}
@@ -166,7 +168,6 @@ export function AddressForm(props: AddressFormProps) {
       <Input
         name={`addresses.${index}.postalCode`}
         label="Postal code:"
-        placeholder="Postal code"
         register={register}
         validationSchema={getPostalCodeValidationRules(selectedCountry)}
         isInvalid={!!errors.addresses?.[index]?.postalCode}
@@ -177,7 +178,6 @@ export function AddressForm(props: AddressFormProps) {
       <Input
         name={`addresses.${index}.streetName`}
         label="Street name:"
-        placeholder="Street name"
         register={register}
         validationSchema={{ required: 'This field is required' }}
         isInvalid={!!errors.addresses?.[index]?.streetName}
@@ -189,10 +189,21 @@ export function AddressForm(props: AddressFormProps) {
           className={styles.checkbox}
           id={`default-address-${index}`}
           type="checkbox"
-          onChange={handleCheckboxChange}
+          onChange={handleDefaultAddressCheckbox}
         />
-        Make as default {index === 0 ? 'Shipping' : 'Billing'} Address
+        Make address as default
       </label>
-    </>
+      {index === 0 && (
+        <label className={styles.checkboxLabel} htmlFor="checkbox-use-as-billing-address">
+          <input
+            className={styles.checkbox}
+            id="checkbox-use-as-billing-address"
+            type="checkbox"
+            onChange={handleCheckboxUseAsBillingAddress}
+          />
+          Also use as billing address
+        </label>
+      )}
+    </section>
   );
 }
