@@ -34,7 +34,7 @@
         "@commercetool/*": ["src/commercetool/*"],
         "@utils/*": ["src/utils/*"],
         "@router/*": ["src/router/*"],
-        "@types/*": ["src/types/*"],
+        "@modals/*": ["src/modals/*"],
         "@pages/*": ["src/pages/*"],
       }
    },

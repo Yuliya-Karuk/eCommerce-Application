@@ -65,6 +65,7 @@ module.exports = {
     ],
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     'react/jsx-no-constructed-context-values': 'off',
+    'react/function-component-definition': 'off',
   },
   "overrides": [
     {

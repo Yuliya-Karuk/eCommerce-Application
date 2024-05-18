@@ -4,11 +4,11 @@ import { sdkService } from '@commercetool/sdk.service';
 import { AuthFormHeader } from '@components/AuthFormHeader/AuthFormHeader';
 import { Input } from '@components/input/input';
 import { useAuth } from '@contexts//authProvider';
+import { useToast } from '@contexts/toastProvider';
 import { useState } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { LoginFormData } from 'src/modals/index';
 import styles from './login.module.scss';
 
 const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -34,11 +34,6 @@ const emailValidationRules: RegisterOptions = {
   },
 };
 
-export interface LoginFormData {
-  email: string;
-  password: string;
-}
-
 export function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -49,6 +44,7 @@ export function Login() {
   } = useForm<LoginFormData>({ mode: 'onChange' });
 
   const { isLoggedIn, login } = useAuth();
+  const { customToast, promiseNotify } = useToast();
 
   const onSubmit = async (data: LoginFormData) => {
     try {
@@ -61,15 +57,7 @@ export function Login() {
     }
   };
 
-  const notify = (userData: LoginFormData) =>
-    toast.promise(() => onSubmit(userData), {
-      pending: 'Registration in progress, wait, please',
-      error: {
-        render({ data }) {
-          return `${(data as Error).message}`;
-        },
-      },
-    });
+  const notify = (userData: LoginFormData) => promiseNotify(userData, 'Login', onSubmit);
 
   if (isLoggedIn) {
     return <Navigate to="/" replace />;
@@ -115,7 +103,7 @@ export function Login() {
           </button>
         </form>
       </div>
-      <ToastContainer position="top-center" autoClose={2000} />
+      {customToast({ position: 'top-center', autoClose: 2000 })}
     </div>
   );
 }

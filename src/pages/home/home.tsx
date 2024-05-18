@@ -1,15 +1,15 @@
 import { sdkService } from '@commercetool/sdk.service';
 import { Product } from '@commercetools/platform-sdk';
 import { useAuth } from '@contexts//authProvider';
+import { useToast } from '@contexts/toastProvider';
 import { AppRoutes } from '@router/routes';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 export function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const { isLoggedIn, isLoginSuccess, setIsLoginSuccess, logout } = useAuth();
+  const { customToast, successNotify } = useToast();
 
   const getProds = async () => {
     const data = await sdkService.getProducts();
@@ -22,7 +22,7 @@ export function Home() {
   };
 
   const notify = () => {
-    toast.success('Congratulations, you have successfully logged in!');
+    successNotify();
     setIsLoginSuccess(false);
   };
 
@@ -52,7 +52,7 @@ export function Home() {
           Logout
         </button>
       )}
-      <ToastContainer position="top-center" autoClose={2000} />
+      {customToast({ position: 'top-center', autoClose: 2000 })}
     </>
   );
 }
