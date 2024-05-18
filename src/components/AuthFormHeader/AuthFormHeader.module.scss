@@ -3,6 +3,16 @@
   font-size: 7rem;
   font-weight: 200;
   color: $color-white;
+
+  @media screen and (max-width: 500px) {
+    font-size: 6rem;
+    transition: font-size 0.5s ease;
+  }
+
+  @media screen and (max-width: 430px) {
+    font-size: 5rem;
+    transition: font-size 0.5s ease;
+  }
 }
 
 .link-wrapper {

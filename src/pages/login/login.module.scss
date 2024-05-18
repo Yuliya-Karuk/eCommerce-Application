@@ -11,7 +11,7 @@
     background-color: $color-green-dark;
 
     .form {
-      @include flex(flex-start, center, column);
+      @include flex(flex-start, left, column);
       position: relative;
       gap: 5px;
       color: $color-white;
@@ -44,7 +44,7 @@
 
         &:enabled:hover {
           color: $color-white;
-          background-color: $color-semi-transparent-dark-gray;
+          background-color: $color-input-bg;
         }
 
         &:disabled {
