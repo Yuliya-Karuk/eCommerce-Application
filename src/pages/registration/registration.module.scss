@@ -1,0 +1,79 @@
+.background {
+  @include flex(center, center);
+  background-color: $color-bg-dark;
+
+  .wrapper {
+    width: clamp(300px, 80vw, 1000px);
+    margin-top: 30px;
+    padding: 30px;
+    font-size: 1.6rem;
+    text-align: center;
+    background-color: $color-green-dark;
+
+    .form {
+      @include flex(flex-start, left, column);
+      position: relative;
+      gap: 5px;
+      color: $color-white;
+
+      .inputs-section {
+        @include flex(flex-start, left);
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .user-data-section {
+        @include flex(flex-start, left, column);
+        position: relative;
+        flex: 1 1 300px;
+
+        .email-error,
+        .first-name-error,
+        .last-name-error,
+        .date-of-birth-error {
+          align-self: flex-start;
+          height: 2rem;
+          color: $color-error;
+        }
+
+        .password-error {
+          height: 4rem;
+          color: $color-error;
+          text-align: left;
+        }
+
+        .eye {
+          position: absolute;
+          top: 140px;
+          right: 10px;
+        }
+
+        @media (max-width: 1238px) {
+          flex: 1 1 100%;
+        }
+      }
+
+      .submit-button {
+        @extend %transition;
+        align-self: flex-end;
+        width: 240px;
+        margin: 20px 0;
+        padding: 10px 5px;
+        background-color: $color-white;
+        border-radius: 5px;
+
+        &:enabled:hover {
+          color: $color-white;
+          background-color: $color-input-bg;
+        }
+
+        &:disabled {
+          cursor: default;
+          color: $color-gray-dark;
+          background-color: $color-gray-middle;
+        }
+      }
+    }
+  }
+}
