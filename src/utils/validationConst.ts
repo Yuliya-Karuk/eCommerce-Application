@@ -1,4 +1,4 @@
-export const PasswordLoginErrors: { [key: string]: string } = {
+export const InputPasswordErrors: { [key: string]: string } = {
   required: 'Password is required',
   minLength: 'Password must be at least 8 characters long',
   uppercase: 'Password must contain at least one uppercase letter (A-Z)',
@@ -8,7 +8,17 @@ export const PasswordLoginErrors: { [key: string]: string } = {
   noWhitespace: 'Password cannot contain leading or trailing whitespace',
 };
 
-export const EmailLoginErrors: { [key: string]: string } = {
+export const InputEmailErrors: { [key: string]: string } = {
   required: 'E-mail is required',
   pattern: 'Invalid e-mail format',
+};
+
+export const InputNameErrors: { [key: string]: string } = {
+  required: 'This field is required',
+  pattern: 'Only Latin letters are allowed',
+};
+
+export const InputDateErrors: { [key: string]: string } = {
+  required: 'This field is required',
+  minAge: 'You must be 13 years old or older',
 };

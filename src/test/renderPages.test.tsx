@@ -15,7 +15,7 @@ const textOnPages = {
 export const routerArray = [
   { path: appRoutes.HOME_ROUTE, element: <Home />, text: 'Home Page' },
   { path: appRoutes.LOGIN_ROUTE, element: <Login />, text: 'Log in' },
-  { path: appRoutes.REGISTRATION_ROUTE, element: <Registration />, text: 'Registration Page' },
+  { path: appRoutes.REGISTRATION_ROUTE, element: <Registration />, text: 'Registration' },
   { path: '/undefined', element: <NotFoundPage />, text: 'Feel free to continue browsing the site.' },
 ];
 

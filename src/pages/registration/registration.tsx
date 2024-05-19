@@ -6,48 +6,48 @@ import eyeOn from '../../assets/eye-show.svg';
 import { AddressForm } from '../../components/AddressForm/AddressForm';
 import { AuthFormHeader } from '../../components/AuthFormHeader/AuthFormHeader';
 import { Input } from '../../components/Input/Input';
+import { InputDateErrors, InputEmailErrors, InputNameErrors, InputPasswordErrors } from '../../utils/validationConst';
 import styles from './registration.module.scss';
 
 const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const onlyLatinLettersRegExp = /^[A-Za-z]+$/;
 
 const passwordValidationRules: RegisterOptions = {
-  required: 'Password is required',
-  minLength: { value: 8, message: 'Password must be at least 8 characters long' },
+  required: InputPasswordErrors.required,
+  minLength: { value: 8, message: InputPasswordErrors.minLength },
   validate: {
-    uppercase: value => /(?=.*[A-Z])/.test(value) || 'Password must contain at least one uppercase letter (A-Z)',
-    lowercase: value => /(?=.*[a-z])/.test(value) || 'Password must contain at least one lowercase letter (a-z)',
-    digit: value => /(?=.*\d)/.test(value) || 'Password must contain at least one digit (0-9)',
-    specialChar: value =>
-      /(?=.*[!@#$%^&*])/.test(value) || 'Password must contain at least one special character (e.g., !@#$%^&*)',
-    noWhitespace: value => !/\s/.test(value) || 'Password cannot contain leading or trailing whitespace',
+    uppercase: value => /(?=.*[A-Z])/.test(value) || InputPasswordErrors.uppercase,
+    lowercase: value => /(?=.*[a-z])/.test(value) || InputPasswordErrors.lowercase,
+    digit: value => /(?=.*\d)/.test(value) || InputPasswordErrors.digit,
+    specialChar: value => /(?=.*[!@#$%^&*])/.test(value) || InputPasswordErrors.specialChar,
+    noWhitespace: value => !/\s/.test(value) || InputPasswordErrors.noWhitespace,
   },
 };
 
 const emailValidationRules: RegisterOptions = {
-  required: 'E-mail is required',
+  required: InputEmailErrors.required,
   pattern: {
     value: validEmailRegExp,
-    message: 'Invalid e-mail format',
+    message: InputEmailErrors.pattern,
   },
 };
 
 const nameValidationRules: RegisterOptions = {
-  required: 'This field is required',
+  required: InputNameErrors.required,
   pattern: {
     value: onlyLatinLettersRegExp,
-    message: 'Only Latin letters are allowed',
+    message: InputNameErrors.pattern,
   },
 };
 
 const dateValidationRules: RegisterOptions = {
-  required: 'This field is required',
+  required: InputDateErrors.required,
   validate: value => {
     const dateOfBirth = new Date(value);
     const minAgeDate = new Date();
     minAgeDate.setFullYear(minAgeDate.getFullYear() - 13);
 
-    return dateOfBirth <= minAgeDate || 'You must be 13 years old or older';
+    return dateOfBirth <= minAgeDate || InputDateErrors.minAge;
   },
 };
 
