@@ -7,7 +7,7 @@
   }
   font-family: Corben, Arial, Helvetica, serif;
 
-  #{&}__image {
+  &-image {
     position: relative;
     overflow: hidden;
     width: 100%;
@@ -29,5 +29,9 @@
       display: block;
       color: inherit;
     }
+  }
+
+  &-text {
+    text-align: center;
   }
 }

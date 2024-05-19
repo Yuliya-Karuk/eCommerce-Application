@@ -1,19 +1,16 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { List } from '../List/List';
-import { ListItem } from '../ListItem/ListItem';
-import './_Menu.scss';
-import './_Navigation.scss';
+import styles from './_Navigation.module.scss';
 
 interface NavigationProps {
   paths: string[];
-  isMenuOpen: boolean;
-  setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  className?: string;
   id?: string;
 }
 
-export const Navigation: FC<NavigationProps> = ({ paths, className, id, isMenuOpen, setIsMenuOpen, ...props }) => {
+export const Navigation: FC<NavigationProps> = ({ paths, id, ...props }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   useEffect(() => {
     function burgerMediaChange(e: MediaQueryListEventInit) {
       if (e.matches && isMenuOpen) {
@@ -30,19 +27,30 @@ export const Navigation: FC<NavigationProps> = ({ paths, className, id, isMenuOp
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <nav className={isMenuOpen ? `${className} active` : className} id={id} {...props}>
-      <List
-        className={className}
-        items={paths}
-        renderItem={(path: string) => {
-          return (
-            <ListItem key={path} className={className} data-menu-item>
-              <Link to={path}>{path.slice(1)[0].toUpperCase() + path.slice(2)}</Link>
-            </ListItem>
-          );
-        }}
-        data-menu-list=""
-      />
-    </nav>
+    <>
+      <div
+        className={isMenuOpen ? `${styles.burger} ${styles.active}` : styles.burger}
+        role="button"
+        aria-expanded={isMenuOpen}
+        aria-label={`${isMenuOpen ? 'Close' : 'Open'} menu`}
+        tabIndex={0}
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+      >
+        <span />
+      </div>
+      <nav className={isMenuOpen ? `${styles.menu} ${styles.active}` : styles.menu} id={id} {...props}>
+        <List
+          className={styles.menuList}
+          items={paths}
+          renderItem={(path: string) => {
+            return (
+              <li key={path} className={styles.menuItem} {...props}>
+                <Link to={path}>{path.slice(1)[0].toUpperCase() + path.slice(2)}</Link>
+              </li>
+            );
+          }}
+        />
+      </nav>
+    </>
   );
 };

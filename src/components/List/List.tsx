@@ -8,7 +8,7 @@ interface ListProps<T> {
 
 export function List<T>({ items, renderItem, className, ...props }: ListProps<T>) {
   return (
-    <ul className={`${className}__list`} {...props}>
+    <ul className={className} {...props}>
       {items.map(renderItem)}
     </ul>
   );

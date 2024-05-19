@@ -1,13 +1,6 @@
 @use 'sass:math';
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
 html {
-  @extend %smoothscroll;
   scroll-behavior: smooth;
   font-size: 10px;
   color: $color-white;
@@ -81,4 +74,9 @@ h4 {
 .lock {
   touch-action: none !important;
   overflow: hidden !important;
+}
+
+svg {
+  @extend %taphighlight;
+  @extend %noselect;
 }

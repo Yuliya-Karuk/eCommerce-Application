@@ -1,9 +1,5 @@
 @use 'sass:math';
 
-$laptop: 1024px;
-$tablet: 768px;
-$mobile: 480px;
-
 @mixin font($font-size, $font-weight, $line-height, $letter-spacing: normal, $text-transform: none) {
   font-size: $font-size;
   font-weight: $font-weight;
@@ -12,38 +8,7 @@ $mobile: 480px;
   letter-spacing: $letter-spacing;
 }
 
-@mixin media-hover {
-  @media (hover: hover) and (pointer: fine) {
-    @content;
-  }
-}
-
-@mixin media-laptop {
-  @media (max-width: $laptop) {
-    @content;
-  }
-}
-
-@mixin media-tablet {
-  @media (max-width: $tablet) {
-    @content;
-  }
-}
-
-@mixin media-mobile {
-  @media (max-width: $mobile) {
-    @content;
-  }
-}
-
-// ===========B!n@r!0n======================
 // Брейкпоинты
-@mixin desktop {
-  @media (min-width: (1025px)) {
-    @content;
-  }
-}
-
 @mixin bigdesktop {
   @media (max-width: (1440.5px)) {
     @content;
@@ -70,12 +35,6 @@ $mobile: 480px;
 
 @mixin smallmobile {
   @media (max-width: (414.5px)) {
-    @content;
-  }
-}
-
-@mixin oversmalltablet {
-  @media (min-width: (769px)) {
     @content;
   }
 }
@@ -157,55 +116,11 @@ $mobile: 480px;
 
 // Стили наведения
 @mixin hover {
-  @media (any-hover: hover) {
+  @media (any-hover: hover) and (hover: hover) and (pointer: fine) {
     &:hover {
       @content;
     }
   }
-}
-
-// Плавный скролл
-@mixin scrollbehavior($scr: smooth, $ovscr: null) {
-  overscroll-behavior: $ovscr;
-
-  @media (prefers-reduced-motion: no-preference) {
-    scroll-behavior: $scr;
-  }
-}
-
-// Имитация жирного шрифта
-@mixin lbold($color: black) {
-  text-shadow: 0 0 0.65px $color;
-}
-
-@mixin lboldb($color: black) {
-  text-shadow: 0 0 0.9px $color;
-}
-
-@mixin dbold($color: black) {
-  text-shadow:
-    0 0 0.65px $color,
-    0 0 0.65px $color;
-}
-
-@mixin dboldb($color: black) {
-  text-shadow:
-    0 0 0.9px $color,
-    0 0 0.9px $color;
-}
-
-@mixin ubold($color: black) {
-  text-shadow:
-    0 0 0.65px $color,
-    0 0 0.65px $color,
-    0 0 0.65px $color;
-}
-
-@mixin uboldb($color: black) {
-  text-shadow:
-    0 0 0.9px $color,
-    0 0 0.9px $color,
-    0 0 0.9px $color;
 }
 
 // Адаптивное свойство

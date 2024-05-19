@@ -1,9 +1,15 @@
-import { Footer, Main } from '../../components/index';
+import { Banner, Footer, Header } from '../../components/index';
+import styles from './_home.module.scss';
 
 export function Home() {
   return (
     <>
-      <Main />
+      <div className={styles.main}>
+        <div className={styles.hero}>
+          <Header />
+          <Banner />
+        </div>
+      </div>
       <Footer />
     </>
   );

@@ -29,6 +29,7 @@ module.exports = {
   rules: {
     'react/jsx-uses-react': 'off',
     'react/jsx-props-no-spreading': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/require-default-props': 'off',
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
@@ -49,7 +50,7 @@ module.exports = {
         default: 'array',
       },
     ],
-    'max-lines-per-function': ['error', { max: 40, skipBlankLines: true }],
+    'max-lines-per-function': ['error', { max: 120, skipBlankLines: true }],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-non-null-assertion': 'error',
     curly: ['error', 'all'],

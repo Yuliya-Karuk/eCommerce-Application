@@ -1,11 +1,8 @@
+export { Banner } from './Banner/Banner';
 export { Container } from './Container/Container';
 export { Footer } from './Footer/Footer';
 export { Header } from './Header/Header';
-export { Hero } from './Hero/Hero';
 export { List } from './List/List';
-export { ListItem } from './ListItem/ListItem';
 export { Logo } from './Logo/Logo';
-export { Main } from './Main/Main';
 export { Navigation } from './Navigation/Navigation';
-export { UserServices } from './UserServices/UserServices';
-export { Banner } from './Banner/Banner';
+export { UserMenu } from './UserMenu/UserMenu';
