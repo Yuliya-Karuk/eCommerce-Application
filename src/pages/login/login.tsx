@@ -3,7 +3,7 @@ import { RegisterOptions, useForm } from 'react-hook-form';
 import eyeOff from '../../assets/eye-off.svg';
 import eyeOn from '../../assets/eye-show.svg';
 import { AuthFormHeader } from '../../components/AuthFormHeader/AuthFormHeader';
-import { Input } from '../../components/input/input';
+import { Input } from '../../components/Input/Input';
 import { EmailLoginErrors, PasswordLoginErrors } from '../../utils/validationConst';
 import styles from './login.module.scss';
 
@@ -59,9 +59,11 @@ export function Login() {
           <Input
             name="email"
             label="E-mail"
-            placeholder="E-mail"
             register={register}
             validationSchema={emailValidationRules}
+            isInvalid={!!errors.email}
+            required
+            autocomplete="username"
           />
 
           <p className={styles.emailError}>{errors?.email?.message}</p>
@@ -69,10 +71,12 @@ export function Login() {
           <Input
             name="password"
             label="Password"
-            placeholder="Password"
             type={isPasswordVisible ? 'text' : 'password'}
             register={register}
             validationSchema={passwordValidationRules}
+            isInvalid={!!errors.password}
+            required
+            autocomplete="current-password"
           />
 
           <button type="button" onClick={() => setIsPasswordVisible(!isPasswordVisible)} className={styles.eye}>
