@@ -1,24 +1,20 @@
 import { sdkService } from '@commercetool/sdk.service';
 import { Product } from '@commercetools/platform-sdk';
+import { Banner, Footer, Header } from '@components/index';
 import { useAuth } from '@contexts//authProvider';
 import { useToast } from '@contexts/toastProvider';
-import { AppRoutes } from '@router/routes';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import styles from './home.module.scss';
 
 export function Home() {
   const [products, setProducts] = useState<Product[]>([]);
-  const { isLoggedIn, isLoginSuccess, setIsLoginSuccess, logout } = useAuth();
+  const { isLoginSuccess, setIsLoginSuccess } = useAuth();
   const { customToast, successNotify } = useToast();
 
   const getProds = async () => {
     const data = await sdkService.getProducts();
     setProducts(data);
-  };
-
-  const handleLogout = () => {
-    sdkService.logoutUser();
-    logout();
+    console.log(products);
   };
 
   const notify = () => {
@@ -35,23 +31,13 @@ export function Home() {
 
   return (
     <>
-      <h1>Home Page</h1>
-      <div>
-        {products.slice(0, 4).map(product => (
-          <div key={product.key}>
-            <Link to={product.key ? `${AppRoutes.PRODUCT_ROUTE}/${product.key}` : '/'}>
-              {product.masterData.current.name['en-US']}
-            </Link>
-          </div>
-        ))}
+      <div className={styles.main}>
+        <div className={styles.hero}>
+          <Header />
+          <Banner />
+        </div>
       </div>
-      <Link to="/login">Login</Link>
-      <Link to="/registration">Registration</Link>
-      {isLoggedIn && (
-        <button type="button" onClick={handleLogout} style={{ color: 'white' }}>
-          Logout
-        </button>
-      )}
+      <Footer />
       {customToast({ position: 'top-center', autoClose: 2000 })}
     </>
   );

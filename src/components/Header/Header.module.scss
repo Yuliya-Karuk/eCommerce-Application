@@ -1,0 +1,11 @@
+.header {
+  @include smalltablet {
+    padding-top: 10px;
+  }
+  min-height: auto;
+  padding-top: 4.75%;
+
+  &-body {
+    @include flex(space-between, center);
+  }
+}
