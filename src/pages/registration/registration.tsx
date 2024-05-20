@@ -66,6 +66,7 @@ export function Registration() {
     formState: { errors, isValid },
     trigger,
     setValue,
+    getValues,
     unregister,
   } = useForm<CustomerDraft>({ mode: 'all' });
 
@@ -77,6 +78,11 @@ export function Registration() {
     if (billingAddressIsSameAsShipping) {
       setValue('billingAddresses', [0]);
       unregister(`addresses.1`);
+      if (getValues('defaultShippingAddress') === 0) {
+        setValue('defaultBillingAddress', 0);
+      } else {
+        unregister('defaultBillingAddress');
+      }
     } else {
       setValue('billingAddresses', [1]);
     }
