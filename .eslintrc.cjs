@@ -26,6 +26,11 @@ module.exports = {
     },
   },
   plugins: ['react', 'react-hooks', 'react-refresh', '@typescript-eslint', 'import', 'prettier'],
+  settings: {
+    'import/resolver': {
+      typescript: {}
+    },
+  },
   rules: {
     'react/jsx-uses-react': 'off',
     'react/jsx-props-no-spreading': 'off',
@@ -63,5 +68,15 @@ module.exports = {
       },
     ],
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    'react/jsx-no-constructed-context-values': 'off',
+    'react/function-component-definition': 'off',
   },
+  "overrides": [
+    {
+      "files": ["*.tsx"],
+      "rules": {
+        "max-lines-per-function": ["error", { max: 120 }]
+      }
+    }
+  ]
 };

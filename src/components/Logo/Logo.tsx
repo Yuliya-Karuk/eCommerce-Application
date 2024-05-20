@@ -1,6 +1,6 @@
+import { AppRoutes } from '@router/routes';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { Routes } from '../../router/routes';
 import styles from './Logo.module.scss';
 
 interface LogoProps {
@@ -12,7 +12,7 @@ interface LogoProps {
 
 export const Logo: FC<LogoProps> = ({ spritePaths, title, width, height, ...props }) => {
   return (
-    <Link to={Routes.HOME_ROUTE}>
+    <Link to={AppRoutes.HOME_ROUTE}>
       <div className={styles.logo} {...props}>
         <div className={styles.logoImage}>
           <svg width={width} height={height}>

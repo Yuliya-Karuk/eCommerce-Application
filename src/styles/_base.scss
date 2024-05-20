@@ -47,7 +47,7 @@ h4 {
 @if $responsiveType {
   // Отзывчивая верстка без брейк-поинтов
   .container,
-  [class*='-container'] {
+  [class*='custom-container'] {
     @if $container > 0 {
       box-sizing: content-box;
       max-width: $container;

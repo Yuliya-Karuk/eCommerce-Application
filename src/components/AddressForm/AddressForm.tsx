@@ -1,4 +1,5 @@
 import { CustomerDraft } from '@commercetools/platform-sdk';
+import { Input } from '@components/Input/Input';
 import { useEffect, useState } from 'react';
 import {
   FieldErrors,
@@ -8,7 +9,6 @@ import {
   UseFormTrigger,
   UseFormUnregister,
 } from 'react-hook-form';
-import { Input } from '../Input/Input';
 import styles from './AddressForm.module.scss';
 
 interface AddressFormProps {

@@ -1,11 +1,11 @@
+import { Home } from '@pages/home/home';
+import { Login } from '@pages/login/login';
+import { NotFoundPage } from '@pages/notFound/notFound';
+import { ProductItem } from '@pages/productItem/productItem';
+import { Registration } from '@pages/registration/registration';
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
-import { Home } from '../pages/home/home';
-import { Login } from '../pages/login/login';
-import { NotFoundPage } from '../pages/notFound/notFound';
-import { ProductItem } from '../pages/productItem/productItem';
-import { Registration } from '../pages/registration/registration';
 
 describe('render', () => {
   it('renders the main page', () => {

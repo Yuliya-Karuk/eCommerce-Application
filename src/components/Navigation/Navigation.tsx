@@ -1,7 +1,7 @@
+import { AppRoutes } from '@router/routes';
 import { FC, useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Link } from 'react-router-dom';
-import { Routes } from '../../router/routes';
 import styles from './Navigation.module.scss';
 
 interface NavigationProps {
@@ -9,7 +9,7 @@ interface NavigationProps {
 }
 
 export const Navigation: FC<NavigationProps> = ({ id, ...props }) => {
-  const paths: string[] = [Routes.CATALOG_ROUTE, Routes.LOGIN_ROUTE, Routes.REGISTRATION_ROUTE];
+  const paths: string[] = [AppRoutes.CATALOG_ROUTE, AppRoutes.LOGIN_ROUTE, AppRoutes.REGISTRATION_ROUTE];
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isDesktop = useMediaQuery({ query: '(min-width: 769px)' });
 

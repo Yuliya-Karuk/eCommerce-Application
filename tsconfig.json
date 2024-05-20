@@ -22,7 +22,21 @@
       "noUnusedParameters": true,
       "noFallthroughCasesInSwitch": true,
       "noImplicitAny": true,
-      "types": ["vitest/globals", "@testing-library/jest-dom"]
+      "types": ["vitest/globals", "@testing-library/jest-dom"],
+      "strictPropertyInitialization": false,
+
+      /* Paths */
+      "baseUrl": ".",
+      "paths": {
+        "@components/*": ["src/components/*"],
+        "@assets/*": ["src/assets/*"],
+        "@contexts/*": ["src/contexts/*"],
+        "@commercetool/*": ["src/commercetool/*"],
+        "@utils/*": ["src/utils/*"],
+        "@router/*": ["src/router/*"],
+        "@models/*": ["src/models/*"],
+        "@pages/*": ["src/pages/*"],
+      }
    },
    "include": ["src"],
    "references": [{ "path": "./tsconfig.node.json" }]
