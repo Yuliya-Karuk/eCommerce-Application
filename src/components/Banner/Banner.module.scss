@@ -1,12 +1,12 @@
 .banner {
   padding: 35px 10px;
 
-  #{&}-body {
+  &-body {
     @include flex(center, center, column);
     row-gap: 24px;
   }
 
-  #{&}-title {
+  &-title {
     @include adaptiveValue('font-size', 90px, 35px);
 
     @include smalltablet {
@@ -18,14 +18,14 @@
     text-wrap: balance;
   }
 
-  #{&}-text {
+  &-text {
     @include adaptiveValue('font-size', 21px, 16px);
     font-family: Questrial, Arial, Helvetica, serif;
     text-align: center;
     text-wrap: balance;
   }
 
-  #{&}-link {
+  &-link {
     @include adaptiveValue('font-size', 18px, 14px);
 
     @include hover {
