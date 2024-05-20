@@ -8,7 +8,7 @@ import { useToast } from '@contexts/toastProvider';
 import { useState } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
-import { LoginFormData } from 'src/modals/index';
+import { LoginFormData } from 'src/models/index';
 import styles from './login.module.scss';
 
 const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
