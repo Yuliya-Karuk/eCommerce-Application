@@ -1,4 +1,34 @@
+// Размеры текста по-умолчанию
+$defTextSize: 10px;
+$defMobTextSize: 10px;
+
+// Размеры полотна макета
+$layoutWidth: 1536px;
+$layoutMinWidth: 320px;
+
+// Ширина ограничивающего контейнера (0 = нет ограничения)
+$container: 1476px;
+
+// Включить адаптив без брейк-поинтов:
+// true = да,
+// false = нет
+$responsiveType: true;
+
+// Общий отступ у контейнера
+// (30 = по 15px слева и справа, 0 = нет отступа)
+$containerPadding: 30;
+
+// Ширина контейнера с отступами
+$containerWidth: $container + $containerPadding;
+
+// Цвет текста по-умолчанию
+$default-text-сolor: #000;
+
+// Цвет бургера
+$color-bg-light: #d9d4c9;
 $color-bg-dark: #050505;
+$color-bg-dark-alpha: #05050580;
+$color-bg-dark-alpha-adaptive: #050505bf;
 $color-gray-dark: #4f4f4f;
 $color-gray-middle: #b5b5b5;
 $color-gray-light: #e8e6e6;

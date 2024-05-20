@@ -20,7 +20,7 @@
 .not-found-link {
   @extend %transition;
 
-  @include media-hover {
+  @include hover {
     &:hover {
       background: $color-green-dark;
     }

@@ -66,6 +66,7 @@ export function Registration() {
   const [billingAddressIsSameAsShipping, setBillingAddressIsSameAsShipping] = useState<boolean>(false);
 
   const onSubmit = async (data: CustomerDraft) => {
+    // eslint-disable-next-line no-console
     console.log(data); // form submission logic here
   };
 

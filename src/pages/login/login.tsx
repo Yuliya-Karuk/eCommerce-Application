@@ -44,6 +44,7 @@ export function Login() {
   } = useForm<LoginFormData>({ mode: 'onChange' });
 
   const onSubmit = (data: LoginFormData) => {
+    // eslint-disable-next-line no-console
     console.log(data); // form submission logic here
   };
   return (
