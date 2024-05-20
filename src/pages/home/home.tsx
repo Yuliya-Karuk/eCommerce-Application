@@ -1,5 +1,5 @@
 import { Banner, Footer, Header } from '../../components/index';
-import styles from './_home.module.scss';
+import styles from './home.module.scss';
 
 export function Home() {
   return (

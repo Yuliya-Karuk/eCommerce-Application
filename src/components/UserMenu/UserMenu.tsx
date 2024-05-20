@@ -1,28 +1,34 @@
 import { FC } from 'react';
-import { Link } from 'react-router-dom';
 import sprite from '../../assets/sprite.svg';
-import { Routes } from '../../router/routes';
-import styles from './_UserMenu.module.scss';
+import styles from './UserMenu.module.scss';
 
 export const UserMenu: FC = () => {
   const iconSizeNumber = 26;
 
   return (
-    <div className={styles.usermenu}>
-      <Link to={Routes.LOGIN_ROUTE} className={styles.usermenuLogin}>
-        <div className={styles.usermenuIcon}>
+    <div className={styles.userMenu}>
+      <button type="button" className={styles.userMenuLogin}>
+        <div className={styles.userMenuIcon}>
           <svg width={iconSizeNumber} height={iconSizeNumber}>
             <use xlinkHref={`${sprite}#login`} />
           </svg>
         </div>
-        <span className={styles.usermenuText}>Log In</span>
-      </Link>
-      <div className={styles.usermenuPromo}>
+        <span className={styles.userMenuText}>Logout</span>
+      </button>
+      {/* <Link to={Routes.LOGIN_ROUTE} className={styles.userMenuLogin}>
+        <div className={styles.userMenuIcon}>
+          <svg width={iconSizeNumber} height={iconSizeNumber}>
+            <use xlinkHref={`${sprite}#login`} />
+          </svg>
+        </div>
+        <span className={styles.userMenuText}>Log In</span>
+      </Link> */}
+      <div className={styles.userMenuPromo}>
         <svg width={iconSizeNumber} height={iconSizeNumber}>
           <use xlinkHref={`${sprite}#present`} />
         </svg>
       </div>
-      <div className={styles.usermenuCart}>
+      <div className={styles.userMenuCart}>
         <svg width={iconSizeNumber} height={iconSizeNumber}>
           <use xlinkHref={`${sprite}#cart`} />
         </svg>

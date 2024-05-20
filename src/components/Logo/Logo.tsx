@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { Routes } from '../../router/routes';
-import styles from './_Logo.module.scss';
+import styles from './Logo.module.scss';
 
 interface LogoProps {
   spritePaths: string;

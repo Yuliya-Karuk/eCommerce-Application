@@ -5,7 +5,7 @@
   min-height: auto;
   padding-top: 4.75%;
 
-  #{&}__body {
+  #{&}-body {
     @include flex(space-between, center);
   }
 }

@@ -5,5 +5,5 @@ interface ContainerProps {
 }
 
 export const Container: FC<React.PropsWithChildren & ContainerProps> = ({ children, classname }) => {
-  return <div className={classname ? `${classname}__container` : 'container'}>{children}</div>;
+  return <div className={classname ? `${classname}-container` : 'container'}>{children}</div>;
 };

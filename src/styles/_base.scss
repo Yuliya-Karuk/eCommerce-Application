@@ -2,8 +2,11 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 100%;
   font-size: 10px;
+  text-size-adjust: 100%;
   color: $color-white;
+  line-height: 1;
 }
 
 body {
@@ -44,16 +47,16 @@ h4 {
 @if $responsiveType {
   // Отзывчивая верстка без брейк-поинтов
   .container,
-  [class*='__container'] {
-    @if $container>0 {
+  [class*='-container'] {
+    @if $container > 0 {
       box-sizing: content-box;
       max-width: $container;
       margin: 0 auto;
     }
 
-    @if $containerPadding>0 {
+    @if $containerPadding > 0 {
       width: calc(100% - #{$containerPadding}px);
-      padding: 0 math.div($containerPadding, 2);
+      padding: 0 #{math.div($containerPadding, 2)}px;
     } @else {
       width: 100%;
     }
@@ -61,10 +64,10 @@ h4 {
 } @else {
   // Верстка адаптива вручную по брейк-поинтам
   .container,
-  [class*='__container'] {
+  [class*='-container'] {
     margin: 0 auto;
 
-    @if $container>0 {
+    @if $container > 0 {
       max-width: $container;
     }
   }
