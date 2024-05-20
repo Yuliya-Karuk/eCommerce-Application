@@ -1,7 +1,7 @@
+import { Container } from '@components/Container/Container';
+import { AppRoutes } from '@router/routes';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { AppRoutes } from '../../router/routes';
-import { Container } from '../Container/Container';
 import styles from './Banner.module.scss';
 
 export const Banner: FC = () => {

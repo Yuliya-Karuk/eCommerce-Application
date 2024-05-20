@@ -5,10 +5,10 @@ import { AuthFormHeader } from '@components/AuthFormHeader/AuthFormHeader';
 import { Input } from '@components/Input/Input';
 import { useAuth } from '@contexts/authProvider';
 import { useToast } from '@contexts/toastProvider';
+import { LoginFormData } from '@models/index';
 import { useState } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
-import { LoginFormData } from 'src/models/index';
 import styles from './login.module.scss';
 
 const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

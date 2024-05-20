@@ -5,7 +5,7 @@ import { CustomerDraft } from '@commercetools/platform-sdk';
 import { AddressForm } from '@components/AddressForm/AddressForm';
 import { AuthFormHeader } from '@components/AuthFormHeader/AuthFormHeader';
 import { Input } from '@components/Input/Input';
-import { useAuth } from '@contexts//authProvider';
+import { useAuth } from '@contexts/authProvider';
 import { useToast } from '@contexts/toastProvider';
 import { useEffect, useState } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';

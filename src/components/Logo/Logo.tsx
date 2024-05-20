@@ -1,6 +1,6 @@
+import { AppRoutes } from '@router/routes';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { AppRoutes } from '../../router/routes';
 import styles from './Logo.module.scss';
 
 interface LogoProps {

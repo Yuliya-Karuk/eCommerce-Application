@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import sprite from '@assets/sprite.svg';
+import { Container } from '@components/Container/Container';
+import { Logo } from '@components/Logo/Logo';
+import { Navigation } from '@components/Navigation/Navigation';
+import { UserMenu } from '@components/UserMenu/UserMenu';
 import { FC } from 'react';
-import sprite from '../../assets/sprite.svg';
-import { Container } from '../Container/Container';
-import { Logo } from '../Logo/Logo';
-import { Navigation } from '../Navigation/Navigation';
-import { UserMenu } from '../UserMenu/UserMenu';
 import styles from './Header.module.scss';
 
 export const Header: FC = () => {

@@ -1,7 +1,7 @@
+import sprite from '@assets/sprite.svg';
 import { sdkService } from '@commercetool/sdk.service';
 import { useAuth } from '@contexts//authProvider';
 import { FC } from 'react';
-import sprite from '../../assets/sprite.svg';
 import styles from './UserMenu.module.scss';
 
 export const UserMenu: FC = () => {
