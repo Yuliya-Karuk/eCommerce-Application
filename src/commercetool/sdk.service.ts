@@ -5,7 +5,6 @@ import {
   CustomerDraft,
   CustomerSignInResult,
   Product,
-  ProductPagedQueryResponse,
   ProductType,
 } from '@commercetools/platform-sdk';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
@@ -90,17 +89,18 @@ export class SdkService {
       const data = await this.apiRoot.products().get().execute();
       return data.body.results;
     } catch (error) {
+      console.log(error);
       throw new Error(CustomErrors.SERVER_ERROR);
     }
   }
 
-  public async getProductsByType(productTypeId: string): Promise<ClientResponse<ProductPagedQueryResponse>> {
-    const data = this.apiRoot
+  public async getProductsByType(productTypeId: string): Promise<Product[]> {
+    const data = await this.apiRoot
       .products()
       .get({ queryArgs: { where: `productType(id="${productTypeId}")` } })
       .execute();
     console.log(data);
-    return data;
+    return data.body.results;
   }
 
   public async getProductsTypes(): Promise<ProductType[]> {

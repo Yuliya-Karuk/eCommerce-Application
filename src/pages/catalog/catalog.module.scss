@@ -1,5 +1,15 @@
-.catalog-container {
+.catalog {
   padding: 20px;
+  @include flex(flex-start, flex-start, column);
+  gap: 30px;
+
+  header {
+    align-self: center;
+    width: 100%;
+  }
+}
+
+.catalog-container {
   @include flex(flex-start, flex-start);
   gap: 15px;
 }
