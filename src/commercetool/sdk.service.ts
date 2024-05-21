@@ -5,6 +5,8 @@ import {
   CustomerDraft,
   CustomerSignInResult,
   Product,
+  ProductPagedQueryResponse,
+  ProductType,
 } from '@commercetools/platform-sdk';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
 import { CustomErrors } from '@utils/constants';
@@ -90,6 +92,20 @@ export class SdkService {
     } catch (error) {
       throw new Error(CustomErrors.SERVER_ERROR);
     }
+  }
+
+  public async getProductsByType(productTypeId: string): Promise<ClientResponse<ProductPagedQueryResponse>> {
+    const data = this.apiRoot
+      .products()
+      .get({ queryArgs: { where: `productType(id="${productTypeId}")` } })
+      .execute();
+    console.log(data);
+    return data;
+  }
+
+  public async getProductsTypes(): Promise<ProductType[]> {
+    const data = await this.apiRoot.productTypes().get().execute();
+    return data.body.results;
   }
 }
 

@@ -1,0 +1,51 @@
+.filters {
+  width: 20%;
+  max-width: 240px;
+  @include flex(flex-start, flex-start, column);
+  gap: 20px;
+  font-family: Questrial, sans-serif;
+}
+
+.filters-title {
+  @include adaptiveValue('font-size', 32px, 24px);
+  padding-bottom: 15px;
+  border-bottom: 1px solid $color-gray-dark;
+}
+
+.category-filters {
+  @include flex(flex-start, flex-start, column);
+  gap: 15px;
+  @include adaptiveValue('font-size', 18px, 16px);
+  line-height: 1.2;
+}
+
+.category-filter {
+  cursor: pointer;
+  position: relative;
+  @extend %transition;
+
+  &::after {
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: $color-white;
+    content: '';
+    transform: scaleX(0);
+    transform-origin: center;
+    @extend %transition;
+  }
+
+  &:hover {
+    &::after {
+      transform: scaleX(1);
+    }
+  }
+
+  &.active {
+    &::after {
+      transform: scaleX(1);
+    }
+  }
+}

@@ -1,0 +1,22 @@
+.catalog-container {
+  padding: 20px;
+  @include flex(flex-start, flex-start);
+  gap: 15px;
+}
+
+.catalog-content {
+  width: 80%;
+  min-width: calc(100% - 240px);
+}
+
+.catalog-img-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.catalog-img {
+  height: 370px;
+  width: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
