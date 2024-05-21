@@ -6,9 +6,10 @@ import { Input } from '@components/Input/Input';
 import { useAuth } from '@contexts/authProvider';
 import { useToast } from '@contexts/toastProvider';
 import { LoginFormData } from '@models/index';
+import { AppRoutes } from '@router/routes';
 import { useState } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import styles from './login.module.scss';
 
 const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -66,6 +67,10 @@ export function Login() {
   return (
     <div className={styles.background}>
       <div className={styles.wrapper}>
+        <Link className={styles.cross} to={AppRoutes.HOME_ROUTE}>
+          <span className={styles.crossLine} />
+          <span className={styles.crossLine} />
+        </Link>
         <AuthFormHeader
           titleText="Log in"
           linkDescription="New to this site?"
