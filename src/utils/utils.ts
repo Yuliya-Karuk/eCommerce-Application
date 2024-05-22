@@ -11,3 +11,10 @@ export function getDollarsFromCents(num: number, fractionDigits = 2): number {
 
   return result;
 }
+
+export function formatToDollarAmount(amount: number): string {
+  return amount.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
+}

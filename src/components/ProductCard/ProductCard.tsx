@@ -1,6 +1,6 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { AppRoutes } from '@router/routes';
-import { getDollarsFromCents, isNotNullable } from '@utils/utils';
+import { formatToDollarAmount, getDollarsFromCents, isNotNullable } from '@utils/utils';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import styles from './ProductCard.module.scss';
@@ -10,8 +10,16 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product }: ProductCardProps) => {
+  let priceDiscounted;
   const productName = product.name['en-US'];
   const pricesArr = isNotNullable(product.masterVariant.prices);
+  const price = formatToDollarAmount(getDollarsFromCents(pricesArr[0].value.centAmount));
+  const isDiscounted = Boolean(pricesArr[0].discounted);
+  if (isDiscounted) {
+    priceDiscounted = formatToDollarAmount(
+      getDollarsFromCents(isNotNullable(pricesArr[0].discounted).value.centAmount)
+    );
+  }
 
   return (
     <div className={styles.productCard}>
@@ -34,13 +42,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       <div className={styles.productCardPrices}>
         <span>Price: </span>
         <div className={classnames(styles.productCardPrice, { [styles.crossed]: pricesArr[0].discounted })}>
-          {getDollarsFromCents(pricesArr[0].value.centAmount)} &#36;
+          {price}
         </div>
-        {pricesArr[0].discounted && (
-          <div className={styles.productCardPriceDiscount}>
-            {getDollarsFromCents(pricesArr[0].discounted.value.centAmount)} &#36;
-          </div>
-        )}
+        {pricesArr[0].discounted && <div className={styles.productCardPriceDiscount}>{priceDiscounted}</div>}
       </div>
       <button type="button" className={styles.productCardButton}>
         <span className={styles.userMenuText}>Add to Cart</span>
