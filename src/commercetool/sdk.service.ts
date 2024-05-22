@@ -91,6 +91,11 @@ export class SdkService {
       throw new Error(CustomErrors.SERVER_ERROR);
     }
   }
+
+  public async getProductByKey(productKey: string): Promise<Product> {
+    const data = await this.apiRoot.products().withKey({ key: productKey }).get().execute();
+    return data.body;
+  }
 }
 
 export const sdkService = new SdkService();

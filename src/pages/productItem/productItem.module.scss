@@ -1,0 +1,57 @@
+.wrapper {
+  @include flex(flex-start, flex-start, column, 15px);
+  padding: 20px;
+  color: $default-text-сolor;
+  background-color: $color-bg-light;
+
+  .path {
+    @include font(1.8rem, normal, 1.6);
+  }
+
+  .product-overview {
+    @include flex(flex-start, flex-start, row, 15px);
+
+    .slider-wrapper {
+      width: 600px;
+      height: 400px;
+      background-color: burlywood;
+    }
+
+    .product-summary {
+      @include flex(flex-start, flex-start, column, 15px);
+      width: 100%;
+
+      &-header {
+        font-size: 3.4rem;
+      }
+
+      .price-label {
+        @include flex(center, end, row, 5px);
+        @include font(2rem, normal, 1.2);
+        font-size: 2rem;
+
+        .full-price {
+          &-line-through {
+            font-size: 1.5rem;
+            color: $color-gray-dark;
+            text-decoration: line-through;
+          }
+        }
+
+        .price-with-discount {
+          font-size: 2rem;
+          font-weight: bold;
+          color: $color-primary-bright;
+        }
+      }
+    }
+  }
+
+  .product-description {
+    @include font(2rem, normal, 1.6);
+
+    .description-header {
+      @include font(2.5rem, normal, 1.6);
+    }
+  }
+}
