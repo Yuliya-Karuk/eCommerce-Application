@@ -4,6 +4,10 @@
   @include flex(flex-start, flex-start, column);
   gap: 20px;
   font-family: Questrial, sans-serif;
+
+  @include mobile {
+    display: none;
+  }
 }
 
 .filters-title {

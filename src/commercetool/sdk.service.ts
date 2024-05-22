@@ -5,6 +5,7 @@ import {
   CustomerDraft,
   CustomerSignInResult,
   Product,
+  ProductProjection,
   ProductType,
 } from '@commercetools/platform-sdk';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
@@ -84,9 +85,19 @@ export class SdkService {
     this.createAnonymousClient();
   }
 
-  public async getProducts(): Promise<Product[]> {
+  public async getProducts(): Promise<ProductProjection[]> {
     try {
-      const data = await this.apiRoot.products().get().execute();
+      // const data = await this.apiRoot.products().get().execute();
+      const data = await this.apiRoot
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            limit: 20,
+            offset: 0,
+          },
+        })
+        .execute();
       return data.body.results;
     } catch (error) {
       console.log(error);
@@ -94,10 +105,19 @@ export class SdkService {
     }
   }
 
-  public async getProductsByType(productTypeId: string): Promise<Product[]> {
+  public async getProductsByType(productTypeId: string): Promise<ProductProjection[]> {
+    // const data = await this.apiRoot
+    //   .products()
+    //   .get({ queryArgs: { where: `productType(id="${productTypeId}")` } })
+    //   .execute();
     const data = await this.apiRoot
-      .products()
-      .get({ queryArgs: { where: `productType(id="${productTypeId}")` } })
+      .productProjections()
+      .search()
+      .get({
+        queryArgs: {
+          filter: [`productType.id:"${productTypeId}"`],
+        },
+      })
       .execute();
     console.log(data);
     return data.body.results;
@@ -106,6 +126,12 @@ export class SdkService {
   public async getProductsTypes(): Promise<ProductType[]> {
     const data = await this.apiRoot.productTypes().get().execute();
     return data.body.results;
+  }
+
+  public async getProduct(productKey: string): Promise<Product> {
+    const data = await this.apiRoot.products().withKey({ key: productKey }).get().execute();
+    // const data = await this.apiRoot.productProjections().withKey({ key: productKey }).get().execute();
+    return data.body;
   }
 }
 

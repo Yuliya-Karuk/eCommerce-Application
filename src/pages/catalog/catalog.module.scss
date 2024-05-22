@@ -17,11 +17,19 @@
 .catalog-content {
   width: 80%;
   min-width: calc(100% - 240px);
+
+  @include mobile {
+    width: 100%;
+  }
 }
 
 .catalog-img-container {
   width: 100%;
   overflow: hidden;
+
+  @include mobile {
+    display: none;
+  }
 }
 
 .catalog-img {
@@ -29,4 +37,14 @@
   width: 100%;
   object-fit: cover;
   object-position: 50% 50%;
+}
+
+.catalog-list {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: repeat(3, 1fr);
+
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
