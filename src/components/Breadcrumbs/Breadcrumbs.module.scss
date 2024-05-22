@@ -1,6 +1,6 @@
 .breadcrumbs {
   @include flex(flex-start, center);
+  @include adaptiveValue('font-size', 16px, 16px);
   gap: 5px;
   font-family: Questrial, sans-serif;
-  @include adaptiveValue('font-size', 16px, 16px);
 }

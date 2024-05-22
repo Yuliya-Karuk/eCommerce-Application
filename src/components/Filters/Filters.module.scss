@@ -1,13 +1,13 @@
 .filters {
-  width: 20%;
-  max-width: 240px;
   @include flex(flex-start, flex-start, column);
-  gap: 20px;
-  font-family: Questrial, sans-serif;
 
   @include mobile {
     display: none;
   }
+  gap: 20px;
+  width: 20%;
+  max-width: 240px;
+  font-family: Questrial, sans-serif;
 }
 
 .filters-title {
@@ -18,27 +18,27 @@
 
 .category-filters {
   @include flex(flex-start, flex-start, column);
-  gap: 15px;
   @include adaptiveValue('font-size', 18px, 16px);
+  gap: 15px;
   line-height: 1.2;
 }
 
 .category-filter {
+  @extend %transition;
   cursor: pointer;
   position: relative;
-  @extend %transition;
 
   &::after {
+    @extend %transition;
+    content: '';
     position: absolute;
     bottom: -4px;
     left: 0;
+    transform-origin: center;
+    transform: scaleX(0);
     width: 100%;
     height: 2px;
     background-color: $color-white;
-    content: '';
-    transform: scaleX(0);
-    transform-origin: center;
-    @extend %transition;
   }
 
   &:hover {
