@@ -4,6 +4,8 @@ import { Product } from '@commercetools/platform-sdk';
 import { convertCentsToDollarsString } from '@utils/utils';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
+// import ImageGallery from 'react-image-gallery';
+import 'react-image-gallery/styles/css/image-gallery.css';
 import { useParams } from 'react-router-dom';
 import styles from './productItem.module.scss';
 
@@ -50,11 +52,19 @@ export function ProductItem() {
     ? convertCentsToDollarsString(product.masterData.current.masterVariant.prices[0].discounted.value.centAmount)
     : '';
 
+  const { images } = product.masterData.current.masterVariant;
+  if (!images) {
+    throw new Error("can't find the product key (slug)");
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.path}>catalog / {name}</div>
       <div className={styles.productOverview}>
-        <div className={styles.sliderWrapper}>there will be a slider here</div>
+        <div className={styles.sliderWrapper}>
+          there will be a slider here
+          {/* <ImageGallery items={images} /> */}
+        </div>
         <section className={styles.productSummary}>
           <h2 className={styles.productSummaryHeader}>{name}</h2>
           {sku ? <div className={styles.sku}>SKU: {sku}</div> : ''}
