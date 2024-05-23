@@ -13,10 +13,20 @@
     flex-wrap: wrap;
 
     .slider-wrapper {
-      @include flex(center);
+      @include flex(flex-end);
+      position: relative;
+      overflow: hidden;
       flex: 0 1 300px;
+      height: 400px;
 
-      // background-color: burlywood;
+      .slider-img {
+        object-position: bottom;
+
+        & img {
+          width: 100%;
+          object-fit: cover;
+        }
+      }
     }
 
     .product-summary {
@@ -36,8 +46,6 @@
 
       .price-label {
         @include flex(flex-start, end, row, 5px);
-
-        // @include font(2rem, normal, 1.2);
 
         .full-price {
           &-line-through {

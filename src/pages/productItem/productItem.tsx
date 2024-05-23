@@ -3,20 +3,24 @@ import { sdkService } from '@commercetool/sdk.service';
 import { Product } from '@commercetools/platform-sdk';
 import { convertCentsToDollarsString } from '@utils/utils';
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import { useParams } from 'react-router-dom';
 import styles from './productItem.module.scss';
 
+// eslint-disable-next-line max-lines-per-function
 export function ProductItem() {
   const { slug } = useParams();
   if (!slug) {
     throw new Error("can't find the product key (slug)");
   }
 
+  const galleryRef = useRef<ReactImageGallery>(null);
+
   const [product, setProduct] = useState<Product>({} as Product);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const getProduct = async () => {
     const data = await sdkService.getProductByKey(slug);
@@ -34,6 +38,10 @@ export function ProductItem() {
       setLoading(false);
     }
   }, [product]);
+
+  const handleScreenChange = (isFullScreen: boolean) => {
+    setIsFullscreen(isFullScreen);
+  };
 
   if (loading) {
     return <div>it was here somewhere... Wait, please, i will find it....</div>;
@@ -58,10 +66,20 @@ export function ProductItem() {
     const slideItem: ReactImageGalleryItem = {
       original: image.url,
       thumbnail: image.url,
-      originalHeight: 400,
     };
     slides.push(slideItem);
   });
+
+  const handleImageClick = () => {
+    if (galleryRef.current) {
+      if (isFullscreen) {
+        galleryRef.current.exitFullScreen();
+      } else {
+        galleryRef.current.fullScreen();
+      }
+      setIsFullscreen(!isFullscreen);
+    }
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -69,14 +87,18 @@ export function ProductItem() {
       <div className={styles.productOverview}>
         <div className={styles.sliderWrapper}>
           <ReactImageGallery
+            ref={galleryRef}
             showNav={false}
             showBullets
             lazyLoad
             autoPlay
             showThumbnails={false}
-            // thumbnailPosition="left"
             useBrowserFullscreen={false}
             items={slides}
+            onScreenChange={handleScreenChange}
+            showFullscreenButton={false}
+            onClick={handleImageClick}
+            additionalClass={isFullscreen ? '' : styles.sliderImg}
           />
         </div>
         <section className={styles.productSummary}>
