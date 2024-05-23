@@ -1,3 +1,4 @@
+import heart from '@assets/heart.svg';
 import { sdkService } from '@commercetool/sdk.service';
 import { Product } from '@commercetools/platform-sdk';
 import { formatToDollarAmount, getDollarsFromCents } from '@utils/utils';
@@ -37,6 +38,7 @@ export function ProductItem() {
   }
 
   const name = product.masterData.current.name['en-US'];
+  const { sku } = product.masterData.current.masterVariant;
 
   const fullPrice: number = product.masterData.current.masterVariant.prices
     ? getDollarsFromCents(product.masterData.current.masterVariant.prices[0].value.centAmount)
@@ -55,6 +57,7 @@ export function ProductItem() {
         <div className={styles.sliderWrapper}>there will be a slider here</div>
         <section className={styles.productSummary}>
           <h2 className={styles.productSummaryHeader}>{name}</h2>
+          {sku ? <div className={styles.sku}>SKU: {sku}</div> : ''}
           <div className={styles.priceLabel}>
             Price:
             <div
@@ -69,18 +72,21 @@ export function ProductItem() {
             </div>
           </div>
 
-          <button type="button" className={styles.addToCartButton}>
-            add to cart
-          </button>
-          <div className={styles.smallDescription}>
-            <div>
-              {product.masterData.current.masterVariant.attributes?.map(item => (
-                <div key={item.name}>
-                  <div>{item.name}:</div>
-                  <div>{item.value}</div>
-                </div>
-              ))}
-            </div>
+          <div className={styles.attributes}>
+            {product.masterData.current.masterVariant.attributes?.map(item => (
+              <div key={item.name} className={styles.attributesItem}>
+                <div className={styles.name}>{item.name}:</div>
+                <div className={styles.value}>{item.value}</div>
+              </div>
+            ))}
+          </div>
+          <div className={styles.buttonsWrapper}>
+            <button type="button" className={styles.addToCartButton}>
+              add to cart
+            </button>
+            <button type="button" className={styles.addToFavoriteButton}>
+              <img src={heart} alt="add to favorite" />
+            </button>
           </div>
         </section>
       </div>
