@@ -37,6 +37,7 @@ export function Catalog() {
       const typeId = isNotNullable(types.find(oneType => oneType.name === activeCategory)).id;
       data = await sdkService.getProductsByType(typeId);
     }
+    console.log(data);
     setProducts(data);
   };
 
@@ -48,17 +49,6 @@ export function Catalog() {
     getProducts();
   }, [activeCategory]);
 
-  // const [product, setProduct] = useState<Product>({} as Product);
-  // const getProduct = async () => {
-  //   const data = await sdkService.getProduct('Pl-01');
-  //   setProduct(data);
-  //   console.log(data);
-  // };
-
-  // useEffect(() => {
-  //   getProduct();
-  // }, []);
-
   return (
     <div className={styles.catalog}>
       <Header />
@@ -69,8 +59,8 @@ export function Catalog() {
           <div className={styles.catalogImgContainer}>
             <img className={styles.catalogImg} src={CatalogImages[activeCategory] as string} alt="catalog img" />
           </div>
+          <h2>{activeCategory}</h2>
           <div className={styles.catalogProducts}>
-            <h2>{activeCategory}</h2>
             <ul className={styles.catalogList}>
               {products.map(product => (
                 <ProductCard key={product.id} product={product} />

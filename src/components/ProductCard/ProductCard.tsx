@@ -12,6 +12,7 @@ interface ProductCardProps {
 export const ProductCard = ({ product }: ProductCardProps) => {
   let priceDiscounted;
   const productName = product.name['en-US'];
+  const productDesc = isNotNullable(product.description)['en-US'];
   const pricesArr = isNotNullable(product.masterVariant.prices);
   const price = formatToDollarAmount(getDollarsFromCents(pricesArr[0].value.centAmount));
   const isDiscounted = Boolean(pricesArr[0].discounted);
@@ -32,6 +33,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           src={isNotNullable(product.masterVariant.images)[0].url}
           alt="catalog img"
         />
+        <p className={styles.productCardDescription}>{productDesc}</p>
       </Link>
       <Link
         to={product.key ? `${AppRoutes.PRODUCT_ROUTE}/${product.key}` : AppRoutes.HOME_ROUTE}

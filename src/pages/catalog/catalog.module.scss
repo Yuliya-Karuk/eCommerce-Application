@@ -18,6 +18,8 @@
   @include mobile {
     width: 100%;
   }
+  @include flex(flex-start, flex-start, column);
+  gap: 20px;
   width: 80%;
   min-width: calc(100% - 240px);
 }
