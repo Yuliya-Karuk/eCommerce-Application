@@ -1,7 +1,7 @@
 import heart from '@assets/heart.svg';
 import { sdkService } from '@commercetool/sdk.service';
 import { Product } from '@commercetools/platform-sdk';
-import { formatToDollarAmount, getDollarsFromCents } from '@utils/utils';
+import { convertCentsToDollarsString } from '@utils/utils';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -40,15 +40,15 @@ export function ProductItem() {
   const name = product.masterData.current.name['en-US'];
   const { sku } = product.masterData.current.masterVariant;
 
-  const fullPrice: number = product.masterData.current.masterVariant.prices
-    ? getDollarsFromCents(product.masterData.current.masterVariant.prices[0].value.centAmount)
-    : 0;
+  const fullPrice: string = product.masterData.current.masterVariant.prices
+    ? convertCentsToDollarsString(product.masterData.current.masterVariant.prices[0].value.centAmount)
+    : '';
 
   const hasDiscount = !!product.masterData.current.masterVariant.prices?.[0].discounted?.value.centAmount;
 
   const priceWithDiscount = product.masterData.current.masterVariant.prices?.[0].discounted?.value.centAmount
-    ? getDollarsFromCents(product.masterData.current.masterVariant.prices[0].discounted.value.centAmount)
-    : 0;
+    ? convertCentsToDollarsString(product.masterData.current.masterVariant.prices[0].discounted.value.centAmount)
+    : '';
 
   return (
     <div className={styles.wrapper}>
@@ -65,11 +65,9 @@ export function ProductItem() {
                 [styles.fullPriceLineThrough]: hasDiscount,
               })}
             >
-              {formatToDollarAmount(fullPrice)}
+              {fullPrice}
             </div>
-            <div className={styles.priceWithDiscount}>
-              {priceWithDiscount ? `${formatToDollarAmount(priceWithDiscount)}` : ''}
-            </div>
+            <div className={styles.priceWithDiscount}>{priceWithDiscount}</div>
           </div>
 
           <div className={styles.attributes}>
