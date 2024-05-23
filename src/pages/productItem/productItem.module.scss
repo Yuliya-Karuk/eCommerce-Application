@@ -10,16 +10,19 @@
 
   .product-overview {
     @include flex(flex-start, flex-start, row, 15px);
+    flex-wrap: wrap;
 
     .slider-wrapper {
-      width: 600px;
-      height: 400px;
-      background-color: burlywood;
+      @include flex(center);
+      flex: 0 1 300px;
+
+      // background-color: burlywood;
     }
 
     .product-summary {
       @include flex(flex-start, flex-start, column, 15px);
       @include font(2rem, normal, 1.2);
+      flex: 1 1 400px;
       width: 100%;
 
       &-header {

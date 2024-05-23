@@ -4,7 +4,7 @@ import { Product } from '@commercetools/platform-sdk';
 import { convertCentsToDollarsString } from '@utils/utils';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
-// import ImageGallery from 'react-image-gallery';
+import ReactImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import { useParams } from 'react-router-dom';
 import styles from './productItem.module.scss';
@@ -53,17 +53,31 @@ export function ProductItem() {
     : '';
 
   const { images } = product.masterData.current.masterVariant;
-  if (!images) {
-    throw new Error("can't find the product key (slug)");
-  }
+  const slides: ReactImageGalleryItem[] = [];
+  images?.forEach(image => {
+    const slideItem: ReactImageGalleryItem = {
+      original: image.url,
+      thumbnail: image.url,
+      originalHeight: 400,
+    };
+    slides.push(slideItem);
+  });
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.path}>catalog / {name}</div>
       <div className={styles.productOverview}>
         <div className={styles.sliderWrapper}>
-          there will be a slider here
-          {/* <ImageGallery items={images} /> */}
+          <ReactImageGallery
+            showNav={false}
+            showBullets
+            lazyLoad
+            autoPlay
+            showThumbnails={false}
+            // thumbnailPosition="left"
+            useBrowserFullscreen={false}
+            items={slides}
+          />
         </div>
         <section className={styles.productSummary}>
           <h2 className={styles.productSummaryHeader}>{name}</h2>
