@@ -7,11 +7,12 @@ import { ProductProjection, ProductType } from '@commercetools/platform-sdk';
 import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
 import { CategoryFilter } from '@components/CategoryFilter/CategoryFilter';
 import { CheckboxFilter } from '@components/ChekboxFilter/CheckboxFilter';
+import { ColorFilter } from '@components/ColorFilter/ColorFilter';
 import { Header } from '@components/index';
 import { PriceFilter } from '@components/PriceFilter/PriceFilter';
 import { ProductCard } from '@components/ProductCard/ProductCard';
 import { CategoryList, CustomCategory } from '@models/index';
-import { prepareBrands, prepareCategories, prepareSizes } from '@utils/utils';
+import { prepareBrands, prepareCategories, prepareColors, prepareSizes } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import styles from './catalog.module.scss';
 
@@ -31,6 +32,8 @@ export function Catalog() {
   });
   const [brands, setBrands] = useState<string[]>([]);
   const [sizes, setSizes] = useState<string[]>([]);
+  const [colors, setColors] = useState<string[]>([]);
+  const [activeColor, setActiveColor] = useState<string>('');
   const [products, setProducts] = useState<ProductProjection[]>([]);
 
   const getTypes = async () => {
@@ -38,6 +41,7 @@ export function Catalog() {
     console.log(data);
     setBrands(prepareBrands(data));
     setSizes(prepareSizes(data));
+    setColors(prepareColors(data));
     setCategories(prepareCategories(data));
     const bal = await sdkService.filterProductsByAttribute();
     console.log(bal);
@@ -84,7 +88,11 @@ export function Catalog() {
           />
           <PriceFilter />
           <CheckboxFilter values={brands} name="Brands" />
+          <ColorFilter colors={colors} activeColor={activeColor} setActiveColor={setActiveColor} />
           <CheckboxFilter values={sizes} name="Sizes" />
+          <button type="button" className={styles.filtersButton}>
+            Clear all
+          </button>
         </div>
         <div className={styles.catalogContent}>
           <div className={styles.catalogImgContainer}>

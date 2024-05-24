@@ -47,7 +47,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         {pricesArr[0].discounted && <div className={styles.productCardPriceDiscount}>{priceDiscounted}</div>}
       </div>
       <button type="button" className={styles.productCardButton}>
-        <span className={styles.userMenuText}>Add to Cart</span>
+        Add to Cart
       </button>
     </div>
   );

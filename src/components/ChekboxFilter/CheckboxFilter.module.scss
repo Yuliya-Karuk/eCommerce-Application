@@ -1,13 +1,13 @@
 .filter {
-  width: 100%;
-  gap: 10px;
   @include flex(flex-start, flex-start, column);
+  gap: 10px;
+  width: 100%;
   padding-bottom: 5px;
 }
 
 .filters-list {
-  display: none;
   @include adaptiveValue('font-size', 16px, 14px);
+  display: none;
   gap: 15px;
   line-height: 1.2;
 
@@ -57,9 +57,9 @@
 }
 
 .filter-heading {
-  width: 100%;
   @include flex(space-between, center);
   cursor: pointer;
+  width: 100%;
   padding-bottom: 15px;
   border-bottom: 1px solid $color-gray-dark;
 }

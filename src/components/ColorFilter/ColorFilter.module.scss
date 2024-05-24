@@ -1,5 +1,5 @@
 .filter {
-  @include flex(flex-start, center, column);
+  @include flex(flex-start, flex-start, column);
   gap: 10px;
   width: 100%;
   padding-bottom: 5px;
@@ -15,6 +15,11 @@
 
 .filter-title {
   @include adaptiveValue('font-size', 20px, 18px);
+
+  em {
+    font-size: 16px;
+    font-style: normal;
+  }
 }
 
 .filter-span {
@@ -30,39 +35,26 @@
   }
 }
 
-.slider-container {
+.colors-container {
   display: none;
-  width: 90%;
+  gap: 5px;
   padding: 10px 0;
 
   &.open {
-    display: block;
+    @include flex(flex-start, flex-start);
+    flex-wrap: wrap;
   }
 }
 
-.slider {
-  align-items: center;
-  width: 100%;
-  height: 2px;
-  margin: 10px 0;
-  background: #fff;
-}
-
-.thumb {
-  cursor: pointer;
-  top: -5px;
-  width: 12px;
-  height: 12px;
-  background: #fff;
+.color-button {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0.8);
+  border: 1px solid $color-gray-dark;
   border-radius: 50%;
-}
 
-.track {
-  background: #fff;
-}
-
-.priceLabels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
+  &.active {
+    transform: scale(1.2);
+    border-color: #fff;
+  }
 }
