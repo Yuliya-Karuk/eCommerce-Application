@@ -43,8 +43,8 @@ export const NewArrivals: FC<NewArrivalsProps> = ({ id, ...props }) => {
           </div>
 
           <div className={styles.newarrivalsList} {...props}>
-            {cards.map((card: NewArrivalsCardType) => {
-              return <NewArrivalsCard key={card.path} card={card} />;
+            {cards.map((card: NewArrivalsCardType, idx: number) => {
+              return <NewArrivalsCard key={card.path} card={card} id={`product-${idx + 1}`} />;
             })}
           </div>
         </div>
