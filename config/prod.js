@@ -5,7 +5,8 @@ import viteImagemin from 'vite-plugin-imagemin';
 import cleanPlugin from 'vite-plugin-clean';
 import checker from 'vite-plugin-checker';
 import { paths } from './paths';
-import tsconfigPaths from "vite-tsconfig-paths";
+import tsconfigPaths from 'vite-tsconfig-paths';
+import path from 'path';
 
 export const prodConfig = {
   plugins: [
@@ -78,6 +79,9 @@ export const prodConfig = {
   resolve: {
     alias: {
       'node-fetch': 'isomorphic-fetch',
+      '@components': path.resolve(__dirname, './src/components'),
+      '@commercetool': path.resolve(__dirname, './src/commercetool'),
+      '@contexts': path.resolve(__dirname, './src/contexts'),
     },
   },
 };

@@ -1,7 +1,8 @@
 import react from '@vitejs/plugin-react';
 import webfontDownload from 'vite-plugin-webfont-dl';
 import checker from 'vite-plugin-checker';
-import tsconfigPaths from "vite-tsconfig-paths";
+import tsconfigPaths from 'vite-tsconfig-paths';
+import path from 'path';
 
 export const devConfig = {
   server: {
@@ -24,6 +25,9 @@ export const devConfig = {
   resolve: {
     alias: {
       'node-fetch': 'isomorphic-fetch',
+      '@components': path.resolve(__dirname, './src/components'),
+      '@commercetool': path.resolve(__dirname, './src/commercetool'),
+      '@contexts': path.resolve(__dirname, './src/contexts'),
     },
   },
 };
