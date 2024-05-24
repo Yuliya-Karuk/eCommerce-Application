@@ -13,17 +13,17 @@
     flex-wrap: wrap;
 
     .slider-wrapper {
-      @include flex(flex-end);
+      @include flex(center);
       position: relative;
-      overflow: hidden;
       flex: 0 1 300px;
-      height: 400px;
+      background-color: $color-bg-slider;
 
       .slider-img {
-        object-position: bottom;
+        width: 300px;
+        height: 400px;
 
         & img {
-          width: 100%;
+          height: 100%;
           object-fit: cover;
         }
       }

@@ -66,6 +66,7 @@ export function ProductItem() {
     const slideItem: ReactImageGalleryItem = {
       original: image.url,
       thumbnail: image.url,
+      originalClass: isFullscreen ? '' : styles.sliderImg,
     };
     slides.push(slideItem);
   });
@@ -88,7 +89,7 @@ export function ProductItem() {
         <div className={styles.sliderWrapper}>
           <ReactImageGallery
             ref={galleryRef}
-            showNav={false}
+            showNav={!!isFullscreen}
             showBullets
             lazyLoad
             autoPlay
@@ -98,7 +99,8 @@ export function ProductItem() {
             onScreenChange={handleScreenChange}
             showFullscreenButton={false}
             onClick={handleImageClick}
-            additionalClass={isFullscreen ? '' : styles.sliderImg}
+            // additionalClass={isFullscreen ? '' : styles.sliderImg}
+            // additionalClass={styles.sliderImg}
           />
         </div>
         <section className={styles.productSummary}>
@@ -120,7 +122,7 @@ export function ProductItem() {
             {product.masterData.current.masterVariant.attributes?.map(item => (
               <div key={item.name} className={styles.attributesItem}>
                 <div className={styles.name}>{item.name}:</div>
-                <div className={styles.value}>{item.value}</div>
+                <div className={styles.value}>{item.value[0].toString()}</div>
               </div>
             ))}
           </div>
