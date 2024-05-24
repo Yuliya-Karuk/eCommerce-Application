@@ -1,0 +1,46 @@
+.brand-filters {
+  @include flex(flex-start, flex-start, column);
+  @include adaptiveValue('font-size', 16px, 14px);
+  gap: 15px;
+  line-height: 1.2;
+}
+
+.brand-filter-input {
+  @extend %visually-hidden;
+}
+
+.brand-filter-label {
+  @extend %transition;
+  cursor: pointer;
+  position: relative;
+  padding-left: 20px;
+
+  &::before {
+    @extend %transition;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 15px;
+    height: 15px;
+    border: 1px solid $color-white;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 15px;
+    height: 15px;
+    background-image: url('../../assets/checked.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: opacity 0.3s;
+  }
+}
+
+.brand-filter-input:checked + .brand-filter-label::after {
+  display: block;
+}

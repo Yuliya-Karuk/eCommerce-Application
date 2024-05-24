@@ -4,11 +4,13 @@ import catalogPlants from '@assets/catalog-plants.webp';
 import catalogPots from '@assets/catalog-pots.webp';
 import { sdkService } from '@commercetool/sdk.service';
 import { ProductProjection, ProductType } from '@commercetools/platform-sdk';
+import { BrandFilter } from '@components/BrandFilter/BrandFilter';
 import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
-import { Filters } from '@components/Filters/Filters';
+import { CategoryFilter } from '@components/CategoryFilter/CategoryFilter';
 import { Header } from '@components/index';
 import { ProductCard } from '@components/ProductCard/ProductCard';
-import { isNotNullable } from '@utils/utils';
+import { CategoryList, CustomCategory } from '@models/index';
+import { prepareBrands, prepareCategories } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import styles from './catalog.module.scss';
 
@@ -20,25 +22,25 @@ const CatalogImages: { [key: string]: string } = {
 };
 
 export function Catalog() {
-  const [activeCategory, setActiveCategory] = useState<string>('All Products');
-  const [types, setTypes] = useState<ProductType[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [categories, setCategories] = useState<CategoryList>({});
+  const [activeCategory, setActiveCategory] = useState<CustomCategory>({
+    name: '',
+    id: '',
+  });
+  const [brands, setBrands] = useState<string[]>([]);
   const [products, setProducts] = useState<ProductProjection[]>([]);
 
   const getTypes = async () => {
     const data: ProductType[] = await sdkService.getProductsTypes();
-    setTypes(data);
+    setBrands(prepareBrands(data));
+    setCategories(prepareCategories(data));
   };
 
   const getProducts = async () => {
-    let data;
-    if (activeCategory === 'All Products') {
-      data = await sdkService.getProducts();
-    } else {
-      const typeId = isNotNullable(types.find(oneType => oneType.name === activeCategory)).id;
-      data = await sdkService.getProductsByType(typeId);
-    }
-    console.log(data);
+    const data = await sdkService.getProductsByType(activeCategory.id);
     setProducts(data);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -46,20 +48,42 @@ export function Catalog() {
   }, []);
 
   useEffect(() => {
-    getProducts();
+    if (Object.keys(categories).length > 0) {
+      setActiveCategory(categories.all);
+      setIsLoading(false);
+    }
+  }, [categories]);
+
+  useEffect(() => {
+    if (activeCategory.name !== '' && activeCategory.id !== '') {
+      getProducts();
+    }
   }, [activeCategory]);
+
+  if (isLoading) {
+    return <div>Loading</div>;
+  }
 
   return (
     <div className={styles.catalog}>
       <Header />
-      <Breadcrumbs activeCategory={activeCategory} />
+      <Breadcrumbs activeCategory={activeCategory.name} />
       <div className={styles.catalogContainer}>
-        <Filters types={types} activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+        <div className={styles.filters}>
+          <h2 className={styles.filtersTitle}>Browse by</h2>
+          <CategoryFilter
+            categories={categories}
+            activeCategory={activeCategory.name}
+            setActiveCategory={setActiveCategory}
+          />
+          <h2 className={styles.filtersTitle}>Filter by</h2>
+          <BrandFilter brands={brands} />
+        </div>
         <div className={styles.catalogContent}>
           <div className={styles.catalogImgContainer}>
-            <img className={styles.catalogImg} src={CatalogImages[activeCategory] as string} alt="catalog img" />
+            <img className={styles.catalogImg} src={CatalogImages[activeCategory.name] as string} alt="catalog img" />
           </div>
-          <h2>{activeCategory}</h2>
+          <h2>{activeCategory.name}</h2>
           <div className={styles.catalogProducts}>
             <ul className={styles.catalogList}>
               {products.map(product => (

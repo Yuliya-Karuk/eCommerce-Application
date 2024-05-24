@@ -9,7 +9,6 @@ import {
   ProductType,
 } from '@commercetools/platform-sdk';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
-import { CustomErrors } from '@utils/constants';
 import { storage } from '@utils/storage';
 import {
   anonymousMiddlewareOptions,
@@ -85,41 +84,37 @@ export class SdkService {
     this.createAnonymousClient();
   }
 
-  public async getProducts(): Promise<ProductProjection[]> {
-    try {
-      // const data = await this.apiRoot.products().get().execute();
-      const data = await this.apiRoot
-        .productProjections()
-        .search()
-        .get({
-          queryArgs: {
-            limit: 20,
-            offset: 0,
-          },
-        })
-        .execute();
-      return data.body.results;
-    } catch (error) {
-      console.log(error);
-      throw new Error(CustomErrors.SERVER_ERROR);
-    }
-  }
+  // удалить потом - пока нужен для формата
+  // public async getProducts(): Promise<ProductProjection[]> {
+  //   try {
+  //     const data = await this.apiRoot
+  //       .productProjections()
+  //       .search()
+  //       .get({
+  //         queryArgs: {
+  //           filter: [
+  //             `productType.id:"94600ee8-025b-4519-a207-1f08fa220837","674a579b-0e25-4cfb-8cc7-b38c539fd609","7eb85544-1840-44ad-9b41-82db77674d06"`,
+  //           ],
+  //         },
+  //       })
+  //       .execute();
+  //     return data.body.results;
+  //   } catch (error) {
+  //     throw new Error(CustomErrors.SERVER_ERROR);
+  //   }
+  // }
 
   public async getProductsByType(productTypeId: string): Promise<ProductProjection[]> {
-    // const data = await this.apiRoot
-    //   .products()
-    //   .get({ queryArgs: { where: `productType(id="${productTypeId}")` } })
-    //   .execute();
     const data = await this.apiRoot
       .productProjections()
       .search()
       .get({
         queryArgs: {
-          filter: [`productType.id:"${productTypeId}"`],
+          filter: [`productType.id:${productTypeId}`],
         },
       })
       .execute();
-    console.log(data);
+    console.log(data.body.results);
     return data.body.results;
   }
 
@@ -131,6 +126,19 @@ export class SdkService {
   public async getProduct(productKey: string): Promise<Product> {
     const data = await this.apiRoot.products().withKey({ key: productKey }).get().execute();
     // const data = await this.apiRoot.productProjections().withKey({ key: productKey }).get().execute();
+    return data.body;
+  }
+
+  public async filterProductsByAttribute() {
+    const data = await this.apiRoot
+      .productProjections()
+      .search()
+      .get({
+        queryArgs: {
+          'filter.query': [`variants.attributes.brand.key:"Plantpatio", "Smart Garden"`],
+        },
+      })
+      .execute();
     return data.body;
   }
 }

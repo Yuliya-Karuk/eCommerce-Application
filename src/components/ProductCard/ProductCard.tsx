@@ -1,6 +1,6 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { AppRoutes } from '@router/routes';
-import { formatToDollarAmount, getDollarsFromCents, isNotNullable } from '@utils/utils';
+import { convertCentsToDollarsString, isNotNullable } from '@utils/utils';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import styles from './ProductCard.module.scss';
@@ -14,12 +14,10 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   const productName = product.name['en-US'];
   const productDesc = isNotNullable(product.description)['en-US'];
   const pricesArr = isNotNullable(product.masterVariant.prices);
-  const price = formatToDollarAmount(getDollarsFromCents(pricesArr[0].value.centAmount));
+  const price = convertCentsToDollarsString(pricesArr[0].value.centAmount);
   const isDiscounted = Boolean(pricesArr[0].discounted);
   if (isDiscounted) {
-    priceDiscounted = formatToDollarAmount(
-      getDollarsFromCents(isNotNullable(pricesArr[0].discounted).value.centAmount)
-    );
+    priceDiscounted = convertCentsToDollarsString(isNotNullable(pricesArr[0].discounted).value.centAmount);
   }
 
   return (

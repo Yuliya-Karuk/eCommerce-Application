@@ -1,21 +1,3 @@
-.filters {
-  @include flex(flex-start, flex-start, column);
-
-  @include mobile {
-    display: none;
-  }
-  gap: 20px;
-  width: 20%;
-  max-width: 240px;
-  font-family: Questrial, sans-serif;
-}
-
-.filters-title {
-  @include adaptiveValue('font-size', 32px, 24px);
-  padding-bottom: 10px;
-  border-bottom: 1px solid $color-gray-dark;
-}
-
 .category-filters {
   @include flex(flex-start, flex-start, column);
   @include adaptiveValue('font-size', 18px, 16px);
