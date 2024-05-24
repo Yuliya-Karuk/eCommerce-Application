@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { sdkService } from '@commercetool/sdk.service';
-import { Banner, Footer, Header } from '@components/index';
+import { Banner } from '@components/Banner/Banner';
+import { Footer } from '@components/Footer/Footer';
+import { Header } from '@components/Header/Header';
+import { NewArrivals } from '@components/NewArrivals/NewArrivals';
 import { useAuth } from '@contexts/authProvider';
 import { useToast } from '@contexts/toastProvider';
 import { useEffect } from 'react';
-import { NewArrivals } from '../../components/NewArrivals/NewArrivals';
 import styles from './home.module.scss';
 
 export function Home() {
