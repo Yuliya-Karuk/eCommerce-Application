@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import eyeOff from '@assets/eye-off.svg';
 import eyeOn from '@assets/eye-show.svg';
 import { sdkService } from '@commercetool/sdk.service';

@@ -1,0 +1,70 @@
+.newarrivals {
+  &-item {
+    @include flex(null, null, column);
+    color: $color-bg-dark;
+    row-gap: 16px;
+    cursor: pointer;
+  }
+
+  &-cardimage {
+    @include responsiveImage;
+    padding-bottom: 127.4%;
+    padding-left: 95.5%;
+    max-width: 338px;
+    min-width: 286px;
+    margin: 0 auto;
+
+    &::after {
+      content: 'New Arrival';
+      position: absolute;
+      top: rem(17px);
+      left: rem(17px);
+      color: $color-white;
+      background-color: $color-green-dark;
+      font-family: Questrial, Arial, Helvetica, serif;
+      @include adaptiveValue('font-size', 14px, 12px);
+      border-radius: 5px;
+      padding: 5px 12px;
+    }
+  }
+
+  &-cardinfo {
+    @include flex(null, null, column);
+    row-gap: 4px;
+    padding: 0 20px;
+  }
+
+  &-cardtitle {
+    font-family: Forum, Arial, Helvetica, serif;
+    @include adaptiveValue('font-size', 28px, 20px);
+    line-height: 1.25;
+  }
+
+  &-cardcoast {
+    font-family: Questrial, Arial, Helvetica, serif;
+    @include adaptiveValue('font-size', 21px, 16px);
+    line-height: 1.5;
+  }
+
+  &-cardbutton {
+    @include flex(center);
+    font-family: Questrial, Arial, Helvetica, serif;
+    @include adaptiveValue('font-size', 16px, 14px);
+    line-height: 1.5;
+    background-color: $color-grey-dark-bg;
+    border: 1px solid $color-bg-dark;
+    border-radius: 5px;
+    padding: 9px 17px;
+    margin-left: 20px;
+    margin-right: 20px;
+    transition:
+      background-color 0.4s ease 0s,
+      color 0.4s ease 0s;
+    @include animatebtn;
+
+    @include hover {
+      background-color: $color-bg-dark;
+      color: $color-gray-light;
+    }
+  }
+}

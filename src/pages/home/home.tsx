@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { sdkService } from '@commercetool/sdk.service';
 import { Banner, Footer, Header } from '@components/index';
-import { useAuth } from '@contexts//authProvider';
+import { useAuth } from '@contexts/authProvider';
 import { useToast } from '@contexts/toastProvider';
 import { useEffect } from 'react';
+import { NewArrivals } from '../../components/NewArrivals/NewArrivals';
 import styles from './home.module.scss';
 
 export function Home() {
@@ -32,6 +34,7 @@ export function Home() {
           <Header />
           <Banner />
         </div>
+        <NewArrivals />
       </div>
       <Footer />
       {customToast({ position: 'top-center', autoClose: 2000 })}
