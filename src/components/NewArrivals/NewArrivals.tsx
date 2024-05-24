@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Container } from '../Container/Container';
 import { NewArrivalsCard, NewArrivalsCardType } from '../NewArrivalsCard/NewArrivalsCard';
-import styles from './_NewArrivals.module.scss';
+import styles from './NewArrivals.module.scss';
 
 interface NewArrivalsProps {
   id?: string;
