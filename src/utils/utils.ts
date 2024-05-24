@@ -53,3 +53,19 @@ export function prepareBrands(types: ProductType[]): string[] {
   );
   return [...brands];
 }
+
+export function prepareSizes(types: ProductType[]): string[] {
+  const sizes = new Set(
+    types.reduce<string[]>((acc, el) => {
+      const brandAttribute = isNotNullable(el.attributes).find(attr => attr.name === 'size');
+      if (brandAttribute) {
+        const brandValues = ((brandAttribute.type as AttributeSetType).elementType as AttributeEnumType).values.map(
+          value => value.label
+        );
+        acc.push(...brandValues);
+      }
+      return acc;
+    }, [])
+  );
+  return [...sizes];
+}

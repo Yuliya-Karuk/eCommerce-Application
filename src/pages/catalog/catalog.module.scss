@@ -54,14 +54,20 @@
   @include mobile {
     display: none;
   }
-  gap: 20px;
+  gap: 25px;
   width: 20%;
   max-width: 240px;
   font-family: Questrial, sans-serif;
 }
 
-.filters-title {
+.filters-heading {
   @include adaptiveValue('font-size', 32px, 24px);
+  padding-bottom: 10px;
+  border-bottom: 1px solid $color-gray-dark;
+}
+
+.filters-title {
+  @include adaptiveValue('font-size', 24px, 20px);
   padding-bottom: 10px;
   border-bottom: 1px solid $color-gray-dark;
 }

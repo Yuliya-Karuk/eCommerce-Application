@@ -1,15 +1,26 @@
-.brand-filters {
+.filter {
+  width: 100%;
+  gap: 10px;
   @include flex(flex-start, flex-start, column);
+  padding-bottom: 5px;
+}
+
+.filters-list {
+  display: none;
   @include adaptiveValue('font-size', 16px, 14px);
   gap: 15px;
   line-height: 1.2;
+
+  &.open {
+    @include flex(flex-start, flex-start, column);
+  }
 }
 
-.brand-filter-input {
+.filter-input {
   @extend %visually-hidden;
 }
 
-.brand-filter-label {
+.filter-label {
   @extend %transition;
   cursor: pointer;
   position: relative;
@@ -41,6 +52,31 @@
   }
 }
 
-.brand-filter-input:checked + .brand-filter-label::after {
+.filter-input:checked + .filter-label::after {
   display: block;
+}
+
+.filter-heading {
+  width: 100%;
+  @include flex(space-between, center);
+  cursor: pointer;
+  padding-bottom: 15px;
+  border-bottom: 1px solid $color-gray-dark;
+}
+
+.filter-title {
+  @include adaptiveValue('font-size', 20px, 18px);
+}
+
+.filter-span {
+  display: block;
+  width: 15px;
+  height: 15px;
+  background: no-repeat center url('../../assets/plus.svg');
+  background-size: contain;
+
+  &.open {
+    background: no-repeat center url('../../assets/minus.svg');
+    background-size: contain;
+  }
 }

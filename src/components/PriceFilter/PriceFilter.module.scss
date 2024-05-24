@@ -1,0 +1,68 @@
+.filter {
+  width: 100%;
+  gap: 10px;
+  @include flex(flex-start, center, column);
+  padding-bottom: 5px;
+}
+
+.filter-heading {
+  width: 100%;
+  @include flex(space-between, center);
+  cursor: pointer;
+  padding-bottom: 15px;
+  border-bottom: 1px solid $color-gray-dark;
+}
+
+.filter-title {
+  @include adaptiveValue('font-size', 20px, 18px);
+}
+
+.filter-span {
+  display: block;
+  width: 15px;
+  height: 15px;
+  background: no-repeat center url('../../assets/plus.svg');
+  background-size: contain;
+
+  &.open {
+    background: no-repeat center url('../../assets/minus.svg');
+    background-size: contain;
+  }
+}
+
+.slider-container {
+  padding: 10px 0;
+  width: 90%;
+  display: none;
+
+  &.open {
+    display: block;
+  }
+}
+
+.slider {
+  align-items: center;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  margin: 10px 0;
+}
+
+.thumb {
+  height: 12px;
+  width: 12px;
+  top: -5px;
+  background: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.track {
+  background: #fff;
+}
+
+.priceLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}

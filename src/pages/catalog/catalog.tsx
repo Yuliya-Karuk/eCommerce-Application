@@ -4,13 +4,14 @@ import catalogPlants from '@assets/catalog-plants.webp';
 import catalogPots from '@assets/catalog-pots.webp';
 import { sdkService } from '@commercetool/sdk.service';
 import { ProductProjection, ProductType } from '@commercetools/platform-sdk';
-import { BrandFilter } from '@components/BrandFilter/BrandFilter';
 import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
 import { CategoryFilter } from '@components/CategoryFilter/CategoryFilter';
+import { CheckboxFilter } from '@components/ChekboxFilter/CheckboxFilter';
 import { Header } from '@components/index';
+import { PriceFilter } from '@components/PriceFilter/PriceFilter';
 import { ProductCard } from '@components/ProductCard/ProductCard';
 import { CategoryList, CustomCategory } from '@models/index';
-import { prepareBrands, prepareCategories } from '@utils/utils';
+import { prepareBrands, prepareCategories, prepareSizes } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import styles from './catalog.module.scss';
 
@@ -29,12 +30,17 @@ export function Catalog() {
     id: '',
   });
   const [brands, setBrands] = useState<string[]>([]);
+  const [sizes, setSizes] = useState<string[]>([]);
   const [products, setProducts] = useState<ProductProjection[]>([]);
 
   const getTypes = async () => {
     const data: ProductType[] = await sdkService.getProductsTypes();
+    console.log(data);
     setBrands(prepareBrands(data));
+    setSizes(prepareSizes(data));
     setCategories(prepareCategories(data));
+    const bal = await sdkService.filterProductsByAttribute();
+    console.log(bal);
   };
 
   const getProducts = async () => {
@@ -70,14 +76,15 @@ export function Catalog() {
       <Breadcrumbs activeCategory={activeCategory.name} />
       <div className={styles.catalogContainer}>
         <div className={styles.filters}>
-          <h2 className={styles.filtersTitle}>Browse by</h2>
+          <h2 className={styles.filtersHeading}>Filter by</h2>
           <CategoryFilter
             categories={categories}
             activeCategory={activeCategory.name}
             setActiveCategory={setActiveCategory}
           />
-          <h2 className={styles.filtersTitle}>Filter by</h2>
-          <BrandFilter brands={brands} />
+          <PriceFilter />
+          <CheckboxFilter values={brands} name="Brands" />
+          <CheckboxFilter values={sizes} name="Sizes" />
         </div>
         <div className={styles.catalogContent}>
           <div className={styles.catalogImgContainer}>
