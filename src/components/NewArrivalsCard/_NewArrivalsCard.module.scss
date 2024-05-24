@@ -60,7 +60,10 @@
     transition:
       background-color 0.4s ease 0s,
       color 0.4s ease 0s;
-    @include animatebtn;
+
+    &[type='button'] {
+      @include animatebtn;
+    }
 
     @include hover {
       background-color: $color-bg-dark;

@@ -35,6 +35,10 @@
     @include hover {
       background-color: $color-green-dark;
     }
+
+    &[type='button'] {
+      @include animatebtn;
+    }
   }
 
   &-list {

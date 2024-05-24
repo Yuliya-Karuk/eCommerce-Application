@@ -1,4 +1,6 @@
+import { AppRoutes } from '@router/routes';
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container } from '../Container/Container';
 import { NewArrivalsCard, NewArrivalsCardType } from '../NewArrivalsCard/NewArrivalsCard';
 import styles from './NewArrivals.module.scss';
@@ -31,15 +33,25 @@ const cards = [
 ];
 
 export const NewArrivals: FC<NewArrivalsProps> = ({ id, ...props }) => {
+  const navigate = useNavigate();
   return (
     <section className={styles.newarrivals}>
       <Container classname={styles.newarrivals}>
         <div className={styles.newarrivalsBody}>
           <div className={styles.newarrivalsHeader}>
             <h2 className={styles.newarrivalsTitle}>New Arrivals</h2>
-            <a className={styles.newarrivalsShopall} href="!#">
+            <button
+              type="button"
+              className={styles.newarrivalsShopall}
+              onClick={() => {
+                navigate(AppRoutes.CATALOG_ROUTE);
+              }}
+            >
               Shop All
-            </a>
+            </button>
+            {/* <a className={styles.newarrivalsShopall} href="!#">
+              Shop All
+            </a> */}
           </div>
 
           <div className={styles.newarrivalsList} {...props}>
