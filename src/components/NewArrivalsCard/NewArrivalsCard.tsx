@@ -3,6 +3,7 @@ import { AppRoutes } from '@router/routes';
 import { CategoryList, convertCentsToDollarsString, prepareProductSlugs } from '@utils/utils';
 import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
+import templateImage from '../../assets/template.png';
 import styles from './NewArrivalsCard.module.scss';
 
 interface NewArrivalsCardProps {
@@ -26,10 +27,7 @@ export const NewArrivalsCard: FC<NewArrivalsCardProps> = ({ product, categories,
         }}
       >
         <img
-          src={
-            (product.masterVariant.images && product.masterVariant.images[isImgHover ? 1 : 0].url) ||
-            'images/New Arrivals/template.png'
-          }
+          src={(product.masterVariant.images && product.masterVariant.images[isImgHover ? 1 : 0].url) || templateImage}
           alt={product.name['en-US']}
           loading="lazy"
         />

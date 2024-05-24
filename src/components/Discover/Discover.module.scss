@@ -1,0 +1,108 @@
+.discover {
+  @include flex(null, null, column);
+  font-family: Forum, Arial, Helvetica, serif;
+}
+
+.banner {
+  @include flex(center, center, column);
+  row-gap: calc(3% - 10px);
+  padding: 4.5%;
+
+  &-title {
+    @include adaptiveValue('font-size', 34px, 20px);
+    text-align: center;
+  }
+
+  &-text {
+    @include adaptiveValue('font-size', 200px, 85px);
+    text-align: center;
+    transition: transform 0.8s ease 0s;
+    padding: 10px;
+
+    &::before {
+      transition: background 0.8s ease 1s;
+      will-change: background;
+      transform: translateZ(0);
+    }
+
+    &:hover {
+      position: relative;
+      transform: scale(0.985);
+
+      &::before {
+        content: '';
+        display: inline-block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: linear-gradient(
+          180deg,
+          $color-discovery-gradient-top 0,
+          $color-discovery-gradient-middle 45%,
+          $color-discovery-gradient-bottom 100%
+        );
+      }
+    }
+  }
+}
+
+.links {
+  display: grid;
+  grid-template: 32rem 28rem / calc(74% - 2.5px) calc(26% - 2.5px);
+  gap: 5px;
+
+  @include tablet {
+    grid-template: 28rem 24rem / calc(66% - 2.5px) calc(34% - 2.5px);
+  }
+
+  @include smalltablet {
+    grid-template: 22rem 18rem / calc(62% - 2.5px) calc(38% - 2.5px);
+  }
+
+  @include mobile {
+    grid-template: repeat(3, 100px) / 1fr;
+  }
+
+  &-plants,
+  &-pots,
+  &-collections {
+    @include responsiveImage;
+    @include membrane(5);
+
+    img {
+      transition: transform 0.8s linear 0s;
+    }
+
+    &::before {
+      content: attr(title);
+      @include flex(center);
+      font-family: Forum, Arial, Helvetica, serif;
+      @include adaptiveValue('font-size', 34px, 20px);
+      text-align: center;
+      transition: opacity 0.8s ease 0s;
+      will-change: opacity;
+      transform: translateZ(0);
+      pointer-events: none;
+    }
+
+    @include hover {
+      img {
+        transform: scale(1.1);
+      }
+
+      &::before {
+        opacity: 0;
+      }
+    }
+  }
+
+  &-plants {
+    grid-row: span 2;
+
+    @include mobile {
+      grid-row: span 1;
+    }
+  }
+}
