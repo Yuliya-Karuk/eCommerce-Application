@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import catalogAll from '@assets/catalog-all.webp';
 import catalogCollections from '@assets/catalog-collections.webp';
 import catalogPlants from '@assets/catalog-plants.webp';
@@ -11,6 +12,8 @@ import { ColorFilter } from '@components/ColorFilter/ColorFilter';
 import { Header } from '@components/index';
 import { PriceFilter } from '@components/PriceFilter/PriceFilter';
 import { ProductCard } from '@components/ProductCard/ProductCard';
+import { Search } from '@components/Search/Search';
+import { Sorting } from '@components/Sorting/Sorting';
 import { CategoryList, CustomCategory } from '@models/index';
 import { prepareBrands, prepareCategories, prepareColors, prepareSizes } from '@utils/utils';
 import { useEffect, useState } from 'react';
@@ -99,6 +102,8 @@ export function Catalog() {
             <img className={styles.catalogImg} src={CatalogImages[activeCategory.name] as string} alt="catalog img" />
           </div>
           <h2>{activeCategory.name}</h2>
+          <Search />
+          <Sorting />
           <div className={styles.catalogProducts}>
             <ul className={styles.catalogList}>
               {products.map(product => (
