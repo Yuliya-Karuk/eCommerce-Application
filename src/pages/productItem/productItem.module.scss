@@ -1,26 +1,28 @@
 .wrapper {
   @include flex(flex-start, flex-start, column, 15px);
   padding: 20px;
-  color: $default-text-сolor;
+  font-family: Forum, serif;
+  color: $default-text-color;
   background-color: $color-bg-light;
 
   .path {
-    @include font(1.8rem, normal, 1.6);
+    @include font(2rem, normal, 1.6);
   }
 
   .product-overview {
     @include flex(flex-start, flex-start, row, 15px);
     flex-wrap: wrap;
+    width: 100%;
 
     .slider-wrapper {
       @include flex(center);
       position: relative;
-      flex: 0 1 300px;
+      flex: 0 1 40dvw;
       background-color: $color-bg-slider;
 
       .slider-img {
-        width: 300px;
-        height: 400px;
+        width: 40dvw;
+        height: 50dvw;
 
         & img {
           height: 100%;
@@ -31,16 +33,16 @@
 
     .product-summary {
       @include flex(flex-start, flex-start, column, 15px);
-      @include font(2rem, normal, 1.2);
+      @include font(2.5rem, normal, 1.2);
       flex: 1 1 400px;
       width: 100%;
 
       &-header {
-        font-size: 3.4rem;
+        font-size: 4rem;
       }
 
       .sku {
-        font-size: 1.5rem;
+        font-size: 2rem;
         color: $color-gray-dark;
       }
 
@@ -49,7 +51,7 @@
 
         .full-price {
           &-line-through {
-            font-size: 1.5rem;
+            font-size: 2rem;
             color: $color-gray-dark;
             text-decoration: line-through;
           }
@@ -61,24 +63,8 @@
         }
       }
 
-      .attributes {
-        @include flex(flex-start, flex-start, column, 10px);
-
-        &-item {
-          .name {
-            margin-bottom: 8px;
-            color: $color-gray-dark;
-          }
-
-          .value {
-            font-size: 1.5rem;
-            text-align: justify;
-          }
-        }
-      }
-
       .buttons-wrapper {
-        @include flex(flex-end, center, row, 10px);
+        @include flex(flex-start, center, row, 10px);
         width: 100%;
         margin-top: 25px;
 
@@ -97,6 +83,7 @@
 
         .add-to-favorite-button {
           @extend %transition;
+          position: relative;
           width: 40px;
           height: 40px;
           padding: 0;
@@ -108,6 +95,15 @@
           }
         }
       }
+
+      .title {
+        color: $color-gray-dark;
+      }
+
+      .description-text {
+        font-size: 1.8rem;
+        text-align: justify;
+      }
     }
   }
 
@@ -116,7 +112,43 @@
     text-align: justify;
 
     .description-header {
-      @include font(2.5rem, normal, 1.6);
+      @include font(2.5rem, bold, 1.6);
     }
+  }
+}
+
+.loader {
+  @include flex(center);
+  height: 100dvh;
+  font-size: 3rem;
+}
+
+.heart-animation {
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  animation:
+    fly-up 0.5s ease-out forwards,
+    fadeOut 0.4s forwards;
+}
+
+@keyframes fly-up {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-100px);
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
   }
 }

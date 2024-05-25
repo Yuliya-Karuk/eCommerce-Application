@@ -1,0 +1,35 @@
+.attributes {
+  @include flex(flex-start, flex-start, column, 20px);
+
+  .title {
+    color: $color-gray-dark;
+  }
+
+  .options {
+    @include flex(flex-start, end, row, 5px);
+
+    &-variants {
+      @include flex(flex-start, end, row, 5px);
+      color: $color-gray-dark;
+      text-decoration: underline;
+
+      > * {
+        font-size: 2rem;
+        color: inherit;
+      }
+
+      > .active {
+        cursor: default;
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: $default-text-color;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .description-text {
+    font-size: 2rem;
+    text-align: justify;
+  }
+}

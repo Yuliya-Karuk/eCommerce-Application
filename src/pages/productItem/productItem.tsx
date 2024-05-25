@@ -1,7 +1,9 @@
 import heart from '@assets/heart.svg';
 import { sdkService } from '@commercetool/sdk.service';
-import { Product } from '@commercetools/platform-sdk';
-import { convertCentsToDollarsString } from '@utils/utils';
+import { Product, ProductVariant } from '@commercetools/platform-sdk';
+import ProductAttributesView, { ProductAttributes } from '@components/ProductAttributes/ProductAttributesView';
+import QuantityInput from '@components/QuantityInput/QuantityInput';
+import { convertCentsToDollarsString, convertProductAttributesArrayToObject } from '@utils/utils';
 import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 import ReactImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
@@ -18,13 +20,18 @@ export function ProductItem() {
 
   const galleryRef = useRef<ReactImageGallery>(null);
 
+  const [showHeart, setShowHeart] = useState(false);
   const [product, setProduct] = useState<Product>({} as Product);
   const [loading, setLoading] = useState<boolean>(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [activeVariant, setActiveVariant] = useState<ProductVariant>({} as ProductVariant);
+  const [quantity, setQuantity] = useState(1);
 
   const getProduct = async () => {
     const data = await sdkService.getProductByKey(slug);
     setProduct(data);
+    // console.log(data);
+    setActiveVariant(data.masterData.current.masterVariant);
   };
 
   useEffect(() => {
@@ -34,7 +41,6 @@ export function ProductItem() {
 
   useEffect(() => {
     if (product.masterData?.current) {
-      console.log(product.masterData.current);
       setLoading(false);
     }
   }, [product]);
@@ -43,24 +49,39 @@ export function ProductItem() {
     setIsFullscreen(isFullScreen);
   };
 
+  const handleFavoriteClick = () => {
+    setShowHeart(true);
+    setTimeout(() => {
+      setShowHeart(false);
+    }, 400);
+  };
+
   if (loading) {
-    return <div>it was here somewhere... Wait, please, i will find it....</div>;
+    return <div className={styles.loader}>it was here somewhere... Wait, please, i will find it....</div>;
   }
 
   const name = product.masterData.current.name['en-US'];
-  const { sku } = product.masterData.current.masterVariant;
-
-  const fullPrice: string = product.masterData.current.masterVariant.prices
-    ? convertCentsToDollarsString(product.masterData.current.masterVariant.prices[0].value.centAmount)
+  const { sku } = activeVariant;
+  const fullPrice: string = activeVariant.prices
+    ? convertCentsToDollarsString(activeVariant.prices[0].value.centAmount)
     : '';
-
-  const hasDiscount = !!product.masterData.current.masterVariant.prices?.[0].discounted?.value.centAmount;
-
-  const priceWithDiscount = product.masterData.current.masterVariant.prices?.[0].discounted?.value.centAmount
-    ? convertCentsToDollarsString(product.masterData.current.masterVariant.prices[0].discounted.value.centAmount)
+  const hasDiscount = !!activeVariant.prices?.[0].discounted?.value.centAmount;
+  const priceWithDiscount = activeVariant.prices?.[0].discounted?.value.centAmount
+    ? convertCentsToDollarsString(activeVariant.prices[0].discounted.value.centAmount)
     : '';
-
   const { images } = product.masterData.current.masterVariant;
+  const { variants } = product.masterData.current;
+  const { attributes } = activeVariant;
+  const allAttributes: ProductAttributes[] = [];
+  if (attributes) {
+    allAttributes.push(convertProductAttributesArrayToObject(product.masterData.current.masterVariant.attributes));
+  }
+  variants.forEach(variant => {
+    if (variant.attributes) {
+      allAttributes.push(convertProductAttributesArrayToObject(variant.attributes));
+    }
+  });
+
   const slides: ReactImageGalleryItem[] = [];
   images?.forEach(image => {
     const slideItem: ReactImageGalleryItem = {
@@ -93,14 +114,12 @@ export function ProductItem() {
             showBullets
             lazyLoad
             autoPlay
-            showThumbnails={false}
+            showThumbnails={!!isFullscreen}
             useBrowserFullscreen={false}
             items={slides}
             onScreenChange={handleScreenChange}
             showFullscreenButton={false}
             onClick={handleImageClick}
-            // additionalClass={isFullscreen ? '' : styles.sliderImg}
-            // additionalClass={styles.sliderImg}
           />
         </div>
         <section className={styles.productSummary}>
@@ -118,21 +137,28 @@ export function ProductItem() {
             <div className={styles.priceWithDiscount}>{priceWithDiscount}</div>
           </div>
 
-          <div className={styles.attributes}>
-            {product.masterData.current.masterVariant.attributes?.map(item => (
-              <div key={item.name} className={styles.attributesItem}>
-                <div className={styles.name}>{item.name}:</div>
-                <div className={styles.value}>{item.value[0].toString()}</div>
-              </div>
-            ))}
-          </div>
+          <ProductAttributesView
+            activeAttributes={convertProductAttributesArrayToObject(attributes)}
+            allAttributes={allAttributes}
+            setActiveVariant={setActiveVariant}
+            product={product}
+          />
+
           <div className={styles.buttonsWrapper}>
+            <div className={styles.quantitySelector}>
+              <QuantityInput value={quantity} onChange={setQuantity} />
+            </div>
             <button type="button" className={styles.addToCartButton}>
               add to cart
             </button>
-            <button type="button" className={styles.addToFavoriteButton}>
+            <button type="button" className={styles.addToFavoriteButton} onClick={handleFavoriteClick}>
               <img src={heart} alt="add to favorite" />
+              {showHeart && <img className={styles.heartAnimation} src={heart} alt="flying heart" />}
             </button>
+          </div>
+          <div>
+            <div className={styles.title}>Description:</div>
+            <div className={styles.descriptionText}>{allAttributes[0].details}</div>
           </div>
         </section>
       </div>
