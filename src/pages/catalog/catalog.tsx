@@ -15,8 +15,9 @@ import { ProductCard } from '@components/ProductCard/ProductCard';
 import { Search } from '@components/Search/Search';
 import { Sorting } from '@components/Sorting/Sorting';
 import { CategoryList, CustomCategory } from '@models/index';
-import { prepareBrands, prepareCategories, prepareColors, prepareSizes } from '@utils/utils';
+import { prepareBrands, prepareColors, prepareSizes, simplifyCategories } from '@utils/utils';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import styles from './catalog.module.scss';
 
 const CatalogImages: { [key: string]: string } = {
@@ -26,52 +27,78 @@ const CatalogImages: { [key: string]: string } = {
   Collections: catalogCollections,
 };
 
+const startCategory = {
+  name: 'All Products',
+  id: '',
+  slug: [''],
+  children: {},
+  parent: '',
+};
+
+// сделать проверку на активную категорию и слаг
 export function Catalog() {
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<CategoryList>({});
-  const [activeCategory, setActiveCategory] = useState<CustomCategory>({
-    name: '',
-    id: '',
-  });
+  const [activeCategory, setActiveCategory] = useState<CustomCategory>(startCategory);
   const [brands, setBrands] = useState<string[]>([]);
   const [sizes, setSizes] = useState<string[]>([]);
   const [colors, setColors] = useState<string[]>([]);
   const [activeColor, setActiveColor] = useState<string>('');
   const [products, setProducts] = useState<ProductProjection[]>([]);
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log('URL changed to:', location.pathname);
+  }, [location]);
 
   const getTypes = async () => {
     const data: ProductType[] = await sdkService.getProductsTypes();
-    console.log(data);
+    // console.log(data);
     setBrands(prepareBrands(data));
     setSizes(prepareSizes(data));
     setColors(prepareColors(data));
-    setCategories(prepareCategories(data));
-    const bal = await sdkService.filterProductsByAttribute();
-    console.log(bal);
+    // setCategories(prepareCategories(data));
+    // const bal = await sdkService.filterProductsByAttribute();
+  };
+
+  const getCategories = async () => {
+    const data = await sdkService.getCategories();
+    const preparedData = simplifyCategories(data);
+    preparedData.default = startCategory;
+    setCategories(preparedData);
   };
 
   const getProducts = async () => {
-    const data = await sdkService.getProductsByType(activeCategory.id);
+    let data;
+    if (!activeCategory.id) {
+      data = await sdkService.getProducts();
+    } else {
+      console.log(activeCategory.id);
+      data = await sdkService.getProductsByCategory(activeCategory.id);
+    }
     setProducts(data);
     setIsLoading(false);
   };
 
   useEffect(() => {
     getTypes();
+    getCategories();
   }, []);
 
-  useEffect(() => {
-    if (Object.keys(categories).length > 0) {
-      setActiveCategory(categories.all);
-      setIsLoading(false);
-    }
-  }, [categories]);
+  // useEffect(() => {
+  //   if (Object.keys(categories).length > 0) {
+  //     setActiveCategory(categories.all);
+  //     setIsLoading(false);
+  //   }
+  // }, [categories]);
 
   useEffect(() => {
-    if (activeCategory.name !== '' && activeCategory.id !== '') {
-      getProducts();
-    }
+    getProducts();
   }, [activeCategory]);
+
+  useEffect(() => {
+    getProducts();
+  }, []);
 
   if (isLoading) {
     return <div>Loading</div>;
@@ -80,13 +107,13 @@ export function Catalog() {
   return (
     <div className={styles.catalog}>
       <Header />
-      <Breadcrumbs activeCategory={activeCategory.name} />
+      <Breadcrumbs activeCategory={activeCategory} />
       <div className={styles.catalogContainer}>
         <div className={styles.filters}>
           <h2 className={styles.filtersHeading}>Filter by</h2>
           <CategoryFilter
             categories={categories}
-            activeCategory={activeCategory.name}
+            activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
           />
           <PriceFilter />
@@ -99,7 +126,11 @@ export function Catalog() {
         </div>
         <div className={styles.catalogContent}>
           <div className={styles.catalogImgContainer}>
-            <img className={styles.catalogImg} src={CatalogImages[activeCategory.name] as string} alt="catalog img" />
+            <img
+              className={styles.catalogImg}
+              src={CatalogImages[activeCategory.name] || CatalogImages.Plants}
+              alt="catalog img"
+            />
           </div>
           <h2>{activeCategory.name}</h2>
           <Search />

@@ -1,5 +1,6 @@
 import {
   ByProjectKeyRequestBuilder,
+  Category,
   ClientResponse,
   createApiBuilderFromCtpClient,
   CustomerDraft,
@@ -84,42 +85,31 @@ export class SdkService {
     this.createAnonymousClient();
   }
 
-  // удалить потом - пока нужен для формата
-  // public async getProducts(): Promise<ProductProjection[]> {
-  //   try {
-  //     const data = await this.apiRoot
-  //       .productProjections()
-  //       .search()
-  //       .get({
-  //         queryArgs: {
-  //           filter: [
-  //             `productType.id:"94600ee8-025b-4519-a207-1f08fa220837","674a579b-0e25-4cfb-8cc7-b38c539fd609","7eb85544-1840-44ad-9b41-82db77674d06"`,
-  //           ],
-  //         },
-  //       })
-  //       .execute();
-  //     return data.body.results;
-  //   } catch (error) {
-  //     throw new Error(CustomErrors.SERVER_ERROR);
-  //   }
-  // }
+  public async getProducts(): Promise<ProductProjection[]> {
+    const data = await this.apiRoot.productProjections().search().get().execute();
+    return data.body.results;
+  }
 
-  public async getProductsByType(productTypeId: string): Promise<ProductProjection[]> {
+  public async getProductsByCategory(categoryId: string): Promise<ProductProjection[]> {
     const data = await this.apiRoot
       .productProjections()
       .search()
       .get({
         queryArgs: {
-          filter: [`productType.id:${productTypeId}`],
+          filter: [`categories.id:"${categoryId}"`],
         },
       })
       .execute();
-    console.log(data.body.results);
     return data.body.results;
   }
 
   public async getProductsTypes(): Promise<ProductType[]> {
     const data = await this.apiRoot.productTypes().get().execute();
+    return data.body.results;
+  }
+
+  public async getCategories(): Promise<Category[]> {
+    const data = await this.apiRoot.categories().get().execute();
     return data.body.results;
   }
 

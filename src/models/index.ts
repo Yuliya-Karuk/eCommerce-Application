@@ -6,6 +6,9 @@ export interface LoginFormData {
 export interface CustomCategory {
   name: string;
   id: string;
+  slug: string[];
+  children: CategoryList;
+  parent: string;
 }
 
 export type CategoryList = {

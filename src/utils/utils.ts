@@ -1,4 +1,4 @@
-import { AttributeEnumType, AttributeSetType, ProductType } from '@commercetools/platform-sdk';
+import { AttributeEnumType, AttributeSetType, Category, ProductType } from '@commercetools/platform-sdk';
 import { CategoryList } from '@models/index';
 
 export function isNotNullable<T>(value: T): NonNullable<T> {
@@ -18,24 +18,62 @@ export function convertCentsToDollarsString(num: number, fractionDigits = 2): st
   });
 }
 
-export function prepareCategories(types: ProductType[]): CategoryList {
-  const customCategories = types.reduce(
-    (acc, result) => {
-      acc[result.name.toLowerCase()] = {
-        name: result.name,
-        id: `"${result.id}"`,
-      };
-      return acc;
-    },
-    {} as { [key: string]: { name: string; id: string } }
-  );
+// export function prepareCategories(types: ProductType[]): CategoryList {
+//   const customCategories = types.reduce(
+//     (acc, result) => {
+//       acc[result.name.toLowerCase()] = {
+//         name: result.name,
+//         id: `"${result.id}"`,
+//       };
+//       return acc;
+//     },
+//     {} as { [key: string]: { name: string; id: string } }
+//   );
 
-  customCategories.all = {
-    name: 'All Products',
-    id: types.map(oneType => `"${oneType.id}"`).join(','),
-  };
+//   customCategories.all = {
+//     name: 'All Products',
+//     id: types.map(oneType => `"${oneType.id}"`).join(','),
+//   };
+
+//   return customCategories;
+// }
+
+export function simplifyCategories(categories: Category[]): CategoryList {
+  const customCategories = categories.reduce((acc, result) => {
+    acc[result.id] = {
+      name: result.name['en-US'],
+      id: result.id,
+      slug: [result.slug['en-US']],
+      children: {} as CategoryList,
+      parent: result.parent?.id || '',
+    };
+    return acc;
+  }, {} as CategoryList);
+
+  categories.forEach(category => {
+    if (category.parent) {
+      customCategories[category.id].slug = [
+        ...customCategories[category.parent.id].slug,
+        ...customCategories[category.id].slug,
+      ];
+    }
+  });
 
   return customCategories;
+}
+
+export function prepareCategoryTree(categories: CategoryList) {
+  const rootCategories: CategoryList = {};
+
+  Object.entries(categories).forEach(([key, category]) => {
+    if (category.parent !== '') {
+      rootCategories[category.parent].children[key] = category;
+    } else {
+      rootCategories[key] = category;
+    }
+  });
+
+  return rootCategories;
 }
 
 export function prepareBrands(types: ProductType[]): string[] {
@@ -83,6 +121,5 @@ export function prepareColors(types: ProductType[]): string[] {
       return acc;
     }, [])
   );
-  console.log(colors);
   return [...colors];
 }
