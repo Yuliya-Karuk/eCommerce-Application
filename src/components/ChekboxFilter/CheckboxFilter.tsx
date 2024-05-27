@@ -34,7 +34,7 @@ export const CheckboxFilter = ({ filters, setFilters, values, name }: FiltersPro
               id={option}
               type="checkbox"
               value={option}
-              checked={filters[name]?.includes(option) || false}
+              checked={filters[name].includes(option) || false}
               onChange={handleCheckboxChange}
             />
             <label htmlFor={option} className={styles.filterLabel}>

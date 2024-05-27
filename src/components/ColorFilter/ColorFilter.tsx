@@ -16,14 +16,14 @@ const ColorsHex: { [key: string]: string } = {
 
 export const ColorFilter = ({ filters, setFilters, values, name }: FiltersProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const activeColor = filters[name]?.[0] || '';
 
   const handleColorClick = (color: string) => {
     const newFilters = { ...filters };
-    if (activeColor === color) {
-      newFilters[name] = [];
+    const checked = newFilters[name].includes(color);
+    if (!checked) {
+      newFilters[name] = [...newFilters[name], color];
     } else {
-      newFilters[name] = [color];
+      newFilters[name] = newFilters[name].filter((el: string) => el !== color);
     }
     setFilters(newFilters);
   };
@@ -31,9 +31,7 @@ export const ColorFilter = ({ filters, setFilters, values, name }: FiltersProps)
   return (
     <div className={styles.filter}>
       <div className={styles.filterHeading} onClick={() => setIsOpen(!isOpen)}>
-        <h3 className={styles.filterTitle}>
-          {name}: <em>{activeColor}</em>
-        </h3>
+        <h3 className={styles.filterTitle}>{name}</h3>
         <span className={classnames(styles.filterSpan, { [styles.open]: isOpen })} />
       </div>
       {isOpen && (
@@ -43,7 +41,7 @@ export const ColorFilter = ({ filters, setFilters, values, name }: FiltersProps)
               type="button"
               key={color}
               className={classnames(styles.colorButton, {
-                [styles.active]: activeColor === color,
+                [styles.active]: filters[name].includes(color),
               })}
               style={{ backgroundColor: color in ColorsHex ? ColorsHex[color] : color }}
               onClick={() => handleColorClick(color)}

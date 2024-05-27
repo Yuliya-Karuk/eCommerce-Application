@@ -119,17 +119,17 @@ export class SdkService {
     return data.body;
   }
 
-  public async filterProductsByAttribute() {
+  public async filterProductsByAttribute(filterArr: string[]) {
     const data = await this.apiRoot
       .productProjections()
       .search()
       .get({
         queryArgs: {
-          filter: [`variants.prices.value.centAmount:range (${1000} to ${2500})`],
+          filter: [...filterArr],
         },
       })
       .execute();
-    return data.body;
+    return data.body.results;
   }
 }
 

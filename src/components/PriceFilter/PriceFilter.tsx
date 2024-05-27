@@ -15,7 +15,7 @@ export const PriceFilter = ({ filters, setFilters, name, values }: FiltersProps)
     setMinPrice(min);
     setMaxPrice(max);
     const newFilters = { ...filters };
-    newFilters[name] = [`${min}`, `${max}`];
+    newFilters[name] = [`${min * 100}`, `${max * 100}`];
     setFilters(newFilters);
   };
 

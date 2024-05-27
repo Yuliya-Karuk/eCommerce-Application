@@ -1,5 +1,5 @@
 import { AttributeEnumType, AttributeSetType, Category, ProductType } from '@commercetools/platform-sdk';
-import { CategoryList, CustomCategory, ProductCategory } from '@models/index';
+import { CategoryList, CustomCategory, Filters, ProductCategory } from '@models/index';
 
 export function isNotNullable<T>(value: T): NonNullable<T> {
   if (value === undefined || value === null) {
@@ -125,4 +125,43 @@ export function prepareProductSlugs(categories: CategoryList, productCategories:
   }, [] as string[]);
 
   return result;
+}
+
+export function prepareFilters(filters: Filters, categoryId: string) {
+  const filtersArr = [];
+
+  if (categoryId !== '') {
+    const categoryString = `categories.id:"${categoryId}"`;
+    filtersArr.push(categoryString);
+  }
+
+  if (filters.brands.length > 0) {
+    const brandString = `variants.attributes.brand.key:${filters.brands.map(el => `"${el}"`).join(',')}`;
+    filtersArr.push(brandString);
+  }
+  if (filters.color.length > 0) {
+    const colorString = `variants.attributes.color.key:${filters.color.map(el => `"${el}"`).join(',')}`;
+    filtersArr.push(colorString);
+  }
+  if (filters.sizes.length > 0) {
+    const sizeString = `variants.attributes.size.key:${filters.sizes.map(el => `"${el}"`).join(',')}`;
+    filtersArr.push(sizeString);
+  }
+  if (filters.price.length > 0) {
+    const priceString = `variants.prices.value.centAmount:range (${filters.price[0] || ''} to ${filters.price[1] || ''})`;
+    filtersArr.push(priceString);
+  }
+
+  return filtersArr;
+}
+
+export function prepareQuery(queryParams: URLSearchParams, filters: Filters) {
+  const newFilters = { ...filters };
+  Object.keys(filters).forEach(el => {
+    const value = queryParams.get(el);
+    if (value) {
+      newFilters[el] = value.split(',');
+    }
+  });
+  return newFilters;
 }

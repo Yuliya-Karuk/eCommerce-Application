@@ -15,9 +15,18 @@ import { ProductCard } from '@components/ProductCard/ProductCard';
 import { Search } from '@components/Search/Search';
 import { Sorting } from '@components/Sorting/Sorting';
 import { CategoryList, CustomCategory, Filters } from '@models/index';
-import { findCategoryBySlug, prepareBrands, prepareColors, prepareSizes, simplifyCategories } from '@utils/utils';
+import { AppRoutes } from '@router/routes';
+import {
+  findCategoryBySlug,
+  prepareBrands,
+  prepareColors,
+  prepareFilters,
+  prepareQuery,
+  prepareSizes,
+  simplifyCategories,
+} from '@utils/utils';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './catalog.module.scss';
 
 const defaultPriceBorder = ['5.99', '100.00'];
@@ -37,16 +46,7 @@ const startCategory = {
   parent: '',
 };
 
-// const defaultFilter = {
-//   'categories.id:': [],
-//   'variants.attributes.brand.key:': [],
-//   'variants.attributes.color.key:': [],
-//   'variants.attributes.size.key:': [],
-//   'variants.prices.value.centAmount:range (1000 to 2500)': [],
-// };
-
-const defaultFilter = {
-  category: [],
+const defaultFilter: Filters = {
   brands: [],
   color: [],
   sizes: [],
@@ -62,16 +62,16 @@ export function Catalog() {
   const [sizes, setSizes] = useState<string[]>([]);
   const [colors, setColors] = useState<string[]>([]);
   const [products, setProducts] = useState<ProductProjection[]>([]);
-  const [filters, setFilters] = useState<Filters>(defaultFilter);
   const location = useLocation();
+  const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+  const [filters, setFilters] = useState<Filters>(prepareQuery(queryParams, defaultFilter));
 
   const getTypes = async () => {
     const data: ProductType[] = await sdkService.getProductsTypes();
     setBrands(prepareBrands(data));
     setSizes(prepareSizes(data));
     setColors(prepareColors(data));
-    const bal = await sdkService.filterProductsByAttribute();
-    console.log(bal);
   };
 
   const getCategories = async () => {
@@ -82,19 +82,35 @@ export function Catalog() {
   };
 
   const getProducts = async () => {
-    let data;
-    if (!activeCategory.id) {
-      data = await sdkService.getProducts();
-    } else {
-      data = await sdkService.getProductsByCategory(activeCategory.id);
-    }
+    const preparedFilters = prepareFilters(filters, activeCategory.id);
+
+    const data = await sdkService.filterProductsByAttribute(preparedFilters);
+
     setProducts(data);
     setIsLoading(false);
+  };
+
+  const handleFilterUpdate = () => {
+    Object.keys(filters).forEach(key => {
+      if (filters[key].length > 0) {
+        queryParams.set(key, filters[key].join(','));
+      } else {
+        queryParams.delete(key);
+      }
+    });
+
+    navigate({ search: queryParams.toString() });
+  };
+
+  const handleClearFilters = () => {
+    setFilters(defaultFilter);
+    navigate(`${AppRoutes.CATALOG_ROUTE}/${activeCategory.slug}`);
   };
 
   useEffect(() => {
     getTypes();
     getCategories();
+    getProducts();
   }, []);
 
   useEffect(() => {
@@ -106,17 +122,12 @@ export function Catalog() {
 
   useEffect(() => {
     getProducts();
-  }, [activeCategory]);
-
-  useEffect(() => {
-    getProducts();
-  }, []);
+    handleFilterUpdate();
+  }, [activeCategory, filters]);
 
   if (isLoading) {
     return <div>Loading</div>;
   }
-
-  console.log(filters);
 
   return (
     <div className={styles.catalog}>
@@ -124,17 +135,18 @@ export function Catalog() {
       <Breadcrumbs activeCategory={activeCategory} />
       <div className={styles.catalogContainer}>
         <div className={styles.filters}>
-          <h2 className={styles.filtersHeading}>Filter by</h2>
+          <h2 className={styles.filtersHeading}>Browse by</h2>
           <CategoryFilter
             categories={categories}
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
           />
+          <h2 className={styles.filtersHeading}>Filter by</h2>
           <PriceFilter filters={filters} setFilters={setFilters} values={defaultPriceBorder} name="price" />
           <CheckboxFilter filters={filters} setFilters={setFilters} values={brands} name="brands" />
           <ColorFilter filters={filters} setFilters={setFilters} values={colors} name="color" />
           <CheckboxFilter filters={filters} setFilters={setFilters} values={sizes} name="sizes" />
-          <button type="button" className={styles.filtersButton}>
+          <button type="button" className={styles.filtersButton} onClick={handleClearFilters}>
             Clear all
           </button>
         </div>
