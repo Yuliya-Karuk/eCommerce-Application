@@ -26,6 +26,14 @@ interface ColorOption {
   index: number;
 }
 
+type SizeKey = 'S' | 'M' | 'L';
+
+const sizeDescriptions: Record<SizeKey, string> = {
+  S: 'Small',
+  M: 'Medium',
+  L: 'Large',
+};
+
 export default function ProductAttributesView({
   activeAttributes: { size, brand, color },
   allAttributes,
@@ -85,7 +93,7 @@ export default function ProductAttributesView({
                       }
                     }}
                   >
-                    {s}
+                    {sizeDescriptions[s as SizeKey]}
                   </button>
                 ))}
               </div>

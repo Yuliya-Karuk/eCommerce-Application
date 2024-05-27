@@ -2,6 +2,7 @@ import heart from '@assets/heart.svg';
 import { sdkService } from '@commercetool/sdk.service';
 import { Product, ProductVariant } from '@commercetools/platform-sdk';
 import ProductAttributesView, { ProductAttributes } from '@components/ProductAttributes/ProductAttributesView';
+import { ProductInfoSection } from '@components/ProductInfoSection/ProductInfoSection';
 import QuantityInput from '@components/QuantityInput/QuantityInput';
 import { convertCentsToDollarsString, convertProductAttributesArrayToObject } from '@utils/utils';
 import classNames from 'classnames';
@@ -30,7 +31,6 @@ export function ProductItem() {
   const getProduct = async () => {
     const data = await sdkService.getProductByKey(slug);
     setProduct(data);
-    // console.log(data);
     setActiveVariant(data.masterData.current.masterVariant);
   };
 
@@ -156,16 +156,10 @@ export function ProductItem() {
               {showHeart && <img className={styles.heartAnimation} src={heart} alt="flying heart" />}
             </button>
           </div>
-          <div>
-            <div className={styles.title}>Description:</div>
-            <div className={styles.descriptionText}>{allAttributes[0].details}</div>
-          </div>
+          <ProductInfoSection productInfoText={allAttributes[0].details} />
         </section>
       </div>
-      <div className={styles.productDescription}>
-        <h3 className={styles.descriptionHeader}>Description</h3>
-        <p>{product.masterData.current.description?.['en-US']}</p>
-      </div>
+      <div className={styles.productDescription}>{product.masterData.current.description?.['en-US']}</div>
     </div>
   );
 }
