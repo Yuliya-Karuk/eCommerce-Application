@@ -1,39 +1,29 @@
+import { sdkService } from '@commercetool/sdk.service';
+import { Product } from '@commercetools/platform-sdk';
 import { AppRoutes } from '@router/routes';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '../Container/Container';
-import { NewArrivalsCard, NewArrivalsCardType } from '../NewArrivalsCard/NewArrivalsCard';
+import { NewArrivalsCard } from '../NewArrivalsCard/NewArrivalsCard';
 import styles from './NewArrivals.module.scss';
 
 interface NewArrivalsProps {
   id?: string;
 }
 
-const cards = [
-  {
-    title: 'Ficus lyrata',
-    coast: 'p.35,99',
-    path: '/public/New Arrivals/Arrivals-1-1.png',
-  },
-  {
-    title: 'Rusty Flowerpot',
-    coast: 'p.20,99',
-    path: '/public/New Arrivals/Arrivals-2-1.png',
-  },
-  {
-    title: 'Cactus',
-    coast: 'p.19,99',
-    path: '/public/New Arrivals/Arrivals-3-1.png',
-  },
-  {
-    title: 'Wooden Basket',
-    coast: 'p.28,99',
-    path: '/public/New Arrivals/Arrivals-4-1.png',
-  },
-];
-
 export const NewArrivals: FC<NewArrivalsProps> = ({ id, ...props }) => {
   const navigate = useNavigate();
+  const [products, setProducts] = useState<Product[]>([]);
+  const updateProducts = async () => {
+    const prods = await sdkService.getProducts();
+    prods.sort((a, b) => new Date(a.lastModifiedAt).getTime() - new Date(b.lastModifiedAt).getTime());
+    setProducts(prods.slice(0, 4));
+  };
+
+  useEffect(() => {
+    updateProducts();
+  }, []);
+
   return (
     <section className={styles.newarrivals}>
       <Container classname={styles.newarrivals}>
@@ -55,8 +45,8 @@ export const NewArrivals: FC<NewArrivalsProps> = ({ id, ...props }) => {
           </div>
 
           <div className={styles.newarrivalsList} {...props}>
-            {cards.map((card: NewArrivalsCardType, idx: number) => {
-              return <NewArrivalsCard key={card.path} card={card} id={`product-${idx + 1}`} />;
+            {products.map((product: Product) => {
+              return <NewArrivalsCard key={product.key} product={product} />;
             })}
           </div>
         </div>

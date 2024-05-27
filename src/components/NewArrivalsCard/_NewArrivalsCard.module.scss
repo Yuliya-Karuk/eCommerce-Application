@@ -3,13 +3,12 @@
     @include flex(null, null, column);
     color: $color-bg-dark;
     row-gap: 16px;
-    cursor: pointer;
   }
 
   &-cardimage {
     @include responsiveImage;
-    padding-bottom: 127.4%;
-    padding-left: 95.5%;
+    padding-bottom: 128.86%;
+    padding-left: 96.6%;
     max-width: 338px;
     min-width: 286px;
     margin: 0 auto;

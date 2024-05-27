@@ -1,42 +1,60 @@
+import { Product } from '@commercetools/platform-sdk';
 import { AppRoutes } from '@router/routes';
-import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FC, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './_NewArrivalsCard.module.scss';
 
-export type NewArrivalsCardType = {
-  title: string;
-  coast: string;
-  path: string;
-};
-
 interface NewArrivalsCardProps {
-  card: NewArrivalsCardType;
+  product: Product;
   id?: string;
 }
 
-export const NewArrivalsCard: FC<NewArrivalsCardProps> = ({ card, id, ...props }) => {
-  const navigate = useNavigate();
+export const NewArrivalsCard: FC<NewArrivalsCardProps> = ({ product, id, ...props }) => {
+  const [isImgHover, setIsImgHover] = useState(false);
 
   return (
-    <article className={styles.newarrivalsItem} id={id} {...props}>
-      <div className={styles.newarrivalsCardimage}>
-        <img src={card.path} alt="" />
+    <article className={styles.newarrivalsItem} id={product.id} {...props}>
+      <div
+        className={styles.newarrivalsCardimage}
+        onMouseEnter={() => {
+          setIsImgHover(true);
+        }}
+        onMouseLeave={() => {
+          setIsImgHover(false);
+        }}
+      >
+        <img
+          src={
+            (product.masterData.current.masterVariant.images &&
+              product.masterData.current.masterVariant.images[isImgHover ? 1 : 0].url) ||
+            'New Arrivals/template.png'
+          }
+          alt={product.masterData.current.name['en-US']}
+        />
       </div>
 
       <div className={styles.newarrivalsCardinfo}>
-        <p className={styles.newarrivalsCardtitle}>{card.title}</p>
-        <p className={styles.newarrivalsCardcoast}>{card.coast}</p>
+        <p className={styles.newarrivalsCardtitle}>{product.masterData.current.name['en-US']}</p>
+        <p className={styles.newarrivalsCardcoast}>
+          {(product.masterData.current.masterVariant.prices &&
+            new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: product.masterData.current.masterVariant.prices[0].value.currencyCode,
+            }).format(product.masterData.current.masterVariant.prices[0].value.centAmount / 1000)) ||
+            'Not available'}
+        </p>
       </div>
 
-      <button
+      <Link
+        to={
+          product.masterData.current.slug['en-US']
+            ? `${AppRoutes.PRODUCT_ROUTE}/${product.masterData.current.slug['en-US']}`
+            : '/'
+        }
         className={styles.newarrivalsCardbutton}
-        type="button"
-        onClick={() => {
-          navigate(`${AppRoutes.PRODUCT_ROUTE}/${id}`);
-        }}
       >
-        Add to Cart
-      </button>
+        Read more
+      </Link>
     </article>
   );
 };

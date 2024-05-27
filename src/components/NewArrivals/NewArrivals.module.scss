@@ -16,7 +16,7 @@
   &-title {
     font-weight: 400;
     color: $color-bg-dark;
-    @include adaptiveValue('font-size', 60px, 40px);
+    @include adaptiveValue('font-size', 60px, 35px);
   }
 
   &-shopall {
