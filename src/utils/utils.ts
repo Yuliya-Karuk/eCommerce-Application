@@ -1,5 +1,5 @@
 import { AttributeEnumType, AttributeSetType, Category, ProductType } from '@commercetools/platform-sdk';
-import { CategoryList, CustomCategory } from '@models/index';
+import { CategoryList, CustomCategory, ProductCategory } from '@models/index';
 
 export function isNotNullable<T>(value: T): NonNullable<T> {
   if (value === undefined || value === null) {
@@ -17,26 +17,6 @@ export function convertCentsToDollarsString(num: number, fractionDigits = 2): st
     currency: 'USD',
   });
 }
-
-// export function prepareCategories(types: ProductType[]): CategoryList {
-//   const customCategories = types.reduce(
-//     (acc, result) => {
-//       acc[result.name.toLowerCase()] = {
-//         name: result.name,
-//         id: `"${result.id}"`,
-//       };
-//       return acc;
-//     },
-//     {} as { [key: string]: { name: string; id: string } }
-//   );
-
-//   customCategories.all = {
-//     name: 'All Products',
-//     id: types.map(oneType => `"${oneType.id}"`).join(','),
-//   };
-
-//   return customCategories;
-// }
 
 export function simplifyCategories(categories: Category[]): CategoryList {
   const customCategories = categories.reduce((acc, result) => {
@@ -131,4 +111,18 @@ export function prepareColors(types: ProductType[]): string[] {
     }, [])
   );
   return [...colors];
+}
+
+export function prepareProductSlugs(categories: CategoryList, productCategories: ProductCategory[]) {
+  const slugs: string[][] = [];
+
+  productCategories.forEach(cat => {
+    slugs.push(categories[cat.id].slug);
+  });
+
+  const result: string[] = slugs.reduce((acc, curr) => {
+    return curr.length > acc.length ? curr : acc;
+  }, [] as string[]);
+
+  return result;
 }

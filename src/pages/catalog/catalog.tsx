@@ -17,7 +17,7 @@ import { Sorting } from '@components/Sorting/Sorting';
 import { CategoryList, CustomCategory } from '@models/index';
 import { findCategoryBySlug, prepareBrands, prepareColors, prepareSizes, simplifyCategories } from '@utils/utils';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import styles from './catalog.module.scss';
 
 const CatalogImages: { [key: string]: string } = {
@@ -35,7 +35,6 @@ const startCategory = {
   parent: '',
 };
 
-// сделать проверку на активную категорию и слаг
 export function Catalog() {
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<CategoryList>({});
@@ -46,6 +45,9 @@ export function Catalog() {
   const [activeColor, setActiveColor] = useState<string>('');
   const [products, setProducts] = useState<ProductProjection[]>([]);
   const location = useLocation();
+  const { category, subcategory, slug } = useParams();
+
+  console.log(category, subcategory, slug);
 
   const getTypes = async () => {
     const data: ProductType[] = await sdkService.getProductsTypes();
@@ -132,7 +134,7 @@ export function Catalog() {
           <div className={styles.catalogProducts}>
             <ul className={styles.catalogList}>
               {products.map(product => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard categories={categories} key={product.id} product={product} />
               ))}
             </ul>
           </div>

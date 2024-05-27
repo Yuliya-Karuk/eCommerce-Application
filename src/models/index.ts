@@ -14,3 +14,8 @@ export interface CustomCategory {
 export type CategoryList = {
   [key: string]: CustomCategory;
 };
+
+export interface ProductCategory {
+  id: string;
+  typeId: string;
+}

@@ -1,16 +1,19 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
+import { CategoryList } from '@models/index';
 import { AppRoutes } from '@router/routes';
-import { convertCentsToDollarsString, isNotNullable } from '@utils/utils';
+import { convertCentsToDollarsString, isNotNullable, prepareProductSlugs } from '@utils/utils';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import styles from './ProductCard.module.scss';
 
 interface ProductCardProps {
   product: ProductProjection;
+  categories: CategoryList;
 }
 
-export const ProductCard = ({ product }: ProductCardProps) => {
+export const ProductCard = ({ categories, product }: ProductCardProps) => {
   let priceDiscounted;
+  const slugs = prepareProductSlugs(categories, product.categories).join('/');
   const productName = product.name['en-US'];
   const productDesc = isNotNullable(product.description)['en-US'];
   const pricesArr = isNotNullable(product.masterVariant.prices);
@@ -23,7 +26,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <div className={styles.productCard}>
       <Link
-        to={product.key ? `${AppRoutes.PRODUCT_ROUTE}/${product.key}` : AppRoutes.HOME_ROUTE}
+        to={product.key ? `${AppRoutes.PRODUCTS_ROUTE}/${slugs}/${product.key}` : AppRoutes.HOME_ROUTE}
         className={styles.productCardImgContainer}
       >
         <img
@@ -34,7 +37,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         <p className={styles.productCardDescription}>{productDesc}</p>
       </Link>
       <Link
-        to={product.key ? `${AppRoutes.PRODUCT_ROUTE}/${product.key}` : AppRoutes.HOME_ROUTE}
+        to={product.key ? `${AppRoutes.PRODUCTS_ROUTE}/${slugs}/${product.key}` : AppRoutes.HOME_ROUTE}
         className={styles.productCardTitle}
       >
         {productName}
