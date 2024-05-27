@@ -4,7 +4,7 @@ import { Product, ProductVariant } from '@commercetools/platform-sdk';
 import ProductAttributesView, { ProductAttributes } from '@components/ProductAttributes/ProductAttributesView';
 import { ProductInfoSection } from '@components/ProductInfoSection/ProductInfoSection';
 import QuantityInput from '@components/QuantityInput/QuantityInput';
-import { Header } from '@components/index';
+import { Footer, Header } from '@components/index';
 import { convertCentsToDollarsString, convertProductAttributesArrayToObject } from '@utils/utils';
 import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
@@ -46,17 +46,6 @@ export function ProductItem() {
     }
   }, [product]);
 
-  const handleScreenChange = (isFullScreen: boolean) => {
-    setIsFullscreen(isFullScreen);
-  };
-
-  const handleFavoriteClick = () => {
-    setShowHeart(true);
-    setTimeout(() => {
-      setShowHeart(false);
-    }, 400);
-  };
-
   if (loading) {
     return <div className={styles.loader}>it was here somewhere... Wait, please, i will find it....</div>;
   }
@@ -66,10 +55,10 @@ export function ProductItem() {
   const fullPrice: string = activeVariant.prices
     ? convertCentsToDollarsString(activeVariant.prices[0].value.centAmount)
     : '';
-  const hasDiscount = !!activeVariant.prices?.[0].discounted?.value.centAmount;
   const priceWithDiscount = activeVariant.prices?.[0].discounted?.value.centAmount
     ? convertCentsToDollarsString(activeVariant.prices[0].discounted.value.centAmount)
     : '';
+  const hasDiscount = !!activeVariant.prices?.[0].discounted?.value.centAmount;
   const { images } = product.masterData.current.masterVariant;
   const { variants } = product.masterData.current;
   const { attributes } = activeVariant;
@@ -102,6 +91,27 @@ export function ProductItem() {
       }
       setIsFullscreen(!isFullscreen);
     }
+  };
+
+  const handleScreenChange = (isFullScreen: boolean) => {
+    setIsFullscreen(isFullScreen);
+  };
+
+  const handleFavoriteClick = () => {
+    setShowHeart(true);
+    setTimeout(() => {
+      setShowHeart(false);
+    }, 400);
+  };
+
+  const handleAddToCartClick = () => {
+    const order = {
+      action: 'addLineItem',
+      productId: product.id,
+      variantId: activeVariant.id,
+      quantity,
+    };
+    console.log(order);
   };
 
   return (
@@ -151,7 +161,7 @@ export function ProductItem() {
               <div className={styles.quantitySelector}>
                 <QuantityInput value={quantity} onChange={setQuantity} />
               </div>
-              <button type="button" className={styles.addToCartButton}>
+              <button type="button" className={styles.addToCartButton} onClick={handleAddToCartClick}>
                 add to cart
               </button>
               <button type="button" className={styles.addToFavoriteButton} onClick={handleFavoriteClick}>
@@ -164,6 +174,7 @@ export function ProductItem() {
         </div>
         <div className={styles.productDescription}>{product.masterData.current.description?.['en-US']}</div>
       </div>
+      <Footer />
     </div>
   );
 }
