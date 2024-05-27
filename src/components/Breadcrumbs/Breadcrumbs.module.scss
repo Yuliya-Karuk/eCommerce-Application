@@ -1,0 +1,15 @@
+.breadcrumbs {
+  @include flex(flex-start, center);
+  @include adaptiveValue('font-size', 16px, 16px);
+  gap: 5px;
+  font-family: Questrial, sans-serif;
+}
+
+.breadcrumbs-link {
+  text-transform: capitalize;
+
+  &:last-of-type {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+}

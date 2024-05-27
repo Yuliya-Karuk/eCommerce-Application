@@ -1,13 +1,15 @@
 import {
   ByProjectKeyRequestBuilder,
+  Category,
   ClientResponse,
   createApiBuilderFromCtpClient,
   CustomerDraft,
   CustomerSignInResult,
   Product,
+  ProductProjection,
+  ProductType,
 } from '@commercetools/platform-sdk';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
-import { CustomErrors } from '@utils/constants';
 import { storage } from '@utils/storage';
 import {
   anonymousMiddlewareOptions,
@@ -83,13 +85,51 @@ export class SdkService {
     this.createAnonymousClient();
   }
 
-  public async getProducts(): Promise<Product[]> {
-    try {
-      const data = await this.apiRoot.products().get().execute();
-      return data.body.results;
-    } catch (error) {
-      throw new Error(CustomErrors.SERVER_ERROR);
-    }
+  public async getProducts(): Promise<ProductProjection[]> {
+    const data = await this.apiRoot.productProjections().search().get().execute();
+    return data.body.results;
+  }
+
+  public async getProductsByCategory(categoryId: string): Promise<ProductProjection[]> {
+    const data = await this.apiRoot
+      .productProjections()
+      .search()
+      .get({
+        queryArgs: {
+          filter: [`categories.id:"${categoryId}"`],
+        },
+      })
+      .execute();
+    return data.body.results;
+  }
+
+  public async getProductsTypes(): Promise<ProductType[]> {
+    const data = await this.apiRoot.productTypes().get().execute();
+    return data.body.results;
+  }
+
+  public async getCategories(): Promise<Category[]> {
+    const data = await this.apiRoot.categories().get().execute();
+    return data.body.results;
+  }
+
+  public async getProduct(productKey: string): Promise<Product> {
+    const data = await this.apiRoot.products().withKey({ key: productKey }).get().execute();
+    // const data = await this.apiRoot.productProjections().withKey({ key: productKey }).get().execute();
+    return data.body;
+  }
+
+  public async filterProductsByAttribute() {
+    const data = await this.apiRoot
+      .productProjections()
+      .search()
+      .get({
+        queryArgs: {
+          filter: [`variants.attributes.brand.key:"Plantpatio", "Smart Garden"`],
+        },
+      })
+      .execute();
+    return data.body;
   }
 
   public async getProductByKey(productKey: string): Promise<Product> {

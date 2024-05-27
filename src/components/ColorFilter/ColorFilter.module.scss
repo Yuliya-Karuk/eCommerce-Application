@@ -1,0 +1,60 @@
+.filter {
+  @include flex(flex-start, flex-start, column);
+  gap: 10px;
+  width: 100%;
+  padding-bottom: 5px;
+}
+
+.filter-heading {
+  @include flex(space-between, center);
+  cursor: pointer;
+  width: 100%;
+  padding-bottom: 15px;
+  border-bottom: 1px solid $color-gray-dark;
+}
+
+.filter-title {
+  @include adaptiveValue('font-size', 20px, 18px);
+
+  em {
+    font-size: 16px;
+    font-style: normal;
+  }
+}
+
+.filter-span {
+  display: block;
+  width: 15px;
+  height: 15px;
+  background: no-repeat center url('../../assets/plus.svg');
+  background-size: contain;
+
+  &.open {
+    background: no-repeat center url('../../assets/minus.svg');
+    background-size: contain;
+  }
+}
+
+.colors-container {
+  display: none;
+  gap: 5px;
+  padding: 10px 0;
+
+  &.open {
+    @include flex(flex-start, flex-start);
+    flex-wrap: wrap;
+  }
+}
+
+.color-button {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0.8);
+  border: 1px solid $color-gray-dark;
+  border-radius: 50%;
+
+  &.active {
+    transform: scale(1.2);
+    border-color: #fff;
+  }
+}

@@ -1,0 +1,78 @@
+.filter {
+  @include flex(flex-start, flex-start, column);
+  gap: 10px;
+  width: 100%;
+  padding-bottom: 5px;
+}
+
+.category-filters {
+  @include adaptiveValue('font-size', 18px, 16px);
+  display: none;
+  gap: 15px;
+  line-height: 1.2;
+
+  &.open {
+    @include flex(flex-start, flex-start, column);
+  }
+}
+
+.category-filter {
+  @extend %transition;
+  cursor: pointer;
+  position: relative;
+
+  &::after {
+    @extend %transition;
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    transform-origin: center;
+    transform: scaleX(0);
+    width: 100%;
+    height: 2px;
+    background-color: $color-white;
+  }
+
+  &:hover {
+    &::after {
+      transform: scaleX(1);
+    }
+  }
+
+  &.active {
+    &::after {
+      transform: scaleX(1);
+    }
+  }
+}
+
+.filter-heading {
+  @include flex(space-between, center);
+  cursor: pointer;
+  width: 100%;
+  padding-bottom: 15px;
+  border-bottom: 1px solid $color-gray-dark;
+}
+
+.filter-title {
+  @include adaptiveValue('font-size', 20px, 18px);
+}
+
+.filter-span {
+  display: block;
+  width: 15px;
+  height: 15px;
+  background: no-repeat center url('../../assets/plus.svg');
+  background-size: contain;
+
+  &.open {
+    background: no-repeat center url('../../assets/minus.svg');
+    background-size: contain;
+  }
+}
+
+.child-category {
+  margin-left: 10px;
+  transform: scale(0.9);
+}

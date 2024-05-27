@@ -1,0 +1,58 @@
+.sort {
+  @include adaptiveValue('font-size', 16px, 16px);
+  @include flex(space-between, center);
+  width: 100%;
+  padding-left: 15px;
+  font-family: Questrial, sans-serif;
+}
+
+.select-container {
+  position: relative;
+  width: 200px;
+}
+
+.select-header {
+  @include flex(space-between, center);
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid $color-gray-dark;
+  border-radius: 5px;
+}
+
+.select-span {
+  display: block;
+  width: 30px;
+  height: 30px;
+  background: no-repeat center url('../../assets/select-arrow.svg');
+  background-size: contain;
+
+  &.open {
+    transform: rotate(180deg);
+  }
+}
+
+.select-list {
+  position: absolute;
+  z-index: 1000;
+  top: 100%;
+  right: 0;
+  left: 0;
+  background: $color-bg-dark;
+  border: 1px solid $color-gray-dark;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 10%);
+}
+
+.select-item {
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 1px solid $color-gray-dark;
+
+  &:hover {
+    background: #f0f0f0;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
