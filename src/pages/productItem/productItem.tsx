@@ -6,7 +6,7 @@ import { ProductInfoSection } from '@components/ProductInfoSection/ProductInfoSe
 import QuantityInput from '@components/QuantityInput/QuantityInput';
 import { Footer, Header } from '@components/index';
 import { AppRoutes } from '@router/routes';
-import { convertCentsToDollarsString, convertProductAttributesArrayToObject } from '@utils/utils';
+import { convertCentsToDollarsString, convertProductAttributesArrayToObject, isNotNullable } from '@utils/utils';
 import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 import ReactImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
@@ -16,10 +16,13 @@ import styles from './productItem.module.scss';
 
 // eslint-disable-next-line max-lines-per-function
 export function ProductItem() {
-  const { slug } = useParams();
-  if (!slug) {
-    throw new Error("can't find the product key (slug)");
+  const { category, subcategory, slug } = useParams();
+  if (!category) {
+    throw new Error("can't find the product category");
   }
+  const productKey = !slug ? isNotNullable(subcategory) : slug;
+  const subgroup = slug ? isNotNullable(subcategory) : '';
+  console.log(category, subgroup, productKey);
 
   const galleryRef = useRef<ReactImageGallery>(null);
 
@@ -31,7 +34,7 @@ export function ProductItem() {
   const [quantity, setQuantity] = useState(1);
 
   const getProduct = async () => {
-    const data = await sdkService.getProductByKey(slug);
+    const data = await sdkService.getProductByKey(productKey);
     setProduct(data);
     setActiveVariant(data.masterData.current.masterVariant);
   };
