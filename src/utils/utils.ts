@@ -1,5 +1,5 @@
 import { AttributeEnumType, AttributeSetType, Category, ProductType } from '@commercetools/platform-sdk';
-import { CategoryList } from '@models/index';
+import { CategoryList, CustomCategory } from '@models/index';
 
 export function isNotNullable<T>(value: T): NonNullable<T> {
   if (value === undefined || value === null) {
@@ -74,6 +74,15 @@ export function prepareCategoryTree(categories: CategoryList) {
   });
 
   return rootCategories;
+}
+
+export function findCategoryBySlug(categories: CategoryList, path: string): CustomCategory {
+  const trimmedPath = path.replace('/catalog/', '');
+  let needed = Object.values(categories).find(category => category.slug.join('/') === trimmedPath);
+  if (needed === undefined) {
+    needed = categories.default;
+  }
+  return needed;
 }
 
 export function prepareBrands(types: ProductType[]): string[] {

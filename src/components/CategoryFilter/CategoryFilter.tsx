@@ -15,7 +15,7 @@ interface FiltersProps {
 
 export const CategoryFilter = ({ categories, activeCategory, setActiveCategory }: FiltersProps) => {
   const preparedCategories = prepareCategoryTree(categories);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
 
   const handleCategoryClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>, categoryName: string) => {

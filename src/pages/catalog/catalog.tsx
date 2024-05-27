@@ -15,7 +15,7 @@ import { ProductCard } from '@components/ProductCard/ProductCard';
 import { Search } from '@components/Search/Search';
 import { Sorting } from '@components/Sorting/Sorting';
 import { CategoryList, CustomCategory } from '@models/index';
-import { prepareBrands, prepareColors, prepareSizes, simplifyCategories } from '@utils/utils';
+import { findCategoryBySlug, prepareBrands, prepareColors, prepareSizes, simplifyCategories } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from './catalog.module.scss';
@@ -47,13 +47,8 @@ export function Catalog() {
   const [products, setProducts] = useState<ProductProjection[]>([]);
   const location = useLocation();
 
-  useEffect(() => {
-    console.log('URL changed to:', location.pathname);
-  }, [location]);
-
   const getTypes = async () => {
     const data: ProductType[] = await sdkService.getProductsTypes();
-    // console.log(data);
     setBrands(prepareBrands(data));
     setSizes(prepareSizes(data));
     setColors(prepareColors(data));
@@ -73,7 +68,6 @@ export function Catalog() {
     if (!activeCategory.id) {
       data = await sdkService.getProducts();
     } else {
-      console.log(activeCategory.id);
       data = await sdkService.getProductsByCategory(activeCategory.id);
     }
     setProducts(data);
@@ -85,12 +79,12 @@ export function Catalog() {
     getCategories();
   }, []);
 
-  // useEffect(() => {
-  //   if (Object.keys(categories).length > 0) {
-  //     setActiveCategory(categories.all);
-  //     setIsLoading(false);
-  //   }
-  // }, [categories]);
+  useEffect(() => {
+    if (Object.keys(categories).length !== 0) {
+      const active = findCategoryBySlug(categories, location.pathname);
+      setActiveCategory(active);
+    }
+  }, [categories, location]);
 
   useEffect(() => {
     getProducts();
