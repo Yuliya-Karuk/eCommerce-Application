@@ -125,7 +125,7 @@ export class SdkService {
       .search()
       .get({
         queryArgs: {
-          filter: [`variants.attributes.brand.key:"Plantpatio", "Smart Garden"`],
+          filter: [`variants.prices.value.centAmount:range (${1000} to ${2500})`],
         },
       })
       .execute();

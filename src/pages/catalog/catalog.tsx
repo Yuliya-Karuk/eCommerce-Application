@@ -14,11 +14,13 @@ import { PriceFilter } from '@components/PriceFilter/PriceFilter';
 import { ProductCard } from '@components/ProductCard/ProductCard';
 import { Search } from '@components/Search/Search';
 import { Sorting } from '@components/Sorting/Sorting';
-import { CategoryList, CustomCategory } from '@models/index';
+import { CategoryList, CustomCategory, Filters } from '@models/index';
 import { findCategoryBySlug, prepareBrands, prepareColors, prepareSizes, simplifyCategories } from '@utils/utils';
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styles from './catalog.module.scss';
+
+const defaultPriceBorder = ['5.99', '100.00'];
 
 const CatalogImages: { [key: string]: string } = {
   'All Products': catalogAll,
@@ -35,27 +37,41 @@ const startCategory = {
   parent: '',
 };
 
+// const defaultFilter = {
+//   'categories.id:': [],
+//   'variants.attributes.brand.key:': [],
+//   'variants.attributes.color.key:': [],
+//   'variants.attributes.size.key:': [],
+//   'variants.prices.value.centAmount:range (1000 to 2500)': [],
+// };
+
+const defaultFilter = {
+  category: [],
+  brands: [],
+  color: [],
+  sizes: [],
+  price: [],
+};
+
 export function Catalog() {
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<CategoryList>({});
   const [activeCategory, setActiveCategory] = useState<CustomCategory>(startCategory);
+
   const [brands, setBrands] = useState<string[]>([]);
   const [sizes, setSizes] = useState<string[]>([]);
   const [colors, setColors] = useState<string[]>([]);
-  const [activeColor, setActiveColor] = useState<string>('');
   const [products, setProducts] = useState<ProductProjection[]>([]);
+  const [filters, setFilters] = useState<Filters>(defaultFilter);
   const location = useLocation();
-  const { category, subcategory, slug } = useParams();
-
-  console.log(category, subcategory, slug);
 
   const getTypes = async () => {
     const data: ProductType[] = await sdkService.getProductsTypes();
     setBrands(prepareBrands(data));
     setSizes(prepareSizes(data));
     setColors(prepareColors(data));
-    // setCategories(prepareCategories(data));
-    // const bal = await sdkService.filterProductsByAttribute();
+    const bal = await sdkService.filterProductsByAttribute();
+    console.log(bal);
   };
 
   const getCategories = async () => {
@@ -100,6 +116,8 @@ export function Catalog() {
     return <div>Loading</div>;
   }
 
+  console.log(filters);
+
   return (
     <div className={styles.catalog}>
       <Header />
@@ -112,10 +130,10 @@ export function Catalog() {
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
           />
-          <PriceFilter />
-          <CheckboxFilter values={brands} name="Brands" />
-          <ColorFilter colors={colors} activeColor={activeColor} setActiveColor={setActiveColor} />
-          <CheckboxFilter values={sizes} name="Sizes" />
+          <PriceFilter filters={filters} setFilters={setFilters} values={defaultPriceBorder} name="price" />
+          <CheckboxFilter filters={filters} setFilters={setFilters} values={brands} name="brands" />
+          <ColorFilter filters={filters} setFilters={setFilters} values={colors} name="color" />
+          <CheckboxFilter filters={filters} setFilters={setFilters} values={sizes} name="sizes" />
           <button type="button" className={styles.filtersButton}>
             Clear all
           </button>

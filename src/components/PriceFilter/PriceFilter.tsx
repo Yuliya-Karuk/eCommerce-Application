@@ -1,18 +1,22 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+import { FiltersProps } from '@models/index';
 import classnames from 'classnames';
 import { useState } from 'react';
 import Slider from 'react-slider';
 import styles from './PriceFilter.module.scss';
 
-export const PriceFilter = () => {
+export const PriceFilter = ({ filters, setFilters, name, values }: FiltersProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [minPrice, setMinPrice] = useState(5.99);
-  const [maxPrice, setMaxPrice] = useState(100.0);
+  const [minPrice, setMinPrice] = useState(Number(values[0]));
+  const [maxPrice, setMaxPrice] = useState(Number(values[1]));
 
-  const handleSliderChange = (values: [number, number]) => {
-    const [min, max] = values;
+  const handleSliderChange = (prices: [number, number]) => {
+    const [min, max] = prices;
     setMinPrice(min);
     setMaxPrice(max);
+    const newFilters = { ...filters };
+    newFilters[name] = [`${min}`, `${max}`];
+    setFilters(newFilters);
   };
 
   return (
