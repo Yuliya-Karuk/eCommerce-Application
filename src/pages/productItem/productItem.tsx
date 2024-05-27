@@ -4,6 +4,7 @@ import { Product, ProductVariant } from '@commercetools/platform-sdk';
 import ProductAttributesView, { ProductAttributes } from '@components/ProductAttributes/ProductAttributesView';
 import { ProductInfoSection } from '@components/ProductInfoSection/ProductInfoSection';
 import QuantityInput from '@components/QuantityInput/QuantityInput';
+import { Header } from '@components/index';
 import { convertCentsToDollarsString, convertProductAttributesArrayToObject } from '@utils/utils';
 import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
@@ -104,62 +105,65 @@ export function ProductItem() {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.path}>catalog / {name}</div>
-      <div className={styles.productOverview}>
-        <div className={styles.sliderWrapper}>
-          <ReactImageGallery
-            ref={galleryRef}
-            showNav={!!isFullscreen}
-            showBullets
-            lazyLoad
-            autoPlay
-            showThumbnails={!!isFullscreen}
-            useBrowserFullscreen={false}
-            items={slides}
-            onScreenChange={handleScreenChange}
-            showFullscreenButton={false}
-            onClick={handleImageClick}
-          />
+    <div className={styles.pageWrapper}>
+      <Header />
+      <div className={styles.wrapper}>
+        <div className={styles.path}>catalog / {name}</div>
+        <div className={styles.productOverview}>
+          <div className={styles.sliderWrapper}>
+            <ReactImageGallery
+              ref={galleryRef}
+              showNav={!!isFullscreen}
+              showBullets
+              lazyLoad
+              autoPlay
+              showThumbnails={!!isFullscreen}
+              useBrowserFullscreen={false}
+              items={slides}
+              onScreenChange={handleScreenChange}
+              showFullscreenButton={false}
+              onClick={handleImageClick}
+            />
+          </div>
+          <section className={styles.productSummary}>
+            <h2 className={styles.productSummaryHeader}>{name}</h2>
+            {sku ? <div className={styles.sku}>SKU: {sku}</div> : ''}
+            <div className={styles.priceLabel}>
+              Price:
+              <div
+                className={classNames(styles.fullPrice, {
+                  [styles.fullPriceLineThrough]: hasDiscount,
+                })}
+              >
+                {fullPrice}
+              </div>
+              <div className={styles.priceWithDiscount}>{priceWithDiscount}</div>
+            </div>
+
+            <ProductAttributesView
+              activeAttributes={convertProductAttributesArrayToObject(attributes)}
+              allAttributes={allAttributes}
+              setActiveVariant={setActiveVariant}
+              product={product}
+            />
+
+            <div className={styles.buttonsWrapper}>
+              <div className={styles.quantitySelector}>
+                <QuantityInput value={quantity} onChange={setQuantity} />
+              </div>
+              <button type="button" className={styles.addToCartButton}>
+                add to cart
+              </button>
+              <button type="button" className={styles.addToFavoriteButton} onClick={handleFavoriteClick}>
+                <img src={heart} alt="add to favorite" />
+                {showHeart && <img className={styles.heartAnimation} src={heart} alt="flying heart" />}
+              </button>
+            </div>
+            <ProductInfoSection productInfoText={allAttributes[0].details} />
+          </section>
         </div>
-        <section className={styles.productSummary}>
-          <h2 className={styles.productSummaryHeader}>{name}</h2>
-          {sku ? <div className={styles.sku}>SKU: {sku}</div> : ''}
-          <div className={styles.priceLabel}>
-            Price:
-            <div
-              className={classNames(styles.fullPrice, {
-                [styles.fullPriceLineThrough]: hasDiscount,
-              })}
-            >
-              {fullPrice}
-            </div>
-            <div className={styles.priceWithDiscount}>{priceWithDiscount}</div>
-          </div>
-
-          <ProductAttributesView
-            activeAttributes={convertProductAttributesArrayToObject(attributes)}
-            allAttributes={allAttributes}
-            setActiveVariant={setActiveVariant}
-            product={product}
-          />
-
-          <div className={styles.buttonsWrapper}>
-            <div className={styles.quantitySelector}>
-              <QuantityInput value={quantity} onChange={setQuantity} />
-            </div>
-            <button type="button" className={styles.addToCartButton}>
-              add to cart
-            </button>
-            <button type="button" className={styles.addToFavoriteButton} onClick={handleFavoriteClick}>
-              <img src={heart} alt="add to favorite" />
-              {showHeart && <img className={styles.heartAnimation} src={heart} alt="flying heart" />}
-            </button>
-          </div>
-          <ProductInfoSection productInfoText={allAttributes[0].details} />
-        </section>
+        <div className={styles.productDescription}>{product.masterData.current.description?.['en-US']}</div>
       </div>
-      <div className={styles.productDescription}>{product.masterData.current.description?.['en-US']}</div>
     </div>
   );
 }
