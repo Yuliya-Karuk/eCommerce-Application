@@ -18,6 +18,7 @@
     background-color: $color-bg-light;
 
     .path {
+      @include flex(flex-start, flex-start, row, 3px);
       @include font(2rem, normal, 1.6);
     }
 

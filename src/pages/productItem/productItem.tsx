@@ -5,12 +5,13 @@ import ProductAttributesView, { ProductAttributes } from '@components/ProductAtt
 import { ProductInfoSection } from '@components/ProductInfoSection/ProductInfoSection';
 import QuantityInput from '@components/QuantityInput/QuantityInput';
 import { Footer, Header } from '@components/index';
+import { AppRoutes } from '@router/routes';
 import { convertCentsToDollarsString, convertProductAttributesArrayToObject } from '@utils/utils';
 import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 import ReactImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styles from './productItem.module.scss';
 
 // eslint-disable-next-line max-lines-per-function
@@ -118,7 +119,9 @@ export function ProductItem() {
     <div className={styles.pageWrapper}>
       <Header />
       <div className={styles.wrapper}>
-        <div className={styles.path}>catalog / {name}</div>
+        <div className={styles.path}>
+          <Link to={AppRoutes.CATALOG_ROUTE}>catalog</Link> / {name}
+        </div>
         <div className={styles.productOverview}>
           <div className={styles.sliderWrapper}>
             <ReactImageGallery
