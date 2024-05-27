@@ -2,6 +2,7 @@ import { Product } from '@commercetools/platform-sdk';
 import { AppRoutes } from '@router/routes';
 import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { convertCentsToDollarsString } from '../../utils/utils';
 import styles from './_NewArrivalsCard.module.scss';
 
 interface NewArrivalsCardProps {
@@ -37,10 +38,7 @@ export const NewArrivalsCard: FC<NewArrivalsCardProps> = ({ product, id, ...prop
         <p className={styles.newarrivalsCardtitle}>{product.masterData.current.name['en-US']}</p>
         <p className={styles.newarrivalsCardcoast}>
           {(product.masterData.current.masterVariant.prices &&
-            new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: product.masterData.current.masterVariant.prices[0].value.currencyCode,
-            }).format(product.masterData.current.masterVariant.prices[0].value.centAmount / 1000)) ||
+            convertCentsToDollarsString(product.masterData.current.masterVariant.prices[0].value.centAmount)) ||
             'Not available'}
         </p>
       </div>

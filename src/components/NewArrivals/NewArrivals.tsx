@@ -39,9 +39,6 @@ export const NewArrivals: FC<NewArrivalsProps> = ({ id, ...props }) => {
             >
               Shop All
             </button>
-            {/* <a className={styles.newarrivalsShopall} href="!#">
-              Shop All
-            </a> */}
           </div>
 
           <div className={styles.newarrivalsList} {...props}>
