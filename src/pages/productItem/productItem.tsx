@@ -6,7 +6,6 @@ import ProductAttributesView, { ProductAttributes } from '@components/ProductAtt
 import { ProductInfoSection } from '@components/ProductInfoSection/ProductInfoSection';
 import QuantityInput from '@components/QuantityInput/QuantityInput';
 import { Footer, Header } from '@components/index';
-import { CustomCategory } from '@models/index';
 import { convertCentsToDollarsString, convertProductAttributesArrayToObject } from '@utils/utils';
 import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
@@ -58,18 +57,12 @@ export function ProductItem() {
   }
 
   const name = product.masterData.current.name['en-US'];
-  const customCategory: CustomCategory = {
-    name: 'All Products',
-    id: '',
-    slug: [],
-    children: {},
-    parent: '',
-  };
-  customCategory.slug.push(category);
+  const breadcrumbs: string[] = [];
+  breadcrumbs.push(category);
   if (subcategory) {
-    customCategory.slug.push(subcategory);
+    breadcrumbs.push(subcategory);
   }
-  customCategory.slug.push(name);
+  breadcrumbs.push(name);
 
   const { sku } = activeVariant;
   const fullPrice: string = activeVariant.prices
@@ -138,7 +131,7 @@ export function ProductItem() {
     <div className={styles.pageWrapper}>
       <Header />
       <div className={styles.wrapper}>
-        <Breadcrumbs activeCategory={customCategory} />
+        <Breadcrumbs activeCategorySlug={breadcrumbs} />
         <div className={styles.productOverview}>
           <div className={styles.sliderWrapper}>
             <ReactImageGallery
