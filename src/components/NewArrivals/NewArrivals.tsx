@@ -1,22 +1,30 @@
 import { sdkService } from '@commercetool/sdk.service';
-import { Product } from '@commercetools/platform-sdk';
+import { ProductProjection } from '@commercetools/platform-sdk';
 import { Container } from '@components/Container/Container';
 import { AppRoutes } from '@router/routes';
+import { CategoryList, simplifyCategories } from '@utils/utils';
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { NewArrivalsCard } from '../NewArrivalsCard/NewArrivalsCard';
 import styles from './NewArrivals.module.scss';
 
 export const NewArrivals: FC = ({ ...props }) => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductProjection[]>([]);
+  const [categories, setCategories] = useState<CategoryList>({});
   const updateProducts = async () => {
     const prods = await sdkService.getProducts();
     prods.sort((a, b) => new Date(a.lastModifiedAt).getTime() - new Date(b.lastModifiedAt).getTime());
     setProducts(prods.slice(0, 4));
   };
+  const getCategories = async () => {
+    const data = await sdkService.getCategories();
+    const preparedData = simplifyCategories(data);
+    setCategories(preparedData);
+  };
 
   useEffect(() => {
     updateProducts();
+    getCategories();
   }, []);
 
   return (
@@ -31,8 +39,8 @@ export const NewArrivals: FC = ({ ...props }) => {
           </div>
 
           <div className={styles.newarrivalsList} {...props}>
-            {products.map((product: Product) => {
-              return <NewArrivalsCard key={product.id} product={product} />;
+            {products.map((product: ProductProjection) => {
+              return <NewArrivalsCard key={product.id} product={product} categories={categories} />;
             })}
           </div>
         </div>
