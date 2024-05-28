@@ -29,14 +29,6 @@ export const UserMenu: FC = () => {
         <span className={styles.userMenuText}>Logout</span>
       </button>
 
-      {/* <Link to={AppRoutes.LOGIN_ROUTE} className={styles.userMenuLogin}>
-        <div className={styles.userMenuIcon}>
-          <svg width={iconSizeNumber} height={iconSizeNumber}>
-            <use xlinkHref={`${sprite}#login`} />
-          </svg>
-        </div>
-        <span className={styles.userMenuText}>Log In</span>
-      </Link> */}
       <div className={styles.userMenuPromo}>
         <svg width={iconSizeNumber} height={iconSizeNumber}>
           <use xlinkHref={`${sprite}#present`} />

@@ -1,9 +1,9 @@
 import { Product } from '@commercetools/platform-sdk';
 import { AppRoutes } from '@router/routes';
+import { convertCentsToDollarsString } from '@utils/utils';
 import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { convertCentsToDollarsString } from '../../utils/utils';
-import styles from './_NewArrivalsCard.module.scss';
+import styles from './NewArrivalsCard.module.scss';
 
 interface NewArrivalsCardProps {
   product: Product;
@@ -28,7 +28,7 @@ export const NewArrivalsCard: FC<NewArrivalsCardProps> = ({ product, id, ...prop
           src={
             (product.masterData.current.masterVariant.images &&
               product.masterData.current.masterVariant.images[isImgHover ? 1 : 0].url) ||
-            'New Arrivals/template.png'
+            'images/New Arrivals/template.png'
           }
           alt={product.masterData.current.name['en-US']}
         />
@@ -44,11 +44,7 @@ export const NewArrivalsCard: FC<NewArrivalsCardProps> = ({ product, id, ...prop
       </div>
 
       <Link
-        to={
-          product.masterData.current.slug['en-US']
-            ? `${AppRoutes.PRODUCT_ROUTE}/${product.masterData.current.slug['en-US']}`
-            : '/'
-        }
+        to={product.masterData.current.slug['en-US'] ? `${AppRoutes.PRODUCT_ROUTE}/${product.key}` : '/'}
         className={styles.newarrivalsCardbutton}
       >
         Read more
