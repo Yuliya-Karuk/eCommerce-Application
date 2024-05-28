@@ -48,7 +48,7 @@
   }
 }
 
-.images {
+.links {
   display: grid;
   grid-template: 34rem 30rem / calc(73% - 2.5px) calc(27% - 2.5px);
   gap: 5px;
@@ -67,7 +67,7 @@
 
   &-plants,
   &-pots,
-  &-subscription {
+  &-collections {
     @include responsiveImage;
     @include membrane(5);
 
@@ -76,7 +76,7 @@
     }
 
     &::before {
-      content: attr(data-title);
+      content: attr(title);
       @include flex(center);
       font-family: Forum, Arial, Helvetica, serif;
       @include adaptiveValue('font-size', 34px, 20px);
