@@ -19,3 +19,14 @@ export interface ProductCategory {
   id: string;
   typeId: string;
 }
+
+export interface FiltersProps {
+  values: string[];
+  name: string;
+  filters: Filters;
+  setFilters: (data: Filters) => void;
+}
+
+export interface Filters {
+  [key: string]: string[];
+}

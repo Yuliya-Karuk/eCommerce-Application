@@ -1,8 +1,17 @@
 .breadcrumbs {
   @include flex(flex-start, center);
-  @include adaptiveValue('font-size', 16px, 16px);
+  @include adaptiveValue('font-size', 20px, 16px);
   gap: 5px;
+  margin: 30px 0;
   font-family: Questrial, sans-serif;
+
+  button {
+    @extend %transition;
+
+    @include hover {
+      color: $color-gray-dark;
+    }
+  }
 }
 
 .breadcrumbs-link {

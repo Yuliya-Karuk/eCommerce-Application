@@ -15,6 +15,7 @@
 
 .filter-title {
   @include adaptiveValue('font-size', 20px, 18px);
+  text-transform: capitalize;
 
   em {
     font-size: 16px;

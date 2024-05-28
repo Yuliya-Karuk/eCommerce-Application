@@ -4,6 +4,8 @@
   width: 100%;
   padding-left: 15px;
   font-family: Questrial, sans-serif;
+  border: 1px solid $color-gray-dark;
+  border-radius: 5px;
 }
 
 .select-container {
@@ -14,9 +16,9 @@
 .select-header {
   @include flex(space-between, center);
   cursor: pointer;
-  padding: 5px 10px;
-  border: 1px solid $color-gray-dark;
+  padding: 5px 15px;
   border-radius: 5px;
+  box-shadow: inset 0 0 5px rgb(255 255 255 / 50%);
 }
 
 .select-span {

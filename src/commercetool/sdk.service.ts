@@ -119,17 +119,17 @@ export class SdkService {
     return data.body;
   }
 
-  public async filterProductsByAttribute() {
+  public async filterProductsByAttribute(filterArr: string[]) {
     const data = await this.apiRoot
       .productProjections()
       .search()
       .get({
         queryArgs: {
-          filter: [`variants.attributes.brand.key:"Plantpatio", "Smart Garden"`],
+          filter: [...filterArr],
         },
       })
       .execute();
-    return data.body;
+    return data.body.results;
   }
 
   public async getProductByKey(productKey: string): Promise<Product> {
