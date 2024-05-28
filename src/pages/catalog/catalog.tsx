@@ -122,7 +122,7 @@ export function Catalog() {
   useEffect(() => {
     getTypes();
     getCategories();
-    getProducts();
+    // getProducts();
   }, []);
 
   useEffect(() => {
