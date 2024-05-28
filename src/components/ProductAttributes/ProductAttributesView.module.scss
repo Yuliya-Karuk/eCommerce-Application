@@ -27,6 +27,18 @@
         color: $default-text-color;
         text-decoration: none;
       }
+
+      .color-button {
+        width: 20px;
+        height: 20px;
+        border: 1px solid $color-gray-dark;
+        border-radius: 50%;
+
+        &.active {
+          transform: scale(1.5);
+          border-color: #fff;
+        }
+      }
     }
   }
 

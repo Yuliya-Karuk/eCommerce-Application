@@ -18,11 +18,13 @@ import styles from './productItem.module.scss';
 // eslint-disable-next-line max-lines-per-function
 export function ProductItem() {
   const { category, subcategory, slug } = useParams();
+  // console.log(category, subcategory, slug);
   if (!category) {
     throw new Error("can't find the product category");
   }
-  const productKey = slug || '';
-  console.log(category, subcategory, productKey);
+  if (!slug) {
+    throw new Error("can't find the product key (slug)");
+  }
 
   const galleryRef = useRef<ReactImageGallery>(null);
 
@@ -34,7 +36,7 @@ export function ProductItem() {
   const [quantity, setQuantity] = useState(1);
 
   const getProduct = async () => {
-    const data = await sdkService.getProductByKey(productKey);
+    const data = await sdkService.getProductByKey(slug);
     setProduct(data);
     console.log(data.masterData.current);
     setActiveVariant(data.masterData.current.masterVariant);
@@ -137,9 +139,6 @@ export function ProductItem() {
       <Header />
       <div className={styles.wrapper}>
         <Breadcrumbs activeCategory={customCategory} />
-        {/* <div className={styles.path}>
-          <Link to={AppRoutes.CATALOG_ROUTE}>catalog</Link> / {name}
-        </div> */}
         <div className={styles.productOverview}>
           <div className={styles.sliderWrapper}>
             <ReactImageGallery

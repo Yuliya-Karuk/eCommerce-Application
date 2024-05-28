@@ -34,6 +34,15 @@ const sizeDescriptions: Record<SizeKey, string> = {
   L: 'Large',
 };
 
+const ColorsHex: { [key: string]: string } = {
+  Bronze: '#845b32',
+  Brown: '#492201',
+  Burgundy: '#590016',
+  Green: '#464e3c',
+  Gray: '#808080',
+  Blue: '#697f8b',
+};
+
 export default function ProductAttributesView({
   activeAttributes: { size, brand, color },
   allAttributes,
@@ -109,22 +118,16 @@ export default function ProductAttributesView({
             {colors.length > 0 && (
               <div className={styles.optionsVariants}>
                 {colors.map(({ color: c, index }) => (
+                  // eslint-disable-next-line jsx-a11y/control-has-associated-label
                   <button
-                    key={index}
-                    className={classNames({
+                    type="button"
+                    key={c}
+                    className={classNames(styles.colorButton, {
                       [styles.active]: c === color,
                     })}
+                    style={{ backgroundColor: c in ColorsHex ? ColorsHex[c] : c }}
                     onClick={() => handleColorClick(index)}
-                    type="button"
-                    tabIndex={0}
-                    onKeyDown={e => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        handleColorClick(index);
-                      }
-                    }}
-                  >
-                    {c}
-                  </button>
+                  />
                 ))}
               </div>
             )}
@@ -138,11 +141,6 @@ export default function ProductAttributesView({
           <div className={styles.descriptionText}>{brand}</div>
         </div>
       )}
-
-      {/* <div>
-        <div className={styles.title}>Description:</div>
-        <div className={styles.descriptionText}>{details}</div>
-      </div> */}
     </div>
   );
 }
