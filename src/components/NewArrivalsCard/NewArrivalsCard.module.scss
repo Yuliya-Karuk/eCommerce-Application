@@ -5,7 +5,7 @@
     row-gap: 16px;
   }
 
-  &-cardimage {
+  &-card-image {
     @include responsiveImage;
     padding-bottom: 128.86%;
     padding-left: 96.6%;
@@ -27,25 +27,25 @@
     }
   }
 
-  &-cardinfo {
+  &-card-info {
     @include flex(null, null, column);
     row-gap: 4px;
     padding: 0 20px;
   }
 
-  &-cardtitle {
+  &-card-title {
     font-family: Forum, Arial, Helvetica, serif;
     @include adaptiveValue('font-size', 28px, 20px);
     line-height: 1.25;
   }
 
-  &-cardcoast {
+  &-card-coast {
     font-family: Questrial, Arial, Helvetica, serif;
     @include adaptiveValue('font-size', 21px, 16px);
     line-height: 1.5;
   }
 
-  &-cardbutton {
+  &-card-button {
     @include flex(center);
     font-family: Questrial, Arial, Helvetica, serif;
     @include adaptiveValue('font-size', 16px, 14px);

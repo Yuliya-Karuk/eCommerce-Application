@@ -1,3 +1,4 @@
+import { sdkService } from '@commercetool/sdk.service';
 import { Category } from '@commercetools/platform-sdk';
 import { ProductCategory } from '@models/index';
 
@@ -47,6 +48,18 @@ export function prepareProductSlugs(categories: CategoryList, productCategories:
   }, [] as string[]);
 
   return result;
+}
+
+export async function getSortedProducts(quantity: number) {
+  const prods = await sdkService.getProducts();
+  prods.sort((a, b) => new Date(a.lastModifiedAt).getTime() - new Date(b.lastModifiedAt).getTime());
+  return prods.slice(0, quantity);
+}
+
+export async function getCategories() {
+  const data = await sdkService.getCategories();
+  const preparedData = simplifyCategories(data);
+  return preparedData;
 }
 
 export interface CustomCategory {

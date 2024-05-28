@@ -8,17 +8,16 @@ import styles from './NewArrivalsCard.module.scss';
 interface NewArrivalsCardProps {
   product: ProductProjection;
   categories: CategoryList;
-  id?: string;
 }
 
-export const NewArrivalsCard: FC<NewArrivalsCardProps> = ({ product, categories, id, ...props }) => {
+export const NewArrivalsCard: FC<NewArrivalsCardProps> = ({ product, categories, ...props }) => {
   const [isImgHover, setIsImgHover] = useState(false);
   const slugs = prepareProductSlugs(categories, product.categories).join('/');
 
   return (
     <article className={styles.newarrivalsItem} id={product.id} {...props}>
       <div
-        className={styles.newarrivalsCardimage}
+        className={styles.newarrivalsCardImage}
         onMouseEnter={() => {
           setIsImgHover(true);
         }}
@@ -35,9 +34,9 @@ export const NewArrivalsCard: FC<NewArrivalsCardProps> = ({ product, categories,
         />
       </div>
 
-      <div className={styles.newarrivalsCardinfo}>
-        <p className={styles.newarrivalsCardtitle}>{product.name['en-US']}</p>
-        <p className={styles.newarrivalsCardcoast}>
+      <div className={styles.newarrivalsCardInfo}>
+        <p className={styles.newarrivalsCardTitle}>{product.name['en-US']}</p>
+        <p className={styles.newarrivalsCardCoast}>
           {(product.masterVariant.prices &&
             convertCentsToDollarsString(product.masterVariant.prices[0].value.centAmount)) ||
             'Not available'}
@@ -46,9 +45,9 @@ export const NewArrivalsCard: FC<NewArrivalsCardProps> = ({ product, categories,
 
       <Link
         to={product.key ? `${AppRoutes.PRODUCTS_ROUTE}/${slugs}/${product.key}` : '/'}
-        className={styles.newarrivalsCardbutton}
+        className={styles.newarrivalsCardButton}
       >
-        Read more
+        View details
       </Link>
     </article>
   );

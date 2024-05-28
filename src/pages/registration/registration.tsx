@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import eyeOff from '@assets/eye-off.svg';
 import eyeOn from '@assets/eye-show.svg';
 import { sdkService } from '@commercetool/sdk.service';
@@ -87,6 +86,7 @@ export function Registration() {
     } else {
       setValue('billingAddresses', [1]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [billingAddressIsSameAsShipping, setValue, unregister]);
 
   const onSubmit = async (userData: CustomerDraft) => {
