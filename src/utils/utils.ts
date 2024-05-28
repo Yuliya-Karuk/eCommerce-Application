@@ -13,10 +13,10 @@ export function convertCentsToDollarsString(num: number, fractionDigits = 2): st
   const divisor = 10 ** fractionDigits;
   const result = num / divisor;
 
-  return result.toLocaleString('en-US', {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-  });
+  }).format(result);
 }
 
 export function simplifyCategories(categories: Category[]): CategoryList {

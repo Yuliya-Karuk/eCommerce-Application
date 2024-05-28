@@ -9,11 +9,11 @@ import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
 import { CategoryFilter } from '@components/CategoryFilter/CategoryFilter';
 import { CheckboxFilter } from '@components/ChekboxFilter/CheckboxFilter';
 import { ColorFilter } from '@components/ColorFilter/ColorFilter';
-import { Header } from '@components/index';
 import { PriceFilter } from '@components/PriceFilter/PriceFilter';
 import { ProductCard } from '@components/ProductCard/ProductCard';
 import { Search } from '@components/Search/Search';
 import { Sorting } from '@components/Sorting/Sorting';
+import { Header } from '@components/index';
 import { CategoryList, CustomCategory } from '@models/index';
 import { findCategoryBySlug, prepareBrands, prepareColors, prepareSizes, simplifyCategories } from '@utils/utils';
 import { useEffect, useState } from 'react';
@@ -90,10 +90,12 @@ export function Catalog() {
 
   useEffect(() => {
     getProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCategory]);
 
   useEffect(() => {
     getProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (isLoading) {
