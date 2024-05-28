@@ -23,7 +23,7 @@
     }
 
     .product-overview {
-      @include flex(flex-start, flex-start, row, 15px);
+      @include flex(flex-start, flex-start, row, 35px);
       flex-wrap: wrap;
       width: 100%;
 
@@ -54,7 +54,7 @@
       }
 
       .product-summary {
-        @include flex(flex-start, flex-start, column, 15px);
+        @include flex(flex-start, flex-start, column, 20px);
         @include font(2.5rem, normal, 1.2);
         flex: 1 1 400px;
         width: 100%;

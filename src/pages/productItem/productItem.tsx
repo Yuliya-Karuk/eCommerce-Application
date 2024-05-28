@@ -1,17 +1,18 @@
 import heart from '@assets/heart.svg';
 import { sdkService } from '@commercetool/sdk.service';
 import { Product, ProductVariant } from '@commercetools/platform-sdk';
+import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
 import ProductAttributesView, { ProductAttributes } from '@components/ProductAttributes/ProductAttributesView';
 import { ProductInfoSection } from '@components/ProductInfoSection/ProductInfoSection';
 import QuantityInput from '@components/QuantityInput/QuantityInput';
 import { Footer, Header } from '@components/index';
-import { AppRoutes } from '@router/routes';
-import { convertCentsToDollarsString, convertProductAttributesArrayToObject, isNotNullable } from '@utils/utils';
+import { CustomCategory } from '@models/index';
+import { convertCentsToDollarsString, convertProductAttributesArrayToObject } from '@utils/utils';
 import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 import ReactImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styles from './productItem.module.scss';
 
 // eslint-disable-next-line max-lines-per-function
@@ -20,9 +21,8 @@ export function ProductItem() {
   if (!category) {
     throw new Error("can't find the product category");
   }
-  const productKey = !slug ? isNotNullable(subcategory) : slug;
-  const subgroup = slug ? isNotNullable(subcategory) : '';
-  console.log(category, subgroup, productKey);
+  const productKey = slug || '';
+  console.log(category, subcategory, productKey);
 
   const galleryRef = useRef<ReactImageGallery>(null);
 
@@ -36,6 +36,7 @@ export function ProductItem() {
   const getProduct = async () => {
     const data = await sdkService.getProductByKey(productKey);
     setProduct(data);
+    console.log(data.masterData.current);
     setActiveVariant(data.masterData.current.masterVariant);
   };
 
@@ -55,6 +56,19 @@ export function ProductItem() {
   }
 
   const name = product.masterData.current.name['en-US'];
+  const customCategory: CustomCategory = {
+    name: 'All Products',
+    id: '',
+    slug: [],
+    children: {},
+    parent: '',
+  };
+  customCategory.slug.push(category);
+  if (subcategory) {
+    customCategory.slug.push(subcategory);
+  }
+  customCategory.slug.push(name);
+
   const { sku } = activeVariant;
   const fullPrice: string = activeVariant.prices
     ? convertCentsToDollarsString(activeVariant.prices[0].value.centAmount)
@@ -122,9 +136,10 @@ export function ProductItem() {
     <div className={styles.pageWrapper}>
       <Header />
       <div className={styles.wrapper}>
-        <div className={styles.path}>
+        <Breadcrumbs activeCategory={customCategory} />
+        {/* <div className={styles.path}>
           <Link to={AppRoutes.CATALOG_ROUTE}>catalog</Link> / {name}
-        </div>
+        </div> */}
         <div className={styles.productOverview}>
           <div className={styles.sliderWrapper}>
             <ReactImageGallery
