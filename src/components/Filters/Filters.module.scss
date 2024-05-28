@@ -1,0 +1,69 @@
+.filters {
+  @include flex(flex-start, flex-start, column);
+  gap: 10px;
+  width: 30%;
+  max-width: 240px;
+  font-family: Questrial, sans-serif;
+
+  @include smalltablet {
+    width: 240px;
+    visibility: hidden;
+    opacity: 0;
+    position: fixed;
+    background: rgba(5 5 5/ 80%);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    padding: 0 20px 20px;
+    top: 260px;
+    border-radius: 5px;
+    left: 30px;
+    box-shadow: inset 0 0 5px rgba(255 255 255 / 50%);
+    animation: burger-close 0.8s ease-in-out;
+    transition: 0.8s ease-in-out;
+    overflow: auto;
+    height: 60vh;
+
+    &.open {
+      animation: burger-open 0.8s ease-in-out;
+      opacity: 1;
+      transition: 0.8s ease-in-out;
+      visibility: visible;
+    }
+  }
+}
+
+.filters::-webkit-scrollbar {
+  width: 10px;
+  border: 1px solid $color-gray-dark;
+  border-radius: 50px;
+}
+
+.filters::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.filters::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  height: 20px;
+  background-color: $color-bg-light;
+  border-radius: 20px;
+}
+
+.filters-heading {
+  @include adaptiveValue('font-size', 34px, 26px);
+  padding: 20px 0;
+}
+
+.filters-button {
+  @extend %transition;
+  @include adaptiveValue('font-size', 16px, 16px);
+
+  @include hover {
+    color: $color-bg-dark;
+    background-color: $color-white;
+  }
+  width: 100%;
+  padding: 8px 16px;
+  border: 1px solid $color-white;
+  border-radius: 5px;
+}

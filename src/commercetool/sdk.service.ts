@@ -90,19 +90,6 @@ export class SdkService {
     return data.body.results;
   }
 
-  public async getProductsByCategory(categoryId: string): Promise<ProductProjection[]> {
-    const data = await this.apiRoot
-      .productProjections()
-      .search()
-      .get({
-        queryArgs: {
-          filter: [`categories.id:"${categoryId}"`],
-        },
-      })
-      .execute();
-    return data.body.results;
-  }
-
   public async getProductsTypes(): Promise<ProductType[]> {
     const data = await this.apiRoot.productTypes().get().execute();
     return data.body.results;
@@ -126,6 +113,21 @@ export class SdkService {
       .get({
         queryArgs: {
           filter: [...filterArr],
+        },
+      })
+      .execute();
+    return data.body.results;
+  }
+
+  public async searchByString(searchText: string) {
+    const data = await this.apiRoot
+      .productProjections()
+      .search()
+      .get({
+        queryArgs: {
+          'text.en-US': searchText,
+          fuzzy: true,
+          fuzzyLevel: 0,
         },
       })
       .execute();

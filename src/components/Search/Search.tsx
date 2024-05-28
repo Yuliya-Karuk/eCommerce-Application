@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
+import { sdkService } from '@commercetool/sdk.service';
 import { useState } from 'react';
 import styles from './Search.module.scss';
 
@@ -9,9 +10,11 @@ export const Search = () => {
     setSearchValue(event.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const data = await sdkService.searchByString(searchValue);
     console.log('Submitted search term:', searchValue);
+    console.log(data);
   };
 
   return (
