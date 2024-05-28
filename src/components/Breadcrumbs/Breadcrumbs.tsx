@@ -1,26 +1,47 @@
 import arrow from '@assets/arrow.svg';
-import { CustomCategory } from '@models/index';
+import { Filters } from '@models/index';
 import { AppRoutes } from '@router/routes';
+import { generateBreadcrumbsSlugs } from '@utils/utils';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from './Breadcrumbs.module.scss';
 
 interface BreadcrumbsProps {
-  activeCategory: CustomCategory;
+  activeCategorySlug: string[];
+  defaultFilter?: Filters;
+  setFilters?: (data: Filters) => void;
 }
 
-export const Breadcrumbs = ({ activeCategory }: BreadcrumbsProps) => {
+export const Breadcrumbs = ({ activeCategorySlug, setFilters, defaultFilter }: BreadcrumbsProps) => {
+  const navigate = useNavigate();
+  const preparedSlugs = generateBreadcrumbsSlugs(activeCategorySlug);
+
+  const handleNavigation = (path: string) => {
+    if (defaultFilter && setFilters) {
+      setFilters(defaultFilter);
+    }
+    navigate(path);
+  };
+
   return (
     <div className={styles.breadcrumbs}>
-      <Link to={AppRoutes.HOME_ROUTE}>Home</Link>
+      <button type="button" onClick={() => handleNavigation(AppRoutes.HOME_ROUTE)}>
+        Home
+      </button>
       <img src={arrow} className={styles.breadcrumbsImg} alt="arrow img" />
-      <Link to={AppRoutes.CATALOG_ROUTE}>Catalog</Link>
-      {activeCategory.slug.map(slug => (
+      <button type="button" onClick={() => handleNavigation(AppRoutes.CATALOG_ROUTE)}>
+        Catalog
+      </button>
+      {Object.entries(preparedSlugs).map(([name, slug]) => (
         <React.Fragment key={slug}>
           <img src={arrow} className={styles.breadcrumbsImg} alt="arrow img" />
-          <Link className={styles.breadcrumbsLink} to={`${AppRoutes.CATALOG_ROUTE}/${slug}`}>
-            {slug}
-          </Link>
+          <button
+            className={styles.breadcrumbsLink}
+            type="button"
+            onClick={() => handleNavigation(`${AppRoutes.CATALOG_ROUTE}/${slug}`)}
+          >
+            {name}
+          </button>
         </React.Fragment>
       ))}
     </div>

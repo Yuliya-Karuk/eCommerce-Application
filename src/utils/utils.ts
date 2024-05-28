@@ -12,10 +12,10 @@ export function convertCentsToDollarsString(num: number, fractionDigits = 2): st
   const divisor = 10 ** fractionDigits;
   const result = num / divisor;
 
-  return result.toLocaleString('en-US', {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-  });
+  }).format(result);
 }
 
 export function simplifyCategories(categories: Category[]): CategoryList {
@@ -164,4 +164,14 @@ export function prepareQuery(queryParams: URLSearchParams, filters: Filters) {
     }
   });
   return newFilters;
+}
+
+export function generateBreadcrumbsSlugs(slugs: string[]) {
+  return slugs.reduce(
+    (acc, item, index) => {
+      acc[item] = slugs.slice(0, index + 1).join('/');
+      return acc;
+    },
+    {} as { [key: string]: string }
+  );
 }

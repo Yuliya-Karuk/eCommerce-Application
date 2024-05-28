@@ -1,15 +1,24 @@
 .breadcrumbs {
   @include flex(flex-start, center);
-  @include adaptiveValue('font-size', 16px, 16px);
+  @include adaptiveValue('font-size', 20px, 16px);
   gap: 5px;
+  margin: 30px 0;
   font-family: Questrial, sans-serif;
+
+  button {
+    @extend %transition;
+
+    @include hover {
+      color: $color-gray-dark;
+    }
+  }
 }
 
 .breadcrumbs-link {
   text-transform: capitalize;
 
   &:last-of-type {
-    opacity: 0.7;
     pointer-events: none;
+    opacity: 0.7;
   }
 }
