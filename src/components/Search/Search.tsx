@@ -22,9 +22,6 @@ export const Search = ({ searchSettings, setSearchSettings }: SearchProps) => {
     const newSearchSettings = { ...searchSettings };
     newSearchSettings[searchIdentifier] = searchValue;
     setSearchSettings(newSearchSettings);
-    // const data = await sdkService.searchByString(searchValue);
-    // console.log('Submitted search term:', searchValue);
-    // console.log(data);
   };
 
   return (

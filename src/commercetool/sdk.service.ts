@@ -107,19 +107,6 @@ export class SdkService {
     return data.body;
   }
 
-  // public async filterProductsByAttribute(filterArr: string[]) {
-  //   const data = await this.apiRoot
-  //     .productProjections()
-  //     .search()
-  //     .get({
-  //       queryArgs: {
-  //         filter: [...filterArr],
-  //       },
-  //     })
-  //     .execute();
-  //   return data.body.results;
-  // }
-
   public async filterProductsByAttribute(filterArr: QueryParams) {
     const data = await this.apiRoot
       .productProjections()
@@ -127,21 +114,6 @@ export class SdkService {
       .get({
         queryArgs: {
           ...filterArr,
-        },
-      })
-      .execute();
-    return data.body.results;
-  }
-
-  public async searchByString(searchText: string) {
-    const data = await this.apiRoot
-      .productProjections()
-      .search()
-      .get({
-        queryArgs: {
-          'text.en-US': searchText,
-          fuzzy: true,
-          fuzzyLevel: 0,
         },
       })
       .execute();

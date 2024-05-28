@@ -1,4 +1,4 @@
-import { Filters, SearchSettings } from '@models/index';
+import { Filters, SearchSettings, SortSettings } from '@models/index';
 
 export const CustomErrors = {
   SERVER_ERROR: 'Sorry, there is error with server response',
@@ -27,4 +27,8 @@ export const defaultSearch: SearchSettings = {
   'text.en-US': '',
   fuzzy: true,
   fuzzyLevel: 0,
+};
+
+export const defaultSort: SortSettings = {
+  sort: '',
 };

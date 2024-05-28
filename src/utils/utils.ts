@@ -1,5 +1,13 @@
 import { AttributeEnumType, AttributeSetType, Category, ProductType } from '@commercetools/platform-sdk';
-import { CategoryList, CustomCategory, Filters, ProductCategory, SearchSettings } from '@models/index';
+import {
+  CategoryList,
+  CustomCategory,
+  Filters,
+  ProductCategory,
+  QueryParams,
+  SearchSettings,
+  SortSettings,
+} from '@models/index';
 import { searchIdentifier } from './constants';
 
 export function isNotNullable<T>(value: T): NonNullable<T> {
@@ -177,8 +185,14 @@ export function generateBreadcrumbsSlugs(slugs: string[]) {
   );
 }
 
-export function prepareQueryParams(searchSettings: SearchSettings, preparedFilters: string[]) {
-  let queryParams = {
+export function prepareQueryParams(
+  filters: Filters,
+  categoryId: string,
+  searchSettings: SearchSettings,
+  sortSettings: SortSettings
+) {
+  const preparedFilters = prepareFilters(filters, categoryId);
+  let queryParams: QueryParams = {
     filter: [...preparedFilters],
   };
 
@@ -189,6 +203,15 @@ export function prepareQueryParams(searchSettings: SearchSettings, preparedFilte
     };
   }
 
-  console.log(queryParams);
+  if (sortSettings.sort !== '') {
+    queryParams = {
+      ...queryParams,
+      ...sortSettings,
+    };
+    if (sortSettings.sort === 'price asc' || sortSettings.sort === 'price desc') {
+      queryParams.currencyCode = 'USD';
+    }
+  }
+
   return queryParams;
 }

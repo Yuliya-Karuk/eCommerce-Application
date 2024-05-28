@@ -42,4 +42,19 @@ export interface QueryParams {
   'text.en-US'?: string;
   fuzzy?: boolean;
   fuzzyLevel?: number;
+  sort?: string;
+  currencyCode?: string;
+}
+
+export interface SortSettings {
+  sort: string;
+}
+
+export interface PriceOrder {
+  currencyCode: 'USD';
+  sort: string;
+}
+
+export interface AlphabetOrder {
+  sort: string;
 }

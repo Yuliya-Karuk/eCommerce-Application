@@ -12,8 +12,8 @@ import { ProductCard } from '@components/ProductCard/ProductCard';
 import { Search } from '@components/Search/Search';
 import { Sorting } from '@components/Sorting/Sorting';
 import { CategoryList, CustomCategory, Filters } from '@models/index';
-import { defaultFilter, defaultSearch, startCategory } from '@utils/constants';
-import { prepareFilters, prepareQuery, prepareQueryParams, simplifyCategories } from '@utils/utils';
+import { defaultFilter, defaultSearch, defaultSort, startCategory } from '@utils/constants';
+import { prepareQuery, prepareQueryParams, simplifyCategories } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './catalog.module.scss';
@@ -40,6 +40,7 @@ export function Catalog() {
   const queryParams = new URLSearchParams(location.search);
   const [filters, setFilters] = useState<Filters>(prepareQuery(queryParams, defaultFilter));
   const [searchSettings, setSearchSettings] = useState(defaultSearch);
+  const [sortSettings, setSortSettings] = useState(defaultSort);
 
   const getCategories = async () => {
     const data = await sdkService.getCategories();
@@ -49,9 +50,7 @@ export function Catalog() {
   };
 
   const getProducts = async () => {
-    const preparedFilters = prepareFilters(filters, activeCategory.id);
-    const queryParams2 = prepareQueryParams(searchSettings, preparedFilters);
-    console.log(preparedFilters);
+    const queryParams2 = prepareQueryParams(filters, activeCategory.id, searchSettings, sortSettings);
 
     const data = await sdkService.filterProductsByAttribute(queryParams2);
 
@@ -74,7 +73,7 @@ export function Catalog() {
   useEffect(() => {
     getProducts();
     handleFilterUpdate();
-  }, [activeCategory, filters, searchSettings]);
+  }, [activeCategory, filters, searchSettings, sortSettings]);
 
   useEffect(() => {
     getCategories();
@@ -112,7 +111,7 @@ export function Catalog() {
               Filters
             </button>
             <Search searchSettings={searchSettings} setSearchSettings={setSearchSettings} />
-            <Sorting />
+            <Sorting sortSettings={sortSettings} setSortSettings={setSortSettings} />
             <div className={styles.catalogProducts}>
               <ul className={styles.catalogList}>
                 {products.map(product => (
