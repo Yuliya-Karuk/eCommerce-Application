@@ -50,7 +50,7 @@
     font-family: Questrial, Arial, Helvetica, serif;
     @include adaptiveValue('font-size', 16px, 14px);
     line-height: 1.5;
-    background-color: $color-grey-dark-bg;
+    background-color: $color-bg-light;
     border: 1px solid $color-bg-dark;
     border-radius: 5px;
     padding: 9px 17px;

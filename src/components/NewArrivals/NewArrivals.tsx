@@ -1,18 +1,13 @@
 import { sdkService } from '@commercetool/sdk.service';
 import { Product } from '@commercetools/platform-sdk';
+import { Container } from '@components/Container/Container';
 import { AppRoutes } from '@router/routes';
 import { FC, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Container } from '../Container/Container';
+import { Link } from 'react-router-dom';
 import { NewArrivalsCard } from '../NewArrivalsCard/NewArrivalsCard';
 import styles from './NewArrivals.module.scss';
 
-interface NewArrivalsProps {
-  id?: string;
-}
-
-export const NewArrivals: FC<NewArrivalsProps> = ({ id, ...props }) => {
-  const navigate = useNavigate();
+export const NewArrivals: FC = ({ ...props }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const updateProducts = async () => {
     const prods = await sdkService.getProducts();
@@ -30,20 +25,14 @@ export const NewArrivals: FC<NewArrivalsProps> = ({ id, ...props }) => {
         <div className={styles.newarrivalsBody}>
           <div className={styles.newarrivalsHeader}>
             <h2 className={styles.newarrivalsTitle}>New Arrivals</h2>
-            <button
-              type="button"
-              className={styles.newarrivalsShopall}
-              onClick={() => {
-                navigate(AppRoutes.CATALOG_ROUTE);
-              }}
-            >
+            <Link to={AppRoutes.CATALOG_ROUTE} className={styles.newarrivalsShopall}>
               Shop All
-            </button>
+            </Link>
           </div>
 
           <div className={styles.newarrivalsList} {...props}>
             {products.map((product: Product) => {
-              return <NewArrivalsCard key={product.key} product={product} />;
+              return <NewArrivalsCard key={product.id} product={product} />;
             })}
           </div>
         </div>
