@@ -1,5 +1,6 @@
 import { AttributeEnumType, AttributeSetType, Category, ProductType } from '@commercetools/platform-sdk';
-import { CategoryList, CustomCategory, Filters, ProductCategory } from '@models/index';
+import { CategoryList, CustomCategory, Filters, ProductCategory, SearchSettings } from '@models/index';
+import { searchIdentifier } from './constants';
 
 export function isNotNullable<T>(value: T): NonNullable<T> {
   if (value === undefined || value === null) {
@@ -174,4 +175,20 @@ export function generateBreadcrumbsSlugs(slugs: string[]) {
     },
     {} as { [key: string]: string }
   );
+}
+
+export function prepareQueryParams(searchSettings: SearchSettings, preparedFilters: string[]) {
+  let queryParams = {
+    filter: [...preparedFilters],
+  };
+
+  if (searchSettings[searchIdentifier] !== '') {
+    queryParams = {
+      ...queryParams,
+      ...searchSettings,
+    };
+  }
+
+  console.log(queryParams);
+  return queryParams;
 }

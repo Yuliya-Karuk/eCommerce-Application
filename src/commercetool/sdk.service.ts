@@ -10,6 +10,7 @@ import {
   ProductType,
 } from '@commercetools/platform-sdk';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
+import { QueryParams } from '@models/index';
 import { storage } from '@utils/storage';
 import {
   anonymousMiddlewareOptions,
@@ -106,13 +107,26 @@ export class SdkService {
     return data.body;
   }
 
-  public async filterProductsByAttribute(filterArr: string[]) {
+  // public async filterProductsByAttribute(filterArr: string[]) {
+  //   const data = await this.apiRoot
+  //     .productProjections()
+  //     .search()
+  //     .get({
+  //       queryArgs: {
+  //         filter: [...filterArr],
+  //       },
+  //     })
+  //     .execute();
+  //   return data.body.results;
+  // }
+
+  public async filterProductsByAttribute(filterArr: QueryParams) {
     const data = await this.apiRoot
       .productProjections()
       .search()
       .get({
         queryArgs: {
-          filter: [...filterArr],
+          ...filterArr,
         },
       })
       .execute();

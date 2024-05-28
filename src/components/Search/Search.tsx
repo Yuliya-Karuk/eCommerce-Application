@@ -1,9 +1,15 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { sdkService } from '@commercetool/sdk.service';
+import { SearchSettings } from '@models/index';
+import { searchIdentifier } from '@utils/constants';
 import { useState } from 'react';
 import styles from './Search.module.scss';
 
-export const Search = () => {
+interface SearchProps {
+  searchSettings: SearchSettings;
+  setSearchSettings: (data: SearchSettings) => void;
+}
+
+export const Search = ({ searchSettings, setSearchSettings }: SearchProps) => {
   const [searchValue, setSearchValue] = useState('');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -12,9 +18,13 @@ export const Search = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = await sdkService.searchByString(searchValue);
-    console.log('Submitted search term:', searchValue);
-    console.log(data);
+
+    const newSearchSettings = { ...searchSettings };
+    newSearchSettings[searchIdentifier] = searchValue;
+    setSearchSettings(newSearchSettings);
+    // const data = await sdkService.searchByString(searchValue);
+    // console.log('Submitted search term:', searchValue);
+    // console.log(data);
   };
 
   return (

@@ -12,8 +12,8 @@ import { ProductCard } from '@components/ProductCard/ProductCard';
 import { Search } from '@components/Search/Search';
 import { Sorting } from '@components/Sorting/Sorting';
 import { CategoryList, CustomCategory, Filters } from '@models/index';
-import { defaultFilter, startCategory } from '@utils/constants';
-import { prepareFilters, prepareQuery, simplifyCategories } from '@utils/utils';
+import { defaultFilter, defaultSearch, startCategory } from '@utils/constants';
+import { prepareFilters, prepareQuery, prepareQueryParams, simplifyCategories } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './catalog.module.scss';
@@ -39,6 +39,7 @@ export function Catalog() {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const [filters, setFilters] = useState<Filters>(prepareQuery(queryParams, defaultFilter));
+  const [searchSettings, setSearchSettings] = useState(defaultSearch);
 
   const getCategories = async () => {
     const data = await sdkService.getCategories();
@@ -49,8 +50,10 @@ export function Catalog() {
 
   const getProducts = async () => {
     const preparedFilters = prepareFilters(filters, activeCategory.id);
+    const queryParams2 = prepareQueryParams(searchSettings, preparedFilters);
+    console.log(preparedFilters);
 
-    const data = await sdkService.filterProductsByAttribute(preparedFilters);
+    const data = await sdkService.filterProductsByAttribute(queryParams2);
 
     setProducts(data);
     setIsLoading(false);
@@ -71,7 +74,7 @@ export function Catalog() {
   useEffect(() => {
     getProducts();
     handleFilterUpdate();
-  }, [activeCategory, filters]);
+  }, [activeCategory, filters, searchSettings]);
 
   useEffect(() => {
     getCategories();
@@ -108,7 +111,7 @@ export function Catalog() {
             <button className={styles.buttonFilters} type="button" onClick={() => setIsFilterShown(!isFilterShown)}>
               Filters
             </button>
-            <Search />
+            <Search searchSettings={searchSettings} setSearchSettings={setSearchSettings} />
             <Sorting />
             <div className={styles.catalogProducts}>
               <ul className={styles.catalogList}>
