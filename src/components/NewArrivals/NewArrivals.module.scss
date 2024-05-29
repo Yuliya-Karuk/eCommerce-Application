@@ -1,6 +1,6 @@
 .newarrivals {
   background-color: $color-bg-light;
-  padding: 4.5% 0;
+  padding: 4.5% 2%;
 
   &-body {
     width: 100%;
@@ -44,7 +44,7 @@
   &-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(rem(300px), 1fr));
-    gap: 20px;
+    gap: 18px;
     margin: 0 auto;
     overflow: hidden;
   }
