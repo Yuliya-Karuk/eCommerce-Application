@@ -32,3 +32,12 @@ export const defaultSearch: SearchSettings = {
 export const defaultSort: SortSettings = {
   sort: '',
 };
+
+export const ColorsHex: { [key: string]: string } = {
+  Bronze: '#845b32',
+  Brown: '#492201',
+  Burgundy: '#590016',
+  Green: '#464e3c',
+  Gray: '#808080',
+  Blue: '#697f8b',
+};

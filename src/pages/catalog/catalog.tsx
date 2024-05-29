@@ -6,19 +6,18 @@ import catalogPots from '@assets/catalog-pots.webp';
 import { sdkService } from '@commercetool/sdk.service';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
+import { Container } from '@components/Container/Container';
 import { FiltersComponent } from '@components/Filters/Filters';
+import { Header } from '@components/Header/Header';
 import { ProductCard } from '@components/ProductCard/ProductCard';
 import { Search } from '@components/Search/Search';
 import { Sorting } from '@components/Sorting/Sorting';
-import { Container, Header } from '@components/index';
 import { CategoryList, CustomCategory, Filters } from '@models/index';
 import { defaultFilter, defaultSearch, defaultSort, startCategory } from '@utils/constants';
 import { prepareQuery, prepareQueryParams, simplifyCategories } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './catalog.module.scss';
-
-// const defaultPriceBorder = ['5.99', '100.00'];
 
 const CatalogImages: { [key: string]: string } = {
   'All Products': catalogAll,

@@ -2,10 +2,12 @@ import heart from '@assets/heart.svg';
 import { sdkService } from '@commercetool/sdk.service';
 import { ProductProjection, ProductVariant } from '@commercetools/platform-sdk';
 import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
-import ProductAttributesView, { ProductAttributes } from '@components/ProductAttributes/ProductAttributesView';
+import { Container } from '@components/Container/Container';
+import { Footer } from '@components/Footer/Footer';
+import { Header } from '@components/Header/Header';
+import { ProductAttributes, ProductAttributesView } from '@components/ProductAttributes/ProductAttributesView';
 import { ProductInfoSection } from '@components/ProductInfoSection/ProductInfoSection';
-import QuantityInput from '@components/QuantityInput/QuantityInput';
-import { Container, Footer, Header } from '@components/index';
+import { QuantityInput } from '@components/QuantityInput/QuantityInput';
 import { convertCentsToDollarsString, convertProductAttributesArrayToObject, ensureValue } from '@utils/utils';
 import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
@@ -17,6 +19,7 @@ import styles from './productItem.module.scss';
 // eslint-disable-next-line max-lines-per-function
 export function ProductItem() {
   const { category, subcategory, slug } = useParams();
+
   ensureValue(category, "can't find the product category");
   ensureValue(slug, "can't find the product key (slug)");
 
@@ -31,7 +34,6 @@ export function ProductItem() {
 
   const getProduct = async () => {
     const data = await sdkService.getProductProjectionByKey(slug);
-    console.log(data);
     setProduct(data);
     setActiveVariant(data.masterVariant);
   };
@@ -113,13 +115,13 @@ export function ProductItem() {
   };
 
   const handleAddToCartClick = () => {
-    const order = {
-      action: 'addLineItem',
-      productId: product.id,
-      variantId: activeVariant.id,
-      quantity,
-    };
-    console.log(order);
+    // const order = {
+    //   action: 'addLineItem',
+    //   productId: product.id,
+    //   variantId: activeVariant.id,
+    //   quantity,
+    // };
+    // console.log(order);
   };
 
   return (
@@ -170,13 +172,15 @@ export function ProductItem() {
                 <div className={styles.quantitySelector}>
                   <QuantityInput value={quantity} onChange={setQuantity} />
                 </div>
-                <button type="button" className={styles.addToCartButton} onClick={handleAddToCartClick}>
-                  add to cart
-                </button>
-                <button type="button" className={styles.addToFavoriteButton} onClick={handleFavoriteClick}>
-                  <img src={heart} alt="add to favorite" />
-                  {showHeart && <img className={styles.heartAnimation} src={heart} alt="flying heart" />}
-                </button>
+                <div className={styles.buttonsWrapper}>
+                  <button type="button" className={styles.addToCartButton} onClick={handleAddToCartClick}>
+                    add to cart
+                  </button>
+                  <button type="button" className={styles.addToFavoriteButton} onClick={handleFavoriteClick}>
+                    <img src={heart} alt="add to favorite" />
+                    {showHeart && <img className={styles.heartAnimation} src={heart} alt="flying heart" />}
+                  </button>
+                </div>
               </div>
               <ProductInfoSection productInfoText={allAttributes[0].details} />
             </section>

@@ -6,7 +6,7 @@ interface QuantityInputProps {
   onChange: (value: number) => void;
 }
 
-const QuantityInput: React.FC<QuantityInputProps> = ({ value, onChange }) => {
+export const QuantityInput: React.FC<QuantityInputProps> = ({ value, onChange }) => {
   const handleIncrement = () => {
     onChange(value + 1);
   };
@@ -37,5 +37,3 @@ const QuantityInput: React.FC<QuantityInputProps> = ({ value, onChange }) => {
     </div>
   );
 };
-
-export default QuantityInput;

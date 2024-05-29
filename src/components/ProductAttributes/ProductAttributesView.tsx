@@ -1,4 +1,5 @@
 import { ProductProjection, ProductVariant } from '@commercetools/platform-sdk';
+import { ColorsHex } from '@utils/constants';
 import classNames from 'classnames';
 import styles from './ProductAttributesView.module.scss';
 
@@ -34,16 +35,7 @@ const sizeDescriptions: Record<SizeKey, string> = {
   L: 'Large',
 };
 
-const ColorsHex: { [key: string]: string } = {
-  Bronze: '#845b32',
-  Brown: '#492201',
-  Burgundy: '#590016',
-  Green: '#464e3c',
-  Gray: '#808080',
-  Blue: '#697f8b',
-};
-
-export default function ProductAttributesView({
+export function ProductAttributesView({
   activeAttributes: { size, brand, color },
   allAttributes,
   setActiveVariant,
