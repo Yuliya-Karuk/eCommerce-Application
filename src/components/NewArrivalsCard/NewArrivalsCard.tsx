@@ -31,6 +31,7 @@ export const NewArrivalsCard: FC<NewArrivalsCardProps> = ({ product, categories,
             'images/New Arrivals/template.png'
           }
           alt={product.name['en-US']}
+          loading="lazy"
         />
       </div>
 
