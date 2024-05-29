@@ -42,9 +42,10 @@ export const NewArrivals: FC = ({ ...props }) => {
           </div>
 
           <div className={styles.newarrivalsList} {...props}>
-            {products.map((product: ProductProjection) => {
-              return <NewArrivalsCard key={product.id} product={product} categories={categories} />;
-            })}
+            {Object.values(categories).length > 0 &&
+              products.map((product: ProductProjection) => {
+                return <NewArrivalsCard key={product.id} product={product} categories={categories} />;
+              })}
           </div>
         </div>
       </Container>
