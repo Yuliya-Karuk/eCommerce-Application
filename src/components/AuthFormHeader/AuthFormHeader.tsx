@@ -12,9 +12,8 @@ interface AuthFormHeaderProps {
 export function AuthFormHeader({ titleText, linkDescription, linkText, linkTo }: AuthFormHeaderProps) {
   return (
     <>
-      <Link className={styles.cross} to={AppRoutes.HOME_ROUTE}>
-        <span className={styles.crossLine} />
-        <span className={styles.crossLine} />
+      <Link className={styles.toMainLink} to={AppRoutes.HOME_ROUTE}>
+        Go to Home Page
       </Link>
       <h1 className={styles.title}>{titleText}</h1>
       <div className={styles.linkWrapper}>
