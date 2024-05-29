@@ -97,7 +97,6 @@ export function Catalog() {
   }, [categories, location]);
 
   useEffect(() => {
-    setIsLoading(true);
     getCategories();
   }, []);
 
