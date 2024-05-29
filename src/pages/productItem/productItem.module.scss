@@ -29,6 +29,7 @@
 
       .slider-wrapper {
         @include flex(center);
+        margin: 0 auto;
         position: relative;
         flex: 0 1 40%;
         background-color: $color-bg-slider;
@@ -87,19 +88,24 @@
 
         .buttons-wrapper {
           @include flex(flex-start, center, row, 10px);
+          flex-wrap: wrap;
           width: 100%;
           margin-top: 25px;
 
           .add-to-cart-button {
             @extend %transition;
             height: 40px;
-            padding: 0 50px;
+            width: 210px;
             color: $color-white;
             background-color: $color-primary-bright;
             border-radius: 5px;
 
             &:hover {
               background-color: $color-primary-dull;
+            }
+
+            @media (max-width: 540px) {
+              font-size: 1.8rem;
             }
           }
 
