@@ -1,17 +1,27 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
+import { SearchSettings } from '@models/index';
+import { searchIdentifier } from '@utils/constants';
 import { useState } from 'react';
 import styles from './Search.module.scss';
 
-export const Search = () => {
+interface SearchProps {
+  searchSettings: SearchSettings;
+  setSearchSettings: (data: SearchSettings) => void;
+}
+
+export const Search = ({ searchSettings, setSearchSettings }: SearchProps) => {
   const [searchValue, setSearchValue] = useState('');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('Submitted search term:', searchValue);
+
+    const newSearchSettings = { ...searchSettings };
+    newSearchSettings[searchIdentifier] = searchValue;
+    setSearchSettings(newSearchSettings);
   };
 
   return (

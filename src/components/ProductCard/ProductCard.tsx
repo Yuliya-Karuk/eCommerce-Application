@@ -25,10 +25,7 @@ export const ProductCard = ({ categories, product }: ProductCardProps) => {
 
   return (
     <div className={styles.productCard}>
-      <Link
-        to={product.key ? `${AppRoutes.PRODUCTS_ROUTE}/${slugs}/${product.key}` : AppRoutes.HOME_ROUTE}
-        className={styles.productCardImgContainer}
-      >
+      <Link to={`${AppRoutes.PRODUCTS_ROUTE}/${slugs}/${product.key}`} className={styles.productCardImgContainer}>
         <img
           className={styles.productCardImg}
           src={isNotNullable(product.masterVariant.images)[0].url}
@@ -36,10 +33,7 @@ export const ProductCard = ({ categories, product }: ProductCardProps) => {
         />
         <p className={styles.productCardDescription}>{productDesc}</p>
       </Link>
-      <Link
-        to={product.key ? `${AppRoutes.PRODUCTS_ROUTE}/${slugs}/${product.key}` : AppRoutes.HOME_ROUTE}
-        className={styles.productCardTitle}
-      >
+      <Link to={`${AppRoutes.PRODUCTS_ROUTE}/${slugs}/${product.key}`} className={styles.productCardTitle}>
         {productName}
       </Link>
       <div className={styles.productCardPrices}>

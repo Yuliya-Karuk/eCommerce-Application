@@ -10,6 +10,7 @@ import {
   ProductType,
 } from '@commercetools/platform-sdk';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
+import { QueryParams } from '@models/index';
 import { storage } from '@utils/storage';
 import {
   anonymousMiddlewareOptions,
@@ -90,19 +91,6 @@ export class SdkService {
     return data.body.results;
   }
 
-  public async getProductsByCategory(categoryId: string): Promise<ProductProjection[]> {
-    const data = await this.apiRoot
-      .productProjections()
-      .search()
-      .get({
-        queryArgs: {
-          filter: [`categories.id:"${categoryId}"`],
-        },
-      })
-      .execute();
-    return data.body.results;
-  }
-
   public async getProductsTypes(): Promise<ProductType[]> {
     const data = await this.apiRoot.productTypes().get().execute();
     return data.body.results;
@@ -119,13 +107,13 @@ export class SdkService {
     return data.body;
   }
 
-  public async filterProductsByAttribute(filterArr: string[]) {
+  public async filterProductsByAttribute(filterArr: QueryParams) {
     const data = await this.apiRoot
       .productProjections()
       .search()
       .get({
         queryArgs: {
-          filter: [...filterArr],
+          ...filterArr,
         },
       })
       .execute();

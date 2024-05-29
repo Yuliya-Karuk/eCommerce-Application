@@ -20,7 +20,7 @@ export const Breadcrumbs = ({ activeCategorySlug, setFilters, defaultFilter }: B
     if (defaultFilter && setFilters) {
       setFilters(defaultFilter);
     }
-    navigate(path);
+    navigate(path, { replace: true });
   };
 
   return (

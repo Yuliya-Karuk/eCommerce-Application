@@ -32,7 +32,6 @@ export function ProductItem() {
   const getProduct = async () => {
     const data = await sdkService.getProductByKey(slug);
     setProduct(data);
-    console.log(data.masterData.current);
     setActiveVariant(data.masterData.current.masterVariant);
   };
 

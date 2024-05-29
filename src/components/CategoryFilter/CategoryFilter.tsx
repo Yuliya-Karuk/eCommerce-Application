@@ -21,7 +21,7 @@ export const CategoryFilter = ({ categories, activeCategory, setActiveCategory }
   const handleCategoryClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>, categoryName: string) => {
     event.stopPropagation();
     setActiveCategory(categories[categoryName]);
-    navigate(`/catalog/${categories[categoryName].slug.join('/')}`);
+    navigate(`/catalog/${categories[categoryName].slug.join('/')}`, { replace: true });
   };
 
   return (

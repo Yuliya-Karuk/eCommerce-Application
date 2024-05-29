@@ -1,6 +1,15 @@
 import { Attribute, AttributeEnumType, AttributeSetType, Category, ProductType } from '@commercetools/platform-sdk';
 import { ProductAttributes } from '@components/ProductAttributes/ProductAttributesView';
-import { CategoryList, CustomCategory, Filters, ProductCategory } from '@models/index';
+import {
+  CategoryList,
+  CustomCategory,
+  Filters,
+  ProductCategory,
+  QueryParams,
+  SearchSettings,
+  SortSettings,
+} from '@models/index';
+import { searchIdentifier } from './constants';
 
 export function isNotNullable<T>(value: T, errorMessage?: string): NonNullable<T> {
   if (value === undefined || value === null) {
@@ -187,6 +196,37 @@ export function generateBreadcrumbsSlugs(slugs: string[]) {
     },
     {} as { [key: string]: string }
   );
+}
+
+export function prepareQueryParams(
+  filters: Filters,
+  categoryId: string,
+  searchSettings: SearchSettings,
+  sortSettings: SortSettings
+) {
+  const preparedFilters = prepareFilters(filters, categoryId);
+  let queryParams: QueryParams = {
+    filter: [...preparedFilters],
+  };
+
+  if (searchSettings[searchIdentifier] !== '') {
+    queryParams = {
+      ...queryParams,
+      ...searchSettings,
+    };
+  }
+
+  if (sortSettings.sort !== '') {
+    queryParams = {
+      ...queryParams,
+      ...sortSettings,
+    };
+    if (sortSettings.sort === 'price asc' || sortSettings.sort === 'price desc') {
+      queryParams.currencyCode = 'USD';
+    }
+  }
+
+  return queryParams;
 }
 
 interface KeyValue {

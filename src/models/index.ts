@@ -30,3 +30,31 @@ export interface FiltersProps {
 export interface Filters {
   [key: string]: string[];
 }
+
+export interface SearchSettings {
+  'text.en-US': string;
+  fuzzy: boolean;
+  fuzzyLevel: number;
+}
+
+export interface QueryParams {
+  filter: string[];
+  'text.en-US'?: string;
+  fuzzy?: boolean;
+  fuzzyLevel?: number;
+  sort?: string;
+  currencyCode?: string;
+}
+
+export interface SortSettings {
+  sort: string;
+}
+
+export interface PriceOrder {
+  currencyCode: 'USD';
+  sort: string;
+}
+
+export interface AlphabetOrder {
+  sort: string;
+}
