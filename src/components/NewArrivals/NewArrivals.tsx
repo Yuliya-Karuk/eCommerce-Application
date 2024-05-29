@@ -1,7 +1,8 @@
+import { sdkService } from '@commercetool/sdk.service';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { Container } from '@components/Container/Container';
 import { AppRoutes } from '@router/routes';
-import { CategoryList, getCategories, getSortedProducts } from '@utils/utils';
+import { CategoryList, dateSorting, simplifyCategories } from '@utils/utils';
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { NewArrivalsCard } from '../NewArrivalsCard/NewArrivalsCard';
@@ -12,16 +13,21 @@ export const NewArrivals: FC = ({ ...props }) => {
   const [categories, setCategories] = useState<CategoryList>({});
   const cardNumber = 4;
 
-  const updateStates = async () => {
-    const prodsArray = await getSortedProducts(cardNumber);
-    const categoriesArray = await getCategories();
+  const updateProductsState = async () => {
+    const prods = await sdkService.getProducts();
+    const sortedProds = dateSorting(prods);
+    setProducts(sortedProds.slice(0, cardNumber));
+  };
 
-    setProducts(prodsArray);
-    setCategories(categoriesArray);
+  const getCategories = async () => {
+    const data = await sdkService.getCategories();
+    const preparedData = simplifyCategories(data);
+    setCategories(preparedData);
   };
 
   useEffect(() => {
-    updateStates();
+    updateProductsState();
+    getCategories();
   }, []);
 
   return (
