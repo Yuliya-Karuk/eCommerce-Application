@@ -1,4 +1,4 @@
-import { Product, ProductVariant } from '@commercetools/platform-sdk';
+import { ProductProjection, ProductVariant } from '@commercetools/platform-sdk';
 import classNames from 'classnames';
 import styles from './ProductAttributesView.module.scss';
 
@@ -13,7 +13,7 @@ export interface ProductAttributesViewProps {
   activeAttributes: ProductAttributes;
   allAttributes: ProductAttributes[];
   setActiveVariant: React.Dispatch<React.SetStateAction<ProductVariant>>;
-  product: Product;
+  product: ProductProjection;
 }
 
 interface SizeOption {
@@ -65,17 +65,17 @@ export default function ProductAttributesView({
 
   const handleSizeClick = (index: number) => {
     if (index > 0) {
-      setActiveVariant(product.masterData.current.variants[index - 1]);
+      setActiveVariant(product.variants[index - 1]);
     } else {
-      setActiveVariant(product.masterData.current.masterVariant);
+      setActiveVariant(product.masterVariant);
     }
   };
 
   const handleColorClick = (index: number) => {
     if (index > 0) {
-      setActiveVariant(product.masterData.current.variants[index - 1]);
+      setActiveVariant(product.variants[index - 1]);
     } else {
-      setActiveVariant(product.masterData.current.masterVariant);
+      setActiveVariant(product.masterVariant);
     }
   };
 

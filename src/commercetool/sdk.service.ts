@@ -5,7 +5,6 @@ import {
   createApiBuilderFromCtpClient,
   CustomerDraft,
   CustomerSignInResult,
-  Product,
   ProductProjection,
   ProductType,
 } from '@commercetools/platform-sdk';
@@ -101,12 +100,6 @@ export class SdkService {
     return data.body.results;
   }
 
-  public async getProduct(productKey: string): Promise<Product> {
-    const data = await this.apiRoot.products().withKey({ key: productKey }).get().execute();
-    // const data = await this.apiRoot.productProjections().withKey({ key: productKey }).get().execute();
-    return data.body;
-  }
-
   public async filterProductsByAttribute(filterArr: QueryParams) {
     const data = await this.apiRoot
       .productProjections()
@@ -120,8 +113,8 @@ export class SdkService {
     return data.body.results;
   }
 
-  public async getProductByKey(productKey: string): Promise<Product> {
-    const data = await this.apiRoot.products().withKey({ key: productKey }).get().execute();
+  public async getProductProjectionByKey(productKey: string): Promise<ProductProjection> {
+    const data = await this.apiRoot.productProjections().withKey({ key: productKey }).get().execute();
     return data.body;
   }
 }
