@@ -9,6 +9,7 @@
     font-size: 1.6rem;
     text-align: center;
     background-color: $color-green-dark;
+    position: relative;
 
     .form {
       @include flex(flex-start, left, column);
