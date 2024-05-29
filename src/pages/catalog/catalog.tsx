@@ -150,9 +150,8 @@ export function Catalog() {
             <Sorting sortSettings={sortSettings} setSortSettings={setSortSettings} />
             <div className={styles.catalogProducts}>
               <ul className={styles.catalogList}>
-                {products.map(product => (
-                  <ProductCard categories={categories} key={product.id} product={product} />
-                ))}
+                {Object.values(categories).length > 0 &&
+                  products.map(product => <ProductCard categories={categories} key={product.id} product={product} />)}
               </ul>
             </div>
           </div>

@@ -13,6 +13,7 @@ interface ProductCardProps {
 
 export const ProductCard = ({ categories, product }: ProductCardProps) => {
   let priceDiscounted;
+  console.log(categories);
   const slugs = prepareProductSlugs(categories, product.categories).join('/');
   const productName = product.name['en-US'];
   const productDesc = isNotNullable(product.description)['en-US'];
