@@ -6,7 +6,7 @@ import ProductAttributesView, { ProductAttributes } from '@components/ProductAtt
 import { ProductInfoSection } from '@components/ProductInfoSection/ProductInfoSection';
 import QuantityInput from '@components/QuantityInput/QuantityInput';
 import { Container, Footer, Header } from '@components/index';
-import { convertCentsToDollarsString, convertProductAttributesArrayToObject } from '@utils/utils';
+import { convertCentsToDollarsString, convertProductAttributesArrayToObject, ensureValue } from '@utils/utils';
 import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 import ReactImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
@@ -17,13 +17,8 @@ import styles from './productItem.module.scss';
 // eslint-disable-next-line max-lines-per-function
 export function ProductItem() {
   const { category, subcategory, slug } = useParams();
-  // console.log(category, subcategory, slug);
-  if (!category) {
-    throw new Error("can't find the product category");
-  }
-  if (!slug) {
-    throw new Error("can't find the product key (slug)");
-  }
+  ensureValue(category, "can't find the product category");
+  ensureValue(slug, "can't find the product key (slug)");
 
   const galleryRef = useRef<ReactImageGallery>(null);
 
@@ -137,11 +132,11 @@ export function ProductItem() {
             <div className={styles.sliderWrapper}>
               <ReactImageGallery
                 ref={galleryRef}
-                showNav={!!isFullscreen}
-                showBullets
+                showNav={isFullscreen}
+                showBullets={!isFullscreen}
                 lazyLoad
                 autoPlay
-                showThumbnails={!!isFullscreen}
+                showThumbnails={isFullscreen}
                 useBrowserFullscreen={false}
                 items={slides}
                 onScreenChange={handleScreenChange}

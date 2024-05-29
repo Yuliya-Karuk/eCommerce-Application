@@ -2,11 +2,23 @@ import { Attribute, AttributeEnumType, AttributeSetType, Category, ProductType }
 import { ProductAttributes } from '@components/ProductAttributes/ProductAttributesView';
 import { CategoryList, CustomCategory, Filters, ProductCategory } from '@models/index';
 
-export function isNotNullable<T>(value: T): NonNullable<T> {
+export function isNotNullable<T>(value: T, errorMessage?: string): NonNullable<T> {
   if (value === undefined || value === null) {
-    throw new Error(`Not expected value`);
+    throw new Error(errorMessage || 'Not expected value');
   }
   return value;
+}
+
+/**
+ * Checks if a value is present and throws an error if the value is missing.
+ * @param value - The value to check.
+ * @param errorMessage - The error message to throw if the value is missing.
+ * @throws {Error} - Throws an error with the specified message.
+ */
+export function ensureValue<T>(value: T | undefined | null, errorMessage: string): asserts value is T {
+  if (value === undefined || value === null) {
+    throw new Error(errorMessage);
+  }
 }
 
 export function convertCentsToDollarsString(num: number, fractionDigits = 2): string {

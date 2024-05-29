@@ -12,7 +12,7 @@
   .wrapper {
     @include flex(flex-start, flex-start, column, 15px);
     max-width: 1476px;
-    padding: 20px;
+    padding: 35px;
     font-family: Forum, serif;
     color: $default-text-color;
     background-color: $color-bg-light;
