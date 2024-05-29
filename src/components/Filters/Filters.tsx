@@ -7,10 +7,10 @@ import { PriceFilter } from '@components/PriceFilter/PriceFilter';
 import { CategoryList, CustomCategory, Filters } from '@models/index';
 import { AppRoutes } from '@router/routes';
 import { defaultFilter, defaultPriceBorder } from '@utils/constants';
-import { findCategoryBySlug, prepareBrands, prepareColors, prepareSizes } from '@utils/utils';
+import { prepareBrands, prepareColors, prepareSizes } from '@utils/utils';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from './Filters.module.scss';
 
 interface FiltersProps {
@@ -20,6 +20,8 @@ interface FiltersProps {
   isFilterShown: boolean;
   filters: Filters;
   setFilters: (data: Filters) => void;
+  errorNotify: (data: string) => void;
+  setIsLoading: (data: boolean) => void;
 }
 
 export const FiltersComponent = ({
@@ -29,18 +31,24 @@ export const FiltersComponent = ({
   isFilterShown,
   filters,
   setFilters,
+  errorNotify,
+  setIsLoading,
 }: FiltersProps) => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [brands, setBrands] = useState<string[]>([]);
   const [sizes, setSizes] = useState<string[]>([]);
   const [colors, setColors] = useState<string[]>([]);
 
   const getTypes = async () => {
-    const data: ProductType[] = await sdkService.getProductsTypes();
-    setBrands(prepareBrands(data));
-    setSizes(prepareSizes(data));
-    setColors(prepareColors(data));
+    try {
+      const data: ProductType[] = await sdkService.getProductsTypes();
+      setBrands(prepareBrands(data));
+      setSizes(prepareSizes(data));
+      setColors(prepareColors(data));
+    } catch (e) {
+      setIsLoading(false);
+      errorNotify((e as Error).message);
+    }
   };
 
   const handleClearFilters = () => {
@@ -50,15 +58,8 @@ export const FiltersComponent = ({
 
   useEffect(() => {
     getTypes();
-  }, []);
-
-  useEffect(() => {
-    if (Object.keys(categories).length !== 0) {
-      const active = findCategoryBySlug(categories, location.pathname);
-      setActiveCategory(active);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categories, location]);
+  }, []);
 
   useEffect(() => {
     if (isFilterShown) {

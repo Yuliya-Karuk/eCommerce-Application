@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import catalogAll from '@assets/catalog-all.webp';
 import catalogCollections from '@assets/catalog-collections.webp';
 import catalogPlants from '@assets/catalog-plants.webp';
@@ -5,14 +6,17 @@ import catalogPots from '@assets/catalog-pots.webp';
 import { sdkService } from '@commercetool/sdk.service';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
+import { Container } from '@components/Container/Container';
 import { FiltersComponent } from '@components/Filters/Filters';
-import { Container, Header } from '@components/index';
+import { Header } from '@components/Header/Header';
+import { Loader } from '@components/Loader/Loader';
 import { ProductCard } from '@components/ProductCard/ProductCard';
 import { Search } from '@components/Search/Search';
 import { Sorting } from '@components/Sorting/Sorting';
+import { useToast } from '@contexts/toastProvider';
 import { CategoryList, CustomCategory, Filters } from '@models/index';
 import { defaultFilter, defaultSearch, defaultSort, startCategory } from '@utils/constants';
-import { prepareQuery, prepareQueryParams, simplifyCategories } from '@utils/utils';
+import { findCategoryBySlug, prepareQuery, prepareQueryParams, simplifyCategories } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './catalog.module.scss';
@@ -25,8 +29,9 @@ const CatalogImages: { [key: string]: string } = {
 };
 
 export function Catalog() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isFilterShown, setIsFilterShown] = useState(false);
+  const { customToast, errorNotify } = useToast();
 
   const [categories, setCategories] = useState<CategoryList>({});
   const [activeCategory, setActiveCategory] = useState<CustomCategory>(startCategory);
@@ -40,18 +45,28 @@ export function Catalog() {
   const [sortSettings, setSortSettings] = useState(defaultSort);
 
   const getCategories = async () => {
-    const data = await sdkService.getCategories();
-    const preparedData = simplifyCategories(data);
-    preparedData.default = startCategory;
-    setCategories(preparedData);
+    try {
+      setIsLoading(true);
+      const data = await sdkService.getCategories();
+      const preparedData = simplifyCategories(data);
+      preparedData.default = startCategory;
+      setCategories(preparedData);
+    } catch (e) {
+      errorNotify((e as Error).message);
+    }
+    setIsLoading(false);
   };
 
   const getProducts = async () => {
     const queryParams2 = prepareQueryParams(filters, activeCategory.id, searchSettings, sortSettings);
+    setIsLoading(true);
 
-    const data = await sdkService.filterProductsByAttribute(queryParams2);
-
-    setProducts(data);
+    try {
+      const data = await sdkService.filterProductsByAttribute(queryParams2);
+      setProducts(data);
+    } catch (e) {
+      errorNotify((e as Error).message);
+    }
     setIsLoading(false);
   };
 
@@ -74,11 +89,20 @@ export function Catalog() {
   }, [activeCategory, filters, searchSettings, sortSettings]);
 
   useEffect(() => {
+    if (Object.keys(categories).length !== 0) {
+      const active = findCategoryBySlug(categories, location.pathname);
+      setActiveCategory(active);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categories, location]);
+
+  useEffect(() => {
+    setIsLoading(true);
     getCategories();
   }, []);
 
   if (isLoading) {
-    return <div>Loading</div>;
+    return <Loader />;
   }
 
   return (
@@ -108,6 +132,8 @@ export function Catalog() {
             isFilterShown={isFilterShown}
             filters={filters}
             setFilters={setFilters}
+            errorNotify={errorNotify}
+            setIsLoading={setIsLoading}
           />
           <div className={styles.catalogContent}>
             <div className={styles.catalogImgContainer}>
@@ -133,6 +159,7 @@ export function Catalog() {
           </div>
         </div>
       </Container>
+      {customToast({ position: 'top-center', autoClose: 2000 })}
     </div>
   );
 }
