@@ -1,23 +1,26 @@
 import { AppRoutes } from '@router/routes';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
+import discoverImg1 from '../../../public/images/Discover/discover-1.jpg';
+import discoverImg2 from '../../../public/images/Discover/discover-2.jpg';
+import discoverImg3 from '../../../public/images/Discover/discover-3.jpg';
 import styles from './Discover.module.scss';
 
 const links = [
   {
-    image: '../../../public/images/Discover/discover-1.jpg',
+    image: discoverImg1,
     title: 'Plants',
     class: styles.linksPlants,
     link: `${AppRoutes.CATALOG_ROUTE}/plants`,
   },
   {
-    image: '../../../public/images/Discover/discover-2.jpg',
+    image: discoverImg2,
     title: 'Pots',
     class: styles.linksPots,
     link: `${AppRoutes.CATALOG_ROUTE}/pots`,
   },
   {
-    image: '../../../public/images/Discover/discover-3.jpg',
+    image: discoverImg3,
     title: 'Collections',
     class: styles.linksCollections,
     link: `${AppRoutes.CATALOG_ROUTE}/collections`,

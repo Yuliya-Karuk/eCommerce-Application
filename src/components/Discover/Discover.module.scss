@@ -50,15 +50,15 @@
 
 .links {
   display: grid;
-  grid-template: 34rem 30rem / calc(73% - 2.5px) calc(27% - 2.5px);
+  grid-template: 32rem 28rem / calc(74% - 2.5px) calc(26% - 2.5px);
   gap: 5px;
 
   @include tablet {
-    grid-template: 28rem 24rem / calc(65% - 2.5px) calc(35% - 2.5px);
+    grid-template: 28rem 24rem / calc(66% - 2.5px) calc(34% - 2.5px);
   }
 
   @include smalltablet {
-    grid-template: 22rem 18rem / calc(60% - 2.5px) calc(40% - 2.5px);
+    grid-template: 22rem 18rem / calc(62% - 2.5px) calc(38% - 2.5px);
   }
 
   @include mobile {
