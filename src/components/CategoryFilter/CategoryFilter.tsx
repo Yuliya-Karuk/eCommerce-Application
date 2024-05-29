@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { CategoryList, CustomCategory } from '@models/index';
 import { prepareCategoryTree } from '@utils/utils';
 import classnames from 'classnames';
@@ -26,14 +24,16 @@ export const CategoryFilter = ({ categories, activeCategory, setActiveCategory }
 
   return (
     <div className={styles.filter}>
-      <div className={styles.filterHeading} onClick={() => setIsOpen(!isOpen)}>
+      <div className={styles.filterHeading} onClick={() => setIsOpen(!isOpen)} role="button" tabIndex={0}>
         <h3 className={styles.filterTitle}>Category</h3>
         <span className={classnames(styles.filterSpan, { [styles.open]: isOpen })} />
       </div>
-      <ul className={classnames(styles.categoryFilters, { [styles.open]: isOpen })}>
+      <ul className={classnames(styles.categoryFilters, { [styles.open]: isOpen })} role="listbox" id="listbox">
         {Object.entries(preparedCategories).map(([id, category]) => (
           <React.Fragment key={id}>
             <li
+              role="option"
+              aria-selected={activeCategory.name === category.name}
               className={classnames(styles.categoryFilter, {
                 [styles.active]: activeCategory.name === category.name,
               })}
@@ -42,16 +42,18 @@ export const CategoryFilter = ({ categories, activeCategory, setActiveCategory }
               {category.name}
             </li>
             {category.children &&
-              Object.entries(category.children).map(([id2, category2]) => (
+              Object.entries(category.children).map(([subId, subCategory]) => (
                 <li
+                  role="option"
+                  aria-selected={activeCategory.name === subCategory.name}
                   className={classnames(styles.categoryFilter, {
-                    [styles.active]: activeCategory.name === category2.name,
-                    [styles.childCategory]: true, // Adding a class for child categories
+                    [styles.active]: activeCategory.name === subCategory.name,
+                    [styles.childCategory]: true,
                   })}
-                  key={category2.id}
-                  onClick={e => handleCategoryClick(e, id2)}
+                  key={subCategory.id}
+                  onClick={e => handleCategoryClick(e, subId)}
                 >
-                  {category2.name}
+                  {subCategory.name}
                 </li>
               ))}
           </React.Fragment>

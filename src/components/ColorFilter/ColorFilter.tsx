@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { FiltersProps } from '@models/index';
 import classnames from 'classnames';
 import { useState } from 'react';
@@ -30,7 +28,7 @@ export const ColorFilter = ({ filters, setFilters, values, name }: FiltersProps)
 
   return (
     <div className={styles.filter}>
-      <div className={styles.filterHeading} onClick={() => setIsOpen(!isOpen)}>
+      <div className={styles.filterHeading} onClick={() => setIsOpen(!isOpen)} role="button" tabIndex={0}>
         <h3 className={styles.filterTitle}>{name}</h3>
         <span className={classnames(styles.filterSpan, { [styles.open]: isOpen })} />
       </div>
@@ -45,6 +43,7 @@ export const ColorFilter = ({ filters, setFilters, values, name }: FiltersProps)
               })}
               style={{ backgroundColor: color in ColorsHex ? ColorsHex[color] : color }}
               onClick={() => handleColorClick(color)}
+              aria-label={`${color} button`}
             />
           ))}
         </div>

@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import catalogAll from '@assets/catalog-all.webp';
 import catalogCollections from '@assets/catalog-collections.webp';
 import catalogPlants from '@assets/catalog-plants.webp';
@@ -17,8 +16,6 @@ import { prepareQuery, prepareQueryParams, simplifyCategories } from '@utils/uti
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './catalog.module.scss';
-
-// const defaultPriceBorder = ['5.99', '100.00'];
 
 const CatalogImages: { [key: string]: string } = {
   'All Products': catalogAll,
@@ -73,6 +70,7 @@ export function Catalog() {
   useEffect(() => {
     getProducts();
     handleFilterUpdate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCategory, filters, searchSettings, sortSettings]);
 
   useEffect(() => {
@@ -85,10 +83,23 @@ export function Catalog() {
 
   return (
     <div className={styles.catalog}>
-      {isFilterShown && <div className={styles.overlay} onClick={() => setIsFilterShown(!isFilterShown)} />}
+      {isFilterShown && (
+        <div
+          className={styles.overlay}
+          onClick={() => setIsFilterShown(!isFilterShown)}
+          role="button"
+          tabIndex={0}
+          aria-label="overlay"
+        />
+      )}
       <Header />
       <Container classname={styles.catalog}>
-        <Breadcrumbs activeCategorySlug={activeCategory.slug} setFilters={setFilters} defaultFilter={defaultFilter} />
+        <Breadcrumbs
+          activeCategorySlug={activeCategory.slug}
+          setFilters={setFilters}
+          defaultFilter={defaultFilter}
+          backColor="black"
+        />
         <div className={styles.catalogContainer}>
           <FiltersComponent
             categories={categories}

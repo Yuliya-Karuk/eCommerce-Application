@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import { SearchSettings } from '@models/index';
 import { searchIdentifier } from '@utils/constants';
 import { useState } from 'react';
@@ -34,7 +33,7 @@ export const Search = ({ searchSettings, setSearchSettings }: SearchProps) => {
         value={searchValue}
         onChange={handleInputChange}
       />
-      <button type="submit" className={styles.searchIcon} />
+      <button type="submit" className={styles.searchIcon} aria-label="search button" />
     </form>
   );
 };

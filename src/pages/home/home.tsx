@@ -1,5 +1,5 @@
 import { Banner, Footer, Header } from '@components/index';
-import { useAuth } from '@contexts//authProvider';
+import { useAuth } from '@contexts/authProvider';
 import { useToast } from '@contexts/toastProvider';
 import { useEffect } from 'react';
 import styles from './home.module.scss';

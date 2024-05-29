@@ -57,6 +57,7 @@ export const FiltersComponent = ({
       const active = findCategoryBySlug(categories, location.pathname);
       setActiveCategory(active);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categories, location]);
 
   useEffect(() => {

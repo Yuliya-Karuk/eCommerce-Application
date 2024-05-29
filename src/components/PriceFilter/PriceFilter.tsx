@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { FiltersProps } from '@models/index';
 import classnames from 'classnames';
 import { useState } from 'react';
@@ -21,7 +20,7 @@ export const PriceFilter = ({ filters, setFilters, name, values }: FiltersProps)
 
   return (
     <div className={styles.filter}>
-      <div className={styles.filterHeading} onClick={() => setIsOpen(!isOpen)}>
+      <div className={styles.filterHeading} onClick={() => setIsOpen(!isOpen)} role="button" tabIndex={0}>
         <h3 className={styles.filterTitle}>Price</h3>
         <span className={classnames(styles.filterSpan, { [styles.open]: isOpen })} />
       </div>

@@ -5,7 +5,6 @@ import {
   createApiBuilderFromCtpClient,
   CustomerDraft,
   CustomerSignInResult,
-  Product,
   ProductProjection,
   ProductType,
 } from '@commercetools/platform-sdk';
@@ -99,12 +98,6 @@ export class SdkService {
   public async getCategories(): Promise<Category[]> {
     const data = await this.apiRoot.categories().get().execute();
     return data.body.results;
-  }
-
-  public async getProduct(productKey: string): Promise<Product> {
-    const data = await this.apiRoot.products().withKey({ key: productKey }).get().execute();
-    // const data = await this.apiRoot.productProjections().withKey({ key: productKey }).get().execute();
-    return data.body;
   }
 
   public async filterProductsByAttribute(filterArr: QueryParams) {
