@@ -1,7 +1,9 @@
 import sprite from '@assets/sprite.svg';
 import { sdkService } from '@commercetool/sdk.service';
 import { useAuth } from '@contexts//authProvider';
+import { AppRoutes } from '@router/routes';
 import { FC } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './UserMenu.module.scss';
 
 export const UserMenu: FC = () => {
@@ -33,11 +35,11 @@ export const UserMenu: FC = () => {
         </div>
         <span className={styles.userMenuText}>Log In</span>
       </Link> */}
-      <div className={styles.userMenuPromo}>
+      <Link to={AppRoutes.PROFILE_ROUTE} className={styles.userMenuPromo}>
         <svg width={iconSizeNumber} height={iconSizeNumber}>
           <use xlinkHref={`${sprite}#present`} />
         </svg>
-      </div>
+      </Link>
       <div className={styles.userMenuCart}>
         <svg width={iconSizeNumber} height={iconSizeNumber}>
           <use xlinkHref={`${sprite}#cart`} />

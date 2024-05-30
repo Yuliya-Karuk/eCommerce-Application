@@ -1,5 +1,7 @@
 import { sdkService } from '@commercetool/sdk.service';
-import { Banner, Footer, Header } from '@components/index';
+import { Banner } from '@components/Banner/Banner';
+import { Footer } from '@components/Footer/Footer';
+import { Header } from '@components/Header/Header';
 import { useAuth } from '@contexts//authProvider';
 import { useToast } from '@contexts/toastProvider';
 import { useEffect } from 'react';

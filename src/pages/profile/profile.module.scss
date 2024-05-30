@@ -1,0 +1,27 @@
+.profile {
+  padding: 0 15px;
+}
+
+.profile-container {
+  @include flex(flex-start, flex-start, column);
+  gap: 15px;
+}
+
+.profile-menu {
+  @include flex(flex-start, center);
+  border: 1px solid $color-gray-dark;
+  width: fit-content;
+  border-radius: 5px;
+}
+
+.profile-menu-button {
+  @include adaptiveValue('font-size', 16px, 14px);
+  font-family: Questrial, Arial, Helvetica, sans-serif;
+  transition: background-color 0.4s ease 0s;
+  cursor: pointer;
+  padding: 10px 15px;
+
+  @include hover {
+    background-color: $color-primary-bright;
+  }
+}
