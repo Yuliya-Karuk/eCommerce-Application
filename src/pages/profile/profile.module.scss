@@ -2,6 +2,36 @@
   padding: 0 15px;
 }
 
+.profile-custom-container {
+  @include flex(flex-start, flex-start, column);
+  gap: 20px;
+}
+
+.profile-title {
+  background-color: $color-primary-bright;
+  @include flex(flex-start, center);
+  gap: 20px;
+  width: 100%;
+  padding: 30px;
+  margin-top: 30px;
+}
+
+.avatar-container {
+  border-radius: 50%;
+  padding: 5px;
+  border: 1px solid $color-gray-dark;
+
+  .avatar {
+    width: 50px;
+  }
+}
+
+.profile-heading {
+  @include adaptiveValue('font-size', 90px, 35px);
+  font-family: Forum, serif;
+  text-align: center;
+}
+
 .profile-container {
   @include flex(flex-start, flex-start, column);
   gap: 15px;
@@ -24,4 +54,8 @@
   @include hover {
     background-color: $color-primary-bright;
   }
+}
+
+.profile-content {
+  // background-color: $color-green-dark;
 }

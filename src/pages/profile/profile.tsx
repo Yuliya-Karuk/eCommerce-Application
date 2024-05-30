@@ -1,3 +1,4 @@
+import avatar from '@assets/avatar.svg';
 import { sdkService } from '@commercetool/sdk.service';
 import { Customer } from '@commercetools/platform-sdk';
 import { Account } from '@components/Account/Account';
@@ -30,6 +31,12 @@ export const Profile = () => {
       <Header />
       <Container classname={styles.profile}>
         <div className={styles.profileContainer}>
+          <div className={styles.profileTitle}>
+            <div className={styles.avatarContainer}>
+              <img className={styles.avatar} src={avatar} alt="avatar icon" />
+            </div>
+            <h2 className={styles.profileHeading}>Profile</h2>
+          </div>
           <div className={styles.profileMenu}>
             {Object.entries(tabs).map(([key, value]) => (
               <button
