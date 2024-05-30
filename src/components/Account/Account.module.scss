@@ -25,6 +25,10 @@
         background-color: $color-input-bg;
       }
 
+      &.hidden {
+        display: none;
+      }
+
       &:disabled {
         cursor: default;
         color: $color-gray-dark;

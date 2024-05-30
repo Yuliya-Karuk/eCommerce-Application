@@ -1,6 +1,8 @@
+/* eslint-disable max-lines-per-function */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Customer, CustomerDraft, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
 import { Input } from '@components/Input/Input';
+import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';
 import styles from './Account.module.scss';
@@ -49,15 +51,22 @@ export const Account = ({ customerData }: AccountProps) => {
   } = useForm<CustomerDraft>({ mode: 'all' });
 
   const [isEditing, setIsEditing] = useState(false);
+  const [dataEdited, setDataEdited] = useState(false);
 
-  useEffect(() => {
+  const watchedFields = watch(['email', 'firstName', 'lastName', 'dateOfBirth']);
+
+  const setInputs = () => {
     setValue('email', customerData.email);
     setValue('firstName', customerData.firstName);
     setValue('lastName', customerData.lastName);
     setValue('dateOfBirth', customerData.dateOfBirth);
-  }, [customerData]);
+  };
 
-  const watchedFields = watch(['email', 'firstName', 'lastName', 'dateOfBirth']);
+  const resetChanges = () => {
+    setInputs();
+    setDataEdited(false);
+    setIsEditing(!isEditing);
+  };
 
   const onSubmit = () => {
     const newChanges: MyCustomerUpdateAction[] = [];
@@ -77,6 +86,11 @@ export const Account = ({ customerData }: AccountProps) => {
     console.log(newChanges);
     // setIsEditing(false);
   };
+
+  useEffect(() => {
+    setInputs();
+    setDataEdited(true);
+  }, [customerData]);
 
   return (
     <div className={styles.account}>
@@ -133,13 +147,15 @@ export const Account = ({ customerData }: AccountProps) => {
             <p className={styles.dateOfBirthError}>{errors?.dateOfBirth?.message}</p>
           </div>
         </div>
+        <button type="button" className={styles.submitButton} onClick={resetChanges}>
+          {isEditing ? 'Reset' : 'Edit'}
+        </button>
         <button
-          type={!isEditing ? 'submit' : 'button'}
-          className={styles.submitButton}
-          disabled={!(isValid || !isEditing)}
-          onClick={() => setIsEditing(!isEditing)}
+          className={classnames(styles.submitButton, { [styles.hidden]: !isEditing })}
+          type="submit"
+          disabled={!isValid || !dataEdited}
         >
-          {isEditing ? 'Submit' : 'Edit'}
+          Submit
         </button>
       </form>
     </div>
