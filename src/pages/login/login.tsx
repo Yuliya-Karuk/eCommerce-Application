@@ -6,6 +6,7 @@ import { Input } from '@components/Input/Input';
 import { useAuth } from '@contexts/authProvider';
 import { useToast } from '@contexts/toastProvider';
 import { LoginFormData } from '@models/index';
+import { InputEmailErrors, InputPasswordErrors } from '@utils/validationConst';
 import { useState } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
@@ -14,23 +15,22 @@ import styles from './login.module.scss';
 const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 const passwordValidationRules: RegisterOptions = {
-  required: 'Password is required',
-  minLength: { value: 8, message: 'Password must be at least 8 characters long' },
+  required: InputPasswordErrors.required,
+  minLength: { value: 8, message: InputPasswordErrors.minLength },
   validate: {
-    uppercase: value => /(?=.*[A-Z])/.test(value) || 'Password must contain at least one uppercase letter (A-Z)',
-    lowercase: value => /(?=.*[a-z])/.test(value) || 'Password must contain at least one lowercase letter (a-z)',
-    digit: value => /(?=.*\d)/.test(value) || 'Password must contain at least one digit (0-9)',
-    specialChar: value =>
-      /(?=.*[!@#$%^&*])/.test(value) || 'Password must contain at least one special character (e.g., !@#$%^&*)',
-    noWhitespace: value => !/\s/.test(value) || 'Password cannot contain leading or trailing whitespace',
+    uppercase: value => /(?=.*[A-Z])/.test(value) || InputPasswordErrors.uppercase,
+    lowercase: value => /(?=.*[a-z])/.test(value) || InputPasswordErrors.lowercase,
+    digit: value => /(?=.*\d)/.test(value) || InputPasswordErrors.digit,
+    specialChar: value => /(?=.*[!@#$%^&*])/.test(value) || InputPasswordErrors.specialChar,
+    noWhitespace: value => !/\s/.test(value) || InputPasswordErrors.noWhitespace,
   },
 };
 
 const emailValidationRules: RegisterOptions = {
-  required: 'E-mail is required',
+  required: InputEmailErrors.required,
   pattern: {
     value: validEmailRegExp,
-    message: 'Invalid e-mail format',
+    message: InputEmailErrors.pattern,
   },
 };
 
