@@ -1,5 +1,6 @@
 import {
   ByProjectKeyRequestBuilder,
+  Category,
   ClientResponse,
   createApiBuilderFromCtpClient,
   Customer,
@@ -7,10 +8,9 @@ import {
   CustomerSignInResult,
   MyCustomerChangePassword,
   MyCustomerUpdate,
-  Product,
+  ProductProjection,
 } from '@commercetools/platform-sdk';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
-import { CustomErrors } from '@utils/constants';
 import { storage } from '@utils/storage';
 import {
   anonymousMiddlewareOptions,
@@ -86,13 +86,14 @@ export class SdkService {
     this.createAnonymousClient();
   }
 
-  public async getProducts(): Promise<Product[]> {
-    try {
-      const data = await this.apiRoot.products().get().execute();
-      return data.body.results;
-    } catch (error) {
-      throw new Error(CustomErrors.SERVER_ERROR);
-    }
+  public async getProducts(): Promise<ProductProjection[]> {
+    const data = await this.apiRoot.productProjections().search().get().execute();
+    return data.body.results;
+  }
+
+  public async getCategories(): Promise<Category[]> {
+    const data = await this.apiRoot.categories().get().execute();
+    return data.body.results;
   }
 
   public async getCustomerData(): Promise<Customer> {

@@ -15,5 +15,6 @@ export const router = createBrowserRouter([
   { path: AppRoutes.PROFILE_ROUTE, element: <Profile /> },
   { path: AppRoutes.CATALOG_ROUTE, element: <Catalog /> },
   { path: `${AppRoutes.PRODUCT_ROUTE}/:slug`, element: <ProductItem /> },
+  { path: `${AppRoutes.PRODUCTS_ROUTE}/:slug/:key`, element: <ProductItem /> },
   { path: '*', element: <NotFoundPage /> },
 ]);
