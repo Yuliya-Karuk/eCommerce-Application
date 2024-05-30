@@ -5,9 +5,11 @@ import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
 import { Container } from '@components/Container/Container';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
+import { Loader } from '@components/Loader/Loader';
 import { ProductAttributes, ProductAttributesView } from '@components/ProductAttributes/ProductAttributesView';
 import { ProductInfoSection } from '@components/ProductInfoSection/ProductInfoSection';
 import { QuantityInput } from '@components/QuantityInput/QuantityInput';
+import { useToast } from '@contexts/toastProvider';
 import { convertCentsToDollarsString, convertProductAttributesArrayToObject, ensureValue } from '@utils/utils';
 import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
@@ -31,11 +33,16 @@ export function ProductItem() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [activeVariant, setActiveVariant] = useState<ProductVariant>({} as ProductVariant);
   const [quantity, setQuantity] = useState(1);
+  const { customToast, errorNotify } = useToast();
 
   const getProduct = async () => {
-    const data = await sdkService.getProductProjectionByKey(slug);
-    setProduct(data);
-    setActiveVariant(data.masterVariant);
+    try {
+      const data = await sdkService.getProductProjectionByKey(slug);
+      setProduct(data);
+      setActiveVariant(data.masterVariant);
+    } catch (err) {
+      errorNotify((err as Error).message);
+    }
   };
 
   useEffect(() => {
@@ -50,7 +57,12 @@ export function ProductItem() {
   }, [product]);
 
   if (loading) {
-    return <div className={styles.loader}>it was here somewhere... Wait, please, i will find it....</div>;
+    return (
+      <>
+        <Loader />
+        {customToast({ position: 'top-center', autoClose: 5000 })};
+      </>
+    );
   }
 
   const name = product.name['en-US'];

@@ -44,7 +44,7 @@
           }
         }
 
-        @media (max-width: 854px) {
+        @media (max-width: 650px) {
           flex: 0 1 100%;
 
           .slider-img {
@@ -133,12 +133,6 @@
       text-indent: 20px;
     }
   }
-}
-
-.loader {
-  @include flex(center);
-  height: 100dvh;
-  font-size: 3rem;
 }
 
 @keyframes fly-up {
