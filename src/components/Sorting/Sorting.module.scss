@@ -51,8 +51,9 @@
   padding: 10px;
   border-bottom: 1px solid $color-gray-dark;
 
-  &:hover {
-    background: #f0f0f0;
+  @include hover {
+    color: $color-bg-dark;
+    background-color: $color-white;
   }
 
   &:last-child {

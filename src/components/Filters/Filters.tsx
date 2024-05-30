@@ -21,7 +21,6 @@ interface FiltersProps {
   filters: Filters;
   setFilters: (data: Filters) => void;
   errorNotify: (data: string) => void;
-  setIsLoading: (data: boolean) => void;
 }
 
 export const FiltersComponent = ({
@@ -32,7 +31,6 @@ export const FiltersComponent = ({
   filters,
   setFilters,
   errorNotify,
-  setIsLoading,
 }: FiltersProps) => {
   const navigate = useNavigate();
   const [brands, setBrands] = useState<string[]>([]);
@@ -46,7 +44,6 @@ export const FiltersComponent = ({
       setSizes(prepareSizes(data));
       setColors(prepareColors(data));
     } catch (e) {
-      setIsLoading(false);
       errorNotify((e as Error).message);
     }
   };

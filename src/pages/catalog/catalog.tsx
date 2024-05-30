@@ -8,8 +8,8 @@ import { ProductProjection } from '@commercetools/platform-sdk';
 import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
 import { Container } from '@components/Container/Container';
 import { FiltersComponent } from '@components/Filters/Filters';
+import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
-import { Loader } from '@components/Loader/Loader';
 import { ProductCard } from '@components/ProductCard/ProductCard';
 import { Search } from '@components/Search/Search';
 import { Sorting } from '@components/Sorting/Sorting';
@@ -29,7 +29,6 @@ const CatalogImages: { [key: string]: string } = {
 };
 
 export function Catalog() {
-  const [isLoading, setIsLoading] = useState(false);
   const [isFilterShown, setIsFilterShown] = useState(false);
   const { customToast, errorNotify } = useToast();
 
@@ -46,7 +45,6 @@ export function Catalog() {
 
   const getCategories = async () => {
     try {
-      setIsLoading(true);
       const data = await sdkService.getCategories();
       const preparedData = simplifyCategories(data);
       preparedData.default = startCategory;
@@ -54,12 +52,10 @@ export function Catalog() {
     } catch (e) {
       errorNotify((e as Error).message);
     }
-    setIsLoading(false);
   };
 
   const getProducts = async () => {
     const queryParams2 = prepareQueryParams(filters, activeCategory.id, searchSettings, sortSettings);
-    setIsLoading(true);
 
     try {
       const data = await sdkService.filterProductsByAttribute(queryParams2);
@@ -67,7 +63,6 @@ export function Catalog() {
     } catch (e) {
       errorNotify((e as Error).message);
     }
-    setIsLoading(false);
   };
 
   const handleFilterUpdate = () => {
@@ -100,10 +95,6 @@ export function Catalog() {
     getCategories();
   }, []);
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   return (
     <div className={styles.catalog}>
       {isFilterShown && (
@@ -132,7 +123,6 @@ export function Catalog() {
             filters={filters}
             setFilters={setFilters}
             errorNotify={errorNotify}
-            setIsLoading={setIsLoading}
           />
           <div className={styles.catalogContent}>
             <div className={styles.catalogImgContainer}>
@@ -157,6 +147,7 @@ export function Catalog() {
           </div>
         </div>
       </Container>
+      <Footer />
       {customToast({ position: 'top-center', autoClose: 2000 })}
     </div>
   );
