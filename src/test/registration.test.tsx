@@ -1,4 +1,4 @@
-/* eslint-disable max-lines-per-function */
+import { ToastProvider } from '@contexts/toastProvider';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it } from 'vitest';
@@ -18,7 +18,9 @@ describe('Name input component', () => {
     it('displays an error message when name does not match name pattern', async () => {
       render(
         <BrowserRouter>
-          <Registration />
+          <ToastProvider>
+            <Registration />
+          </ToastProvider>
         </BrowserRouter>
       );
 
@@ -38,7 +40,9 @@ describe('Name input component', () => {
   it('displays an error message when name is empty', async () => {
     render(
       <BrowserRouter>
-        <Registration />
+        <ToastProvider>
+          <Registration />
+        </ToastProvider>
       </BrowserRouter>
     );
 
@@ -66,7 +70,9 @@ describe('Date input component', () => {
   it('shows error if date of birth is not provided', async () => {
     render(
       <BrowserRouter>
-        <Registration />
+        <ToastProvider>
+          <Registration />
+        </ToastProvider>
       </BrowserRouter>
     );
 
@@ -91,7 +97,9 @@ describe('Date input component', () => {
   it('shows error if date of birth is less than 13 years ago', async () => {
     render(
       <BrowserRouter>
-        <Registration />
+        <ToastProvider>
+          <Registration />
+        </ToastProvider>
       </BrowserRouter>
     );
 

@@ -1,10 +1,15 @@
+import eyeOff from '@assets/eye-off.svg';
+import eyeOn from '@assets/eye-show.svg';
+import { sdkService } from '@commercetool/sdk.service';
+import { AuthFormHeader } from '@components/AuthFormHeader/AuthFormHeader';
+import { Input } from '@components/Input/Input';
+import { useAuth } from '@contexts/authProvider';
+import { useToast } from '@contexts/toastProvider';
+import { LoginFormData } from '@models/index';
+import { InputEmailErrors, InputPasswordErrors } from '@utils/validationConst';
 import { useState } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';
-import eyeOff from '../../assets/eye-off.svg';
-import eyeOn from '../../assets/eye-show.svg';
-import { AuthFormHeader } from '../../components/AuthFormHeader/AuthFormHeader';
-import { Input } from '../../components/Input/Input';
-import { InputEmailErrors, InputPasswordErrors } from '../../utils/validationConst';
+import { Navigate } from 'react-router-dom';
 import styles from './login.module.scss';
 
 const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -29,23 +34,35 @@ const emailValidationRules: RegisterOptions = {
   },
 };
 
-export interface LoginFormData {
-  email: string;
-  password: string;
-}
-
-// eslint-disable-next-line max-lines-per-function
 export function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<LoginFormData>({ mode: 'onChange' });
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log(data); // form submission logic here
+  const { isLoggedIn, login } = useAuth();
+  const { customToast, promiseNotify } = useToast();
+
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      await sdkService.loginUser(data.email, data.password);
+      login();
+    } catch (error) {
+      sdkService.createAnonymousClient();
+      const errorMessage = (error as Error).message || 'Unknown error';
+      throw new Error(errorMessage);
+    }
   };
+
+  const notify = (userData: LoginFormData) => promiseNotify(userData, 'Login', onSubmit);
+
+  if (isLoggedIn) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <div className={styles.background}>
       <div className={styles.wrapper}>
@@ -55,7 +72,7 @@ export function Login() {
           linkText="Sign Up"
           linkTo="/registration"
         />
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        <form onSubmit={handleSubmit(notify)} className={styles.form}>
           <Input
             name="email"
             label="E-mail"
@@ -90,6 +107,7 @@ export function Login() {
           </button>
         </form>
       </div>
+      {customToast({ position: 'top-center', autoClose: 2000 })}
     </div>
   );
 }

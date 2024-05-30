@@ -1,4 +1,4 @@
-/* eslint-disable max-lines-per-function */
+import { ToastProvider } from '@contexts/toastProvider';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it } from 'vitest';
@@ -17,7 +17,11 @@ import { InputEmailErrors, InputPasswordErrors } from '../utils/validationConst'
 
     testCases.forEach(({ input, expectedError }) => {
       it('displays an error message when email does not match email pattern', async () => {
-        render(<BrowserRouter>{component}</BrowserRouter>);
+        render(
+          <BrowserRouter>
+            <ToastProvider>{component}</ToastProvider>
+          </BrowserRouter>
+        );
 
         const inputElement = screen.getByLabelText(/E-mail/);
         const button = screen.getByText('Submit', { selector: 'button[type="submit"]' });
@@ -33,7 +37,11 @@ import { InputEmailErrors, InputPasswordErrors } from '../utils/validationConst'
     });
 
     it('displays an error message when email is empty', async () => {
-      render(<BrowserRouter>{component}</BrowserRouter>);
+      render(
+        <BrowserRouter>
+          <ToastProvider>{component}</ToastProvider>
+        </BrowserRouter>
+      );
 
       const inputElement = screen.getByLabelText(/E-mail/);
       const button = screen.getByText('Submit', { selector: 'button[type="submit"]' });
@@ -69,7 +77,11 @@ import { InputEmailErrors, InputPasswordErrors } from '../utils/validationConst'
 
     testCases.forEach(({ input, expectedError }) => {
       it('displays an error message when password does not match password pattern', async () => {
-        render(<BrowserRouter>{component}</BrowserRouter>);
+        render(
+          <BrowserRouter>
+            <ToastProvider>{component}</ToastProvider>
+          </BrowserRouter>
+        );
 
         const inputElement = screen.getByLabelText(/Password/);
         const button = screen.getByText('Submit', { selector: 'button[type="submit"]' });
@@ -84,7 +96,11 @@ import { InputEmailErrors, InputPasswordErrors } from '../utils/validationConst'
     });
 
     it('displays an error message when password is empty', async () => {
-      render(<BrowserRouter>{component}</BrowserRouter>);
+      render(
+        <BrowserRouter>
+          <ToastProvider>{component}</ToastProvider>
+        </BrowserRouter>
+      );
 
       const inputElement = screen.getByLabelText(/Password/);
       const button = screen.getByText('Submit', { selector: 'button[type="submit"]' });

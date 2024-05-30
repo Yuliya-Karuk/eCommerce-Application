@@ -1,4 +1,4 @@
-/* eslint-disable max-lines-per-function */
+import { ToastProvider } from '@contexts/toastProvider';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it } from 'vitest';
@@ -8,7 +8,9 @@ describe('Login component', () => {
   it('Submit button is enabled, when login and password inputs are correct', async () => {
     render(
       <BrowserRouter>
-        <Login />
+        <ToastProvider>
+          <Login />
+        </ToastProvider>
       </BrowserRouter>
     );
 

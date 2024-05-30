@@ -1,0 +1,60 @@
+.user-menu {
+  @include flex(null, center);
+
+  @include smalltablet {
+    margin-right: 0;
+  }
+  column-gap: 12px;
+  margin-right: 2%;
+
+  svg {
+    display: block;
+    color: inherit;
+  }
+
+  &-login {
+    @include flex(center);
+
+    @include hover {
+      .usermenu-text {
+        opacity: 0.7;
+      }
+    }
+    overflow: hidden;
+    column-gap: 15px;
+    min-width: fit-content;
+    padding: 7px 15px;
+    color: $color-white;
+    background-color: $color-bg-dark-alpha;
+    border: 1px solid $color-gray-dark;
+    border-radius: 5px;
+
+    &[type='button'] {
+      @include animatebtn;
+    }
+  }
+
+  &-icon {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+  }
+
+  &-text {
+    @include adaptiveValue('font-size', 16px, 15px);
+    width: 100%;
+    min-width: max-content;
+    font-family: Questrial, Arial, Helvetica, sans-serif;
+    white-space: nowrap;
+    transition: opacity 0.4s ease 0s;
+  }
+
+  &-text,
+  &-promo,
+  &-cart {
+    @include hover {
+      opacity: 0.7;
+    }
+    cursor: pointer;
+  }
+}

@@ -1,40 +1,47 @@
-// import { Product } from '@commercetools/platform-sdk';
-// import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-// import { apiRoot } from '../../commercetool/Client';
-// import { Routes } from '../../router/routes';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { sdkService } from '@commercetool/sdk.service';
+import { Banner } from '@components/Banner/Banner';
+import { Discover } from '@components/Discover/Discover';
+import { Footer } from '@components/Footer/Footer';
+import { Header } from '@components/Header/Header';
+import { NewArrivals } from '@components/NewArrivals/NewArrivals';
+import { useAuth } from '@contexts/authProvider';
+import { useToast } from '@contexts/toastProvider';
+import { useEffect } from 'react';
+import styles from './home.module.scss';
 
 export function Home() {
-  //   const [products, setProducts] = useState<Product[]>([]);
+  const { isLoginSuccess, setIsLoginSuccess } = useAuth();
+  const { customToast, successNotify } = useToast();
 
-  //   const getProject = async () => {
-  //     try {
-  //       const prods = await apiRoot.products().get().execute();
-  //       const preparedProducts = prods.body.results;
+  const getProds = async () => {
+    await sdkService.getProducts();
+  };
 
-  //       setProducts(preparedProducts);
-  //     } catch (error) {
-  //       throw Error('test - error message');
-  //     }
-  //   };
+  const notify = () => {
+    successNotify();
+    setIsLoginSuccess(false);
+  };
 
-  //   useEffect(() => {
-  //     getProject();
-  //   }, []);
+  useEffect(() => {
+    getProds();
+    if (isLoginSuccess) {
+      notify();
+    }
+  }, []);
 
   return (
     <>
-      <h1>Home Page</h1>
-      <div>
-        {/* {products.slice(0, 4).map(product => (
-          <div key={product.key}>
-            <Link to={product.key ? `${Routes.PRODUCT_ROUTE}/${product.key}` : '/'}>
-              {product.masterData.current.name['en-US']}
-            </Link>
-          </div>
-        ))} */}
+      <div className={styles.main}>
+        <div className={styles.hero}>
+          <Header />
+          <Banner />
+        </div>
+        <NewArrivals />
+        <Discover />
       </div>
-      <Link to="/login">Login</Link>
+      <Footer />
+      {customToast({ position: 'top-center', autoClose: 2000 })}
     </>
   );
 }

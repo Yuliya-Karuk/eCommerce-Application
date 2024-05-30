@@ -1,3 +1,14 @@
+.links {
+  @include flex(center, center, column);
+  gap: 5px;
+}
+
+.to-main-link {
+  text-decoration: underline;
+  cursor: pointer;
+  width: fit-content;
+}
+
 .title {
   margin: 20px 0 10px;
   font-size: 7rem;
@@ -27,5 +38,9 @@
   .link {
     color: $color-white;
     text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 }

@@ -1,12 +1,16 @@
+import eyeOff from '@assets/eye-off.svg';
+import eyeOn from '@assets/eye-show.svg';
+import { sdkService } from '@commercetool/sdk.service';
 import { CustomerDraft } from '@commercetools/platform-sdk';
+import { AddressForm } from '@components/AddressForm/AddressForm';
+import { AuthFormHeader } from '@components/AuthFormHeader/AuthFormHeader';
+import { Input } from '@components/Input/Input';
+import { useAuth } from '@contexts/authProvider';
+import { useToast } from '@contexts/toastProvider';
+import { InputDateErrors, InputEmailErrors, InputNameErrors, InputPasswordErrors } from '@utils/validationConst';
 import { useEffect, useState } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';
-import eyeOff from '../../assets/eye-off.svg';
-import eyeOn from '../../assets/eye-show.svg';
-import { AddressForm } from '../../components/AddressForm/AddressForm';
-import { AuthFormHeader } from '../../components/AuthFormHeader/AuthFormHeader';
-import { Input } from '../../components/Input/Input';
-import { InputDateErrors, InputEmailErrors, InputNameErrors, InputPasswordErrors } from '../../utils/validationConst';
+import { Navigate } from 'react-router-dom';
 import styles from './registration.module.scss';
 
 const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -53,6 +57,8 @@ const dateValidationRules: RegisterOptions = {
 
 // eslint-disable-next-line max-lines-per-function
 export function Registration() {
+  const { isLoggedIn, login } = useAuth();
+  const { customToast, promiseNotify } = useToast();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const {
     register,
@@ -60,14 +66,11 @@ export function Registration() {
     formState: { errors, isValid },
     trigger,
     setValue,
+    getValues,
     unregister,
   } = useForm<CustomerDraft>({ mode: 'all' });
 
   const [billingAddressIsSameAsShipping, setBillingAddressIsSameAsShipping] = useState<boolean>(false);
-
-  const onSubmit = async (data: CustomerDraft) => {
-    console.log(data); // form submission logic here
-  };
 
   useEffect(() => {
     setValue('shippingAddresses', [0]);
@@ -75,10 +78,33 @@ export function Registration() {
     if (billingAddressIsSameAsShipping) {
       setValue('billingAddresses', [0]);
       unregister(`addresses.1`);
+      if (getValues('defaultShippingAddress') === 0) {
+        setValue('defaultBillingAddress', 0);
+      } else {
+        unregister('defaultBillingAddress');
+      }
     } else {
       setValue('billingAddresses', [1]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [billingAddressIsSameAsShipping, setValue, unregister]);
+
+  const onSubmit = async (userData: CustomerDraft) => {
+    try {
+      await sdkService.register(userData);
+      await sdkService.loginUser(userData.email, userData.password as string);
+      login();
+    } catch (error) {
+      const errorMessage = (error as Error).message || 'Unknown error';
+      throw new Error(errorMessage);
+    }
+  };
+
+  const notify = (userData: CustomerDraft) => promiseNotify(userData, 'Registration', onSubmit);
+
+  if (isLoggedIn) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className={styles.background}>
@@ -89,7 +115,7 @@ export function Registration() {
           linkText="Log in"
           linkTo="/login"
         />
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+        <form onSubmit={handleSubmit(notify)} className={styles.form}>
           <div className={styles.inputsSection}>
             <section className={styles.userDataSection}>
               <Input
@@ -181,6 +207,7 @@ export function Registration() {
           </button>
         </form>
       </div>
+      {customToast({ position: 'top-center', autoClose: 2000 })}
     </div>
   );
 }

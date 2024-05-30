@@ -5,10 +5,12 @@ import viteImagemin from 'vite-plugin-imagemin';
 import cleanPlugin from 'vite-plugin-clean';
 import checker from 'vite-plugin-checker';
 import { paths } from './paths';
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export const prodConfig = {
   plugins: [
     react(),
+    tsconfigPaths(),
     cleanPlugin(),
     webfontDownload(),
     checker({ typescript: true }),
@@ -69,7 +71,7 @@ export const prodConfig = {
     },
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "../src/styles/mixins.scss"; @import "../src/styles/placeholders.scss"; @import "../src/styles/constants.scss";`,
+        additionalData: `@import "../src/styles/functions.scss"; @import "../src/styles/mixins.scss"; @import "../src/styles/extends.scss"; @import "../src/styles/placeholders.scss"; @import "../src/styles/constants.scss";`,
       },
     },
   },
