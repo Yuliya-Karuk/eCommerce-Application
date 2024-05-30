@@ -1,5 +1,7 @@
-import { Customer, CustomerDraft } from '@commercetools/platform-sdk';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Customer, CustomerDraft, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
 import { Input } from '@components/Input/Input';
+import { useEffect } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';
 import styles from './Account.module.scss';
 
@@ -42,18 +44,36 @@ export const Account = ({ customerData }: AccountProps) => {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors, isValid },
   } = useForm<CustomerDraft>({ mode: 'all' });
 
-  console.log(customerData);
+  useEffect(() => {
+    setValue('email', customerData.email);
+    setValue('firstName', customerData.firstName);
+    setValue('lastName', customerData.lastName);
+    setValue('dateOfBirth', customerData.dateOfBirth);
+  }, [customerData]);
 
-  setValue('email', customerData.email);
-  setValue('firstName', customerData.firstName);
-  setValue('lastName', customerData.lastName);
-  setValue('dateOfBirth', customerData.dateOfBirth);
+  const watchedFields = watch(['email', 'firstName', 'lastName', 'dateOfBirth']);
+  console.log(watchedFields);
 
   const onSubmit = () => {
-    console.log('request');
+    const newChanges: MyCustomerUpdateAction[] = [];
+    if (watchedFields[0] !== customerData.email) {
+      newChanges.push({ action: 'changeEmail', email: watchedFields[0] });
+    }
+    if (watchedFields[1] !== customerData.firstName) {
+      newChanges.push({ action: 'setFirstName', firstName: watchedFields[1] });
+    }
+    if (watchedFields[2] !== customerData.lastName) {
+      newChanges.push({ action: 'setLastName', lastName: watchedFields[2] });
+    }
+    if (watchedFields[3] !== customerData.dateOfBirth) {
+      newChanges.push({ action: 'setDateOfBirth', dateOfBirth: watchedFields[3] });
+    }
+
+    console.log(newChanges);
   };
 
   return (

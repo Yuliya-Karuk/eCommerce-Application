@@ -2,11 +2,34 @@
   display: block;
 
   .form {
+    @include flex(flex-start, flex-start, column);
     font-size: 1.5rem;
 
     .inputs-section {
       @include flex(flex-start, flex-start, row, 20px);
       flex-wrap: wrap;
+    }
+
+    .submit-button {
+      @extend %transition;
+      align-self: center;
+      width: 240px;
+      margin: 20px 0;
+      padding: 10px 5px;
+      background-color: $color-white;
+      color: $default-text-color;
+      border-radius: 5px;
+
+      &:enabled:hover {
+        color: $color-white;
+        background-color: $color-input-bg;
+      }
+
+      &:disabled {
+        cursor: default;
+        color: $color-gray-dark;
+        background-color: $color-gray-middle;
+      }
     }
   }
 }
