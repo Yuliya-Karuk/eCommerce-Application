@@ -1,26 +1,12 @@
-/* eslint-disable max-lines-per-function */
-/* eslint-disable react-hooks/exhaustive-deps */
 import eyeOff from '@assets/eye-off.svg';
 import eyeOn from '@assets/eye-show.svg';
 import { Customer, CustomerDraft } from '@commercetools/platform-sdk';
 import { Input } from '@components/Input/Input';
+import { passwordValidationRules } from '@utils/validationConst';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
-import { RegisterOptions, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import styles from './ProfilePassword.module.scss';
-
-const passwordValidationRules: RegisterOptions = {
-  required: 'Password is required',
-  minLength: { value: 8, message: 'Password must be at least 8 characters long' },
-  validate: {
-    uppercase: value => /(?=.*[A-Z])/.test(value) || 'Password must contain at least one uppercase letter (A-Z)',
-    lowercase: value => /(?=.*[a-z])/.test(value) || 'Password must contain at least one lowercase letter (a-z)',
-    digit: value => /(?=.*\d)/.test(value) || 'Password must contain at least one digit (0-9)',
-    specialChar: value =>
-      /(?=.*[!@#$%^&*])/.test(value) || 'Password must contain at least one special character (e.g., !@#$%^&*)',
-    noWhitespace: value => !/\s/.test(value) || 'Password cannot contain leading or trailing whitespace',
-  },
-};
 
 interface ProfilePasswordProps {
   customerData: Customer;
@@ -58,6 +44,7 @@ export const ProfilePassword = ({ customerData }: ProfilePasswordProps) => {
   useEffect(() => {
     setInputs();
     setDataEdited(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerData]);
 
   return (

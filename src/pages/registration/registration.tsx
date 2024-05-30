@@ -7,53 +7,16 @@ import { AuthFormHeader } from '@components/AuthFormHeader/AuthFormHeader';
 import { Input } from '@components/Input/Input';
 import { useAuth } from '@contexts/authProvider';
 import { useToast } from '@contexts/toastProvider';
-import { InputDateErrors, InputEmailErrors, InputNameErrors, InputPasswordErrors } from '@utils/validationConst';
+import {
+  dateValidationRules,
+  emailValidationRules,
+  nameValidationRules,
+  passwordValidationRules,
+} from '@utils/validationConst';
 import { useEffect, useState } from 'react';
-import { RegisterOptions, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
 import styles from './registration.module.scss';
-
-const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const onlyLatinLettersRegExp = /^[A-Za-z]+$/;
-
-const passwordValidationRules: RegisterOptions = {
-  required: InputPasswordErrors.required,
-  minLength: { value: 8, message: InputPasswordErrors.minLength },
-  validate: {
-    uppercase: value => /(?=.*[A-Z])/.test(value) || InputPasswordErrors.uppercase,
-    lowercase: value => /(?=.*[a-z])/.test(value) || InputPasswordErrors.lowercase,
-    digit: value => /(?=.*\d)/.test(value) || InputPasswordErrors.digit,
-    specialChar: value => /(?=.*[!@#$%^&*])/.test(value) || InputPasswordErrors.specialChar,
-    noWhitespace: value => !/\s/.test(value) || InputPasswordErrors.noWhitespace,
-  },
-};
-
-const emailValidationRules: RegisterOptions = {
-  required: InputEmailErrors.required,
-  pattern: {
-    value: validEmailRegExp,
-    message: InputEmailErrors.pattern,
-  },
-};
-
-const nameValidationRules: RegisterOptions = {
-  required: InputNameErrors.required,
-  pattern: {
-    value: onlyLatinLettersRegExp,
-    message: InputNameErrors.pattern,
-  },
-};
-
-const dateValidationRules: RegisterOptions = {
-  required: InputDateErrors.required,
-  validate: value => {
-    const dateOfBirth = new Date(value);
-    const minAgeDate = new Date();
-    minAgeDate.setFullYear(minAgeDate.getFullYear() - 13);
-
-    return dateOfBirth <= minAgeDate || InputDateErrors.minAge;
-  },
-};
 
 // eslint-disable-next-line max-lines-per-function
 export function Registration() {

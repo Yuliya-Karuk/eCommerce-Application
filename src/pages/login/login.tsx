@@ -6,33 +6,11 @@ import { Input } from '@components/Input/Input';
 import { useAuth } from '@contexts/authProvider';
 import { useToast } from '@contexts/toastProvider';
 import { LoginFormData } from '@models/index';
-import { InputEmailErrors, InputPasswordErrors } from '@utils/validationConst';
+import { emailValidationRules, passwordValidationRules } from '@utils/validationConst';
 import { useState } from 'react';
-import { RegisterOptions, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
 import styles from './login.module.scss';
-
-const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-const passwordValidationRules: RegisterOptions = {
-  required: InputPasswordErrors.required,
-  minLength: { value: 8, message: InputPasswordErrors.minLength },
-  validate: {
-    uppercase: value => /(?=.*[A-Z])/.test(value) || InputPasswordErrors.uppercase,
-    lowercase: value => /(?=.*[a-z])/.test(value) || InputPasswordErrors.lowercase,
-    digit: value => /(?=.*\d)/.test(value) || InputPasswordErrors.digit,
-    specialChar: value => /(?=.*[!@#$%^&*])/.test(value) || InputPasswordErrors.specialChar,
-    noWhitespace: value => !/\s/.test(value) || InputPasswordErrors.noWhitespace,
-  },
-};
-
-const emailValidationRules: RegisterOptions = {
-  required: InputEmailErrors.required,
-  pattern: {
-    value: validEmailRegExp,
-    message: InputEmailErrors.pattern,
-  },
-};
 
 export function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);

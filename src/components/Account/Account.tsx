@@ -1,42 +1,12 @@
 /* eslint-disable max-lines-per-function */
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Customer, CustomerDraft, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
 import { Input } from '@components/Input/Input';
 import { ProfilePassword } from '@components/ProfilePassword/ProfilePassword';
+import { dateValidationRules, emailValidationRules, nameValidationRules } from '@utils/validationConst';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
-import { RegisterOptions, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import styles from './Account.module.scss';
-
-const validEmailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const onlyLatinLettersRegExp = /^[A-Za-z]+$/;
-
-const emailValidationRules: RegisterOptions = {
-  required: 'E-mail is required',
-  pattern: {
-    value: validEmailRegExp,
-    message: 'Invalid e-mail format',
-  },
-};
-
-const nameValidationRules: RegisterOptions = {
-  required: 'This field is required',
-  pattern: {
-    value: onlyLatinLettersRegExp,
-    message: 'Only Latin letters are allowed',
-  },
-};
-
-const dateValidationRules: RegisterOptions = {
-  required: 'This field is required',
-  validate: value => {
-    const dateOfBirth = new Date(value);
-    const minAgeDate = new Date();
-    minAgeDate.setFullYear(minAgeDate.getFullYear() - 13);
-
-    return dateOfBirth <= minAgeDate || 'You must be 13 years old or older';
-  },
-};
 
 interface AccountProps {
   customerData: Customer;
@@ -91,6 +61,7 @@ export const Account = ({ customerData }: AccountProps) => {
   useEffect(() => {
     setInputs();
     setDataEdited(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerData]);
 
   return (
