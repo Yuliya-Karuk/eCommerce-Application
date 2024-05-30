@@ -1,8 +1,9 @@
 import { sdkService } from '@commercetool/sdk.service';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { Container } from '@components/Container/Container';
+import { CategoryList } from '@models/index';
 import { AppRoutes } from '@router/routes';
-import { CategoryList, dateSorting, simplifyCategories } from '@utils/utils';
+import { dateSorting, simplifyCategories } from '@utils/utils';
 import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { NewArrivalsCard } from '../NewArrivalsCard/NewArrivalsCard';

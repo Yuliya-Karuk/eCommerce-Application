@@ -1,5 +1,12 @@
-import { Category, ProductProjection } from '@commercetools/platform-sdk';
-import { ProductCategory } from '@models/index';
+import { BaseAddress, Category, ProductProjection } from '@commercetools/platform-sdk';
+import { CategoryList, ProductCategory } from '@models/index';
+
+export function isNotNullable<T>(value: T): NonNullable<T> {
+  if (value === undefined || value === null) {
+    throw new Error(`Not expected value`);
+  }
+  return value;
+}
 
 export function convertCentsToDollarsString(num: number, fractionDigits = 2): string {
   const divisor = 10 ** fractionDigits;
@@ -53,14 +60,10 @@ export function dateSorting(productsArray: ProductProjection[]) {
   return productsArray.sort((a, b) => new Date(a.lastModifiedAt).getTime() - new Date(b.lastModifiedAt).getTime());
 }
 
-export interface CustomCategory {
-  name: string;
-  id: string;
-  slug: string[];
-  children: CategoryList;
-  parent: string;
-}
-
-export interface CategoryList {
-  [key: string]: CustomCategory;
+export function findAddresses(addresses: BaseAddress[], neededIds: string[] | undefined) {
+  if (neededIds) {
+    const newAddresses = addresses.filter(address => neededIds.includes(isNotNullable(address.id)));
+    return newAddresses;
+  }
+  return [];
 }

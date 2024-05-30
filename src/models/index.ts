@@ -7,3 +7,15 @@ export interface ProductCategory {
   id: string;
   typeId: string;
 }
+
+export interface CustomCategory {
+  name: string;
+  id: string;
+  slug: string[];
+  children: CategoryList;
+  parent: string;
+}
+
+export interface CategoryList {
+  [key: string]: CustomCategory;
+}
