@@ -56,7 +56,6 @@ export const Account = ({ customerData }: AccountProps) => {
   }, [customerData]);
 
   const watchedFields = watch(['email', 'firstName', 'lastName', 'dateOfBirth']);
-  console.log(watchedFields);
 
   const onSubmit = () => {
     const newChanges: MyCustomerUpdateAction[] = [];
