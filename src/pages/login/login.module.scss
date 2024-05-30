@@ -4,12 +4,12 @@
   background-color: $color-bg-dark;
 
   .wrapper {
+    position: relative;
     width: clamp(280px, 50vw, 600px);
     padding: 5vw;
     font-size: 1.6rem;
     text-align: center;
     background-color: $color-green-dark;
-    position: relative;
 
     .form {
       @include flex(flex-start, left, column);

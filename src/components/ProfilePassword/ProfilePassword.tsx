@@ -62,46 +62,42 @@ export const ProfilePassword = ({ customerData }: ProfilePasswordProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmitPassword)} className={styles.form}>
-      {isEditing && (
-        <div className={styles.inputContainer}>
-          <Input
-            name="password"
-            label="Password"
-            type={isPasswordVisible ? 'text' : 'password'}
-            register={register}
-            validationSchema={passwordValidationRules}
-            isInvalid={!!errors.password}
-            required
-            autocomplete="current-password"
-          />
+      <div className={styles.inputContainer}>
+        <Input
+          name="password"
+          label="Password"
+          type={isPasswordVisible ? 'text' : 'password'}
+          register={register}
+          validationSchema={passwordValidationRules}
+          isInvalid={!!errors.password}
+          required
+          autocomplete="current-password"
+        />
 
-          <button type="button" onClick={() => setIsPasswordVisible(!isPasswordVisible)} className={styles.eye}>
-            <img src={isPasswordVisible ? eyeOn : eyeOff} alt="eye" />
-          </button>
+        <button type="button" onClick={() => setIsPasswordVisible(!isPasswordVisible)} className={styles.eye}>
+          <img src={isPasswordVisible ? eyeOn : eyeOff} alt="eye" />
+        </button>
 
-          <p className={styles.passwordError}>{errors?.password?.message}</p>
-        </div>
-      )}
-      {isEditing && (
-        <div className={styles.inputContainer}>
-          <Input
-            name="password"
-            label="Password"
-            type={isPasswordVisible ? 'text' : 'password'}
-            register={register}
-            validationSchema={passwordValidationRules}
-            isInvalid={!!errors.password}
-            required
-            autocomplete="current-password"
-          />
+        <p className={styles.passwordError}>{errors?.password?.message}</p>
+      </div>
+      <div className={styles.inputContainer}>
+        <Input
+          name="password"
+          label="Password"
+          type={isPasswordVisible ? 'text' : 'password'}
+          register={register}
+          validationSchema={passwordValidationRules}
+          isInvalid={!!errors.password}
+          required
+          autocomplete="current-password"
+        />
 
-          <button type="button" onClick={() => setIsPasswordVisible(!isPasswordVisible)} className={styles.eye}>
-            <img src={isPasswordVisible ? eyeOn : eyeOff} alt="eye" />
-          </button>
+        <button type="button" onClick={() => setIsPasswordVisible(!isPasswordVisible)} className={styles.eye}>
+          <img src={isPasswordVisible ? eyeOn : eyeOff} alt="eye" />
+        </button>
 
-          <p className={styles.passwordError}>{errors?.password?.message}</p>
-        </div>
-      )}
+        <p className={styles.passwordError}>{errors?.password?.message}</p>
+      </div>
       <div className={styles.buttons}>
         <button type="button" className={styles.submitButton} onClick={resetChanges}>
           {isEditing ? 'Reset' : 'Change'}

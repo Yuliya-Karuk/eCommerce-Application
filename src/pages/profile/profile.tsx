@@ -3,6 +3,7 @@ import { sdkService } from '@commercetool/sdk.service';
 import { Customer } from '@commercetools/platform-sdk';
 import { Account } from '@components/Account/Account';
 import { Container } from '@components/Container/Container';
+import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
 import { useEffect, useState } from 'react';
 import styles from './profile.module.scss';
@@ -49,10 +50,13 @@ export const Profile = () => {
               </button>
             ))}
           </div>
-          {activeTab === tabs.account && <Account customerData={customerData} />}
-          {activeTab === tabs.addresses && <div>Second</div>}
+          <div className={styles.profileContent}>
+            {activeTab === tabs.account && <Account customerData={customerData} />}
+            {activeTab === tabs.addresses && <div>Second</div>}
+          </div>
         </div>
       </Container>
+      <Footer />
     </div>
   );
 };

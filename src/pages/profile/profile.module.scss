@@ -2,24 +2,19 @@
   padding: 0 15px;
 }
 
-.profile-custom-container {
-  @include flex(flex-start, flex-start, column);
-  gap: 20px;
-}
-
 .profile-title {
-  background-color: $color-primary-bright;
   @include flex(flex-start, center);
   gap: 20px;
   width: 100%;
-  padding: 30px;
   margin-top: 30px;
+  padding: 20px 30px;
+  background-color: $color-green-dark;
 }
 
 .avatar-container {
-  border-radius: 50%;
   padding: 5px;
   border: 1px solid $color-gray-dark;
+  border-radius: 50%;
 
   .avatar {
     width: 50px;
@@ -39,23 +34,25 @@
 
 .profile-menu {
   @include flex(flex-start, center);
-  border: 1px solid $color-gray-dark;
   width: fit-content;
+  border: 1px solid $color-gray-dark;
   border-radius: 5px;
 }
 
 .profile-menu-button {
   @include adaptiveValue('font-size', 16px, 14px);
-  font-family: Questrial, Arial, Helvetica, sans-serif;
-  transition: background-color 0.4s ease 0s;
-  cursor: pointer;
-  padding: 10px 15px;
 
   @include hover {
     background-color: $color-primary-bright;
   }
+  cursor: pointer;
+  padding: 10px 15px;
+  font-family: Questrial, Arial, Helvetica, sans-serif;
+  transition: background-color 0.4s ease 0s;
 }
 
 .profile-content {
-  // background-color: $color-green-dark;
+  width: 100%;
+  background: center no-repeat url('../../assets/subscription.webp');
+  background-size: cover;
 }
