@@ -41,10 +41,16 @@ export const Account = ({ customerData }: AccountProps) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isValid },
   } = useForm<CustomerDraft>({ mode: 'all' });
 
   console.log(customerData);
+
+  setValue('email', customerData.email);
+  setValue('firstName', customerData.firstName);
+  setValue('lastName', customerData.lastName);
+  setValue('dateOfBirth', customerData.dateOfBirth);
 
   const onSubmit = () => {
     console.log('request');
@@ -54,7 +60,7 @@ export const Account = ({ customerData }: AccountProps) => {
     <div className={styles.account}>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <div className={styles.inputsSection}>
-          <section className={styles.userDataSection}>
+          <div>
             <Input
               name="email"
               label="E-mail:"
@@ -65,22 +71,8 @@ export const Account = ({ customerData }: AccountProps) => {
               autocomplete="username"
             />
             <p className={styles.emailError}>{errors?.email?.message}</p>
-
-            {/* <Input
-              name="password"
-              label="Password:"
-              type={isPasswordVisible ? 'text' : 'password'}
-              register={register}
-              validationSchema={passwordValidationRules}
-              isInvalid={!!errors.password}
-              required
-              autocomplete="new-password"
-            />
-            <button type="button" onClick={() => setIsPasswordVisible(!isPasswordVisible)} className={styles.eye}>
-              <img src={isPasswordVisible ? eyeOn : eyeOff} alt="eye" />
-            </button>
-            <p className={styles.passwordError}>{errors?.password?.message}</p> */}
-
+          </div>
+          <div>
             <Input
               name="firstName"
               label="First name:"
@@ -90,7 +82,8 @@ export const Account = ({ customerData }: AccountProps) => {
               required
             />
             <p className={styles.firstNameError}>{errors?.firstName?.message}</p>
-
+          </div>
+          <div>
             <Input
               name="lastName"
               label="Last name:"
@@ -100,7 +93,8 @@ export const Account = ({ customerData }: AccountProps) => {
               required
             />
             <p className={styles.lastNameError}>{errors?.lastName?.message}</p>
-
+          </div>
+          <div>
             <Input
               name="dateOfBirth"
               label="Date of birth:"
@@ -111,7 +105,7 @@ export const Account = ({ customerData }: AccountProps) => {
               required
             />
             <p className={styles.dateOfBirthError}>{errors?.dateOfBirth?.message}</p>
-          </section>
+          </div>
         </div>
         <button type="submit" className={styles.submitButton} disabled={!isValid}>
           Submit

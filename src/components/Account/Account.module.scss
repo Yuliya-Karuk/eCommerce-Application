@@ -1,3 +1,12 @@
 .account {
   display: block;
+
+  .form {
+    font-size: 1.5rem;
+
+    .inputs-section {
+      @include flex(flex-start, flex-start, row, 20px);
+      flex-wrap: wrap;
+    }
+  }
 }
