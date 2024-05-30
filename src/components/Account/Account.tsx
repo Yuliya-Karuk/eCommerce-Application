@@ -1,4 +1,4 @@
-import { CustomerDraft } from '@commercetools/platform-sdk';
+import { Customer, CustomerDraft } from '@commercetools/platform-sdk';
 import { Input } from '@components/Input/Input';
 import { RegisterOptions, useForm } from 'react-hook-form';
 import styles from './Account.module.scss';
@@ -33,12 +33,18 @@ const dateValidationRules: RegisterOptions = {
   },
 };
 
-export const Account = () => {
+interface AccountProps {
+  customerData: Customer;
+}
+
+export const Account = ({ customerData }: AccountProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<CustomerDraft>({ mode: 'all' });
+
+  console.log(customerData);
 
   const onSubmit = () => {
     console.log('request');

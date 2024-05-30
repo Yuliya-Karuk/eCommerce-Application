@@ -1,7 +1,9 @@
+import { sdkService } from '@commercetool/sdk.service';
+import { Customer } from '@commercetools/platform-sdk';
 import { Account } from '@components/Account/Account';
 import { Container } from '@components/Container/Container';
 import { Header } from '@components/Header/Header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './profile.module.scss';
 
 const tabs: { [key: string]: string } = {
@@ -11,6 +13,17 @@ const tabs: { [key: string]: string } = {
 
 export const Profile = () => {
   const [activeTab, setActiveTab] = useState(tabs.account);
+  const [customerData, setCustomerData] = useState<Customer>({} as Customer);
+
+  const getCustomerData = async () => {
+    const customer = await sdkService.getCustomerData();
+    console.log(customer);
+    setCustomerData(customer);
+  };
+
+  useEffect(() => {
+    getCustomerData();
+  }, []);
 
   return (
     <div className={styles.profile}>
@@ -29,7 +42,7 @@ export const Profile = () => {
               </button>
             ))}
           </div>
-          {activeTab === tabs.account && <Account />}
+          {activeTab === tabs.account && <Account customerData={customerData} />}
           {activeTab === tabs.addresses && <div>Second</div>}
         </div>
       </Container>

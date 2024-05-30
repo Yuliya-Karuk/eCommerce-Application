@@ -2,6 +2,7 @@ import {
   ByProjectKeyRequestBuilder,
   ClientResponse,
   createApiBuilderFromCtpClient,
+  Customer,
   CustomerDraft,
   CustomerSignInResult,
   Product,
@@ -90,6 +91,11 @@ export class SdkService {
     } catch (error) {
       throw new Error(CustomErrors.SERVER_ERROR);
     }
+  }
+
+  public async getCustomerData(): Promise<Customer> {
+    const data = await this.apiRoot.me().get().execute();
+    return data.body;
   }
 }
 
