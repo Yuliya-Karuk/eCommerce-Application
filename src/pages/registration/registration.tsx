@@ -86,6 +86,7 @@ export function Registration() {
     } else {
       setValue('billingAddresses', [1]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [billingAddressIsSameAsShipping, setValue, unregister]);
 
   const onSubmit = async (userData: CustomerDraft) => {

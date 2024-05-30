@@ -8,6 +8,7 @@
   background-color: $color-bg-dark-alpha;
   border: 1px solid $color-gray-dark;
   border-radius: 5px;
+  backdrop-filter: blur(10px);
 
   &-list {
     display: flex;
