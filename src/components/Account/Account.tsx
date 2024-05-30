@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Customer, CustomerDraft, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
 import { Input } from '@components/Input/Input';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';
 import styles from './Account.module.scss';
 
@@ -48,6 +48,8 @@ export const Account = ({ customerData }: AccountProps) => {
     formState: { errors, isValid },
   } = useForm<CustomerDraft>({ mode: 'all' });
 
+  const [isEditing, setIsEditing] = useState(false);
+
   useEffect(() => {
     setValue('email', customerData.email);
     setValue('firstName', customerData.firstName);
@@ -73,6 +75,7 @@ export const Account = ({ customerData }: AccountProps) => {
     }
 
     console.log(newChanges);
+    // setIsEditing(false);
   };
 
   return (
@@ -86,6 +89,7 @@ export const Account = ({ customerData }: AccountProps) => {
               register={register}
               validationSchema={emailValidationRules}
               isInvalid={!!errors.email}
+              disabled={!isEditing}
               required
               autocomplete="username"
             />
@@ -98,6 +102,7 @@ export const Account = ({ customerData }: AccountProps) => {
               register={register}
               validationSchema={nameValidationRules}
               isInvalid={!!errors.firstName}
+              disabled={!isEditing}
               required
             />
             <p className={styles.firstNameError}>{errors?.firstName?.message}</p>
@@ -109,6 +114,7 @@ export const Account = ({ customerData }: AccountProps) => {
               register={register}
               validationSchema={nameValidationRules}
               isInvalid={!!errors.lastName}
+              disabled={!isEditing}
               required
             />
             <p className={styles.lastNameError}>{errors?.lastName?.message}</p>
@@ -121,13 +127,19 @@ export const Account = ({ customerData }: AccountProps) => {
               register={register}
               validationSchema={dateValidationRules}
               isInvalid={!!errors.dateOfBirth}
+              disabled={!isEditing}
               required
             />
             <p className={styles.dateOfBirthError}>{errors?.dateOfBirth?.message}</p>
           </div>
         </div>
-        <button type="submit" className={styles.submitButton} disabled={!isValid}>
-          Submit
+        <button
+          type={!isEditing ? 'submit' : 'button'}
+          className={styles.submitButton}
+          disabled={!(isValid || !isEditing)}
+          onClick={() => setIsEditing(!isEditing)}
+        >
+          {isEditing ? 'Submit' : 'Edit'}
         </button>
       </form>
     </div>
