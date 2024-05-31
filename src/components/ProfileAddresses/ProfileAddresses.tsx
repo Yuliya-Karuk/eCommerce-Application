@@ -1,53 +1,24 @@
 /* eslint-disable max-lines-per-function */
-import { sdkService } from '@commercetool/sdk.service';
-import { BaseAddress, Customer } from '@commercetools/platform-sdk';
+import { Customer } from '@commercetools/platform-sdk';
 import { AddressView } from '@components/AddressView/AddressView';
-import { findAddresses, findNewAddresses } from '@utils/utils';
+import { findAddresses } from '@utils/utils';
 import styles from './ProfileAddresses.module.scss';
 
 interface AddressesProps {
   customerData: Customer;
 }
 
-const typesAddresses: { [key: string]: string } = {
-  shipping: 'addShippingAddressId',
-  billing: 'addBillingAddressId',
-};
-
-enum Types {
-  addShippingAddressId = 'addShippingAddressId',
-  addBillingAddressId = 'addBillingAddressId',
-}
+// НУЖНОЕ !!!!!!
+// const typesAddresses: { [key: string]: string } = {
+//   shipping: 'addShippingAddressId',
+//   billing: 'addBillingAddressId',
+// };
+// enum Types {
+//   addShippingAddressId = 'addShippingAddressId',
+//   addBillingAddressId = 'addBillingAddressId',
+// }
 
 export const ProfileAddresses = ({ customerData }: AddressesProps) => {
-  const addAddress = async (newAddress: BaseAddress, type: Types) => {
-    const result = await sdkService.addAddress({
-      version: customerData.version,
-      actions: [
-        {
-          action: 'addAddress',
-          address: newAddress,
-        },
-      ],
-    });
-    const setAddress = findNewAddresses(result.addresses, result.billingAddressIds, result.shippingAddressIds);
-    sdkService.setAddressBillingOrShipping({
-      version: customerData.version,
-      actions: [
-        {
-          action: Types[type],
-          addressId: setAddress.id,
-        },
-      ],
-    });
-  };
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   setValue,
-  //   watch,
-  //   formState: { errors, isValid },
-  // } = useForm<CustomerDraft>({ mode: 'all' });
   const shippingAddresses = findAddresses(customerData.addresses, customerData.shippingAddressIds);
   const billingAddresses = findAddresses(customerData.addresses, customerData.billingAddressIds);
   const { defaultBillingAddressId } = customerData;
@@ -55,34 +26,42 @@ export const ProfileAddresses = ({ customerData }: AddressesProps) => {
   console.log(customerData);
   console.log(defaultBillingAddressId);
   console.log(defaultShippingAddressId);
-  console.log(typesAddresses);
-  console.log(addAddress);
-  // console.log(shippingAddresses);
-  // console.log(billingAddresses);
 
-  // const [isEditing, setIsEditing] = useState(false);
-  // const [dataEdited, setDataEdited] = useState(false);
-
-  // const setInputs = () => {
-  //   setValue('email', customerData.email);
-  //   setValue('firstName', customerData.firstName);
-  //   setValue('lastName', customerData.lastName);
-  //   setValue('dateOfBirth', customerData.dateOfBirth);
+  // НУЖНОЕ !!!!!!
+  // const addAddress = async (newAddress: BaseAddress, type: Types) => {
+  //   const result = await sdkService.addAddress({
+  //     version: customerData.version,
+  //     actions: [
+  //       {
+  //         action: 'addAddress',
+  //         address: newAddress,
+  //       },
+  //     ],
+  //   });
+  //   const setAddress = findNewAddresses(result.addresses, result.billingAddressIds, result.shippingAddressIds);
+  //   sdkService.setAddressBillingOrShipping({
+  //     version: customerData.version,
+  //     actions: [
+  //       {
+  //         action: Types[type],
+  //         addressId: setAddress.id,
+  //       },
+  //     ],
+  //   });
   // };
 
-  // const resetChanges = () => {
-  //   // setInputs();
-  //   setDataEdited(false);
-  //   setIsEditing(!isEditing);
+  // НУЖНОЕ !!!!!
+  // const removeAddress = async (address: BaseAddress) => {
+  //   await sdkService.addAddress({
+  //     version: customerData.version,
+  //     actions: [
+  //       {
+  //         action: 'removeAddress',
+  //         addressId: address.id,
+  //       },
+  //     ],
+  //   });
   // };
-
-  // const onSubmitInfo = () => {};
-
-  // useEffect(() => {
-  //   // setInputs();
-  //   setDataEdited(true);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [customerData]);
 
   return (
     <div className={styles.addresses}>
