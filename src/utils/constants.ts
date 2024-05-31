@@ -56,11 +56,11 @@ export const addAddressActions: AddAddressActions = {
 };
 
 export interface SetDefaultAddressActions {
-  isShipping: 'setDefaultBillingAddress';
-  isBilling: 'setDefaultShippingAddress';
+  isShipping: 'setDefaultShippingAddress';
+  isBilling: 'setDefaultBillingAddress';
 }
 
 export const setDefaultAddressActions: SetDefaultAddressActions = {
-  isShipping: 'setDefaultBillingAddress',
-  isBilling: 'setDefaultShippingAddress',
+  isShipping: 'setDefaultShippingAddress',
+  isBilling: 'setDefaultBillingAddress',
 };

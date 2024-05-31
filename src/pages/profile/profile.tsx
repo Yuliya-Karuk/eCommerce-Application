@@ -25,7 +25,6 @@ export const Profile = () => {
 
   const getCustomerData = async () => {
     const customer = await sdkService.getCustomerData();
-    console.log(customer);
     setCustomerData(customer);
   };
 

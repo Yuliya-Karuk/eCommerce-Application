@@ -2,7 +2,7 @@
 import { sdkService } from '@commercetool/sdk.service';
 import { BaseAddress, Customer } from '@commercetools/platform-sdk';
 import { AddressView } from '@components/AddressView/AddressView';
-import { addAddressActions, AddressesTypes, defaultAddress } from '@utils/constants';
+import { addAddressActions, AddressesTypes, defaultAddress, setDefaultAddressActions } from '@utils/constants';
 import { findAddresses, findNewAddresses, isNotNullable } from '@utils/utils';
 import { useState } from 'react';
 import styles from './ProfileAddresses.module.scss';
@@ -17,23 +17,19 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
   const billingAddresses = findAddresses(customerData.addresses, customerData.billingAddressIds);
   const [isNewShipping, setIsNewShipping] = useState(false);
   const [isNewBilling, setIsNewBilling] = useState(false);
-  const { defaultBillingAddressId } = customerData;
-  const { defaultShippingAddressId } = customerData;
-  console.log(customerData);
-  console.log(defaultBillingAddressId);
-  console.log(defaultShippingAddressId);
 
-  // НУЖНОЕ !!!!!!
-  const addAddress = async (newAddress: BaseAddress, type: AddressesTypes) => {
-    let result = await sdkService.addAddress({
-      version: customerData.version,
-      actions: [
-        {
-          action: 'addAddress',
-          address: newAddress,
-        },
-      ],
-    });
+  const { defaultShippingAddressId } = customerData;
+  const { defaultBillingAddressId } = customerData;
+  console.log(customerData);
+
+  const addAddress = async (newAddress: BaseAddress, type: AddressesTypes, isDefault: boolean) => {
+    let result = await sdkService.addAddress(customerData.version, [
+      {
+        action: 'addAddress',
+        address: newAddress,
+      },
+    ]);
+
     const setAddress = findNewAddresses(result.addresses, result.billingAddressIds, result.shippingAddressIds);
     result = await sdkService.setAddressBillingOrShipping(result.version, [
       {
@@ -42,23 +38,24 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
       },
     ]);
 
-    // if (isDeafult) {
-    //   result = sdkService. здесь будет запрос сделать дефолтным
-    // }
-
+    if (isDefault) {
+      result = await sdkService.setDefaultBillingOrShippingAddress(result.version, [
+        {
+          action: setDefaultAddressActions[type],
+          addressId: setAddress.id,
+        },
+      ]);
+    }
     setCustomerData(result);
   };
 
   const removeAddress = async (address: BaseAddress) => {
-    const newCustomer = await sdkService.addAddress({
-      version: customerData.version,
-      actions: [
-        {
-          action: 'removeAddress',
-          addressId: isNotNullable(address.id),
-        },
-      ],
-    });
+    const newCustomer = await sdkService.addAddress(customerData.version, [
+      {
+        action: 'removeAddress',
+        addressId: isNotNullable(address.id),
+      },
+    ]);
     setCustomerData(newCustomer);
   };
 
@@ -72,7 +69,7 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
           <div key={addr.id} className={styles.addressContainer}>
             <AddressView
               address={addr}
-              defaultAddressId={customerData.defaultShippingAddressId}
+              defaultAddressId={defaultShippingAddressId}
               removeAddress={removeAddress}
               type={AddressesTypes.isShipping}
             />
@@ -81,7 +78,7 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
         {isNewShipping && (
           <AddressView
             address={defaultAddress}
-            defaultAddressId={customerData.defaultShippingAddressId}
+            defaultAddressId={defaultShippingAddressId}
             removeAddress={removeAddress}
             setIsNewAddress={setIsNewShipping}
             addAddress={addAddress}
@@ -98,7 +95,7 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
           <div key={addr.id} className={styles.addressContainer}>
             <AddressView
               address={addr}
-              defaultAddressId={customerData.defaultBillingAddressId}
+              defaultAddressId={defaultBillingAddressId}
               removeAddress={removeAddress}
               type={AddressesTypes.isBilling}
             />
@@ -107,7 +104,7 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
         {isNewBilling && (
           <AddressView
             address={defaultAddress}
-            defaultAddressId={customerData.defaultBillingAddressId}
+            defaultAddressId={defaultBillingAddressId}
             removeAddress={removeAddress}
             setIsNewAddress={setIsNewBilling}
             addAddress={addAddress}

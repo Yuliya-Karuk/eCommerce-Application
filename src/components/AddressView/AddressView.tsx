@@ -13,7 +13,7 @@ interface AddressViewProps {
   defaultAddressId?: string;
   removeAddress: (data: BaseAddress) => void;
   setIsNewAddress?: (data: boolean) => void;
-  addAddress?: (newAddress: BaseAddress, type: AddressesTypes) => void;
+  addAddress?: (newAddress: BaseAddress, type: AddressesTypes, isDefault: boolean) => void;
   type: AddressesTypes;
 }
 
@@ -30,9 +30,7 @@ export function AddressView(props: AddressViewProps) {
   } = useForm<BaseAddress>({ mode: 'all' });
 
   const { id } = address;
-  // if (address) {
-  //   id = address.id || 'no_id';
-  // }
+
   function setInputs() {
     if (address) {
       setValue('country', address.country);
@@ -51,18 +49,16 @@ export function AddressView(props: AddressViewProps) {
 
   useEffect(() => {
     setInputs();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (defaultAddressId && address) {
-      if (defaultAddressId === address.id) {
-        setIsDefaultAddress(true);
-      }
+    setIsDefaultAddress(false);
+    if (defaultAddressId === address.id) {
+      setIsDefaultAddress(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [defaultAddressId]);
 
   useEffect(() => {
     if (
@@ -91,14 +87,6 @@ export function AddressView(props: AddressViewProps) {
     setSelectedCountry(event.target.value);
   };
 
-  // const defaultAddressName = index === 0 ? 'defaultShippingAddress' : 'defaultBillingAddress';
-
-  const handleDefaultAddressCheckbox = () => {};
-
-  function handleDeleteButton() {
-    removeAddress(isNotNullable(address));
-  }
-
   useEffect(() => {
     if (selectedCountry) {
       trigger(`postalCode`);
@@ -107,8 +95,9 @@ export function AddressView(props: AddressViewProps) {
   }, [selectedCountry]);
 
   const onSubmit = (data: BaseAddress) => {
-    if (addAddress) {
-      addAddress(data, type);
+    if (addAddress && setIsNewAddress) {
+      addAddress(data, type, isDefaultAddress);
+      setIsNewAddress(false);
     }
     setIsEditing(false);
   };
@@ -179,7 +168,7 @@ export function AddressView(props: AddressViewProps) {
             id={`default-address-${id}`}
             type="checkbox"
             checked={isDefaultAddress}
-            onChange={handleDefaultAddressCheckbox}
+            onChange={() => setIsDefaultAddress(!isDefaultAddress)}
           />
           Make address as default
         </label>
@@ -194,11 +183,11 @@ export function AddressView(props: AddressViewProps) {
           >
             Submit
           </button>
-          {id === 'no-id' && (
+          {id !== 'no-id' && (
             <button
               className={classNames(styles.submitButton, { [styles.hidden]: isEditing })}
               type="button"
-              onClick={handleDeleteButton}
+              onClick={() => removeAddress(isNotNullable(address))}
             >
               Delete
             </button>

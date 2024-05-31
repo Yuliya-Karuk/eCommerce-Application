@@ -115,34 +115,18 @@ export class SdkService {
   public async updateAddress(updateData: MyCustomerUpdate) {
     const result = await this.apiRoot.me().post({ body: updateData }).execute();
     return result.body;
-    // {
-    //       version: customerVersion,
-    //       actions: [
-    //         {
-    //           action: 'changeAddress',
-    //           addressId: addressIdToChange,
-    //           address: changedAddress,
-    //         },
-    //       ],
-    //     },
   }
 
-  public async deleteAddress(updateData: MyCustomerUpdate) {
-    const result = await this.apiRoot.me().post({ body: updateData }).execute();
-    return result.body;
-    // {
-    //   version: customerVersion,
-    //   actions: [
-    //     {
-    //       action: 'removeAddress',
-    //       addressId: addressIdToRemove,
-    //     },
-    //   ],
-    // }
-  }
-
-  public async addAddress(updateData: MyCustomerUpdate) {
-    const result = await this.apiRoot.me().post({ body: updateData }).execute();
+  public async addAddress(customerVersion: number, setActions: MyCustomerUpdateAction[]) {
+    const result = await this.apiRoot
+      .me()
+      .post({
+        body: {
+          version: customerVersion,
+          actions: [...setActions],
+        },
+      })
+      .execute();
     return result.body;
   }
 
@@ -169,29 +153,7 @@ export class SdkService {
         },
       })
       .execute();
-    return result;
-  }
-
-  public async removeDefaultShippingAddress(customerVersion: number) {
-    const result = await this.apiRoot
-      .me()
-      .post({
-        body: {
-          version: customerVersion,
-          actions: [
-            {
-              action: 'setDefaultShippingAddress',
-            },
-          ],
-        },
-      })
-      .execute();
-    return result;
-  }
-
-  public async removeAddress(updateData: MyCustomerUpdate) {
-    const result = await this.apiRoot.me().post({ body: updateData }).execute();
-    return result;
+    return result.body;
   }
 }
 
