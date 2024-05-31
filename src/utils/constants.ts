@@ -39,3 +39,28 @@ export const defaultAddress: BaseAddress = {
   city: '',
   streetName: '',
 };
+
+export interface AddAddressActions {
+  isShipping: 'addShippingAddressId';
+  isBilling: 'addBillingAddressId';
+}
+
+export enum AddressesTypes {
+  isShipping = 'isShipping',
+  isBilling = 'isBilling',
+}
+
+export const addAddressActions: AddAddressActions = {
+  isShipping: 'addShippingAddressId',
+  isBilling: 'addBillingAddressId',
+};
+
+export interface SetDefaultAddressActions {
+  isShipping: 'setDefaultBillingAddress';
+  isBilling: 'setDefaultShippingAddress';
+}
+
+export const setDefaultAddressActions: SetDefaultAddressActions = {
+  isShipping: 'setDefaultBillingAddress',
+  isBilling: 'setDefaultShippingAddress',
+};

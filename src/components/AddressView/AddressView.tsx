@@ -1,6 +1,6 @@
-import { BaseAddress, MyCustomerChangeAddressAction } from '@commercetools/platform-sdk';
+import { BaseAddress } from '@commercetools/platform-sdk';
 import { Input } from '@components/Input/Input';
-import { countries } from '@utils/constants';
+import { AddressesTypes, countries } from '@utils/constants';
 import { getPostalCodeValidationRules, isNotNullable } from '@utils/utils';
 import { cityValidationRules } from '@utils/validationConst';
 import classNames from 'classnames';
@@ -13,11 +13,13 @@ interface AddressViewProps {
   defaultAddressId?: string;
   removeAddress: (data: BaseAddress) => void;
   setIsNewAddress?: (data: boolean) => void;
+  addAddress?: (newAddress: BaseAddress, type: AddressesTypes) => void;
+  type: AddressesTypes;
 }
 
 // eslint-disable-next-line max-lines-per-function
 export function AddressView(props: AddressViewProps) {
-  const { address, defaultAddressId, removeAddress, setIsNewAddress } = props;
+  const { address, defaultAddressId, removeAddress, setIsNewAddress, addAddress, type } = props;
   const {
     register,
     handleSubmit,
@@ -25,7 +27,7 @@ export function AddressView(props: AddressViewProps) {
     trigger,
     watch,
     formState: { errors, isValid },
-  } = useForm<MyCustomerChangeAddressAction>({ mode: 'all' });
+  } = useForm<BaseAddress>({ mode: 'all' });
 
   const { id } = address;
   // if (address) {
@@ -33,10 +35,10 @@ export function AddressView(props: AddressViewProps) {
   // }
   function setInputs() {
     if (address) {
-      setValue('address.country', address.country);
-      setValue('address.postalCode', address.postalCode);
-      setValue('address.city', address.city);
-      setValue('address.streetName', address.streetName);
+      setValue('country', address.country);
+      setValue('postalCode', address.postalCode);
+      setValue('city', address.city);
+      setValue('streetName', address.streetName);
     }
   }
 
@@ -45,7 +47,7 @@ export function AddressView(props: AddressViewProps) {
   const [dataEdited, setDataEdited] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<string>('');
 
-  const watchedFields = watch(['address.country', 'address.postalCode', 'address.city', 'address.streetName']);
+  const watchedFields = watch(['country', 'postalCode', 'city', 'streetName']);
 
   useEffect(() => {
     setInputs();
@@ -99,13 +101,15 @@ export function AddressView(props: AddressViewProps) {
 
   useEffect(() => {
     if (selectedCountry) {
-      trigger(`address.postalCode`);
+      trigger(`postalCode`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCountry]);
 
-  const onSubmit = (data: MyCustomerChangeAddressAction) => {
-    console.log(data);
+  const onSubmit = (data: BaseAddress) => {
+    if (addAddress) {
+      addAddress(data, type);
+    }
     setIsEditing(false);
   };
 
@@ -119,7 +123,7 @@ export function AddressView(props: AddressViewProps) {
             required
             id={`country-${id}`}
             className={styles.select}
-            {...register(`address.country`, { required: true })}
+            {...register(`country`, { required: true })}
             defaultValue=""
             onChange={handleCountryChange}
             autoComplete="off"
@@ -135,40 +139,40 @@ export function AddressView(props: AddressViewProps) {
             ))}
           </select>
         </label>
-        <p className={styles.error}>{errors?.address?.country?.message}</p>
+        <p className={styles.error}>{errors?.country?.message}</p>
 
         <Input
-          name="address.city"
+          name="city"
           label="City:"
           register={register}
           validationSchema={cityValidationRules}
-          isInvalid={!!errors.address?.city}
+          isInvalid={!!errors.city}
           required={!address}
           disabled={!isEditing}
         />
-        <p className={styles.error}>{errors?.address?.city?.message}</p>
+        <p className={styles.error}>{errors?.city?.message}</p>
 
         <Input
-          name="address.postalCode"
+          name="postalCode"
           label="Postal code:"
           register={register}
           validationSchema={getPostalCodeValidationRules(selectedCountry)}
-          isInvalid={!!errors.address?.postalCode}
+          isInvalid={!!errors.postalCode}
           required={!address}
           disabled={!isEditing}
         />
-        <p className={styles.error}>{errors?.address?.postalCode?.message}</p>
+        <p className={styles.error}>{errors?.postalCode?.message}</p>
 
         <Input
-          name="address.streetName"
+          name="streetName"
           label="Street name:"
           register={register}
           validationSchema={{ required: 'This field is required' }}
-          isInvalid={!!errors.address?.streetName}
+          isInvalid={!!errors.streetName}
           required={!address}
           disabled={!isEditing}
         />
-        <p className={styles.error}>{errors?.address?.streetName?.message}</p>
+        <p className={styles.error}>{errors?.streetName?.message}</p>
         <label className={styles.checkboxLabel} htmlFor={`default-address-${id}`}>
           <input
             className={styles.checkbox}

@@ -8,6 +8,7 @@ import {
   CustomerSignInResult,
   MyCustomerChangePassword,
   MyCustomerUpdate,
+  MyCustomerUpdateAction,
   ProductProjection,
 } from '@commercetools/platform-sdk';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
@@ -145,22 +146,26 @@ export class SdkService {
     return result.body;
   }
 
-  public async setAddressBillingOrShipping(updateData: MyCustomerUpdate) {
-    const result = await this.apiRoot.me().post({ body: updateData }).execute();
-    return result;
-  }
-
-  public async removeDefaultBillingAddress(customerVersion: number) {
+  public async setAddressBillingOrShipping(customerVersion: number, setActions: MyCustomerUpdateAction[]) {
     const result = await this.apiRoot
       .me()
       .post({
         body: {
           version: customerVersion,
-          actions: [
-            {
-              action: 'setDefaultBillingAddress',
-            },
-          ],
+          actions: [...setActions],
+        },
+      })
+      .execute();
+    return result.body;
+  }
+
+  public async setDefaultBillingOrShippingAddress(customerVersion: number, setActions: MyCustomerUpdateAction[]) {
+    const result = await this.apiRoot
+      .me()
+      .post({
+        body: {
+          version: customerVersion,
+          actions: [...setActions],
         },
       })
       .execute();

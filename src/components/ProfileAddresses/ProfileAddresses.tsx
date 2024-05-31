@@ -2,8 +2,8 @@
 import { sdkService } from '@commercetool/sdk.service';
 import { BaseAddress, Customer } from '@commercetools/platform-sdk';
 import { AddressView } from '@components/AddressView/AddressView';
-import { defaultAddress } from '@utils/constants';
-import { findAddresses, isNotNullable } from '@utils/utils';
+import { addAddressActions, AddressesTypes, defaultAddress } from '@utils/constants';
+import { findAddresses, findNewAddresses, isNotNullable } from '@utils/utils';
 import { useState } from 'react';
 import styles from './ProfileAddresses.module.scss';
 
@@ -11,16 +11,6 @@ interface AddressesProps {
   customerData: Customer;
   setCustomerData: (data: Customer) => void;
 }
-
-// НУЖНОЕ !!!!!!
-// const typesAddresses: { [key: string]: string } = {
-//   shipping: 'addShippingAddressId',
-//   billing: 'addBillingAddressId',
-// };
-// enum Types {
-//   addShippingAddressId = 'addShippingAddressId',
-//   addBillingAddressId = 'addBillingAddressId',
-// }
 
 export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesProps) => {
   const shippingAddresses = findAddresses(customerData.addresses, customerData.shippingAddressIds);
@@ -34,27 +24,30 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
   console.log(defaultShippingAddressId);
 
   // НУЖНОЕ !!!!!!
-  // const addAddress = async (newAddress: BaseAddress, type: Types) => {
-  //   const result = await sdkService.addAddress({
-  //     version: customerData.version,
-  //     actions: [
-  //       {
-  //         action: 'addAddress',
-  //         address: newAddress,
-  //       },
-  //     ],
-  //   });
-  //   const setAddress = findNewAddresses(result.addresses, result.billingAddressIds, result.shippingAddressIds);
-  //   sdkService.setAddressBillingOrShipping({
-  //     version: customerData.version,
-  //     actions: [
-  //       {
-  //         action: Types[type],
-  //         addressId: setAddress.id,
-  //       },
-  //     ],
-  //   });
-  // };
+  const addAddress = async (newAddress: BaseAddress, type: AddressesTypes) => {
+    let result = await sdkService.addAddress({
+      version: customerData.version,
+      actions: [
+        {
+          action: 'addAddress',
+          address: newAddress,
+        },
+      ],
+    });
+    const setAddress = findNewAddresses(result.addresses, result.billingAddressIds, result.shippingAddressIds);
+    result = await sdkService.setAddressBillingOrShipping(result.version, [
+      {
+        action: addAddressActions[type],
+        addressId: setAddress.id,
+      },
+    ]);
+
+    // if (isDeafult) {
+    //   result = sdkService. здесь будет запрос сделать дефолтным
+    // }
+
+    setCustomerData(result);
+  };
 
   const removeAddress = async (address: BaseAddress) => {
     const newCustomer = await sdkService.addAddress({
@@ -72,7 +65,7 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
   return (
     <div className={styles.addresses}>
       <div className={styles.addressesHeaderWrapper}>
-        <h2 className={styles.accountHeading}>Billing addresses</h2>
+        <h2 className={styles.accountHeading}>Shipping addresses</h2>
       </div>
       <div className={styles.addressesWrapper}>
         {shippingAddresses.map(addr => (
@@ -81,29 +74,7 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
               address={addr}
               defaultAddressId={customerData.defaultShippingAddressId}
               removeAddress={removeAddress}
-            />
-          </div>
-        ))}
-        {isNewBilling && (
-          <AddressView
-            address={defaultAddress}
-            defaultAddressId={customerData.defaultShippingAddressId}
-            removeAddress={removeAddress}
-            setIsNewAddress={setIsNewBilling}
-          />
-        )}
-        <button type="button" className={styles.addNewAddressBtn} onClick={() => setIsNewBilling(true)}>
-          +
-        </button>
-      </div>
-      <h2 className={styles.accountHeading}>Shipping addresses</h2>
-      <div className={styles.addressesWrapper}>
-        {billingAddresses.map(addr => (
-          <div key={addr.id} className={styles.addressContainer}>
-            <AddressView
-              address={addr}
-              defaultAddressId={customerData.defaultBillingAddressId}
-              removeAddress={removeAddress}
+              type={AddressesTypes.isShipping}
             />
           </div>
         ))}
@@ -113,9 +84,37 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
             defaultAddressId={customerData.defaultShippingAddressId}
             removeAddress={removeAddress}
             setIsNewAddress={setIsNewShipping}
+            addAddress={addAddress}
+            type={AddressesTypes.isShipping}
           />
         )}
         <button type="button" className={styles.addNewAddressBtn} onClick={() => setIsNewShipping(true)}>
+          +
+        </button>
+      </div>
+      <h2 className={styles.accountHeading}>Billing addresses</h2>
+      <div className={styles.addressesWrapper}>
+        {billingAddresses.map(addr => (
+          <div key={addr.id} className={styles.addressContainer}>
+            <AddressView
+              address={addr}
+              defaultAddressId={customerData.defaultBillingAddressId}
+              removeAddress={removeAddress}
+              type={AddressesTypes.isBilling}
+            />
+          </div>
+        ))}
+        {isNewBilling && (
+          <AddressView
+            address={defaultAddress}
+            defaultAddressId={customerData.defaultBillingAddressId}
+            removeAddress={removeAddress}
+            setIsNewAddress={setIsNewBilling}
+            addAddress={addAddress}
+            type={AddressesTypes.isBilling}
+          />
+        )}
+        <button type="button" className={styles.addNewAddressBtn} onClick={() => setIsNewBilling(true)}>
           +
         </button>
       </div>
