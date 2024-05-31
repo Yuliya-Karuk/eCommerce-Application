@@ -112,13 +112,8 @@ export class SdkService {
   }
 
   public async updateAddress(updateData: MyCustomerUpdate) {
-    const result = await this.apiRoot
-      .me()
-      .post({
-        body: updateData,
-      })
-      .execute();
-    return result;
+    const result = await this.apiRoot.me().post({ body: updateData }).execute();
+    return result.body;
     // {
     //       version: customerVersion,
     //       actions: [
@@ -131,6 +126,42 @@ export class SdkService {
     //     },
   }
 
+  public async deleteAddress(updateData: MyCustomerUpdate) {
+    const result = await this.apiRoot.me().post({ body: updateData }).execute();
+    return result.body;
+    // {
+    //   version: customerVersion,
+    //   actions: [
+    //     {
+    //       action: 'removeAddress',
+    //       addressId: addressIdToRemove,
+    //     },
+    //   ],
+    // }
+  }
+
+  public async addAddress(updateData: MyCustomerUpdate) {
+    const result = await this.apiRoot.me().post({ body: updateData }).execute();
+    return result.body;
+  }
+
+  public async setAddressBillingOrShipping(updateData: MyCustomerUpdate) {
+    const result = await this.apiRoot.me().post({ body: updateData }).execute();
+    return result;
+    // {
+    //   version: customerVersion,
+    //   actions: [
+    //     {
+    //       action: 'addAddress',
+    //       address: newAddress,
+    //     },
+    //     {
+    //       action: 'addShippingAddressId' или 'addBillingAddressId'
+    //       addressId: newAddress,
+    //     },
+    //   ],
+    // }
+  }
   //   body: {
   //   version: customerVersion,
   //   actions: [
