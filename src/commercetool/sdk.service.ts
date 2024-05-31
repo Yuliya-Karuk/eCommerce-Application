@@ -104,43 +104,51 @@ export class SdkService {
   public async updateAccountData(updateData: MyCustomerUpdate) {
     const result = await this.apiRoot.me().post({ body: updateData }).execute();
     return result;
-    // const body: {
-    //   version: currentVersion,
-    //   actions: [
-    //     {
-    //       action: 'setFirstName',
-    //       firstName: 'NewFirstName',
-    //     },
-    //     {
-    //       action: 'setLastName',
-    //       lastName: 'NewLastName',
-    //     },
-    //     {
-    //       action: 'setDateOfBirth',
-    //       dateOfBirth: '1990-01-01', // The new date of birth in the format YYYY-MM-DD
-    //     },
-    //     {
-    //       action: 'changeEmail',
-    //       email: 'new-email@example.com', // The new email address
-    //     },
-    //   ],
-    // },
   }
 
   public async updatePassword(updateData: MyCustomerChangePassword) {
     const result = await this.apiRoot.me().password().post({ body: updateData }).execute();
     return result;
-    // {
-    //   version: 1, // The current version of the customer's data
-    //   actions: [
-    //     {
-    //       action: 'changePassword',
-    //       currentPassword: currentPassword,
-    //       newPassword: newPassword,
-    //     },
-    //   ],
-    // }
   }
+
+  public async updateAddress(updateData: MyCustomerUpdate) {
+    const result = await this.apiRoot
+      .me()
+      .post({
+        body: updateData,
+      })
+      .execute();
+    return result;
+    // {
+    //       version: customerVersion,
+    //       actions: [
+    //         {
+    //           action: 'changeAddress',
+    //           addressId: addressIdToChange,
+    //           address: changedAddress,
+    //         },
+    //       ],
+    //     },
+  }
+
+  //   body: {
+  //   version: customerVersion,
+  //   actions: [
+  //     {
+  //       action: 'addAddress',
+  //       address: newAddress,
+  //     },
+  //     {
+  //       action: 'removeAddress',
+  //       addressId: addressIdToRemove,
+  //     },
+  //     {
+  //       action: 'changeAddress',
+  //       addressId: addressIdToChange,
+  //       address: changedAddress,
+  //     },
+  //   ],
+  // },
 }
 
 export const sdkService = new SdkService();
