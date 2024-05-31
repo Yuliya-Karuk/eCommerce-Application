@@ -70,6 +70,19 @@ export function findAddresses(addresses: BaseAddress[], neededIds: string[] | un
   return [];
 }
 
+export function findNewAddresses(
+  addresses: BaseAddress[],
+  billingIds: string[] | undefined,
+  shippingIds: string[] | undefined
+) {
+  const billingArr = billingIds === undefined ? [] : billingIds;
+  const shippingArr = shippingIds === undefined ? [] : shippingIds;
+  const needed = addresses.filter(
+    addr => !billingArr.includes(isNotNullable(addr.id)) && !shippingArr.includes(isNotNullable(addr.id))
+  );
+  return needed[0];
+}
+
 export const getPostalCodeValidationRules = (selectedCountry: string): RegisterOptions => {
   const currentCountry = countries.find(country => country.code === selectedCountry);
   if (currentCountry) {

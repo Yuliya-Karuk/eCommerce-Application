@@ -1,12 +1,24 @@
 /* eslint-disable max-lines-per-function */
-import { Customer } from '@commercetools/platform-sdk';
-import { findAddresses } from '@utils/utils';
+import { sdkService } from '@commercetool/sdk.service';
+import { BaseAddress, Customer } from '@commercetools/platform-sdk';
+import { findAddresses, findNewAddresses } from '@utils/utils';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import styles from './ProfileAddresses.module.scss';
 
 interface AddressesProps {
   customerData: Customer;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const typesAddresses: { [key: string]: string } = {
+  shipping: 'addShippingAddressId',
+  billing: 'addBillingAddressId',
+};
+
+enum Types {
+  addShippingAddressId = 'addShippingAddressId',
+  addBillingAddressId = 'addBillingAddressId',
 }
 
 export const ProfileAddresses = ({ customerData }: AddressesProps) => {
@@ -44,6 +56,29 @@ export const ProfileAddresses = ({ customerData }: AddressesProps) => {
   };
 
   // const onSubmitInfo = () => {};
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const addAddress = async (newAddress: BaseAddress, type: Types) => {
+    const result = await sdkService.addAddress({
+      version: customerData.version,
+      actions: [
+        {
+          action: 'addAddress',
+          address: newAddress,
+        },
+      ],
+    });
+    const setAddress = findNewAddresses(result.addresses, result.billingAddressIds, result.shippingAddressIds);
+    sdkService.setAddressBillingOrShipping({
+      version: customerData.version,
+      actions: [
+        {
+          action: Types[type],
+          addressId: setAddress.id,
+        },
+      ],
+    });
+  };
 
   useEffect(() => {
     // setInputs();

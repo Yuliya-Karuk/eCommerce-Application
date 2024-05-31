@@ -92,9 +92,9 @@
 }
 
 .button-delete-img {
-  background: center no-repeat url('../../assets/delete.svg');
-  background-size: contain;
+  display: block;
   width: 30px;
   height: 30px;
-  display: block;
+  background: center no-repeat url('../../assets/delete.svg');
+  background-size: contain;
 }
