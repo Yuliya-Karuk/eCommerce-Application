@@ -112,8 +112,16 @@ export class SdkService {
     return result;
   }
 
-  public async updateAddress(updateData: MyCustomerUpdate) {
-    const result = await this.apiRoot.me().post({ body: updateData }).execute();
+  public async updateAddress(customerVersion: number, setActions: MyCustomerUpdateAction[]) {
+    const result = await this.apiRoot
+      .me()
+      .post({
+        body: {
+          version: customerVersion,
+          actions: [...setActions],
+        },
+      })
+      .execute();
     return result.body;
   }
 

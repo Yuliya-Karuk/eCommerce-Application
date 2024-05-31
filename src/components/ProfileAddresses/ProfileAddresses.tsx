@@ -15,8 +15,8 @@ interface AddressesProps {
 export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesProps) => {
   const shippingAddresses = findAddresses(customerData.addresses, customerData.shippingAddressIds);
   const billingAddresses = findAddresses(customerData.addresses, customerData.billingAddressIds);
-  const [isNewShipping, setIsNewShipping] = useState(false);
-  const [isNewBilling, setIsNewBilling] = useState(false);
+  const [isNewShippingOpen, setIsNewShippingOpen] = useState(false);
+  const [isNewBillingOpen, setIsNewBillingOpen] = useState(false);
 
   const { defaultShippingAddressId } = customerData;
   const { defaultBillingAddressId } = customerData;
@@ -49,6 +49,34 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
     setCustomerData(result);
   };
 
+  const changeAddress = async (changedAddress: BaseAddress, id: string, type: AddressesTypes, isDefault: boolean) => {
+    let result = await sdkService.addAddress(customerData.version, [
+      {
+        action: 'changeAddress',
+        addressId: id,
+        address: changedAddress,
+      },
+    ]);
+    if (isDefault) {
+      result = await sdkService.setDefaultBillingOrShippingAddress(result.version, [
+        {
+          action: setDefaultAddressActions[type],
+          addressId: id,
+        },
+      ]);
+    } else if (
+      (AddressesTypes.isBilling && id === defaultBillingAddressId) ||
+      (AddressesTypes.isShipping && id === defaultShippingAddressId)
+    ) {
+      result = await sdkService.setDefaultBillingOrShippingAddress(result.version, [
+        {
+          action: setDefaultAddressActions[type],
+        },
+      ]);
+    }
+    setCustomerData(result);
+  };
+
   const removeAddress = async (address: BaseAddress) => {
     const newCustomer = await sdkService.addAddress(customerData.version, [
       {
@@ -72,20 +100,21 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
               defaultAddressId={defaultShippingAddressId}
               removeAddress={removeAddress}
               type={AddressesTypes.isShipping}
+              changeAddress={changeAddress}
             />
           </div>
         ))}
-        {isNewShipping && (
+        {isNewShippingOpen && (
           <AddressView
             address={defaultAddress}
             defaultAddressId={defaultShippingAddressId}
             removeAddress={removeAddress}
-            setIsNewAddress={setIsNewShipping}
+            setIsNewAddress={setIsNewShippingOpen}
             addAddress={addAddress}
             type={AddressesTypes.isShipping}
           />
         )}
-        <button type="button" className={styles.addNewAddressBtn} onClick={() => setIsNewShipping(true)}>
+        <button type="button" className={styles.addNewAddressBtn} onClick={() => setIsNewShippingOpen(true)}>
           +
         </button>
       </div>
@@ -98,20 +127,21 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
               defaultAddressId={defaultBillingAddressId}
               removeAddress={removeAddress}
               type={AddressesTypes.isBilling}
+              changeAddress={changeAddress}
             />
           </div>
         ))}
-        {isNewBilling && (
+        {isNewBillingOpen && (
           <AddressView
             address={defaultAddress}
             defaultAddressId={defaultBillingAddressId}
             removeAddress={removeAddress}
-            setIsNewAddress={setIsNewBilling}
+            setIsNewAddress={setIsNewBillingOpen}
             addAddress={addAddress}
             type={AddressesTypes.isBilling}
           />
         )}
-        <button type="button" className={styles.addNewAddressBtn} onClick={() => setIsNewBilling(true)}>
+        <button type="button" className={styles.addNewAddressBtn} onClick={() => setIsNewBillingOpen(true)}>
           +
         </button>
       </div>

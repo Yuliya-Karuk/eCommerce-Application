@@ -14,12 +14,13 @@ interface AddressViewProps {
   removeAddress: (data: BaseAddress) => void;
   setIsNewAddress?: (data: boolean) => void;
   addAddress?: (newAddress: BaseAddress, type: AddressesTypes, isDefault: boolean) => void;
+  changeAddress?: (changedAddress: BaseAddress, id: string, type: AddressesTypes, isDefault: boolean) => void;
   type: AddressesTypes;
 }
 
 // eslint-disable-next-line max-lines-per-function
 export function AddressView(props: AddressViewProps) {
-  const { address, defaultAddressId, removeAddress, setIsNewAddress, addAddress, type } = props;
+  const { address, defaultAddressId, removeAddress, setIsNewAddress, addAddress, type, changeAddress } = props;
   const {
     register,
     handleSubmit,
@@ -94,10 +95,17 @@ export function AddressView(props: AddressViewProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCountry]);
 
+  const handleCheckboxDefault = () => {
+    setIsDefaultAddress(!isDefaultAddress);
+    setDataEdited(!dataEdited);
+  };
+
   const onSubmit = (data: BaseAddress) => {
     if (addAddress && setIsNewAddress) {
       addAddress(data, type, isDefaultAddress);
       setIsNewAddress(false);
+    } else if (changeAddress) {
+      changeAddress(data, isNotNullable(id), type, isDefaultAddress);
     }
     setIsEditing(false);
   };
@@ -168,7 +176,7 @@ export function AddressView(props: AddressViewProps) {
             id={`default-address-${id}`}
             type="checkbox"
             checked={isDefaultAddress}
-            onChange={() => setIsDefaultAddress(!isDefaultAddress)}
+            onChange={handleCheckboxDefault}
           />
           Make address as default
         </label>
