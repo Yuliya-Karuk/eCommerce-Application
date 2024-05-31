@@ -11,7 +11,7 @@
   .form {
     @include flex(flex-start, center, row);
     flex-wrap: wrap;
-    gap: 30px;
+    gap: 25px;
     font-size: 1.5rem;
 
     input[type='date'] {
@@ -21,6 +21,11 @@
     input[type='date']::-webkit-calendar-picker-indicator {
       background-color: $color-gray-middle;
       border-radius: 5px;
+    }
+
+    input:disabled {
+      border-color: $color-input-bg;
+      color: $color-gray-middle;
     }
 
     @media screen and (max-width: 890px) {
@@ -37,6 +42,13 @@
     @media screen and (max-width: 593.5px) {
       flex-grow: 1;
       margin: 0;
+    }
+
+    .error {
+      color: $color-error;
+      padding-top: 5px;
+      font-size: 1.2rem;
+      height: 1.5rem;
     }
   }
 }

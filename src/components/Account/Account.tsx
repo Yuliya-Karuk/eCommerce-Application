@@ -55,12 +55,28 @@ export const Account = ({ customerData }: AccountProps) => {
     }
 
     console.log(newChanges);
-    // setIsEditing(false);
+    setIsEditing(false);
   };
 
   useEffect(() => {
+    if (
+      watchedFields[0] !== customerData.email ||
+      watchedFields[1] !== customerData.firstName ||
+      watchedFields[2] !== customerData.lastName ||
+      watchedFields[3] !== customerData.dateOfBirth
+    ) {
+      setDataEdited(true);
+    } else {
+      setDataEdited(false);
+    }
+    console.log(isValid);
+    console.log(dataEdited);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchedFields]);
+
+  useEffect(() => {
     setInputs();
-    setDataEdited(true);
+    // setDataEdited(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerData]);
 
@@ -76,10 +92,9 @@ export const Account = ({ customerData }: AccountProps) => {
             validationSchema={emailValidationRules}
             isInvalid={!!errors.email}
             disabled={!isEditing}
-            required
             autocomplete="username"
           />
-          <p className={styles.emailError}>{errors?.email?.message}</p>
+          <p className={styles.error}>{errors?.email?.message}</p>
         </div>
         <div className={styles.inputContainer}>
           <Input
@@ -89,9 +104,8 @@ export const Account = ({ customerData }: AccountProps) => {
             validationSchema={nameValidationRules}
             isInvalid={!!errors.firstName}
             disabled={!isEditing}
-            required
           />
-          <p className={styles.firstNameError}>{errors?.firstName?.message}</p>
+          <p className={styles.error}>{errors?.firstName?.message}</p>
         </div>
         <div className={styles.inputContainer}>
           <Input
@@ -101,9 +115,8 @@ export const Account = ({ customerData }: AccountProps) => {
             validationSchema={nameValidationRules}
             isInvalid={!!errors.lastName}
             disabled={!isEditing}
-            required
           />
-          <p className={styles.lastNameError}>{errors?.lastName?.message}</p>
+          <p className={styles.error}>{errors?.lastName?.message}</p>
         </div>
         <div className={styles.inputContainer}>
           <Input
@@ -114,9 +127,8 @@ export const Account = ({ customerData }: AccountProps) => {
             validationSchema={dateValidationRules}
             isInvalid={!!errors.dateOfBirth}
             disabled={!isEditing}
-            required
           />
-          <p className={styles.dateOfBirthError}>{errors?.dateOfBirth?.message}</p>
+          <p className={styles.error}>{errors?.dateOfBirth?.message}</p>
         </div>
         <div className={styles.buttons}>
           <button type="button" className={styles.submitButton} onClick={resetChanges}>
@@ -125,7 +137,8 @@ export const Account = ({ customerData }: AccountProps) => {
           <button
             className={classnames(styles.submitButton, { [styles.hidden]: !isEditing })}
             type="submit"
-            disabled={!isValid || !dataEdited}
+            disabled={!(isValid && dataEdited)}
+            // disabled={!isValid}
           >
             Submit
           </button>
