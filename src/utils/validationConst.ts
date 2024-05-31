@@ -66,3 +66,11 @@ export const dateValidationRules: RegisterOptions = {
     return dateOfBirth <= minAgeDate || InputDateErrors.minAge;
   },
 };
+
+export const cityValidationRules: RegisterOptions = {
+  required: 'This field is required',
+  pattern: {
+    value: onlyLatinLettersRegExp,
+    message: 'City must contain latin letter and no special characters or numbers',
+  },
+};

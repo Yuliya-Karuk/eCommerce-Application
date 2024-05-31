@@ -1,5 +1,7 @@
 import { BaseAddress, Category, ProductProjection } from '@commercetools/platform-sdk';
 import { CategoryList, ProductCategory } from '@models/index';
+import { RegisterOptions } from 'react-hook-form';
+import { countries } from './constants';
 
 export function isNotNullable<T>(value: T): NonNullable<T> {
   if (value === undefined || value === null) {
@@ -67,3 +69,19 @@ export function findAddresses(addresses: BaseAddress[], neededIds: string[] | un
   }
   return [];
 }
+
+export const getPostalCodeValidationRules = (selectedCountry: string): RegisterOptions => {
+  const currentCountry = countries.find(country => country.code === selectedCountry);
+  if (currentCountry) {
+    return {
+      required: 'Postal code is required',
+      pattern: {
+        value: currentCountry.postalCodePattern,
+        message: currentCountry.validationMessage,
+      },
+    };
+  }
+  return {
+    required: 'Postal code is required',
+  };
+};

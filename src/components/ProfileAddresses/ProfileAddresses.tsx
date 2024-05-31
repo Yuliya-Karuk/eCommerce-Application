@@ -19,9 +19,14 @@ export const ProfileAddresses = ({ customerData }: AddressesProps) => {
   // } = useForm<CustomerDraft>({ mode: 'all' });
   const shippingAddresses = findAddresses(customerData.addresses, customerData.shippingAddressIds);
   const billingAddresses = findAddresses(customerData.addresses, customerData.billingAddressIds);
+  const { defaultBillingAddressId } = customerData;
+  const { defaultShippingAddressId } = customerData;
+  console.log(customerData);
+  console.log(defaultBillingAddressId);
+  console.log(defaultShippingAddressId);
 
-  console.log(shippingAddresses);
-  console.log(billingAddresses);
+  // console.log(shippingAddresses);
+  // console.log(billingAddresses);
   const [isEditing, setIsEditing] = useState(false);
   const [dataEdited, setDataEdited] = useState(false);
 
@@ -50,7 +55,7 @@ export const ProfileAddresses = ({ customerData }: AddressesProps) => {
     <div className={styles.addresses}>
       <h2 className={styles.accountHeading}>Billing addresses</h2>
       <div className={styles.billings}>
-        {billingAddresses.map(addr => (
+        {shippingAddresses.map(addr => (
           <div key={addr.id} className={styles.addressContainer}>
             {/* <AddressForm
               register={register}
