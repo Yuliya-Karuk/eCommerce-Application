@@ -61,8 +61,10 @@ export const Profile = () => {
             ))}
           </div>
           <div className={styles.profileContent}>
-            {activeTab === tabs.account && <Account customerData={customerData} />}
-            {activeTab === tabs.addresses && <ProfileAddresses customerData={customerData} />}
+            {activeTab === tabs.account && <Account customerData={customerData} setCustomerData={setCustomerData} />}
+            {activeTab === tabs.addresses && (
+              <ProfileAddresses customerData={customerData} setCustomerData={setCustomerData} />
+            )}
           </div>
         </div>
       </Container>

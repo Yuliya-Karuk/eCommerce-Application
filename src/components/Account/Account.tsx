@@ -13,9 +13,10 @@ import styles from './Account.module.scss';
 
 interface AccountProps {
   customerData: Customer;
+  setCustomerData: (data: Customer) => void;
 }
 
-export const Account = ({ customerData }: AccountProps) => {
+export const Account = ({ customerData, setCustomerData }: AccountProps) => {
   const {
     register,
     handleSubmit,
@@ -43,7 +44,7 @@ export const Account = ({ customerData }: AccountProps) => {
     setIsEditing(!isEditing);
   };
 
-  const onSubmitInfo = () => {
+  const onSubmitInfo = async () => {
     const newChanges: MyCustomerUpdateAction[] = [];
     if (watchedFields[0] !== customerData.email) {
       newChanges.push({ action: 'changeEmail', email: watchedFields[0] });
@@ -59,10 +60,11 @@ export const Account = ({ customerData }: AccountProps) => {
     }
 
     try {
-      sdkService.updateAccountData({
+      const newCustomer = await sdkService.updateAccountData({
         version: customerData.version,
         actions: newChanges,
       });
+      setCustomerData(newCustomer);
       successNotify(SuccessUpdateDataMessage);
     } catch (e) {
       errorNotify((e as Error).message);

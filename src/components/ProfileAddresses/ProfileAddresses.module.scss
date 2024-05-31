@@ -10,16 +10,6 @@
 
   .addresses-header-wrapper {
     @include flex(flex-start, center, row, 20px);
-
-    .add-new-address-btn {
-      width: 50px;
-      height: 50px;
-
-      // border-radius: ;
-      font-size: 4rem;
-      color: $color-white;
-      border: 1px solid $color-white;
-    }
   }
 
   .form {
@@ -111,4 +101,18 @@
   height: 30px;
   background: center no-repeat url('../../assets/delete.svg');
   background-size: contain;
+}
+
+.add-new-address-btn {
+  width: 50px;
+  height: 50px;
+  font-size: 4rem;
+  color: $color-white;
+  border: 1px solid $color-white;
+}
+
+.addresses-wrapper {
+  @include flex(flex-start, center, row);
+  flex-wrap: wrap;
+  gap: 20px;
 }

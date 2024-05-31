@@ -1,11 +1,15 @@
 /* eslint-disable max-lines-per-function */
-import { Customer } from '@commercetools/platform-sdk';
+import { sdkService } from '@commercetool/sdk.service';
+import { BaseAddress, Customer } from '@commercetools/platform-sdk';
 import { AddressView } from '@components/AddressView/AddressView';
-import { findAddresses } from '@utils/utils';
+import { defaultAddress } from '@utils/constants';
+import { findAddresses, isNotNullable } from '@utils/utils';
+import { useState } from 'react';
 import styles from './ProfileAddresses.module.scss';
 
 interface AddressesProps {
   customerData: Customer;
+  setCustomerData: (data: Customer) => void;
 }
 
 // НУЖНОЕ !!!!!!
@@ -18,9 +22,11 @@ interface AddressesProps {
 //   addBillingAddressId = 'addBillingAddressId',
 // }
 
-export const ProfileAddresses = ({ customerData }: AddressesProps) => {
+export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesProps) => {
   const shippingAddresses = findAddresses(customerData.addresses, customerData.shippingAddressIds);
   const billingAddresses = findAddresses(customerData.addresses, customerData.billingAddressIds);
+  const [isNewShipping, setIsNewShipping] = useState(false);
+  const [isNewBilling, setIsNewBilling] = useState(false);
   const { defaultBillingAddressId } = customerData;
   const { defaultShippingAddressId } = customerData;
   console.log(customerData);
@@ -50,41 +56,68 @@ export const ProfileAddresses = ({ customerData }: AddressesProps) => {
   //   });
   // };
 
-  // НУЖНОЕ !!!!!
-  // const removeAddress = async (address: BaseAddress) => {
-  //   await sdkService.addAddress({
-  //     version: customerData.version,
-  //     actions: [
-  //       {
-  //         action: 'removeAddress',
-  //         addressId: address.id,
-  //       },
-  //     ],
-  //   });
-  // };
+  const removeAddress = async (address: BaseAddress) => {
+    const newCustomer = await sdkService.addAddress({
+      version: customerData.version,
+      actions: [
+        {
+          action: 'removeAddress',
+          addressId: isNotNullable(address.id),
+        },
+      ],
+    });
+    setCustomerData(newCustomer);
+  };
 
   return (
     <div className={styles.addresses}>
       <div className={styles.addressesHeaderWrapper}>
         <h2 className={styles.accountHeading}>Billing addresses</h2>
-        <button type="button" className={styles.addNewAddressBtn}>
+      </div>
+      <div className={styles.addressesWrapper}>
+        {shippingAddresses.map(addr => (
+          <div key={addr.id} className={styles.addressContainer}>
+            <AddressView
+              address={addr}
+              defaultAddressId={customerData.defaultShippingAddressId}
+              removeAddress={removeAddress}
+            />
+          </div>
+        ))}
+        {isNewBilling && (
+          <AddressView
+            address={defaultAddress}
+            defaultAddressId={customerData.defaultShippingAddressId}
+            removeAddress={removeAddress}
+            setIsNewAddress={setIsNewBilling}
+          />
+        )}
+        <button type="button" className={styles.addNewAddressBtn} onClick={() => setIsNewBilling(true)}>
           +
         </button>
       </div>
-      <div className={styles.billings}>
-        {shippingAddresses.map(addr => (
-          <div key={addr.id} className={styles.addressContainer}>
-            <AddressView address={addr} defaultAddressId={customerData.defaultShippingAddressId} />
-          </div>
-        ))}
-      </div>
       <h2 className={styles.accountHeading}>Shipping addresses</h2>
-      <div className={styles.billings}>
+      <div className={styles.addressesWrapper}>
         {billingAddresses.map(addr => (
           <div key={addr.id} className={styles.addressContainer}>
-            <AddressView address={addr} defaultAddressId={customerData.defaultBillingAddressId} />
+            <AddressView
+              address={addr}
+              defaultAddressId={customerData.defaultBillingAddressId}
+              removeAddress={removeAddress}
+            />
           </div>
         ))}
+        {isNewShipping && (
+          <AddressView
+            address={defaultAddress}
+            defaultAddressId={customerData.defaultShippingAddressId}
+            removeAddress={removeAddress}
+            setIsNewAddress={setIsNewShipping}
+          />
+        )}
+        <button type="button" className={styles.addNewAddressBtn} onClick={() => setIsNewShipping(true)}>
+          +
+        </button>
       </div>
     </div>
   );

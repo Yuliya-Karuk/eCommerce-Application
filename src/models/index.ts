@@ -24,3 +24,10 @@ export interface ChangePasswordData {
   currentPassword: string;
   newPassword: string;
 }
+
+export interface Country {
+  name: string;
+  code: string;
+  postalCodePattern: RegExp;
+  validationMessage: string;
+}

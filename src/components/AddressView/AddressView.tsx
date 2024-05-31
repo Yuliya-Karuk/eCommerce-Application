@@ -1,7 +1,7 @@
 import { BaseAddress, MyCustomerChangeAddressAction } from '@commercetools/platform-sdk';
 import { Input } from '@components/Input/Input';
 import { countries } from '@utils/constants';
-import { getPostalCodeValidationRules } from '@utils/utils';
+import { getPostalCodeValidationRules, isNotNullable } from '@utils/utils';
 import { cityValidationRules } from '@utils/validationConst';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
@@ -9,13 +9,15 @@ import { useForm } from 'react-hook-form';
 import styles from './AddressView.module.scss';
 
 interface AddressViewProps {
-  address?: BaseAddress;
+  address: BaseAddress;
   defaultAddressId?: string;
+  removeAddress: (data: BaseAddress) => void;
+  setIsNewAddress?: (data: boolean) => void;
 }
 
 // eslint-disable-next-line max-lines-per-function
 export function AddressView(props: AddressViewProps) {
-  const { address, defaultAddressId } = props;
+  const { address, defaultAddressId, removeAddress, setIsNewAddress } = props;
   const {
     register,
     handleSubmit,
@@ -25,10 +27,10 @@ export function AddressView(props: AddressViewProps) {
     formState: { errors, isValid },
   } = useForm<MyCustomerChangeAddressAction>({ mode: 'all' });
 
-  let id: string = 'new_address';
-  if (address) {
-    id = address.id || 'no_id';
-  }
+  const { id } = address;
+  // if (address) {
+  //   id = address.id || 'no_id';
+  // }
   function setInputs() {
     if (address) {
       setValue('address.country', address.country);
@@ -39,7 +41,7 @@ export function AddressView(props: AddressViewProps) {
   }
 
   const [isDefaultAddress, setIsDefaultAddress] = useState<boolean>(false);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(id === 'no_id');
   const [dataEdited, setDataEdited] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<string>('');
 
@@ -78,6 +80,9 @@ export function AddressView(props: AddressViewProps) {
     setInputs();
     setDataEdited(false);
     setIsEditing(!isEditing);
+    if (id === 'no_id' && setIsNewAddress) {
+      setIsNewAddress(false);
+    }
   };
 
   const handleCountryChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -88,7 +93,9 @@ export function AddressView(props: AddressViewProps) {
 
   const handleDefaultAddressCheckbox = () => {};
 
-  function handleDeleteButton() {}
+  function handleDeleteButton() {
+    removeAddress(isNotNullable(address));
+  }
 
   useEffect(() => {
     if (selectedCountry) {
@@ -183,13 +190,15 @@ export function AddressView(props: AddressViewProps) {
           >
             Submit
           </button>
-          <button
-            className={classNames(styles.submitButton, { [styles.hidden]: isEditing })}
-            type="button"
-            onClick={handleDeleteButton}
-          >
-            Delete
-          </button>
+          {id === 'no-id' && (
+            <button
+              className={classNames(styles.submitButton, { [styles.hidden]: isEditing })}
+              type="button"
+              onClick={handleDeleteButton}
+            >
+              Delete
+            </button>
+          )}
         </div>
       </fieldset>
     </form>

@@ -101,9 +101,9 @@ export class SdkService {
     return data.body;
   }
 
-  public async updateAccountData(updateData: MyCustomerUpdate) {
+  public async updateAccountData(updateData: MyCustomerUpdate): Promise<Customer> {
     const result = await this.apiRoot.me().post({ body: updateData }).execute();
-    return result;
+    return result.body;
   }
 
   public async updatePassword(updateData: MyCustomerChangePassword) {

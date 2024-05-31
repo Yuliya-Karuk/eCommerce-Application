@@ -1,3 +1,6 @@
+import { BaseAddress } from '@commercetools/platform-sdk';
+import { Country } from '@models/index';
+
 export const CustomErrors = {
   SERVER_ERROR: 'Sorry, there is error with server response',
 };
@@ -7,13 +10,6 @@ export const SuccessLoginMessage = 'Congratulations, you have successfully logge
 export const SuccessUpdateDataMessage = 'Congratulations, your profile was successfully updated!';
 
 export const SuccessUpdatePasswordMessage = 'Congratulations, your password was successfully updated!';
-
-interface Country {
-  name: string;
-  code: string;
-  postalCodePattern: RegExp;
-  validationMessage: string;
-}
 
 export const countries: Country[] = [
   {
@@ -35,3 +31,11 @@ export const countries: Country[] = [
     validationMessage: 'Postal code format for Poland - 2 digits, dash, 3 digits',
   },
 ];
+
+export const defaultAddress: BaseAddress = {
+  id: 'no_id',
+  country: '',
+  postalCode: '',
+  city: '',
+  streetName: '',
+};
