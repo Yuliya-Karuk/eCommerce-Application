@@ -97,7 +97,8 @@ export function AddressView(props: AddressViewProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCountry]);
 
-  const onSubmit = () => {
+  const onSubmit = (data: MyCustomerChangeAddressAction) => {
+    console.log(data);
     setIsEditing(false);
   };
 
