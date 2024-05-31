@@ -1,9 +1,9 @@
 import { AppRoutes } from '@router/routes';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import discoverImg1 from '../../../public/images/Discover/discover-1.jpg';
-import discoverImg2 from '../../../public/images/Discover/discover-2.jpg';
-import discoverImg3 from '../../../public/images/Discover/discover-3.jpg';
+import discoverImg1 from '../../assets/Discover/discover-1.jpg';
+import discoverImg2 from '../../assets/Discover/discover-2.jpg';
+import discoverImg3 from '../../assets/Discover/discover-3.jpg';
 import styles from './Discover.module.scss';
 
 const links = [
