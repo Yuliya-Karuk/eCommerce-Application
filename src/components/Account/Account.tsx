@@ -69,14 +69,11 @@ export const Account = ({ customerData }: AccountProps) => {
     } else {
       setDataEdited(false);
     }
-    console.log(isValid);
-    console.log(dataEdited);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watchedFields]);
 
   useEffect(() => {
     setInputs();
-    // setDataEdited(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerData]);
 
@@ -132,15 +129,14 @@ export const Account = ({ customerData }: AccountProps) => {
         </div>
         <div className={styles.buttons}>
           <button type="button" className={styles.submitButton} onClick={resetChanges}>
-            {isEditing ? 'Reset' : 'Edit'}
+            {isEditing ? 'Cancel' : 'Edit'}
           </button>
           <button
             className={classnames(styles.submitButton, { [styles.hidden]: !isEditing })}
             type="submit"
             disabled={!(isValid && dataEdited)}
-            // disabled={!isValid}
           >
-            Submit
+            Save
           </button>
         </div>
       </form>
