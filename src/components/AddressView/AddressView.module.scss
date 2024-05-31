@@ -1,26 +1,54 @@
 .form {
   @include flex(flex-start, left, column);
+  @include font(2rem, 400, normal);
   position: relative;
   flex: 1 1 300px;
+  font-family: Forum, serif;
 
   .fieldset {
     padding: 15px;
     border: 1px solid $color-white;
   }
+
+  .buttons {
+    @include flex(flex-start, flex-start, row, 20px);
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 1rem;
+
+    .submit-button,
+    .edit-button {
+      @extend %transition;
+      flex: 1 1 45%;
+      padding: 10px 5px;
+      color: $default-text-color;
+      background-color: $color-white;
+      border-radius: 5px;
+
+      &:enabled:hover {
+        color: $color-white;
+        background-color: $color-input-bg;
+      }
+
+      &.hidden {
+        display: none;
+      }
+
+      &:disabled {
+        cursor: default;
+        color: $color-gray-dark;
+        background-color: $color-gray-middle;
+      }
+    }
+  }
 }
 
-.address-error {
-  align-self: flex-start;
-  height: 4rem;
-  color: $color-error;
-  text-align: left;
-}
-
-.country-error {
-  align-self: inherit;
+.error {
+  min-width: 272px;
   height: 2rem;
-  color: inherit;
-  text-align: inherit;
+  font-size: 1.3rem;
+  color: $color-error;
+  white-space: normal;
 }
 
 .label {

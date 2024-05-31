@@ -9,29 +9,12 @@ import styles from './AddressView.module.scss';
 
 interface AddressViewProps {
   address?: BaseAddress;
-  // register: UseFormRegister<CustomerDraft>;
-  // errors: FieldErrors<CustomerDraft>;
-  // index: 0 | 1;
-  // trigger: UseFormTrigger<CustomerDraft>;
-  // setValue: UseFormSetValue<CustomerDraft>;
-  // unregister: UseFormUnregister<CustomerDraft>;
-  // billingAddressIsSameAsShipping: boolean;
-  // setBillingAddressIsSameAsShipping: React.Dispatch<React.SetStateAction<boolean>>;
+  defaultAddressId?: string;
 }
 
 // eslint-disable-next-line max-lines-per-function
 export function AddressView(props: AddressViewProps) {
-  const {
-    address,
-    //   register,
-    //   unregister,
-    //   errors,
-    //   index,
-    //   trigger,
-    //   setValue,
-    //   billingAddressIsSameAsShipping,
-    //   setBillingAddressIsSameAsShipping,
-  } = props;
+  const { address, defaultAddressId } = props;
   const {
     register,
     handleSubmit,
@@ -41,17 +24,31 @@ export function AddressView(props: AddressViewProps) {
     formState: { errors, isValid },
   } = useForm<MyCustomerChangeAddressAction>({ mode: 'all' });
 
-  let id: string;
+  const [isDefaultAddress, setIsDefaultAddress] = useState<boolean>(false);
 
+  let id: string = 'new_address';
   if (address) {
-    setValue('address.country', address.country);
-    setValue('address.postalCode', address.postalCode);
-    setValue('address.city', address.city);
-    setValue('address.streetName', address.streetName);
     id = address.id || 'no_id';
-  } else {
-    id = 'new_address';
   }
+
+  useEffect(() => {
+    if (address) {
+      setValue('address.country', address.country);
+      setValue('address.postalCode', address.postalCode);
+      setValue('address.city', address.city);
+      setValue('address.streetName', address.streetName);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    if (defaultAddressId && address) {
+      if (defaultAddressId === address.id) {
+        setIsDefaultAddress(true);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [selectedCountry, setSelectedCountry] = useState<string>('');
 
@@ -115,7 +112,7 @@ export function AddressView(props: AddressViewProps) {
       <fieldset className={styles.fieldset}>
         <legend>{`Address ${id}`}</legend>
         <label htmlFor={`country-${id}`} className={styles.label}>
-          Country:<span className={styles.orange}>*</span>
+          Country:{!address ? <span className={styles.orange}>*</span> : ''}
           <select
             required
             id={`country-${id}`}
@@ -135,7 +132,7 @@ export function AddressView(props: AddressViewProps) {
             ))}
           </select>
         </label>
-        <p className={styles.countryError}>{errors?.address?.country?.message}</p>
+        <p className={styles.error}>{errors?.address?.country?.message}</p>
 
         <Input
           name="address.city"
@@ -143,9 +140,9 @@ export function AddressView(props: AddressViewProps) {
           register={register}
           validationSchema={cityValidationRules}
           isInvalid={!!errors.address?.city}
-          required
+          required={!address}
         />
-        <p className={styles.addressError}>{errors?.address?.city?.message}</p>
+        <p className={styles.error}>{errors?.address?.city?.message}</p>
 
         <Input
           name="address.postalCode"
@@ -153,9 +150,9 @@ export function AddressView(props: AddressViewProps) {
           register={register}
           validationSchema={getPostalCodeValidationRules(selectedCountry)}
           isInvalid={!!errors.address?.postalCode}
-          required
+          required={!address}
         />
-        <p className={styles.addressError}>{errors?.address?.postalCode?.message}</p>
+        <p className={styles.error}>{errors?.address?.postalCode?.message}</p>
 
         <Input
           name="address.streetName"
@@ -163,22 +160,27 @@ export function AddressView(props: AddressViewProps) {
           register={register}
           validationSchema={{ required: 'This field is required' }}
           isInvalid={!!errors.address?.streetName}
-          required
+          required={!address}
         />
-        <p className={styles.addressError}>{errors?.address?.streetName?.message}</p>
+        <p className={styles.error}>{errors?.address?.streetName?.message}</p>
         <label className={styles.checkboxLabel} htmlFor={`default-address-${id}`}>
           <input
             className={styles.checkbox}
             id={`default-address-${id}`}
             type="checkbox"
+            checked={isDefaultAddress}
             onChange={handleDefaultAddressCheckbox}
           />
           Make address as default
         </label>
-
-        <button className={styles.submitButton} type="submit" disabled={!isValid}>
-          Submit
-        </button>
+        <div className={styles.buttons}>
+          <button className={styles.editButton} type="button">
+            Edit
+          </button>
+          <button className={styles.submitButton} type="submit" disabled={!isValid}>
+            Submit
+          </button>
+        </div>
       </fieldset>
     </form>
   );
