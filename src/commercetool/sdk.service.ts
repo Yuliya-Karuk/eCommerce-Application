@@ -148,38 +148,46 @@ export class SdkService {
   public async setAddressBillingOrShipping(updateData: MyCustomerUpdate) {
     const result = await this.apiRoot.me().post({ body: updateData }).execute();
     return result;
-    // {
-    //   version: customerVersion,
-    //   actions: [
-    //     {
-    //       action: 'addAddress',
-    //       address: newAddress,
-    //     },
-    //     {
-    //       action: 'addShippingAddressId' или 'addBillingAddressId'
-    //       addressId: newAddress,
-    //     },
-    //   ],
-    // }
   }
-  //   body: {
-  //   version: customerVersion,
-  //   actions: [
-  //     {
-  //       action: 'addAddress',
-  //       address: newAddress,
-  //     },
-  //     {
-  //       action: 'removeAddress',
-  //       addressId: addressIdToRemove,
-  //     },
-  //     {
-  //       action: 'changeAddress',
-  //       addressId: addressIdToChange,
-  //       address: changedAddress,
-  //     },
-  //   ],
-  // },
+
+  public async removeDefaultBillingAddress(customerVersion: number) {
+    const result = await this.apiRoot
+      .me()
+      .post({
+        body: {
+          version: customerVersion,
+          actions: [
+            {
+              action: 'setDefaultBillingAddress',
+            },
+          ],
+        },
+      })
+      .execute();
+    return result;
+  }
+
+  public async removeDefaultShippingAddress(customerVersion: number) {
+    const result = await this.apiRoot
+      .me()
+      .post({
+        body: {
+          version: customerVersion,
+          actions: [
+            {
+              action: 'setDefaultShippingAddress',
+            },
+          ],
+        },
+      })
+      .execute();
+    return result;
+  }
+
+  public async removeAddress(updateData: MyCustomerUpdate) {
+    const result = await this.apiRoot.me().post({ body: updateData }).execute();
+    return result;
+  }
 }
 
 export const sdkService = new SdkService();
