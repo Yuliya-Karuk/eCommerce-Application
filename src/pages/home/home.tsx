@@ -5,6 +5,7 @@ import { Header } from '@components/Header/Header';
 import { NewArrivals } from '@components/NewArrivals/NewArrivals';
 import { useAuth } from '@contexts//authProvider';
 import { useToast } from '@contexts/toastProvider';
+import { SuccessLoginMessage } from '@utils/constants';
 import { useEffect } from 'react';
 import styles from './home.module.scss';
 
@@ -13,7 +14,7 @@ export function Home() {
   const { customToast, successNotify } = useToast();
 
   const notify = () => {
-    successNotify();
+    successNotify(SuccessLoginMessage);
     setIsLoginSuccess(false);
   };
 

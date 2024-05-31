@@ -3,7 +3,9 @@ import eyeOn from '@assets/eye-show.svg';
 import { sdkService } from '@commercetool/sdk.service';
 import { Customer } from '@commercetools/platform-sdk';
 import { Input } from '@components/Input/Input';
+import { useToast } from '@contexts/toastProvider';
 import { ChangePasswordData } from '@models/index';
+import { SuccessUpdatePasswordMessage } from '@utils/constants';
 import { passwordValidationRules } from '@utils/validationConst';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -26,6 +28,7 @@ export const ProfilePassword = ({ customerData }: ProfilePasswordProps) => {
   // const [dataEdited, setDataEdited] = useState(false);
   const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
   const [isNewPasswordVisible, setIsNewPasswordVisible] = useState(false);
+  const { successNotify, errorNotify } = useToast();
 
   // const watchedFields = watch(['password']);
 
@@ -34,29 +37,17 @@ export const ProfilePassword = ({ customerData }: ProfilePasswordProps) => {
     setValue('newPassword', '');
   };
 
-  // const resetChanges = () => {
-  //   setInputs();
-  //   // setDataEdited(false);
-  //   setIsEditing(!isEditing);
-  // };
-
   const onSubmitPassword = (data: ChangePasswordData) => {
-    // const changePswdRequest = {
-    //   version: 1, // The current version of the customer's data
-    //   actions: [
-    //     {
-    //       action: 'changePassword',
-    //       ...data,
-    //     },
-    //   ],
-    // };
-
-    sdkService.updatePassword({
-      version: customerData.version,
-      ...data,
-    });
-    console.log(data);
-    resetPasswordFields();
+    try {
+      sdkService.updatePassword({
+        version: customerData.version,
+        ...data,
+      });
+      successNotify(SuccessUpdatePasswordMessage);
+      resetPasswordFields();
+    } catch (e) {
+      errorNotify((e as Error).message);
+    }
   };
 
   useEffect(() => {

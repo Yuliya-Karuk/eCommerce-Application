@@ -6,7 +6,10 @@ import { Container } from '@components/Container/Container';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
 import { ProfileAddresses } from '@components/ProfileAddresses/ProfileAddresses';
+import { useAuth } from '@contexts/authProvider';
+import { useToast } from '@contexts/toastProvider';
 import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import styles from './profile.module.scss';
 
 const tabs: { [key: string]: string } = {
@@ -17,6 +20,8 @@ const tabs: { [key: string]: string } = {
 export const Profile = () => {
   const [activeTab, setActiveTab] = useState(tabs.account);
   const [customerData, setCustomerData] = useState<Customer>({} as Customer);
+  const { isLoggedIn } = useAuth();
+  const { customToast } = useToast();
 
   const getCustomerData = async () => {
     const customer = await sdkService.getCustomerData();
@@ -27,6 +32,10 @@ export const Profile = () => {
   useEffect(() => {
     getCustomerData();
   }, []);
+
+  if (!isLoggedIn) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className={styles.profile}>
@@ -58,6 +67,7 @@ export const Profile = () => {
         </div>
       </Container>
       <Footer />
+      {customToast({ position: 'top-center', autoClose: 2000 })}
     </div>
   );
 };

@@ -3,6 +3,8 @@ import { sdkService } from '@commercetool/sdk.service';
 import { Customer, CustomerDraft, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
 import { Input } from '@components/Input/Input';
 import { ProfilePassword } from '@components/ProfilePassword/ProfilePassword';
+import { useToast } from '@contexts/toastProvider';
+import { SuccessUpdateDataMessage } from '@utils/constants';
 import { dateValidationRules, emailValidationRules, nameValidationRules } from '@utils/validationConst';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
@@ -24,6 +26,7 @@ export const Account = ({ customerData }: AccountProps) => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [dataEdited, setDataEdited] = useState(false);
+  const { successNotify, errorNotify } = useToast();
 
   const watchedFields = watch(['email', 'firstName', 'lastName', 'dateOfBirth']);
 
@@ -55,10 +58,15 @@ export const Account = ({ customerData }: AccountProps) => {
       newChanges.push({ action: 'setDateOfBirth', dateOfBirth: watchedFields[3] });
     }
 
-    sdkService.updateAccountData({
-      version: customerData.version,
-      actions: newChanges,
-    });
+    try {
+      sdkService.updateAccountData({
+        version: customerData.version,
+        actions: newChanges,
+      });
+      successNotify(SuccessUpdateDataMessage);
+    } catch (e) {
+      errorNotify((e as Error).message);
+    }
 
     setIsEditing(false);
   };
