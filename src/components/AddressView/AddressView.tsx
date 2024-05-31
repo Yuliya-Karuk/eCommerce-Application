@@ -3,6 +3,7 @@ import { Input } from '@components/Input/Input';
 import { countries } from '@utils/constants';
 import { getPostalCodeValidationRules } from '@utils/utils';
 import { cityValidationRules } from '@utils/validationConst';
+import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from './AddressView.module.scss';
@@ -20,27 +21,36 @@ export function AddressView(props: AddressViewProps) {
     handleSubmit,
     setValue,
     trigger,
-    // watch,
+    watch,
     formState: { errors, isValid },
   } = useForm<MyCustomerChangeAddressAction>({ mode: 'all' });
-
-  const [isDefaultAddress, setIsDefaultAddress] = useState<boolean>(false);
 
   let id: string = 'new_address';
   if (address) {
     id = address.id || 'no_id';
   }
-
-  useEffect(() => {
+  function setInputs() {
     if (address) {
       setValue('address.country', address.country);
       setValue('address.postalCode', address.postalCode);
       setValue('address.city', address.city);
       setValue('address.streetName', address.streetName);
     }
+  }
+
+  const [isDefaultAddress, setIsDefaultAddress] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [dataEdited, setDataEdited] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<string>('');
+
+  const watchedFields = watch(['address.country', 'address.postalCode', 'address.city', 'address.streetName']);
+
+  useEffect(() => {
+    setInputs();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   useEffect(() => {
     if (defaultAddressId && address) {
       if (defaultAddressId === address.id) {
@@ -50,7 +60,25 @@ export function AddressView(props: AddressViewProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [selectedCountry, setSelectedCountry] = useState<string>('');
+  useEffect(() => {
+    if (
+      watchedFields[0] !== address?.country ||
+      watchedFields[1] !== address.postalCode ||
+      watchedFields[2] !== address.city ||
+      watchedFields[3] !== address.streetName
+    ) {
+      setDataEdited(true);
+    } else {
+      setDataEdited(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchedFields]);
+
+  const resetChanges = () => {
+    setInputs();
+    setDataEdited(false);
+    setIsEditing(!isEditing);
+  };
 
   const handleCountryChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCountry(event.target.value);
@@ -58,34 +86,9 @@ export function AddressView(props: AddressViewProps) {
 
   // const defaultAddressName = index === 0 ? 'defaultShippingAddress' : 'defaultBillingAddress';
 
-  const handleDefaultAddressCheckbox = () => {
-    // const handleDefaultAddressCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // if (e.target.checked) {
-    //   setValue(defaultAddressName, index);
-    //   if (billingAddressIsSameAsShipping) {
-    //     setValue('defaultBillingAddress', 0);
-    //   }
-    // } else {
-    //   unregister(defaultAddressName);
-    //   if (billingAddressIsSameAsShipping) {
-    //     unregister('defaultBillingAddress');
-    //   }
-    // }
-  };
+  const handleDefaultAddressCheckbox = () => {};
 
-  // const handleCheckboxUseAsBillingAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.checked) {
-  //     setBillingAddressIsSameAsShipping(true);
-  //     unregister(`addresses.1`);
-  //   } else {
-  //     setBillingAddressIsSameAsShipping(false);
-  //     setValue(`addresses.1.country`, '');
-  //     setValue(`addresses.1.city`, '');
-  //     setValue(`addresses.1.postalCode`, '');
-  //     setValue(`addresses.1.streetName`, '');
-  //     trigger(`addresses.1`);
-  //   }
-  // };
+  function handleDeleteButton() {}
 
   useEffect(() => {
     if (selectedCountry) {
@@ -95,16 +98,7 @@ export function AddressView(props: AddressViewProps) {
   }, [selectedCountry]);
 
   const onSubmit = () => {
-    // try {
-    //   sdkService.updatePassword({
-    //     version: customerData.version,
-    //     ...data,
-    //   });
-    //   successNotify(SuccessUpdatePasswordMessage);
-    //   resetPasswordFields();
-    // } catch (e) {
-    //   errorNotify((e as Error).message);
-    // }
+    setIsEditing(false);
   };
 
   return (
@@ -121,6 +115,7 @@ export function AddressView(props: AddressViewProps) {
             defaultValue=""
             onChange={handleCountryChange}
             autoComplete="off"
+            disabled={!isEditing}
           >
             <option value="" disabled hidden>
               Select country
@@ -141,6 +136,7 @@ export function AddressView(props: AddressViewProps) {
           validationSchema={cityValidationRules}
           isInvalid={!!errors.address?.city}
           required={!address}
+          disabled={!isEditing}
         />
         <p className={styles.error}>{errors?.address?.city?.message}</p>
 
@@ -151,6 +147,7 @@ export function AddressView(props: AddressViewProps) {
           validationSchema={getPostalCodeValidationRules(selectedCountry)}
           isInvalid={!!errors.address?.postalCode}
           required={!address}
+          disabled={!isEditing}
         />
         <p className={styles.error}>{errors?.address?.postalCode?.message}</p>
 
@@ -161,6 +158,7 @@ export function AddressView(props: AddressViewProps) {
           validationSchema={{ required: 'This field is required' }}
           isInvalid={!!errors.address?.streetName}
           required={!address}
+          disabled={!isEditing}
         />
         <p className={styles.error}>{errors?.address?.streetName?.message}</p>
         <label className={styles.checkboxLabel} htmlFor={`default-address-${id}`}>
@@ -174,11 +172,22 @@ export function AddressView(props: AddressViewProps) {
           Make address as default
         </label>
         <div className={styles.buttons}>
-          <button className={styles.editButton} type="button">
-            Edit
+          <button className={styles.editButton} type="button" onClick={resetChanges}>
+            {isEditing ? 'Cancel' : 'Edit'}
           </button>
-          <button className={styles.submitButton} type="submit" disabled={!isValid}>
+          <button
+            className={classNames(styles.submitButton, { [styles.hidden]: !isEditing })}
+            type="submit"
+            disabled={!(isValid && dataEdited)}
+          >
             Submit
+          </button>
+          <button
+            className={classNames(styles.submitButton, { [styles.hidden]: isEditing })}
+            type="button"
+            onClick={handleDeleteButton}
+          >
+            Delete
           </button>
         </div>
       </fieldset>

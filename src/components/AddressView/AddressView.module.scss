@@ -10,6 +10,18 @@
     border: 1px solid $color-white;
   }
 
+  input,
+  .select {
+    background-color: rgba(5 5 5 / 20%);
+    border: 1px solid $color-white;
+  }
+
+  input:disabled,
+  .select:disabled {
+    color: $color-gray-middle;
+    border-color: $color-input-bg;
+  }
+
   .buttons {
     @include flex(flex-start, flex-start, row, 20px);
     flex-wrap: wrap;
