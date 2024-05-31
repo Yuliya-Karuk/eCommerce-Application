@@ -19,3 +19,8 @@ export interface CustomCategory {
 export interface CategoryList {
   [key: string]: CustomCategory;
 }
+
+export interface ChangePasswordData {
+  currentPassword: string;
+  newPassword: string;
+}

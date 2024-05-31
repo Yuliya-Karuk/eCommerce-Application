@@ -1,7 +1,9 @@
 import eyeOff from '@assets/eye-off.svg';
 import eyeOn from '@assets/eye-show.svg';
-import { Customer, MyCustomerChangePassword } from '@commercetools/platform-sdk';
+import { sdkService } from '@commercetool/sdk.service';
+import { Customer } from '@commercetools/platform-sdk';
 import { Input } from '@components/Input/Input';
+import { ChangePasswordData } from '@models/index';
 import { passwordValidationRules } from '@utils/validationConst';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -18,7 +20,7 @@ export const ProfilePassword = ({ customerData }: ProfilePasswordProps) => {
     setValue,
     // watch,
     formState: { errors, isValid },
-  } = useForm<MyCustomerChangePassword>({ mode: 'all' });
+  } = useForm<ChangePasswordData>({ mode: 'onChange' });
 
   // const [isEditing, setIsEditing] = useState(false);
   // const [dataEdited, setDataEdited] = useState(false);
@@ -38,18 +40,22 @@ export const ProfilePassword = ({ customerData }: ProfilePasswordProps) => {
   //   setIsEditing(!isEditing);
   // };
 
-  const onSubmitPassword = (data: MyCustomerChangePassword) => {
-    const changePswdRequest = {
-      version: 1, // The current version of the customer's data
-      actions: [
-        {
-          action: 'changePassword',
-          ...data,
-        },
-      ],
-    };
+  const onSubmitPassword = (data: ChangePasswordData) => {
+    // const changePswdRequest = {
+    //   version: 1, // The current version of the customer's data
+    //   actions: [
+    //     {
+    //       action: 'changePassword',
+    //       ...data,
+    //     },
+    //   ],
+    // };
 
-    console.log(changePswdRequest);
+    sdkService.updatePassword({
+      version: customerData.version,
+      ...data,
+    });
+    console.log(data);
     resetPasswordFields();
   };
 

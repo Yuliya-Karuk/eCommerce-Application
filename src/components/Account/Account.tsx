@@ -1,4 +1,5 @@
 /* eslint-disable max-lines-per-function */
+import { sdkService } from '@commercetool/sdk.service';
 import { Customer, CustomerDraft, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
 import { Input } from '@components/Input/Input';
 import { ProfilePassword } from '@components/ProfilePassword/ProfilePassword';
@@ -54,7 +55,11 @@ export const Account = ({ customerData }: AccountProps) => {
       newChanges.push({ action: 'setDateOfBirth', dateOfBirth: watchedFields[3] });
     }
 
-    console.log(newChanges);
+    sdkService.updateAccountData({
+      version: customerData.version,
+      actions: newChanges,
+    });
+
     setIsEditing(false);
   };
 
