@@ -1,4 +1,5 @@
-import { CategoryList, CustomCategory } from '@models/index';
+import { CategoryList, CustomCategory, Filters } from '@models/index';
+import { defaultFilter } from '@utils/constants';
 import { prepareCategoryTree } from '@utils/utils';
 import classnames from 'classnames';
 import React, { useState } from 'react';
@@ -9,15 +10,17 @@ interface FiltersProps {
   categories: CategoryList;
   activeCategory: CustomCategory;
   setActiveCategory: (category: CustomCategory) => void;
+  setFilters: (data: Filters) => void;
 }
 
-export const CategoryFilter = ({ categories, activeCategory, setActiveCategory }: FiltersProps) => {
+export const CategoryFilter = ({ categories, activeCategory, setActiveCategory, setFilters }: FiltersProps) => {
   const preparedCategories = prepareCategoryTree(categories);
   const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
 
   const handleCategoryClick = (event: React.MouseEvent<HTMLLIElement, MouseEvent>, categoryName: string) => {
     event.stopPropagation();
+    setFilters(defaultFilter);
     setActiveCategory(categories[categoryName]);
     navigate(`/catalog/${categories[categoryName].slug.join('/')}`);
   };

@@ -75,7 +75,9 @@ export function Catalog() {
       }
     });
 
-    setSearchParams(params, { replace: false });
+    if (params.toString() !== searchParams.toString()) {
+      setSearchParams(params);
+    }
   };
 
   useEffect(() => {
@@ -100,12 +102,10 @@ export function Catalog() {
 
   useEffect(() => {
     const newFilters = prepareQuery(searchParams, defaultFilter);
-    console.log(JSON.stringify(newFilters));
-    console.log(JSON.stringify(filters));
     if (JSON.stringify(newFilters) !== JSON.stringify(filters)) {
       setFilters(prepareQuery(searchParams, defaultFilter));
-      console.log('set true');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   return (

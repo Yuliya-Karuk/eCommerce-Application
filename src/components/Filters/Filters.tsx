@@ -6,7 +6,7 @@ import { ColorFilter } from '@components/ColorFilter/ColorFilter';
 import { PriceFilter } from '@components/PriceFilter/PriceFilter';
 import { CategoryList, CustomCategory, Filters } from '@models/index';
 import { AppRoutes } from '@router/routes';
-import { defaultPriceLimits } from '@utils/constants';
+import { defaultFilter, defaultPriceLimits } from '@utils/constants';
 import { prepareBrands, prepareColors, prepareSizes } from '@utils/utils';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
@@ -49,7 +49,7 @@ export const FiltersComponent = ({
   };
 
   const handleClearFilters = () => {
-    // setFilters(defaultFilter);
+    setFilters(defaultFilter);
     navigate(`${AppRoutes.CATALOG_ROUTE}/${activeCategory.slug}`);
   };
 
@@ -69,7 +69,12 @@ export const FiltersComponent = ({
   return (
     <div className={classnames(styles.filters, { [styles.open]: isFilterShown })}>
       <h2 className={styles.filtersHeading}>Browse by</h2>
-      <CategoryFilter categories={categories} activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+      <CategoryFilter
+        categories={categories}
+        activeCategory={activeCategory}
+        setActiveCategory={setActiveCategory}
+        setFilters={setFilters}
+      />
       <h2 className={styles.filtersHeading}>Filter by</h2>
       <PriceFilter filters={filters} setFilters={setFilters} values={defaultPriceLimits} name="price" />
       <CheckboxFilter filters={filters} setFilters={setFilters} values={brands} name="brands" />
