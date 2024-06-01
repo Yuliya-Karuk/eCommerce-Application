@@ -32,19 +32,22 @@ export function AddressView(props: AddressViewProps) {
 
   const { id } = address;
 
+  const [isDefaultAddress, setIsDefaultAddress] = useState<boolean>(false);
+  const [isDefaultAddressCheckboxChanged, setIsDefaultAddressCheckboxChanged] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState(id === 'no_id');
+  const [dataEdited, setDataEdited] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<string>('');
+
   function setInputs() {
     if (address) {
       setValue('country', address.country);
       setValue('postalCode', address.postalCode);
       setValue('city', address.city);
       setValue('streetName', address.streetName);
+      setIsDefaultAddress(defaultAddressId === address.id);
+      setIsDefaultAddressCheckboxChanged(false);
     }
   }
-
-  const [isDefaultAddress, setIsDefaultAddress] = useState<boolean>(false);
-  const [isEditing, setIsEditing] = useState(id === 'no_id');
-  const [dataEdited, setDataEdited] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState<string>('');
 
   const watchedFields = watch(['country', 'postalCode', 'city', 'streetName']);
 
@@ -66,14 +69,15 @@ export function AddressView(props: AddressViewProps) {
       watchedFields[0] !== address?.country ||
       watchedFields[1] !== address.postalCode ||
       watchedFields[2] !== address.city ||
-      watchedFields[3] !== address.streetName
+      watchedFields[3] !== address.streetName ||
+      isDefaultAddressCheckboxChanged
     ) {
       setDataEdited(true);
     } else {
       setDataEdited(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [watchedFields]);
+  }, [watchedFields, isDefaultAddressCheckboxChanged]);
 
   const resetChanges = () => {
     setInputs();
@@ -97,7 +101,9 @@ export function AddressView(props: AddressViewProps) {
 
   const handleCheckboxDefault = () => {
     setIsDefaultAddress(!isDefaultAddress);
-    setDataEdited(!dataEdited);
+    setIsDefaultAddressCheckboxChanged(!isDefaultAddressCheckboxChanged);
+    trigger();
+    // setDataEdited(!dataEdited);
   };
 
   const onSubmit = (data: BaseAddress) => {
@@ -177,6 +183,7 @@ export function AddressView(props: AddressViewProps) {
             type="checkbox"
             checked={isDefaultAddress}
             onChange={handleCheckboxDefault}
+            disabled={!isEditing}
           />
           Make address as default
         </label>
