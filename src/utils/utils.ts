@@ -1,4 +1,10 @@
-import { AttributeEnumType, AttributeSetType, Category, ProductType } from '@commercetools/platform-sdk';
+import {
+  AttributeEnumType,
+  AttributeSetType,
+  Category,
+  ProductProjection,
+  ProductType,
+} from '@commercetools/platform-sdk';
 import {
   CategoryList,
   CustomCategory,
@@ -214,4 +220,8 @@ export function prepareQueryParams(
   }
 
   return queryParams;
+}
+
+export function dateSorting(productsArray: ProductProjection[]) {
+  return productsArray.sort((a, b) => new Date(a.lastModifiedAt).getTime() - new Date(b.lastModifiedAt).getTime());
 }

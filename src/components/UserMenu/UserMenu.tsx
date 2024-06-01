@@ -15,24 +15,20 @@ export const UserMenu: FC = () => {
 
   return (
     <div className={styles.userMenu}>
-      {isLoggedIn && (
-        <button type="button" className={styles.userMenuLogin} onClick={handleLogout}>
-          <div className={styles.userMenuIcon}>
-            <svg width={iconSizeNumber} height={iconSizeNumber}>
-              <use xlinkHref={`${sprite}#login`} />
-            </svg>
-          </div>
-          <span className={styles.userMenuText}>Logout</span>
-        </button>
-      )}
-      {/* <Link to={AppRoutes.LOGIN_ROUTE} className={styles.userMenuLogin}>
+      <button
+        type="button"
+        className={styles.userMenuLogin}
+        onClick={handleLogout}
+        style={{ visibility: isLoggedIn ? 'visible' : 'hidden', opacity: isLoggedIn ? 1 : 0 }}
+      >
         <div className={styles.userMenuIcon}>
           <svg width={iconSizeNumber} height={iconSizeNumber}>
             <use xlinkHref={`${sprite}#login`} />
           </svg>
         </div>
-        <span className={styles.userMenuText}>Log In</span>
-      </Link> */}
+        <span className={styles.userMenuText}>Logout</span>
+      </button>
+
       <div className={styles.userMenuPromo}>
         <svg width={iconSizeNumber} height={iconSizeNumber}>
           <use xlinkHref={`${sprite}#present`} />

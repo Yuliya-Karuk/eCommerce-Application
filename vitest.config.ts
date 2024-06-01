@@ -9,6 +9,7 @@ export default defineConfig({
     setupFiles: './src/jest/setup.ts',
     coverage: {
       provider: 'v8',
+      exclude: ['**/dev.js', '**/prod.js', '**/paths.js', '**/postcss.config.js', '**/.eslintrc.cjs' ]
     },
   },
 });

@@ -37,6 +37,7 @@ export const PriceFilter = ({ filters, setFilters, name, values }: FiltersProps)
   useEffect(() => {
     setMinPrice(formatPriceToNumber(filters[name][0]) || Number(values[0]));
     setMaxPrice(formatPriceToNumber(filters[name][1]) || Number(values[1]));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
   return (

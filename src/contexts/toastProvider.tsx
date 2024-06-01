@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, ReactNode, useContext } from 'react';
 import { toast, ToastContainer, ToastContainerProps } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
