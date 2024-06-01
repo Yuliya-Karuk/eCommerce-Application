@@ -29,7 +29,8 @@
     "react-responsive": "^10.0.0",
     "react-router-dom": "^6.23.0",
     "react-slider": "^2.0.6",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "use-debounce": "^10.0.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.2",

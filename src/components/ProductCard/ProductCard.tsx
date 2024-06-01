@@ -13,7 +13,6 @@ interface ProductCardProps {
 
 export const ProductCard = ({ categories, product }: ProductCardProps) => {
   let priceDiscounted;
-  console.log(categories);
   const slugs = prepareProductSlugs(categories, product.categories).join('/');
   const productName = product.name['en-US'];
   const productDesc = isNotNullable(product.description)['en-US'];
@@ -42,7 +41,7 @@ export const ProductCard = ({ categories, product }: ProductCardProps) => {
         <div className={classnames(styles.productCardPrice, { [styles.crossed]: pricesArr[0].discounted })}>
           {price}
         </div>
-        {pricesArr[0].discounted && <div className={styles.productCardPriceDiscount}>{priceDiscounted}</div>}
+        {isDiscounted && <div className={styles.productCardPriceDiscount}>{priceDiscounted}</div>}
       </div>
       <button type="button" className={styles.productCardButton}>
         Add to Cart

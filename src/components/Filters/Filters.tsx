@@ -6,7 +6,7 @@ import { ColorFilter } from '@components/ColorFilter/ColorFilter';
 import { PriceFilter } from '@components/PriceFilter/PriceFilter';
 import { CategoryList, CustomCategory, Filters } from '@models/index';
 import { AppRoutes } from '@router/routes';
-import { defaultFilter, defaultPriceBorder } from '@utils/constants';
+import { defaultFilter, defaultPriceLimits } from '@utils/constants';
 import { prepareBrands, prepareColors, prepareSizes } from '@utils/utils';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
@@ -71,7 +71,7 @@ export const FiltersComponent = ({
       <h2 className={styles.filtersHeading}>Browse by</h2>
       <CategoryFilter categories={categories} activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
       <h2 className={styles.filtersHeading}>Filter by</h2>
-      <PriceFilter filters={filters} setFilters={setFilters} values={defaultPriceBorder} name="price" />
+      <PriceFilter filters={filters} setFilters={setFilters} values={defaultPriceLimits} name="price" />
       <CheckboxFilter filters={filters} setFilters={setFilters} values={brands} name="brands" />
       <ColorFilter filters={filters} setFilters={setFilters} values={colors} name="color" />
       <CheckboxFilter filters={filters} setFilters={setFilters} values={sizes} name="sizes" />

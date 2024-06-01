@@ -46,9 +46,8 @@ export const CategoryFilter = ({ categories, activeCategory, setActiveCategory }
                 <li
                   role="option"
                   aria-selected={activeCategory.name === subCategory.name}
-                  className={classnames(styles.categoryFilter, {
+                  className={classnames(styles.categoryFilter, styles.childCategory, {
                     [styles.active]: activeCategory.name === subCategory.name,
-                    [styles.childCategory]: true,
                   })}
                   key={subCategory.id}
                   onClick={e => handleCategoryClick(e, subId)}

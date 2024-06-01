@@ -1,16 +1,8 @@
 import { FiltersProps } from '@models/index';
+import { ColorsHex } from '@utils/constants';
 import classnames from 'classnames';
 import { useState } from 'react';
 import styles from './ColorFilter.module.scss';
-
-const ColorsHex: { [key: string]: string } = {
-  Bronze: '#845b32',
-  Brown: '#492201',
-  Burgundy: '#590016',
-  Green: '#464e3c',
-  Gray: '#808080',
-  Blue: '#697f8b',
-};
 
 export const ColorFilter = ({ filters, setFilters, values, name }: FiltersProps) => {
   const [isOpen, setIsOpen] = useState(false);
