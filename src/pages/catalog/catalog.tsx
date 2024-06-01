@@ -18,7 +18,7 @@ import { CategoryList, CustomCategory, Filters } from '@models/index';
 import { defaultFilter, defaultSearch, defaultSort, startCategory } from '@utils/constants';
 import { findCategoryBySlug, prepareQuery, prepareQueryParams, simplifyCategories } from '@utils/utils';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import styles from './catalog.module.scss';
 
 const CatalogImages: { [key: string]: string } = {
@@ -37,9 +37,9 @@ export function Catalog() {
   const [products, setProducts] = useState<ProductProjection[]>([]);
 
   const location = useLocation();
-  const navigate = useNavigate();
-  const queryParams = new URLSearchParams(location.search);
-  const [filters, setFilters] = useState<Filters>(prepareQuery(queryParams, defaultFilter));
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [filters, setFilters] = useState<Filters>(prepareQuery(searchParams, defaultFilter));
   const [searchSettings, setSearchSettings] = useState(defaultSearch);
   const [sortSettings, setSortSettings] = useState(defaultSort);
 
@@ -55,10 +55,10 @@ export function Catalog() {
   };
 
   const getProducts = async () => {
-    const queryParams2 = prepareQueryParams(filters, activeCategory.id, searchSettings, sortSettings);
+    const filterParams = prepareQueryParams(filters, activeCategory.id, searchSettings, sortSettings);
 
     try {
-      const data = await sdkService.filterProductsByAttribute(queryParams2);
+      const data = await sdkService.filterProductsByAttribute(filterParams);
       setProducts(data);
     } catch (e) {
       errorNotify((e as Error).message);
@@ -66,15 +66,16 @@ export function Catalog() {
   };
 
   const handleFilterUpdate = () => {
+    const params = new URLSearchParams(searchParams);
     Object.keys(filters).forEach(key => {
       if (filters[key].length > 0) {
-        queryParams.set(key, filters[key].join(','));
+        params.set(key, filters[key].join(','));
       } else {
-        queryParams.delete(key);
+        params.delete(key);
       }
     });
 
-    navigate({ search: queryParams.toString() }, { replace: true });
+    setSearchParams(params, { replace: false });
   };
 
   useEffect(() => {
@@ -93,8 +94,19 @@ export function Catalog() {
 
   useEffect(() => {
     getCategories();
+    handleFilterUpdate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const newFilters = prepareQuery(searchParams, defaultFilter);
+    console.log(JSON.stringify(newFilters));
+    console.log(JSON.stringify(filters));
+    if (JSON.stringify(newFilters) !== JSON.stringify(filters)) {
+      setFilters(prepareQuery(searchParams, defaultFilter));
+      console.log('set true');
+    }
+  }, [searchParams]);
 
   return (
     <div className={styles.catalog}>

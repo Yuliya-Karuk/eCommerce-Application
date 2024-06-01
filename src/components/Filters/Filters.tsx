@@ -6,7 +6,7 @@ import { ColorFilter } from '@components/ColorFilter/ColorFilter';
 import { PriceFilter } from '@components/PriceFilter/PriceFilter';
 import { CategoryList, CustomCategory, Filters } from '@models/index';
 import { AppRoutes } from '@router/routes';
-import { defaultFilter, defaultPriceLimits } from '@utils/constants';
+import { defaultPriceLimits } from '@utils/constants';
 import { prepareBrands, prepareColors, prepareSizes } from '@utils/utils';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
@@ -49,8 +49,8 @@ export const FiltersComponent = ({
   };
 
   const handleClearFilters = () => {
-    setFilters(defaultFilter);
-    navigate(`${AppRoutes.CATALOG_ROUTE}/${activeCategory.slug}`, { replace: true });
+    // setFilters(defaultFilter);
+    navigate(`${AppRoutes.CATALOG_ROUTE}/${activeCategory.slug}`);
   };
 
   useEffect(() => {

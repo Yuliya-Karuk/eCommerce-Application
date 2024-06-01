@@ -32,7 +32,7 @@ export const Breadcrumbs = ({
     if (defaultFilter && setFilters) {
       setFilters(defaultFilter);
     }
-    navigate(path, { replace: true });
+    navigate(path);
   };
 
   return (
