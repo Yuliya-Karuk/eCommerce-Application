@@ -1,3 +1,4 @@
+import template from '@assets/template.png';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { CategoryList } from '@models/index';
 import { AppRoutes } from '@router/routes';
@@ -16,6 +17,7 @@ export const ProductCard = ({ categories, product }: ProductCardProps) => {
   const slugs = prepareProductSlugs(categories, product.categories).join('/');
   const productName = product.name['en-US'];
   const productDesc = isNotNullable(product.description)['en-US'];
+  const productImg = isNotNullable(product.masterVariant.images)[0].url;
   const pricesArr = isNotNullable(product.masterVariant.prices);
   const price = convertCentsToDollarsString(pricesArr[0].value.centAmount);
   const isDiscounted = Boolean(pricesArr[0].discounted);
@@ -26,11 +28,7 @@ export const ProductCard = ({ categories, product }: ProductCardProps) => {
   return (
     <div className={styles.productCard}>
       <Link to={`${AppRoutes.PRODUCTS_ROUTE}/${slugs}/${product.key}`} className={styles.productCardImgContainer}>
-        <img
-          className={styles.productCardImg}
-          src={isNotNullable(product.masterVariant.images)[0].url}
-          alt="catalog img"
-        />
+        <img className={styles.productCardImg} src={productImg || template} alt="catalog img" />
         <p className={styles.productCardDescription}>{productDesc}</p>
       </Link>
       <Link to={`${AppRoutes.PRODUCTS_ROUTE}/${slugs}/${product.key}`} className={styles.productCardTitle}>
