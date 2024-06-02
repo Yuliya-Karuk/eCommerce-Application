@@ -57,3 +57,14 @@
   background: center no-repeat url('../../assets/subscription.webp');
   background-size: cover;
 }
+
+.user-data {
+  @include flex(flex-start, flex-start, column);
+
+  @include tablet {
+    padding: 20px;
+  }
+  gap: 15px;
+  padding: 20px 40px;
+  backdrop-filter: blur(10px);
+}

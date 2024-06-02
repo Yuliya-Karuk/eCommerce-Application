@@ -7,108 +7,118 @@ import { useToast } from '@contexts/toastProvider';
 import { ChangePasswordData } from '@models/index';
 import { SuccessUpdatePasswordMessage } from '@utils/constants';
 import { passwordValidationRules } from '@utils/validationConst';
+import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from './ProfilePassword.module.scss';
 
 interface ProfilePasswordProps {
   customerData: Customer;
+  setCustomerData: (data: Customer) => void;
 }
 
-export const ProfilePassword = ({ customerData }: ProfilePasswordProps) => {
+export const ProfilePassword = ({ customerData, setCustomerData }: ProfilePasswordProps) => {
   const {
     register,
     handleSubmit,
     setValue,
-    // watch,
     formState: { errors, isValid },
   } = useForm<ChangePasswordData>({ mode: 'onChange' });
 
-  // const [isEditing, setIsEditing] = useState(false);
-  // const [dataEdited, setDataEdited] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
   const [isNewPasswordVisible, setIsNewPasswordVisible] = useState(false);
   const { successNotify, errorNotify } = useToast();
-
-  // const watchedFields = watch(['password']);
 
   const resetPasswordFields = () => {
     setValue('currentPassword', '');
     setValue('newPassword', '');
   };
 
-  const onSubmitPassword = (data: ChangePasswordData) => {
+  const resetChanges = () => {
+    resetPasswordFields();
+    setIsEditing(!isEditing);
+  };
+
+  const onSubmitPassword = async (data: ChangePasswordData) => {
+    let result;
     try {
-      sdkService.updatePassword({
+      result = await sdkService.updatePassword({
         version: customerData.version,
         ...data,
       });
-      successNotify(SuccessUpdatePasswordMessage);
       resetPasswordFields();
+      result = await sdkService.loginUser(result.email, data.newPassword);
+      setCustomerData(result);
+      successNotify(SuccessUpdatePasswordMessage);
     } catch (e) {
       errorNotify((e as Error).message);
     }
+    setIsEditing(false);
   };
 
   useEffect(() => {
     resetPasswordFields();
-    // setDataEdited(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerData]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmitPassword)} className={styles.form}>
-      <div className={styles.inputContainer}>
-        <Input
-          name="currentPassword"
-          label="Current password:"
-          type={isCurrentPasswordVisible ? 'text' : 'password'}
-          register={register}
-          validationSchema={passwordValidationRules}
-          isInvalid={!!errors.currentPassword}
-          autocomplete="current-password"
-        />
+    <>
+      <h2 className={styles.heading}>Password</h2>
+      <form onSubmit={handleSubmit(onSubmitPassword)} className={styles.form}>
+        <div className={styles.inputContainer}>
+          <Input
+            name="currentPassword"
+            label="Current password:"
+            type={isCurrentPasswordVisible ? 'text' : 'password'}
+            register={register}
+            validationSchema={passwordValidationRules}
+            disabled={!isEditing}
+            isInvalid={!!errors.currentPassword}
+            autocomplete="current-password"
+          />
 
-        <button
-          type="button"
-          onClick={() => setIsCurrentPasswordVisible(!isCurrentPasswordVisible)}
-          className={styles.eye}
-        >
-          <img src={isCurrentPasswordVisible ? eyeOn : eyeOff} alt="eye" />
-        </button>
+          <button
+            type="button"
+            onClick={() => setIsCurrentPasswordVisible(!isCurrentPasswordVisible)}
+            className={styles.eye}
+          >
+            <img src={isCurrentPasswordVisible ? eyeOn : eyeOff} alt="eye" />
+          </button>
 
-        <p className={styles.error}>{errors?.currentPassword?.message}</p>
-      </div>
-      <div className={styles.inputContainer}>
-        <Input
-          name="newPassword"
-          label="New-password"
-          type={isNewPasswordVisible ? 'text' : 'password'}
-          register={register}
-          validationSchema={passwordValidationRules}
-          isInvalid={!!errors.newPassword}
-          autocomplete="new-password"
-        />
+          <p className={styles.error}>{errors?.currentPassword?.message}</p>
+        </div>
+        <div className={styles.inputContainer}>
+          <Input
+            name="newPassword"
+            label="New-password"
+            type={isNewPasswordVisible ? 'text' : 'password'}
+            register={register}
+            validationSchema={passwordValidationRules}
+            disabled={!isEditing}
+            isInvalid={!!errors.newPassword}
+            autocomplete="new-password"
+          />
 
-        <button type="button" onClick={() => setIsNewPasswordVisible(!isNewPasswordVisible)} className={styles.eye}>
-          <img src={isNewPasswordVisible ? eyeOn : eyeOff} alt="eye" />
-        </button>
+          <button type="button" onClick={() => setIsNewPasswordVisible(!isNewPasswordVisible)} className={styles.eye}>
+            <img src={isNewPasswordVisible ? eyeOn : eyeOff} alt="eye" />
+          </button>
 
-        <p className={styles.error}>{errors?.newPassword?.message}</p>
-      </div>
-      <div className={styles.buttons}>
-        {/* <button type="button" className={styles.submitButton} onClick={resetChanges}>
-          {isEditing ? 'Reset' : 'Change'}
-        </button> */}
-        <button
-          // className={classnames(styles.submitButton, { [styles.hidden]: !isEditing })}
-          className={styles.submitButton}
-          type="submit"
-          disabled={!isValid}
-        >
-          Submit
-        </button>
-      </div>
-    </form>
+          <p className={styles.error}>{errors?.newPassword?.message}</p>
+        </div>
+        <div className={styles.buttons}>
+          <button type="button" className={styles.submitButton} onClick={resetChanges}>
+            {isEditing ? 'Reset' : 'Change'}
+          </button>
+          <button
+            className={classnames(styles.submitButton, { [styles.hidden]: !isEditing })}
+            type="submit"
+            disabled={!isValid}
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </>
   );
 };

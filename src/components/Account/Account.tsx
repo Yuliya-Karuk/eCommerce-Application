@@ -2,7 +2,6 @@
 import { sdkService } from '@commercetool/sdk.service';
 import { Customer, CustomerDraft, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
 import { Input } from '@components/Input/Input';
-import { ProfilePassword } from '@components/ProfilePassword/ProfilePassword';
 import { useToast } from '@contexts/toastProvider';
 import { SuccessUpdateDataMessage } from '@utils/constants';
 import { dateValidationRules, emailValidationRules, nameValidationRules } from '@utils/validationConst';
@@ -93,8 +92,8 @@ export const Account = ({ customerData, setCustomerData }: AccountProps) => {
   }, [customerData]);
 
   return (
-    <div className={styles.account}>
-      <h2 className={styles.accountHeading}>Personal info</h2>
+    <>
+      <h2 className={styles.heading}>Personal info</h2>
       <form onSubmit={handleSubmit(onSubmitInfo)} className={styles.form}>
         <div className={styles.inputContainer}>
           <Input
@@ -155,8 +154,6 @@ export const Account = ({ customerData, setCustomerData }: AccountProps) => {
           </button>
         </div>
       </form>
-      <h2 className={styles.accountHeading}>Password</h2>
-      <ProfilePassword customerData={customerData} />
-    </div>
+    </>
   );
 };

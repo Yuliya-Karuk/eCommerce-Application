@@ -31,16 +31,18 @@
     .submit-button,
     .edit-button {
       @extend %transition;
+
+      @include hover {
+        &:enabled:hover {
+          color: $color-white;
+          background-color: $color-input-bg;
+        }
+      }
       flex: 1 1 45%;
       padding: 10px 5px;
       color: $default-text-color;
       background-color: $color-white;
       border-radius: 5px;
-
-      &:enabled:hover {
-        color: $color-white;
-        background-color: $color-input-bg;
-      }
 
       &.hidden {
         display: none;

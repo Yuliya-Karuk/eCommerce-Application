@@ -90,7 +90,7 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
   return (
     <div className={styles.addresses}>
       <div className={styles.addressesHeaderWrapper}>
-        <h2 className={styles.accountHeading}>Shipping addresses</h2>
+        <h2 className={styles.heading}>Shipping addresses</h2>
       </div>
       <div className={styles.addressesWrapper}>
         {shippingAddresses.map(addr => (
@@ -105,20 +105,22 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
           </div>
         ))}
         {isNewShippingOpen && (
-          <AddressView
-            address={defaultAddress}
-            defaultAddressId={defaultShippingAddressId}
-            removeAddress={removeAddress}
-            setIsNewAddress={setIsNewShippingOpen}
-            addAddress={addAddress}
-            type={AddressesTypes.isShipping}
-          />
+          <div className={styles.addressContainer}>
+            <AddressView
+              address={defaultAddress}
+              defaultAddressId={defaultShippingAddressId}
+              removeAddress={removeAddress}
+              setIsNewAddress={setIsNewShippingOpen}
+              addAddress={addAddress}
+              type={AddressesTypes.isShipping}
+            />
+          </div>
         )}
         <button type="button" className={styles.addNewAddressBtn} onClick={() => setIsNewShippingOpen(true)}>
           +
         </button>
       </div>
-      <h2 className={styles.accountHeading}>Billing addresses</h2>
+      <h2 className={styles.heading}>Billing addresses</h2>
       <div className={styles.addressesWrapper}>
         {billingAddresses.map(addr => (
           <div key={addr.id} className={styles.addressContainer}>
@@ -132,14 +134,16 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
           </div>
         ))}
         {isNewBillingOpen && (
-          <AddressView
-            address={defaultAddress}
-            defaultAddressId={defaultBillingAddressId}
-            removeAddress={removeAddress}
-            setIsNewAddress={setIsNewBillingOpen}
-            addAddress={addAddress}
-            type={AddressesTypes.isBilling}
-          />
+          <div className={styles.addressContainer}>
+            <AddressView
+              address={defaultAddress}
+              defaultAddressId={defaultBillingAddressId}
+              removeAddress={removeAddress}
+              setIsNewAddress={setIsNewBillingOpen}
+              addAddress={addAddress}
+              type={AddressesTypes.isBilling}
+            />
+          </div>
         )}
         <button type="button" className={styles.addNewAddressBtn} onClick={() => setIsNewBillingOpen(true)}>
           +

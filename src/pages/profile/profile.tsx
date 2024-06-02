@@ -6,6 +6,7 @@ import { Container } from '@components/Container/Container';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
 import { ProfileAddresses } from '@components/ProfileAddresses/ProfileAddresses';
+import { ProfilePassword } from '@components/ProfilePassword/ProfilePassword';
 import { useAuth } from '@contexts/authProvider';
 import { useToast } from '@contexts/toastProvider';
 import { useEffect, useState } from 'react';
@@ -60,7 +61,12 @@ export const Profile = () => {
             ))}
           </div>
           <div className={styles.profileContent}>
-            {activeTab === tabs.account && <Account customerData={customerData} setCustomerData={setCustomerData} />}
+            {activeTab === tabs.account && (
+              <div className={styles.userData}>
+                <Account customerData={customerData} setCustomerData={setCustomerData} />
+                <ProfilePassword customerData={customerData} setCustomerData={setCustomerData} />
+              </div>
+            )}
             {activeTab === tabs.addresses && (
               <ProfileAddresses customerData={customerData} setCustomerData={setCustomerData} />
             )}

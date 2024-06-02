@@ -69,13 +69,13 @@ export class SdkService {
     });
   }
 
-  public async loginUser(email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> {
+  public async loginUser(email: string, password: string): Promise<Customer> {
     this.createWithPasswordClient(email, password);
 
     tokenController.refresh();
 
     const result = await this.apiRoot.me().login().post({ body: { email, password } }).execute();
-    return result;
+    return result.body.customer;
   }
 
   public async register(userData: CustomerDraft): Promise<ClientResponse<CustomerSignInResult>> {
@@ -109,7 +109,7 @@ export class SdkService {
 
   public async updatePassword(updateData: MyCustomerChangePassword) {
     const result = await this.apiRoot.me().password().post({ body: updateData }).execute();
-    return result;
+    return result.body;
   }
 
   public async updateAddress(customerVersion: number, setActions: MyCustomerUpdateAction[]) {
