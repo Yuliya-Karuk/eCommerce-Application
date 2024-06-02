@@ -18,7 +18,6 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 import { useParams } from 'react-router-dom';
 import styles from './productItem.module.scss';
 
-// eslint-disable-next-line max-lines-per-function
 export function ProductItem() {
   const { category, subcategory, slug } = useParams();
 

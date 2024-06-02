@@ -55,7 +55,6 @@ const dateValidationRules: RegisterOptions = {
   },
 };
 
-// eslint-disable-next-line max-lines-per-function
 export function Registration() {
   const { isLoggedIn, login } = useAuth();
   const { customToast, promiseNotify } = useToast();

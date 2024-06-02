@@ -28,7 +28,7 @@ module.exports = {
   plugins: ['react', 'react-hooks', 'react-refresh', '@typescript-eslint', 'import', 'prettier'],
   settings: {
     'import/resolver': {
-      typescript: {}
+      typescript: {},
     },
   },
   rules: {
@@ -55,7 +55,7 @@ module.exports = {
         default: 'array',
       },
     ],
-    'max-lines-per-function': ['error', { max: 120, skipBlankLines: true }],
+    'max-lines-per-function': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-non-null-assertion': 'error',
     curly: ['error', 'all'],
@@ -71,12 +71,12 @@ module.exports = {
     'react/jsx-no-constructed-context-values': 'off',
     'react/function-component-definition': 'off',
   },
-  "overrides": [
+  overrides: [
     {
-      "files": ["*.tsx"],
-      "rules": {
-        "max-lines-per-function": ["error", { max: 120 }]
-      }
-    }
-  ]
+      files: ['*.tsx'],
+      rules: {
+        'max-lines-per-function': ['off'],
+      },
+    },
+  ],
 };

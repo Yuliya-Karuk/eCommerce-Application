@@ -76,7 +76,6 @@ const getPostalCodeValidationRules = (selectedCountry: string): RegisterOptions 
   };
 };
 
-// eslint-disable-next-line max-lines-per-function
 export function AddressForm(props: AddressFormProps) {
   const {
     register,
