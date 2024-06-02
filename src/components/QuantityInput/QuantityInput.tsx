@@ -19,8 +19,7 @@ export const QuantityInput: React.FC<QuantityInputProps> = ({ value, onChange })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value, 10);
-    // eslint-disable-next-line no-restricted-globals
-    if (!isNaN(newValue) && newValue > 0) {
+    if (!Number.isNaN(newValue) && newValue > 0) {
       onChange(newValue);
     }
   };

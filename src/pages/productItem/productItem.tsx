@@ -9,16 +9,11 @@ import { Loader } from '@components/Loader/Loader';
 import { ProductAttributes, ProductAttributesView } from '@components/ProductAttributes/ProductAttributesView';
 import { ProductInfoSection } from '@components/ProductInfoSection/ProductInfoSection';
 import { QuantityInput } from '@components/QuantityInput/QuantityInput';
+import { Slider } from '@components/Slider/Slider';
 import { useToast } from '@contexts/toastProvider';
-import {
-  assertValue,
-  convertCentsToDollarsString,
-  convertImagesToReactImageGalleryItems,
-  convertProductAttributesArrayToObject,
-} from '@utils/utils';
+import { assertValue, convertCentsToDollarsString, convertProductAttributesArrayToObject } from '@utils/utils';
 import classNames from 'classnames';
-import { useEffect, useRef, useState } from 'react';
-import ReactImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
+import { useEffect, useState } from 'react';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import { useParams } from 'react-router-dom';
 import styles from './productItem.module.scss';
@@ -29,12 +24,9 @@ export function ProductItem() {
   assertValue(category, "can't find the product category");
   assertValue(slug, "can't find the product key (slug)");
 
-  const galleryRef = useRef<ReactImageGallery>(null);
-
   const [showHeart, setShowHeart] = useState(false);
   const [product, setProduct] = useState<ProductProjection>({} as ProductProjection);
   const [loading, setLoading] = useState<boolean>(true);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [activeVariant, setActiveVariant] = useState<ProductVariant>({} as ProductVariant);
   const [quantity, setQuantity] = useState(1);
   const { customToast, errorNotify } = useToast();
@@ -96,23 +88,6 @@ export function ProductItem() {
     }
   });
 
-  const slides: ReactImageGalleryItem[] = convertImagesToReactImageGalleryItems(images, isFullscreen, styles.sliderImg);
-
-  const handleImageClick = () => {
-    if (galleryRef.current) {
-      if (isFullscreen) {
-        galleryRef.current.exitFullScreen();
-      } else {
-        galleryRef.current.fullScreen();
-      }
-      setIsFullscreen(!isFullscreen);
-    }
-  };
-
-  const handleScreenChange = (isFullScreen: boolean) => {
-    setIsFullscreen(isFullScreen);
-  };
-
   const handleFavoriteClick = () => {
     setShowHeart(true);
     setTimeout(() => {
@@ -137,21 +112,7 @@ export function ProductItem() {
         <div className={styles.wrapper}>
           <Breadcrumbs activeCategorySlug={breadcrumbs} />
           <div className={styles.productOverview}>
-            <div className={styles.sliderWrapper}>
-              <ReactImageGallery
-                ref={galleryRef}
-                showNav={isFullscreen}
-                showBullets={!isFullscreen}
-                lazyLoad
-                autoPlay
-                showThumbnails={isFullscreen}
-                useBrowserFullscreen={false}
-                items={slides}
-                onScreenChange={handleScreenChange}
-                showFullscreenButton={false}
-                onClick={handleImageClick}
-              />
-            </div>
+            <Slider images={images} />
             <section className={styles.productSummary}>
               <h2 className={styles.productSummaryHeader}>{name}</h2>
               {sku ? <div className={styles.sku}>SKU: {sku}</div> : ''}
