@@ -1,5 +1,7 @@
 .link-button {
   @include adaptiveValue('font-size', 18px, 14px);
+  min-width: 142px;
+  text-align: center;
 
   @include hover {
     background-color: $color-bg-dark-alpha;

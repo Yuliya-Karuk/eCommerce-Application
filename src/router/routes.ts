@@ -5,4 +5,5 @@ export enum AppRoutes {
   PRODUCT_ROUTE = '/product',
   PRODUCTS_ROUTE = '/products',
   CATALOG_ROUTE = '/catalog',
+  ABOUT_ROUTE = '/about',
 }
