@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 import styles from './UserMenu.module.scss';
 
 enum ToolTips {
-  LOGOUT = 'Close the account',
   PROFILE = 'Go to profile page',
   PROMO = 'Introduce the promotional code',
   CART = 'Open the cart',
@@ -27,13 +26,12 @@ export const UserMenu: FC = () => {
     <div className={styles.userMenu}>
       <button
         type="button"
-        className={classnames(styles.userMenuLogin, { [styles.hidden]: !isLoggedIn })}
+        className={classnames(styles.userMenuLogout, { [styles.hidden]: !isLoggedIn })}
         onClick={handleLogout}
-        data-tooltip={ToolTips.LOGOUT}
       >
         <div className={styles.userMenuIcon}>
           <svg width={iconSizeNumber} height={iconSizeNumber}>
-            <use xlinkHref={`${sprite}#login`} />
+            <use xlinkHref={`${sprite}#logout`} />
           </svg>
         </div>
         <span className={styles.userMenuText}>Logout</span>
