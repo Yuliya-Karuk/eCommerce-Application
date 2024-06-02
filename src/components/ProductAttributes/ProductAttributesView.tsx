@@ -55,15 +55,7 @@ export function ProductAttributesView({
     });
   }
 
-  const handleSizeClick = (index: number) => {
-    if (index > 0) {
-      setActiveVariant(product.variants[index - 1]);
-    } else {
-      setActiveVariant(product.masterVariant);
-    }
-  };
-
-  const handleColorClick = (index: number) => {
+  const handleSizeOrColorClick = (index: number) => {
     if (index > 0) {
       setActiveVariant(product.variants[index - 1]);
     } else {
@@ -81,16 +73,16 @@ export function ProductAttributesView({
               <div className={styles.optionsVariants}>
                 {sizes.map(({ size: s, index }) => (
                   <button
-                    key={index}
+                    key={s}
                     className={classNames({
                       [styles.active]: s === size,
                     })}
-                    onClick={() => handleSizeClick(index)}
+                    onClick={() => handleSizeOrColorClick(index)}
                     type="button"
                     tabIndex={0}
                     onKeyDown={e => {
                       if (e.key === 'Enter' || e.key === ' ') {
-                        handleSizeClick(index);
+                        handleSizeOrColorClick(index);
                       }
                     }}
                   >
@@ -114,11 +106,12 @@ export function ProductAttributesView({
                   <button
                     type="button"
                     key={c}
+                    tabIndex={0}
                     className={classNames(styles.colorButton, {
                       [styles.active]: c === color,
                     })}
                     style={{ backgroundColor: c in ColorsHex ? ColorsHex[c] : c }}
-                    onClick={() => handleColorClick(index)}
+                    onClick={() => handleSizeOrColorClick(index)}
                   />
                 ))}
               </div>
