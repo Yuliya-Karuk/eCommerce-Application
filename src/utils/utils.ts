@@ -1,4 +1,11 @@
-import { Attribute, AttributeEnumType, AttributeSetType, Category, ProductType } from '@commercetools/platform-sdk';
+import {
+  Attribute,
+  AttributeEnumType,
+  AttributeSetType,
+  Category,
+  Image,
+  ProductType,
+} from '@commercetools/platform-sdk';
 import { ProductAttributes } from '@components/ProductAttributes/ProductAttributesView';
 import {
   CategoryList,
@@ -9,6 +16,7 @@ import {
   SearchSettings,
   SortSettings,
 } from '@models/index';
+import { ReactImageGalleryItem } from 'react-image-gallery';
 import { searchIdentifier } from './constants';
 
 export function isNotNullable<T>(value: T, errorMessage?: string): NonNullable<T> {
@@ -24,7 +32,7 @@ export function isNotNullable<T>(value: T, errorMessage?: string): NonNullable<T
  * @param errorMessage - The error message to throw if the value is missing.
  * @throws {Error} - Throws an error with the specified message.
  */
-export function ensureValue<T>(value: T | undefined | null, errorMessage: string): asserts value is T {
+export function assertValue<T>(value: T | undefined | null, errorMessage: string): asserts value is T {
   if (value === undefined || value === null) {
     throw new Error(errorMessage);
   }
@@ -256,4 +264,21 @@ export function convertProductAttributesArrayToObject(attributesArray: Attribute
     }
   });
   return result;
+}
+
+export function convertImagesToReactImageGalleryItems(
+  items: Image[] | undefined,
+  isFullScreen: boolean,
+  nonFullScreenStyles: string
+): ReactImageGalleryItem[] {
+  const imageGallery: ReactImageGalleryItem[] = [];
+  items?.forEach(image => {
+    const slideItem: ReactImageGalleryItem = {
+      original: image.url,
+      thumbnail: image.url,
+      originalClass: isFullScreen ? '' : nonFullScreenStyles,
+    };
+    imageGallery.push(slideItem);
+  });
+  return imageGallery;
 }

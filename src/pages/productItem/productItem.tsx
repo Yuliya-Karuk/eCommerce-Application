@@ -10,7 +10,12 @@ import { ProductAttributes, ProductAttributesView } from '@components/ProductAtt
 import { ProductInfoSection } from '@components/ProductInfoSection/ProductInfoSection';
 import { QuantityInput } from '@components/QuantityInput/QuantityInput';
 import { useToast } from '@contexts/toastProvider';
-import { convertCentsToDollarsString, convertProductAttributesArrayToObject, ensureValue } from '@utils/utils';
+import {
+  assertValue,
+  convertCentsToDollarsString,
+  convertImagesToReactImageGalleryItems,
+  convertProductAttributesArrayToObject,
+} from '@utils/utils';
 import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 import ReactImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
@@ -21,8 +26,8 @@ import styles from './productItem.module.scss';
 export function ProductItem() {
   const { category, subcategory, slug } = useParams();
 
-  ensureValue(category, "can't find the product category");
-  ensureValue(slug, "can't find the product key (slug)");
+  assertValue(category, "can't find the product category");
+  assertValue(slug, "can't find the product key (slug)");
 
   const galleryRef = useRef<ReactImageGallery>(null);
 
@@ -34,26 +39,24 @@ export function ProductItem() {
   const [quantity, setQuantity] = useState(1);
   const { customToast, errorNotify } = useToast();
 
-  const getProduct = async () => {
-    try {
-      const data = await sdkService.getProductProjectionByKey(slug);
-      setProduct(data);
-      setActiveVariant(data.masterVariant);
-    } catch (err) {
-      errorNotify((err as Error).message);
-    }
-  };
-
   useEffect(() => {
+    const getProduct = async () => {
+      try {
+        setLoading(true);
+
+        const data = await sdkService.getProductProjectionByKey(slug);
+        setProduct(data);
+        setActiveVariant(data.masterVariant);
+
+        setLoading(false);
+      } catch (err) {
+        errorNotify((err as Error).message);
+      }
+    };
+
     getProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (product.masterVariant) {
-      setLoading(false);
-    }
-  }, [product]);
 
   if (loading) {
     return (
@@ -93,15 +96,7 @@ export function ProductItem() {
     }
   });
 
-  const slides: ReactImageGalleryItem[] = [];
-  images?.forEach(image => {
-    const slideItem: ReactImageGalleryItem = {
-      original: image.url,
-      thumbnail: image.url,
-      originalClass: isFullscreen ? '' : styles.sliderImg,
-    };
-    slides.push(slideItem);
-  });
+  const slides: ReactImageGalleryItem[] = convertImagesToReactImageGalleryItems(images, isFullscreen, styles.sliderImg);
 
   const handleImageClick = () => {
     if (galleryRef.current) {
