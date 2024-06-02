@@ -1,7 +1,8 @@
-import { BaseAddress, Category, ProductProjection } from '@commercetools/platform-sdk';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { BaseAddress, Category, MyCustomerUpdateAction, ProductProjection } from '@commercetools/platform-sdk';
 import { CategoryList, ProductCategory } from '@models/index';
+import { countries, UpdateAddressActions } from '@utils/constants';
 import { RegisterOptions } from 'react-hook-form';
-import { countries } from './constants';
 
 export function isNotNullable<T>(value: T): NonNullable<T> {
   if (value === undefined || value === null) {
@@ -97,4 +98,54 @@ export const getPostalCodeValidationRules = (selectedCountry: string): RegisterO
   return {
     required: 'Postal code is required',
   };
+};
+
+export const prepareAddressRequest = (
+  action: UpdateAddressActions,
+  newAddress: BaseAddress,
+  id?: string
+): MyCustomerUpdateAction[] => {
+  if (action === 'addAddress') {
+    return [
+      {
+        action,
+        address: newAddress,
+      },
+    ];
+  }
+
+  if (action === 'changeAddress' && id) {
+    return [
+      {
+        action,
+        addressId: id,
+        address: newAddress,
+      },
+    ];
+  }
+
+  if (
+    action === 'addShippingAddressId' ||
+    action === 'addBillingAddressId' ||
+    action === 'removeAddress' ||
+    (action === 'setDefaultShippingAddress' && id) ||
+    (action === 'setDefaultBillingAddress' && id)
+  ) {
+    return [
+      {
+        action,
+        addressId: id,
+      },
+    ];
+  }
+
+  if ((action === 'setDefaultShippingAddress' || action === 'setDefaultBillingAddress') && !id) {
+    return [
+      {
+        action,
+      },
+    ];
+  }
+
+  throw new Error('There is no such action for change address');
 };

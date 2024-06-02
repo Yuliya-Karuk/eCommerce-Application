@@ -2,8 +2,17 @@
 import { sdkService } from '@commercetool/sdk.service';
 import { BaseAddress, Customer } from '@commercetools/platform-sdk';
 import { AddressView } from '@components/AddressView/AddressView';
-import { addAddressActions, AddressesTypes, defaultAddress, setDefaultAddressActions } from '@utils/constants';
-import { findAddresses, findNewAddresses, isNotNullable } from '@utils/utils';
+import { useToast } from '@contexts/toastProvider';
+import {
+  addAddressActions,
+  AddressesTypes,
+  defaultAddress,
+  setDefaultAddressActions,
+  SuccessChangeAddressMessage,
+  SuccessNewAddressMessage,
+  SuccessRemoveAddressMessage,
+} from '@utils/constants';
+import { findAddresses, findNewAddresses, prepareAddressRequest } from '@utils/utils';
 import { useState } from 'react';
 import styles from './ProfileAddresses.module.scss';
 
@@ -20,71 +29,60 @@ export const ProfileAddresses = ({ customerData, setCustomerData }: AddressesPro
 
   const { defaultShippingAddressId } = customerData;
   const { defaultBillingAddressId } = customerData;
-  console.log(customerData);
+  const { successNotify, errorNotify } = useToast();
 
   const addAddress = async (newAddress: BaseAddress, type: AddressesTypes, isDefault: boolean) => {
-    let result = await sdkService.addAddress(customerData.version, [
-      {
-        action: 'addAddress',
-        address: newAddress,
-      },
-    ]);
+    try {
+      const addAddressRequest = prepareAddressRequest('addAddress', newAddress);
+      let result = await sdkService.updateAddresses(customerData.version, addAddressRequest);
 
-    const setAddress = findNewAddresses(result.addresses, result.billingAddressIds, result.shippingAddressIds);
-    result = await sdkService.setAddressBillingOrShipping(result.version, [
-      {
-        action: addAddressActions[type],
-        addressId: setAddress.id,
-      },
-    ]);
+      const setAddress = findNewAddresses(result.addresses, result.billingAddressIds, result.shippingAddressIds);
+      const makeBillingOrShippingRequest = prepareAddressRequest(addAddressActions[type], setAddress, setAddress.id);
+      result = await sdkService.updateAddresses(result.version, makeBillingOrShippingRequest);
 
-    if (isDefault) {
-      result = await sdkService.setDefaultBillingOrShippingAddress(result.version, [
-        {
-          action: setDefaultAddressActions[type],
-          addressId: setAddress.id,
-        },
-      ]);
+      if (isDefault) {
+        const makeDefaultRequest = prepareAddressRequest(setDefaultAddressActions[type], setAddress, setAddress.id);
+        result = await sdkService.updateAddresses(result.version, makeDefaultRequest);
+      }
+      setCustomerData(result);
+      successNotify(SuccessNewAddressMessage);
+    } catch (e) {
+      errorNotify((e as Error).message);
     }
-    setCustomerData(result);
   };
 
   const changeAddress = async (changedAddress: BaseAddress, id: string, type: AddressesTypes, isDefault: boolean) => {
-    let result = await sdkService.addAddress(customerData.version, [
-      {
-        action: 'changeAddress',
-        addressId: id,
-        address: changedAddress,
-      },
-    ]);
-    if (isDefault) {
-      result = await sdkService.setDefaultBillingOrShippingAddress(result.version, [
-        {
-          action: setDefaultAddressActions[type],
-          addressId: id,
-        },
-      ]);
-    } else if (
-      (AddressesTypes.isBilling && id === defaultBillingAddressId) ||
-      (AddressesTypes.isShipping && id === defaultShippingAddressId)
-    ) {
-      result = await sdkService.setDefaultBillingOrShippingAddress(result.version, [
-        {
-          action: setDefaultAddressActions[type],
-        },
-      ]);
+    try {
+      const changeAddressRequest = prepareAddressRequest('changeAddress', changedAddress, id);
+      let result = await sdkService.updateAddresses(customerData.version, changeAddressRequest);
+      if (isDefault) {
+        const makeDefaultRequest = prepareAddressRequest(setDefaultAddressActions[type], changedAddress, id);
+        result = await sdkService.updateAddresses(result.version, makeDefaultRequest);
+      } else if (
+        (AddressesTypes.isBilling && id === defaultBillingAddressId) ||
+        (AddressesTypes.isShipping && id === defaultShippingAddressId)
+      ) {
+        const makeNotDefaultRequest = prepareAddressRequest(setDefaultAddressActions[type], changedAddress);
+        result = await sdkService.updateAddresses(result.version, makeNotDefaultRequest);
+      }
+
+      setCustomerData(result);
+      successNotify(SuccessChangeAddressMessage);
+    } catch (e) {
+      errorNotify((e as Error).message);
     }
-    setCustomerData(result);
   };
 
   const removeAddress = async (address: BaseAddress) => {
-    const newCustomer = await sdkService.addAddress(customerData.version, [
-      {
-        action: 'removeAddress',
-        addressId: isNotNullable(address.id),
-      },
-    ]);
-    setCustomerData(newCustomer);
+    try {
+      const removeAddressRequest = prepareAddressRequest('removeAddress', address, address.id);
+      const result = await sdkService.updateAddresses(customerData.version, removeAddressRequest);
+
+      setCustomerData(result);
+      successNotify(SuccessRemoveAddressMessage);
+    } catch (e) {
+      errorNotify((e as Error).message);
+    }
   };
 
   return (

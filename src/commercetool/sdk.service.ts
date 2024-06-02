@@ -112,46 +112,7 @@ export class SdkService {
     return result.body;
   }
 
-  public async updateAddress(customerVersion: number, setActions: MyCustomerUpdateAction[]) {
-    const result = await this.apiRoot
-      .me()
-      .post({
-        body: {
-          version: customerVersion,
-          actions: [...setActions],
-        },
-      })
-      .execute();
-    return result.body;
-  }
-
-  public async addAddress(customerVersion: number, setActions: MyCustomerUpdateAction[]) {
-    const result = await this.apiRoot
-      .me()
-      .post({
-        body: {
-          version: customerVersion,
-          actions: [...setActions],
-        },
-      })
-      .execute();
-    return result.body;
-  }
-
-  public async setAddressBillingOrShipping(customerVersion: number, setActions: MyCustomerUpdateAction[]) {
-    const result = await this.apiRoot
-      .me()
-      .post({
-        body: {
-          version: customerVersion,
-          actions: [...setActions],
-        },
-      })
-      .execute();
-    return result.body;
-  }
-
-  public async setDefaultBillingOrShippingAddress(customerVersion: number, setActions: MyCustomerUpdateAction[]) {
+  public async updateAddresses(customerVersion: number, setActions: MyCustomerUpdateAction[]) {
     const result = await this.apiRoot
       .me()
       .post({

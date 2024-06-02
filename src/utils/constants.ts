@@ -11,6 +11,12 @@ export const SuccessUpdateDataMessage = 'Congratulations, your profile was succe
 
 export const SuccessUpdatePasswordMessage = 'Congratulations, your password was successfully updated!';
 
+export const SuccessNewAddressMessage = 'Congratulations, your new address was successfully added!';
+
+export const SuccessChangeAddressMessage = 'Congratulations, your address was successfully updated!';
+
+export const SuccessRemoveAddressMessage = 'Congratulations, your address was successfully deleted!';
+
 export const countries: Country[] = [
   {
     name: 'Germany',
@@ -64,3 +70,12 @@ export const setDefaultAddressActions: SetDefaultAddressActions = {
   isShipping: 'setDefaultShippingAddress',
   isBilling: 'setDefaultBillingAddress',
 };
+
+export type UpdateAddressActions =
+  | 'addAddress'
+  | 'changeAddress'
+  | 'addShippingAddressId'
+  | 'addBillingAddressId'
+  | 'setDefaultShippingAddress'
+  | 'setDefaultBillingAddress'
+  | 'removeAddress';
