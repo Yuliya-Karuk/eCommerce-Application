@@ -1,4 +1,5 @@
 import {
+  Attribute,
   AttributeEnumType,
   AttributeSetType,
   Category,
@@ -6,6 +7,7 @@ import {
   ProductProjection,
   ProductType,
 } from '@commercetools/platform-sdk';
+import { ProductAttributes } from '@components/ProductAttributes/ProductAttributesView';
 import {
   CategoryList,
   CustomCategory,
