@@ -1,23 +1,23 @@
 .breadcrumbs {
-  @include flex(flex-start, center, row, 5px);
+  @include flex(flex-start, center);
   @include adaptiveValue('font-size', 20px, 16px);
-  flex-wrap: wrap;
+  gap: 5px;
   margin: 30px 0;
   font-family: Questrial, sans-serif;
 
   button {
     @extend %transition;
+    color: inherit;
 
     @include hover {
       color: $color-gray-dark;
     }
-    color: inherit;
   }
 }
 
 .breadcrumbs-link {
-  color: inherit;
   text-transform: capitalize;
+  color: inherit;
 
   &:last-of-type {
     pointer-events: none;

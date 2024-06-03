@@ -10,6 +10,7 @@ import { Container } from '@components/Container/Container';
 import { FiltersComponent } from '@components/Filters/Filters';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
+import { Loader } from '@components/Loader/Loader';
 import { ProductCard } from '@components/ProductCard/ProductCard';
 import { Search } from '@components/Search/Search';
 import { Sorting } from '@components/Sorting/Sorting';
@@ -18,7 +19,7 @@ import { CategoryList, CustomCategory, Filters } from '@models/index';
 import { defaultFilter, defaultSearch, defaultSort, startCategory } from '@utils/constants';
 import { findCategoryBySlug, prepareQuery, prepareQueryParams, simplifyCategories } from '@utils/utils';
 import { useEffect, useState } from 'react';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import styles from './catalog.module.scss';
 
 const CatalogImages: { [key: string]: string } = {
@@ -37,17 +38,32 @@ export function Catalog() {
   const [products, setProducts] = useState<ProductProjection[]>([]);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { category, subcategory, slug } = useParams();
+  const [loading, setLoading] = useState<boolean>(true);
 
   const [filters, setFilters] = useState<Filters>(prepareQuery(searchParams, defaultFilter));
   const [searchSettings, setSearchSettings] = useState(defaultSearch);
   const [sortSettings, setSortSettings] = useState(defaultSort);
+
+  const checkRoute = (urlSlugs: (string | undefined)[], data: CategoryList) => {
+    const urlSlug = urlSlugs.filter(el => el !== undefined).join('/');
+    const isExists = Object.values(data).filter(el => el.slug.join('/') === urlSlug);
+    if (isExists.length === 0) {
+      navigate('/404');
+    }
+    setLoading(false);
+  };
 
   const getCategories = async () => {
     try {
       const data = await sdkService.getCategories();
       const preparedData = simplifyCategories(data);
       preparedData.default = startCategory;
+
+      checkRoute([category, subcategory, slug], preparedData);
+
       setCategories(preparedData);
     } catch (e) {
       errorNotify((e as Error).message);
@@ -107,6 +123,10 @@ export function Catalog() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className={styles.catalog}>
