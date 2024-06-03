@@ -1,5 +1,101 @@
+%footerflex {
+  @include flex(space-between, null);
+  padding: 10px;
+  row-gap: 10px;
+  column-gap: 10px;
+}
+
+%list-section {
+  @include flex(null, null, column);
+  row-gap: 25px;
+}
+
+%font {
+  font-family: Questrial, Arial, Helvetica, serif;
+  @include adaptiveValue('font-size', 16px, 12px);
+}
+
 .footer {
+  padding: 5px;
+
   &-body {
-    padding: 5px;
+    @include flex(null, null, column);
+    row-gap: 25px;
+    padding: 0 15px;
+    margin-top: 5px;
+
+    @include smalltablet {
+      row-gap: 15px;
+    }
+  }
+
+  &-logo {
+    padding: 25px 10px;
+    margin-top: 15px;
+
+    @include smalltablet {
+      display: none;
+    }
+  }
+
+  &-info {
+    @extend %footerflex;
+
+    @include smalltablet {
+      flex-wrap: wrap;
+      row-gap: 25px;
+      column-gap: 35px;
+    }
+  }
+
+  &-separator {
+    display: block;
+    height: 1px;
+    background-color: $color-gray-dark;
+
+    &:first-of-type {
+      @include smalltablet {
+        display: none;
+      }
+    }
+  }
+
+  &-copyright {
+    width: 100%;
+    @extend %font;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 15px;
+
+    @include smalltablet {
+      margin-bottom: 5px;
+    }
+  }
+
+  &-contacts,
+  &-shop,
+  &-opening-hours {
+    @extend %list-section;
+
+    @include smalltablet {
+      row-gap: 15px;
+    }
+  }
+
+  &-list {
+    @extend %list-section;
+    row-gap: 10px;
+  }
+
+  &-title {
+    @include adaptiveValue('font-size', 21px, 16px);
+  }
+
+  &-list-item {
+    @extend %font;
+
+    a {
+      @extend %font;
+    }
   }
 }
