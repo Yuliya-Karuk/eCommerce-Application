@@ -2,7 +2,10 @@
   &-item {
     @include flex(null, null, column);
     row-gap: 16px;
-    color: $color-bg-dark;
+
+    @include bigdesktop {
+      overflow: hidden;
+    }
   }
 
   &-card-image {
@@ -13,17 +16,27 @@
     padding-bottom: 132.5%;
     padding-left: 99%;
 
+    @include bigdesktop {
+      min-width: 250px;
+    }
+
+    @media all and (max-width: 1180px) {
+      min-width: 200px;
+    }
+
     &::after {
-      @include adaptiveValue('font-size', 14px, 12px);
-      content: 'New Arrival';
+      content: attr(data-mark);
       position: absolute;
-      top: rem(17px);
-      left: rem(17px);
-      padding: 5px 12px;
-      font-family: Questrial, Arial, Helvetica, serif;
+      top: rem(18px);
+      left: rem(18px);
       color: $color-white;
       background-color: $color-green-dark;
+      font-family: Questrial, Arial, Helvetica, serif;
+      @include adaptiveValue('font-size', 14px, 12px);
+      line-height: 1.4;
       border-radius: 5px;
+      padding: 2px 10px;
+      text-align: center;
     }
   }
 

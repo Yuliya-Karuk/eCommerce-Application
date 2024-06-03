@@ -27,7 +27,10 @@ export const Navigation: FC<NavigationProps> = ({ id, ...props }) => {
         aria-expanded={isMenuOpen}
         aria-label={`${isMenuOpen ? 'Close' : 'Open'} menu`}
         tabIndex={0}
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        onClick={() => {
+          setIsMenuOpen(!isMenuOpen);
+          document.body.classList.toggle('lock', !isMenuOpen);
+        }}
       >
         <span />
       </div>

@@ -10,8 +10,10 @@ import {
   MyCustomerUpdate,
   MyCustomerUpdateAction,
   ProductProjection,
+  ProductType,
 } from '@commercetools/platform-sdk';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
+import { QueryParams } from '@models/index';
 import { storage } from '@utils/storage';
 import {
   anonymousMiddlewareOptions,
@@ -92,6 +94,11 @@ export class SdkService {
     return data.body.results;
   }
 
+  public async getProductsTypes(): Promise<ProductType[]> {
+    const data = await this.apiRoot.productTypes().get().execute();
+    return data.body.results;
+  }
+
   public async getCategories(): Promise<Category[]> {
     const data = await this.apiRoot.categories().get().execute();
     return data.body.results;
@@ -123,6 +130,37 @@ export class SdkService {
       })
       .execute();
     return result.body;
+  }
+
+  public async filterProductsByAttribute(filterArr: QueryParams) {
+    const data = await this.apiRoot
+      .productProjections()
+      .search()
+      .get({
+        queryArgs: {
+          ...filterArr,
+        },
+      })
+      .execute();
+    return data.body.results;
+  }
+
+  public async getProductProjectionByKey(productKey: string): Promise<ProductProjection> {
+    const data = await this.apiRoot.productProjections().withKey({ key: productKey }).get().execute();
+    return data.body;
+  }
+
+  public async getCategoryById(id: string): Promise<Category[]> {
+    const category = await this.apiRoot
+      .categories()
+      .get({
+        queryArgs: {
+          where: `id="${id}"`,
+        },
+      })
+      .execute();
+
+    return category.body.results;
   }
 }
 

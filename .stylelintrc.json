@@ -23,6 +23,7 @@
     "scss/at-function-pattern": null,
     "function-name-case": null,
     "at-rule-empty-line-before": null,
+    "declaration-block-no-redundant-longhand-properties": null,
     "scss/at-rule-conditional-no-parentheses": null
   }
 }

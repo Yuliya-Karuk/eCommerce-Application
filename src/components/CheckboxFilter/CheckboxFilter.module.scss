@@ -1,0 +1,83 @@
+.filter {
+  @include flex(flex-start, flex-start, column);
+  gap: 10px;
+  width: 100%;
+  padding-bottom: 5px;
+}
+
+.filters-list {
+  @include adaptiveValue('font-size', 16px, 14px);
+  display: none;
+  gap: 15px;
+  line-height: 1.2;
+
+  &.open {
+    @include flex(flex-start, flex-start, column);
+  }
+}
+
+.filter-input {
+  @extend %visually-hidden;
+}
+
+.filter-label {
+  @extend %transition;
+  cursor: pointer;
+  position: relative;
+  padding-left: 20px;
+
+  &::before {
+    @extend %transition;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 15px;
+    height: 15px;
+    border: 1px solid $color-white;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 15px;
+    height: 15px;
+    background-image: url('../../assets/checked.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: opacity 0.3s;
+  }
+}
+
+.filter-input:checked + .filter-label::after {
+  display: block;
+}
+
+.filter-heading {
+  @include flex(space-between, center);
+  cursor: pointer;
+  width: 100%;
+  padding-bottom: 15px;
+  border-bottom: 1px solid $color-gray-dark;
+}
+
+.filter-title {
+  @include adaptiveValue('font-size', 20px, 18px);
+  text-transform: capitalize;
+}
+
+.filter-span {
+  display: block;
+  width: 15px;
+  height: 15px;
+  background: no-repeat center url('../../assets/plus.svg');
+  background-size: contain;
+
+  &.open {
+    background: no-repeat center url('../../assets/minus.svg');
+    background-size: contain;
+  }
+}

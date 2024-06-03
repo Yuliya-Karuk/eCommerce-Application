@@ -12,9 +12,8 @@
     background-color: $color-green-dark;
 
     .form {
-      @include flex(flex-start, left, column);
+      @include flex(flex-start, left, column, 5px);
       position: relative;
-      gap: 5px;
       color: $color-white;
 
       .email-error {

@@ -7,4 +7,12 @@
   height: auto;
   min-height: 100vh;
   background: fixed #000 url('../../assets/topbg.jpg') top center / cover no-repeat;
+
+  @include mobile {
+    min-height: 75vh;
+  }
+
+  @include smallmobile {
+    min-height: auto;
+  }
 }

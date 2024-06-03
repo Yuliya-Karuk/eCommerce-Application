@@ -1,3 +1,4 @@
+import { About } from '@pages/about/about';
 import { Catalog } from '@pages/catalog/catalog';
 import { Home } from '@pages/home/home';
 import { Login } from '@pages/login/login';
@@ -14,7 +15,12 @@ export const router = createBrowserRouter([
   { path: AppRoutes.REGISTRATION_ROUTE, element: <Registration /> },
   { path: AppRoutes.PROFILE_ROUTE, element: <Profile /> },
   { path: AppRoutes.CATALOG_ROUTE, element: <Catalog /> },
-  { path: `${AppRoutes.PRODUCT_ROUTE}/:slug`, element: <ProductItem /> },
+  { path: `${AppRoutes.CATALOG_ROUTE}/:category/`, element: <Catalog /> },
+  { path: `${AppRoutes.CATALOG_ROUTE}/:category/:subcategory`, element: <Catalog /> },
+  { path: `${AppRoutes.PRODUCTS_ROUTE}/:category?/:subcategory?/:slug`, element: <ProductItem /> },
+  { path: AppRoutes.ABOUT_ROUTE, element: <About /> },
+  { path: AppRoutes.PROFILE_ROUTE, element: <Profile /> },
+  { path: `${AppRoutes.PRODUCTS_ROUTE}/:slug`, element: <ProductItem /> },
   { path: `${AppRoutes.PRODUCTS_ROUTE}/:slug/:key`, element: <ProductItem /> },
   { path: '*', element: <NotFoundPage /> },
 ]);
