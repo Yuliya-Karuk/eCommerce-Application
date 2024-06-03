@@ -64,7 +64,6 @@ export const prodConfig = {
       background: '#D9D9D9',
     }),
   ],
-  base: '',
   css: {
     modules: {
       localsConvention: 'camelCase',
@@ -78,6 +77,13 @@ export const prodConfig = {
   resolve: {
     alias: {
       'node-fetch': 'isomorphic-fetch',
+    },
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        main: './index.html',
+      },
     },
   },
 };

@@ -1,6 +1,7 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
+import { CategoryList } from '@models/index';
 import { AppRoutes } from '@router/routes';
-import { CategoryList, convertCentsToDollarsString, prepareProductSlugs } from '@utils/utils';
+import { convertCentsToDollarsString, prepareProductSlugs } from '@utils/utils';
 import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import templateImage from '../../assets/template.png';

@@ -7,6 +7,7 @@ interface ToastContextValue {
   customToast: ({ position, autoClose }: ToastContainerProps) => JSX.Element;
   promiseNotify: <T>(userData: T, action: string, callback: (userData: T) => Promise<unknown>) => void;
   successNotify: () => void;
+  errorNotify: (errorMessage: string) => void;
 }
 
 const ToastContext = createContext<ToastContextValue>({} as ToastContextValue);
@@ -32,9 +33,14 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
   };
 
   const successNotify = () => toast.success('Congratulations, you have successfully logged in!');
+  const errorNotify = (errorMessage: string) => {
+    toast.error(errorMessage);
+  };
 
   return (
-    <ToastContext.Provider value={{ customToast, promiseNotify, successNotify }}>{children}</ToastContext.Provider>
+    <ToastContext.Provider value={{ customToast, promiseNotify, successNotify, errorNotify }}>
+      {children}
+    </ToastContext.Provider>
   );
 };
 
