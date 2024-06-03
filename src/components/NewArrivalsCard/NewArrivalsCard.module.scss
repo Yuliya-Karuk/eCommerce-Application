@@ -1,29 +1,43 @@
 .newarrivals {
   &-item {
     @include flex(null, null, column);
-    row-gap: 16px;
     color: $color-bg-dark;
+    row-gap: 16px;
+
+    @include bigdesktop {
+      overflow: hidden;
+    }
   }
 
   &-card-image {
     @include responsiveImage;
-    min-width: 286px;
-    max-width: 338px;
-    margin: 0 auto;
     padding-bottom: 132.5%;
     padding-left: 99%;
+    max-width: 338px;
+    min-width: 286px;
+    margin: 0 auto;
+
+    @include bigdesktop {
+      min-width: 250px;
+    }
+
+    @media all and (max-width: 1180px) {
+      min-width: 200px;
+    }
 
     &::after {
-      @include adaptiveValue('font-size', 14px, 12px);
-      content: 'New Arrival';
+      content: attr(data-mark);
       position: absolute;
-      top: rem(17px);
-      left: rem(17px);
-      padding: 5px 12px;
-      font-family: Questrial, Arial, Helvetica, serif;
+      top: rem(18px);
+      left: rem(18px);
       color: $color-white;
       background-color: $color-green-dark;
+      font-family: Questrial, Arial, Helvetica, serif;
+      @include adaptiveValue('font-size', 14px, 12px);
+      line-height: 1.4;
       border-radius: 5px;
+      padding: 2px 10px;
+      text-align: center;
     }
   }
 
@@ -34,39 +48,39 @@
   }
 
   &-card-title {
-    @include adaptiveValue('font-size', 28px, 20px);
     font-family: Forum, Arial, Helvetica, serif;
+    @include adaptiveValue('font-size', 28px, 20px);
     line-height: 1.25;
   }
 
   &-card-coast {
-    @include adaptiveValue('font-size', 21px, 16px);
     font-family: Questrial, Arial, Helvetica, serif;
+    @include adaptiveValue('font-size', 21px, 16px);
     line-height: 1.5;
   }
 
   &-card-button {
     @include flex(center);
-    @include adaptiveValue('font-size', 16px, 14px);
-
-    @include hover {
-      color: $color-gray-light;
-      background-color: $color-bg-dark;
-    }
-    margin-right: 20px;
-    margin-left: 20px;
-    padding: 9px 17px;
     font-family: Questrial, Arial, Helvetica, serif;
+    @include adaptiveValue('font-size', 16px, 14px);
     line-height: 1.5;
     background-color: $color-bg-light;
     border: 1px solid $color-bg-dark;
     border-radius: 5px;
+    padding: 9px 17px;
+    margin-left: 20px;
+    margin-right: 20px;
     transition:
       background-color 0.4s ease 0s,
       color 0.4s ease 0s;
 
     &[type='button'] {
       @include animatebtn;
+    }
+
+    @include hover {
+      background-color: $color-bg-dark;
+      color: $color-gray-light;
     }
   }
 }

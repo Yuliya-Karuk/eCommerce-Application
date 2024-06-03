@@ -1,0 +1,54 @@
+.about {
+  position: relative;
+  background: fixed $color-gray-light url('../../assets/aboutbg.jpg') bottom center / cover no-repeat;
+  background-blend-mode: multiply;
+  width: 100%;
+  @include membrane(3.85);
+
+  &-body {
+    @include flex(center, center, column);
+    width: 100%;
+    padding: 5.5%;
+    row-gap: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  &-title,
+  &-text {
+    text-align: center;
+  }
+
+  &-title {
+    font-family: Forum, Arial, Helvetica, serif;
+    @include adaptiveValue('font-size', 80px, 25px);
+  }
+
+  &-text {
+    max-width: 45%;
+    @include adaptiveValue('font-size', 18px, 14px);
+    font-family: Questrial, Arial, Helvetica, serif;
+    line-height: 1.6;
+
+    @include bigdesktop {
+      max-width: 57%;
+    }
+
+    @include tablet {
+      max-width: 62%;
+    }
+
+    @include smalltablet {
+      max-width: 72%;
+      text-align: justify;
+    }
+
+    @include mobile {
+      max-width: 82%;
+    }
+
+    @include smallmobile {
+      max-width: 97%;
+    }
+  }
+}

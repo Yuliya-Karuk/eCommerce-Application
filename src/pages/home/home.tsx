@@ -1,6 +1,8 @@
+import { About } from '@components/About/About';
 import { Banner } from '@components/Banner/Banner';
 import { Discover } from '@components/Discover/Discover';
 import { Footer } from '@components/Footer/Footer';
+import { Gramm } from '@components/Gramm/Gramm';
 import { Header } from '@components/Header/Header';
 import { NewArrivals } from '@components/NewArrivals/NewArrivals';
 import { useAuth } from '@contexts/authProvider';
@@ -33,6 +35,8 @@ export function Home() {
         </div>
         <NewArrivals />
         <Discover />
+        <About />
+        <Gramm />
       </div>
       <Footer />
       {customToast({ position: 'top-center', autoClose: 2000 })}
