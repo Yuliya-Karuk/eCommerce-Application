@@ -1,10 +1,13 @@
 import {
+  Attribute,
   AttributeEnumType,
   AttributeSetType,
   Category,
+  Image,
   ProductProjection,
   ProductType,
 } from '@commercetools/platform-sdk';
+import { ProductAttributes } from '@components/ProductAttributes/ProductAttributesView';
 import {
   CategoryList,
   CustomCategory,
@@ -14,13 +17,26 @@ import {
   SearchSettings,
   SortSettings,
 } from '@models/index';
+import { ReactImageGalleryItem } from 'react-image-gallery';
 import { searchIdentifier } from './constants';
 
-export function isNotNullable<T>(value: T): NonNullable<T> {
+export function isNotNullable<T>(value: T, errorMessage?: string): NonNullable<T> {
   if (value === undefined || value === null) {
-    throw new Error(`Not expected value`);
+    throw new Error(errorMessage || 'Not expected value');
   }
   return value;
+}
+
+/**
+ * Checks if a value is present and throws an error if the value is missing.
+ * @param value - The value to check.
+ * @param errorMessage - The error message to throw if the value is missing.
+ * @throws {Error} - Throws an error with the specified message.
+ */
+export function assertValue<T>(value: T | undefined | null, errorMessage: string): asserts value is T {
+  if (value === undefined || value === null) {
+    throw new Error(errorMessage);
+  }
 }
 
 export function convertCentsToDollarsString(num: number, fractionDigits = 2): string {
@@ -224,4 +240,50 @@ export function prepareQueryParams(
 
 export function dateSorting(productsArray: ProductProjection[]) {
   return productsArray.sort((a, b) => new Date(a.lastModifiedAt).getTime() - new Date(b.lastModifiedAt).getTime());
+}
+
+interface KeyValue {
+  key: string;
+  label: string;
+}
+
+export interface MyAttribute {
+  name: keyof ProductAttributes;
+  value: string[] | KeyValue[];
+}
+
+export function convertProductAttributesArrayToObject(attributesArray: Attribute[] | undefined): ProductAttributes {
+  if (attributesArray === undefined) {
+    throw new Error('error: attributes array is undefined');
+  }
+  const result: ProductAttributes = {
+    details: '',
+  };
+  attributesArray.forEach(item => {
+    const { name, value } = item as MyAttribute;
+    const [firstValue] = value;
+    if (typeof firstValue === 'string') {
+      result[name] = firstValue;
+    } else {
+      result[name] = firstValue.label;
+    }
+  });
+  return result;
+}
+
+export function convertImagesToReactImageGalleryItems(
+  items: Image[] | undefined,
+  isFullScreen: boolean,
+  nonFullScreenStyles: string
+): ReactImageGalleryItem[] {
+  const imageGallery: ReactImageGalleryItem[] = [];
+  items?.forEach(image => {
+    const slideItem: ReactImageGalleryItem = {
+      original: image.url,
+      thumbnail: image.url,
+      originalClass: isFullScreen ? '' : nonFullScreenStyles,
+    };
+    imageGallery.push(slideItem);
+  });
+  return imageGallery;
 }

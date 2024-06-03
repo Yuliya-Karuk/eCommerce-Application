@@ -3,24 +3,22 @@
   background-color: $color-bg-dark;
 
   .wrapper {
+    position: relative;
     width: clamp(300px, 80vw, 1000px);
     margin-top: 30px;
     padding: 30px;
     font-size: 1.6rem;
     text-align: center;
     background-color: $color-green-dark;
-    position: relative;
 
     .form {
-      @include flex(flex-start, left, column);
+      @include flex(flex-start, left, column, 5px);
       position: relative;
-      gap: 5px;
       color: $color-white;
 
       .inputs-section {
-        @include flex(flex-start, left);
+        @include flex(flex-start, left, row, 15px);
         flex-wrap: wrap;
-        gap: 15px;
         margin-top: 20px;
       }
 

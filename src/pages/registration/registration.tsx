@@ -55,7 +55,6 @@ const dateValidationRules: RegisterOptions = {
   },
 };
 
-// eslint-disable-next-line max-lines-per-function
 export function Registration() {
   const { isLoggedIn, login } = useAuth();
   const { customToast, promiseNotify } = useToast();
@@ -87,7 +86,7 @@ export function Registration() {
       setValue('billingAddresses', [1]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [billingAddressIsSameAsShipping, setValue, unregister]);
+  }, [billingAddressIsSameAsShipping]);
 
   const onSubmit = async (userData: CustomerDraft) => {
     try {

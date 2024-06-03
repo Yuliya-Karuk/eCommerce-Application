@@ -22,10 +22,11 @@ $containerPadding: 30;
 $containerWidth: $container + $containerPadding;
 
 // Цвет текста по-умолчанию
-$default-text-сolor: #000;
+$default-text-color: #000;
 
 // Цвет бургера
 $color-bg-light: #d9d4c9;
+$color-bg-slider: #e4dccf;
 $color-bg-dark: #050505;
 $color-bg-dark-alpha: #05050580;
 $color-bg-dark-alpha-adaptive: #050505bf;
@@ -34,6 +35,7 @@ $color-gray-middle: #b5b5b5;
 $color-gray-light: #e8e6e6;
 $color-white: #fff;
 $color-primary-bright: #be5a09;
+$color-primary-dull: #c57e42;
 $color-green-dark: #686736;
 $color-gramm-alpha: rgba(73 73 44 / 68%);
 $color-input-bg: #36351d;
