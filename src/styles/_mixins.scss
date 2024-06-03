@@ -50,9 +50,10 @@
 }
 
 // Флексы
-@mixin flex($js: null, $ai: $js, $dir: null) {
+@mixin flex($js: null, $ai: $js, $dir: null, $gap: null) {
   display: flex;
   flex-direction: $dir;
+  gap: $gap;
   align-items: $ai;
   justify-content: $js;
 }

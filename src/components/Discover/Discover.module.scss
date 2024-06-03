@@ -15,14 +15,14 @@
 
   &-text {
     @include adaptiveValue('font-size', 200px, 85px);
+    padding: 10px;
     text-align: center;
     transition: transform 0.8s ease 0s;
-    padding: 10px;
 
     &::before {
-      transition: background 0.8s ease 1s;
       will-change: background;
       transform: translateZ(0);
+      transition: background 0.8s ease 1s;
     }
 
     &:hover {
@@ -31,12 +31,12 @@
 
       &::before {
         content: '';
-        display: inline-block;
         position: absolute;
-        width: 100%;
-        height: 100%;
         top: 0;
         left: 0;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
         background: linear-gradient(
           180deg,
           $color-discovery-gradient-top 0,
@@ -49,10 +49,6 @@
 }
 
 .links {
-  display: grid;
-  grid-template: 32rem 28rem / calc(74% - 2.5px) calc(26% - 2.5px);
-  gap: 5px;
-
   @include tablet {
     grid-template: 28rem 24rem / calc(66% - 2.5px) calc(34% - 2.5px);
   }
@@ -64,6 +60,9 @@
   @include mobile {
     grid-template: repeat(3, 100px) / 1fr;
   }
+  display: grid;
+  grid-template: 32rem 28rem / calc(74% - 2.5px) calc(26% - 2.5px);
+  gap: 5px;
 
   &-plants,
   &-pots,
@@ -71,38 +70,37 @@
     @include responsiveImage;
     @include membrane(5);
 
-    img {
-      transition: transform 0.8s linear 0s;
-    }
-
-    &::before {
-      content: attr(title);
-      @include flex(center);
-      font-family: Forum, Arial, Helvetica, serif;
-      @include adaptiveValue('font-size', 34px, 20px);
-      text-align: center;
-      transition: opacity 0.8s ease 0s;
-      will-change: opacity;
-      transform: translateZ(0);
-      pointer-events: none;
-    }
-
     @include hover {
-      img {
-        transform: scale(1.1);
-      }
-
       &::before {
         opacity: 0;
       }
+
+      img {
+        transform: scale(1.1);
+      }
+    }
+
+    &::before {
+      @include flex(center);
+      @include adaptiveValue('font-size', 34px, 20px);
+      pointer-events: none;
+      will-change: opacity;
+      content: attr(title);
+      transform: translateZ(0);
+      font-family: Forum, Arial, Helvetica, serif;
+      text-align: center;
+      transition: opacity 0.8s ease 0s;
+    }
+
+    img {
+      transition: transform 0.8s linear 0s;
     }
   }
 
   &-plants {
-    grid-row: span 2;
-
     @include mobile {
       grid-row: span 1;
     }
+    grid-row: span 2;
   }
 }
