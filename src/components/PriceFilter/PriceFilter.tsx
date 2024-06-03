@@ -17,7 +17,7 @@ const formatPriceToNumber = (price: string | undefined): number | undefined => {
 };
 
 export const PriceFilter = ({ filters, setFilters, name, values }: FiltersProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(filters[name].length > 0);
   const [minPrice, setMinPrice] = useState(formatPriceToNumber(filters[name][0]) || Number(values[0]));
   const [maxPrice, setMaxPrice] = useState(formatPriceToNumber(filters[name][1]) || Number(values[1]));
 

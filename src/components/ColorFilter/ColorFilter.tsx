@@ -5,7 +5,7 @@ import { useState } from 'react';
 import styles from './ColorFilter.module.scss';
 
 export const ColorFilter = ({ filters, setFilters, values, name }: FiltersProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(filters[name].length > 0);
 
   const handleColorClick = (color: string) => {
     const newFilters = { ...filters };

@@ -4,7 +4,7 @@ import { ChangeEvent, useState } from 'react';
 import styles from './CheckboxFilter.module.scss';
 
 export const CheckboxFilter = ({ filters, setFilters, values, name }: FiltersProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(filters[name].length > 0);
 
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = event.target;

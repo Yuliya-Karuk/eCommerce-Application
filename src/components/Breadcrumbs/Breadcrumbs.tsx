@@ -26,7 +26,7 @@ export const Breadcrumbs = ({
   backColor = 'white',
 }: BreadcrumbsProps) => {
   const navigate = useNavigate();
-  const preparedSlugs = generateBreadcrumbsSlugs(activeCategorySlug);
+  const preparedSlugs = generateBreadcrumbsSlugs(activeCategorySlug.filter(el => el !== ''));
 
   const handleNavigation = (path: string) => {
     if (defaultFilter && setFilters) {
