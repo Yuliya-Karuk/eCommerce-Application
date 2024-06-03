@@ -1,0 +1,62 @@
+.gramm {
+  background-color: $color-green-dark;
+  padding: 4% 3%;
+
+  &-body {
+    width: 100%;
+  }
+
+  &-title {
+    @include adaptiveValue('font-size', 80px, 48px);
+    text-align: center;
+    padding-bottom: 3.3%;
+  }
+
+  &-gallery {
+    display: grid;
+    grid-template: repeat(2, auto) / repeat(5, auto);
+    gap: 5px;
+    margin: 0 auto;
+
+    &-item {
+      position: relative;
+      width: fit-content;
+      height: auto;
+      overflow: hidden;
+
+      img {
+        transition: transform 0.8s ease 0s;
+      }
+
+      @include hover {
+        img {
+          transform: scale(1.1);
+        }
+
+        &::before {
+          content: attr(title);
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          @include flex(center);
+          padding: 10%;
+          background-color: $color-gramm-alpha;
+          @include adaptiveValue('font-size', 18px, 5px);
+          font-family: Questrial, Arial, Helvetica, serif;
+          text-align: center;
+          transition: all 0.8s ease 0s;
+          z-index: 1;
+        }
+      }
+    }
+
+    &-image {
+      max-width: 100%;
+      height: auto;
+      object-fit: cover;
+      object-position: center center;
+    }
+  }
+}
