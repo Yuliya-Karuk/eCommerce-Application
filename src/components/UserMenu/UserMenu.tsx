@@ -36,7 +36,6 @@ export const UserMenu: FC = () => {
         </div>
         <span className={styles.userMenuText}>Logout</span>
       </button>
-
       <Link
         to={AppRoutes.PROFILE_ROUTE}
         className={classnames(styles.userMenuProfile, { [styles.hidden]: !isLoggedIn })}

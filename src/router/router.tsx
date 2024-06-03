@@ -13,6 +13,7 @@ export const router = createBrowserRouter([
   { path: AppRoutes.HOME_ROUTE, element: <Home /> },
   { path: AppRoutes.LOGIN_ROUTE, element: <Login /> },
   { path: AppRoutes.REGISTRATION_ROUTE, element: <Registration /> },
+  { path: AppRoutes.PROFILE_ROUTE, element: <Profile /> },
   { path: AppRoutes.CATALOG_ROUTE, element: <Catalog /> },
   { path: `${AppRoutes.CATALOG_ROUTE}/:category/`, element: <Catalog /> },
   { path: `${AppRoutes.CATALOG_ROUTE}/:category/:subcategory`, element: <Catalog /> },

@@ -3,8 +3,12 @@ import {
   Category,
   ClientResponse,
   createApiBuilderFromCtpClient,
+  Customer,
   CustomerDraft,
   CustomerSignInResult,
+  MyCustomerChangePassword,
+  MyCustomerUpdate,
+  MyCustomerUpdateAction,
   ProductProjection,
   ProductType,
 } from '@commercetools/platform-sdk';
@@ -67,13 +71,13 @@ export class SdkService {
     });
   }
 
-  public async loginUser(email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> {
+  public async loginUser(email: string, password: string): Promise<Customer> {
     this.createWithPasswordClient(email, password);
 
     tokenController.refresh();
 
     const result = await this.apiRoot.me().login().post({ body: { email, password } }).execute();
-    return result;
+    return result.body.customer;
   }
 
   public async register(userData: CustomerDraft): Promise<ClientResponse<CustomerSignInResult>> {
@@ -98,6 +102,34 @@ export class SdkService {
   public async getCategories(): Promise<Category[]> {
     const data = await this.apiRoot.categories().get().execute();
     return data.body.results;
+  }
+
+  public async getCustomerData(): Promise<Customer> {
+    const data = await this.apiRoot.me().get().execute();
+    return data.body;
+  }
+
+  public async updateAccountData(updateData: MyCustomerUpdate): Promise<Customer> {
+    const result = await this.apiRoot.me().post({ body: updateData }).execute();
+    return result.body;
+  }
+
+  public async updatePassword(updateData: MyCustomerChangePassword) {
+    const result = await this.apiRoot.me().password().post({ body: updateData }).execute();
+    return result.body;
+  }
+
+  public async updateAddresses(customerVersion: number, setActions: MyCustomerUpdateAction[]) {
+    const result = await this.apiRoot
+      .me()
+      .post({
+        body: {
+          version: customerVersion,
+          actions: [...setActions],
+        },
+      })
+      .execute();
+    return result.body;
   }
 
   public async filterProductsByAttribute(filterArr: QueryParams) {

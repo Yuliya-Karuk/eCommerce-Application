@@ -16,7 +16,7 @@ import { Search } from '@components/Search/Search';
 import { Sorting } from '@components/Sorting/Sorting';
 import { useToast } from '@contexts/toastProvider';
 import { CategoryList, CustomCategory, Filters } from '@models/index';
-import { defaultFilter, defaultSearch, defaultSort, startCategory } from '@utils/constants';
+import { defaultFilter, defaultSearch, defaultSort, NothingFoundByFiltering, startCategory } from '@utils/constants';
 import { findCategoryBySlug, prepareQuery, prepareQueryParams, simplifyCategories } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
@@ -76,6 +76,9 @@ export function Catalog() {
     try {
       const data = await sdkService.filterProductsByAttribute(filterParams);
       setProducts(data);
+      if (data.length === 0) {
+        errorNotify(NothingFoundByFiltering);
+      }
     } catch (e) {
       errorNotify((e as Error).message);
     }

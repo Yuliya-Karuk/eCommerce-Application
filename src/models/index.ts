@@ -20,6 +20,17 @@ export interface ProductCategory {
   typeId: string;
 }
 
+export interface ChangePasswordData {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface Country {
+  name: string;
+  code: string;
+  postalCodePattern: RegExp;
+  validationMessage: string;
+}
 export interface FiltersProps {
   values: string[];
   name: string;
