@@ -3,7 +3,7 @@ import { Input } from '@components/Input/Input';
 import { AddressesTypes, countries } from '@utils/constants';
 import { getPostalCodeValidationRules, isNotNullable } from '@utils/utils';
 import { cityValidationRules } from '@utils/validationConst';
-import classNames from 'classnames';
+import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from './AddressView.module.scss';
@@ -192,7 +192,7 @@ export function AddressView(props: AddressViewProps) {
             {isEditing ? 'Cancel' : 'Edit'}
           </button>
           <button
-            className={classNames(styles.submitButton, { [styles.hidden]: !isEditing })}
+            className={classnames(styles.submitButton, { [styles.hidden]: !isEditing })}
             type="submit"
             disabled={!(isValid && dataEdited)}
           >
@@ -200,7 +200,7 @@ export function AddressView(props: AddressViewProps) {
           </button>
           {id !== 'no-id' && (
             <button
-              className={classNames(styles.submitButton, { [styles.hidden]: isEditing })}
+              className={classnames(styles.submitButton, { [styles.hidden]: isEditing })}
               type="button"
               onClick={() => removeAddress(isNotNullable(address))}
             >

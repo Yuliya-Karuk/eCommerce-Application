@@ -9,6 +9,7 @@ import { ProfileAddresses } from '@components/ProfileAddresses/ProfileAddresses'
 import { ProfilePassword } from '@components/ProfilePassword/ProfilePassword';
 import { useAuth } from '@contexts/authProvider';
 import { useToast } from '@contexts/toastProvider';
+import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import styles from './profile.module.scss';
@@ -51,7 +52,8 @@ export const Profile = () => {
           <div className={styles.profileMenu}>
             {Object.entries(tabs).map(([key, value]) => (
               <button
-                className={styles.profileMenuButton}
+                className={classnames(styles.profileMenuButton, { [styles.active]: value === activeTab })}
+                // className={styles.profileMenuButton}
                 key={key}
                 type="button"
                 onClick={() => setActiveTab(tabs[key])}

@@ -1,5 +1,5 @@
 .page-wrapper {
-  @include flex(center, center, column);
+  @include flex(_, _, column);
   gap: 30px;
   padding: 20px;
   background-color: $color-bg-dark;
