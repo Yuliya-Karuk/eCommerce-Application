@@ -18,7 +18,7 @@ import { CategoryList, CustomCategory, Filters } from '@models/index';
 import { defaultFilter, defaultSearch, defaultSort, startCategory } from '@utils/constants';
 import { findCategoryBySlug, prepareQuery, prepareQueryParams, simplifyCategories } from '@utils/utils';
 import { useEffect, useState } from 'react';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import styles from './catalog.module.scss';
 
 const CatalogImages: { [key: string]: string } = {
@@ -37,17 +37,30 @@ export function Catalog() {
   const [products, setProducts] = useState<ProductProjection[]>([]);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [filters, setFilters] = useState<Filters>(prepareQuery(searchParams, defaultFilter));
   const [searchSettings, setSearchSettings] = useState(defaultSearch);
   const [sortSettings, setSortSettings] = useState(defaultSort);
+  const { category, subcategory, slug } = useParams();
+
+  const checkRoute = (urlSlugs: (string | undefined)[], data: CategoryList) => {
+    const urlSlug = urlSlugs.filter(el => el !== undefined).join('/');
+    const isExists = Object.values(data).filter(el => el.slug.join('/') === urlSlug);
+    if (isExists.length === 0) {
+      navigate('/404');
+    }
+  };
 
   const getCategories = async () => {
     try {
       const data = await sdkService.getCategories();
       const preparedData = simplifyCategories(data);
       preparedData.default = startCategory;
+
+      checkRoute([category, subcategory, slug], preparedData);
+
       setCategories(preparedData);
     } catch (e) {
       errorNotify((e as Error).message);

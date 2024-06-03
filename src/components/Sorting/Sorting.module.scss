@@ -6,6 +6,10 @@
   font-family: Questrial, sans-serif;
   border: 1px solid $color-gray-dark;
   border-radius: 5px;
+
+  button {
+    color: inherit;
+  }
 }
 
 .select-container {
