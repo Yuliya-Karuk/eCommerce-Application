@@ -2,8 +2,10 @@ import {
   Attribute,
   AttributeEnumType,
   AttributeSetType,
+  BaseAddress,
   Category,
   Image,
+  MyCustomerUpdateAction,
   ProductProjection,
   ProductType,
 } from '@commercetools/platform-sdk';
@@ -17,8 +19,9 @@ import {
   SearchSettings,
   SortSettings,
 } from '@models/index';
+import { RegisterOptions } from 'react-hook-form';
 import { ReactImageGalleryItem } from 'react-image-gallery';
-import { searchIdentifier } from './constants';
+import { countries, searchIdentifier, UpdateAddressActions } from './constants';
 
 export function isNotNullable<T>(value: T, errorMessage?: string): NonNullable<T> {
   if (value === undefined || value === null) {
@@ -242,6 +245,26 @@ export function dateSorting(productsArray: ProductProjection[]) {
   return productsArray.sort((a, b) => new Date(a.lastModifiedAt).getTime() - new Date(b.lastModifiedAt).getTime());
 }
 
+export function findAddresses(addresses: BaseAddress[], neededIds: string[] | undefined) {
+  if (neededIds) {
+    const newAddresses = addresses.filter(address => neededIds.includes(isNotNullable(address.id)));
+    return newAddresses;
+  }
+  return [];
+}
+
+export function findNewAddresses(
+  addresses: BaseAddress[],
+  billingIds: string[] | undefined,
+  shippingIds: string[] | undefined
+) {
+  const billingArr = billingIds === undefined ? [] : billingIds;
+  const shippingArr = shippingIds === undefined ? [] : shippingIds;
+  const needed = addresses.filter(
+    addr => !billingArr.includes(isNotNullable(addr.id)) && !shippingArr.includes(isNotNullable(addr.id))
+  );
+  return needed[0];
+}
 interface KeyValue {
   key: string;
   label: string;
@@ -287,3 +310,69 @@ export function convertImagesToReactImageGalleryItems(
   });
   return imageGallery;
 }
+
+export const getPostalCodeValidationRules = (selectedCountry: string): RegisterOptions => {
+  const currentCountry = countries.find(country => country.code === selectedCountry);
+  if (currentCountry) {
+    return {
+      required: 'Postal code is required',
+      pattern: {
+        value: currentCountry.postalCodePattern,
+        message: currentCountry.validationMessage,
+      },
+    };
+  }
+  return {
+    required: 'Postal code is required',
+  };
+};
+
+export const prepareAddressRequest = (
+  action: UpdateAddressActions,
+  newAddress: BaseAddress,
+  id?: string
+): MyCustomerUpdateAction[] => {
+  if (action === 'addAddress') {
+    return [
+      {
+        action,
+        address: newAddress,
+      },
+    ];
+  }
+
+  if (action === 'changeAddress' && id) {
+    return [
+      {
+        action,
+        addressId: id,
+        address: newAddress,
+      },
+    ];
+  }
+
+  if (
+    action === 'addShippingAddressId' ||
+    action === 'addBillingAddressId' ||
+    action === 'removeAddress' ||
+    (action === 'setDefaultShippingAddress' && id) ||
+    (action === 'setDefaultBillingAddress' && id)
+  ) {
+    return [
+      {
+        action,
+        addressId: id,
+      },
+    ];
+  }
+
+  if ((action === 'setDefaultShippingAddress' || action === 'setDefaultBillingAddress') && !id) {
+    return [
+      {
+        action,
+      },
+    ];
+  }
+
+  throw new Error('There is no such action for change address');
+};

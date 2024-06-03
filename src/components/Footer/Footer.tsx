@@ -83,7 +83,9 @@ export const Footer: FC = () => {
               <ul className={styles.footerList}>
                 {shop.map(item => (
                   <li key={Math.random().toString(36).slice(2)} className={styles.footerListItem}>
-                    <Link to={item.link}>{item.name}</Link>
+                    <Link to={item.link} className={styles.footerLink}>
+                      {item.name}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -104,7 +106,7 @@ export const Footer: FC = () => {
           <hr className={styles.footerSeparator} />
 
           <div className={styles.footerCopyright}>
-            © 2024 by Sprout. Created as part of a RSScool school training program.
+            © 2024 by Sprout. Created as part of a RS School school training program.
           </div>
         </div>
       </Container>
