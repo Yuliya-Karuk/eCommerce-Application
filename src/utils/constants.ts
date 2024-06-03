@@ -17,6 +17,8 @@ export const SuccessChangeAddressMessage = 'Congratulations, your address was su
 
 export const SuccessRemoveAddressMessage = 'Congratulations, your address was successfully deleted!';
 
+export const NothingFoundByFiltering = "Sorry, we didn't find any products that meet your criteria.";
+
 export const countries: Country[] = [
   {
     name: 'Germany',
@@ -79,6 +81,7 @@ export type UpdateAddressActions =
   | 'setDefaultShippingAddress'
   | 'setDefaultBillingAddress'
   | 'removeAddress';
+
 export const startCategory = {
   name: 'All Products',
   id: '',
