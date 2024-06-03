@@ -1,11 +1,13 @@
 import eyeOff from '@assets/eye-off.svg';
 import eyeOn from '@assets/eye-show.svg';
 import { sdkService } from '@commercetool/sdk.service';
+import { tokenController } from '@commercetool/token.service';
 import { Customer } from '@commercetools/platform-sdk';
 import { Input } from '@components/Input/Input';
 import { useToast } from '@contexts/toastProvider';
 import { ChangePasswordData } from '@models/index';
 import { SuccessUpdatePasswordMessage } from '@utils/constants';
+import { storage } from '@utils/storage';
 import { passwordValidationRules } from '@utils/validationConst';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
@@ -48,7 +50,10 @@ export const ProfilePassword = ({ customerData, setCustomerData }: ProfilePasswo
         ...data,
       });
       resetPasswordFields();
+
       result = await sdkService.loginUser(result.email, data.newPassword);
+      storage.setTokenStore(tokenController.get());
+
       setCustomerData(result);
       successNotify(SuccessUpdatePasswordMessage);
     } catch (e) {
