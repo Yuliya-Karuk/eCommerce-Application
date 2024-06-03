@@ -1,0 +1,21 @@
+.link-button {
+  @include adaptiveValue('font-size', 18px, 14px);
+  min-width: 142px;
+  text-align: center;
+
+  @include hover {
+    background-color: $color-bg-dark-alpha;
+    border-color: $color-bg-dark-alpha;
+    box-shadow: rgb(0 0 0 / 60%);
+  }
+  overflow: hidden;
+  margin-top: 20px;
+  padding: 15px 22px;
+  font-family: Questrial, Arial, Helvetica, serif;
+  border: 1px solid $color-white;
+  border-radius: 5px;
+  transition:
+    border-color 0.4s ease 0s,
+    background-color 0.4s ease 0s,
+    box-shadow 0.4s ease 0s;
+}

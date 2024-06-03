@@ -20,6 +20,7 @@ export const NewArrivalsCard: FC<NewArrivalsCardProps> = ({ product, categories,
     <article className={styles.newarrivalsItem} id={product.id} {...props}>
       <div
         className={styles.newarrivalsCardImage}
+        data-mark="New Arrival"
         onMouseEnter={() => {
           setIsImgHover(true);
         }}

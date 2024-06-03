@@ -10,7 +10,7 @@
   &-image {
     position: relative;
     overflow: hidden;
-    width: 100%;
+    width: fit-content;
     height: 100%;
     color: $color-white;
 
@@ -22,7 +22,7 @@
       transform: translateX(-50%);
       display: inline-block;
       font-family: Corben, Arial, Helvetica, serif;
-      font-size: 24px;
+      font-size: var(--logo-font-size, 24px);
     }
 
     svg {
