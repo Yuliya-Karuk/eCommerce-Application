@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { sdkService } from '@commercetool/sdk.service';
 import { Banner } from '@components/Banner/Banner';
 import { Discover } from '@components/Discover/Discover';
 import { Footer } from '@components/Footer/Footer';
@@ -14,20 +12,16 @@ export function Home() {
   const { isLoginSuccess, setIsLoginSuccess } = useAuth();
   const { customToast, successNotify } = useToast();
 
-  const getProds = async () => {
-    await sdkService.getProducts();
-  };
-
   const notify = () => {
     successNotify();
     setIsLoginSuccess(false);
   };
 
   useEffect(() => {
-    getProds();
     if (isLoginSuccess) {
       notify();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

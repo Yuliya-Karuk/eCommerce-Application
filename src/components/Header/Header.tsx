@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import sprite from '@assets/sprite.svg';
 import { Container } from '@components/Container/Container';
 import { Logo } from '@components/Logo/Logo';

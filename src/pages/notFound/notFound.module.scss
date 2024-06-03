@@ -21,9 +21,7 @@
   @extend %transition;
 
   @include hover {
-    &:hover {
-      background: $color-green-dark;
-    }
+    background: $color-green-dark;
   }
   margin-top: 20px;
   padding: 10px 20px;
