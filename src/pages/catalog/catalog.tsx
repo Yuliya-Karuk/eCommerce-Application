@@ -10,6 +10,7 @@ import { Container } from '@components/Container/Container';
 import { FiltersComponent } from '@components/Filters/Filters';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
+import { Loader } from '@components/Loader/Loader';
 import { ProductCard } from '@components/ProductCard/ProductCard';
 import { Search } from '@components/Search/Search';
 import { Sorting } from '@components/Sorting/Sorting';
@@ -39,11 +40,12 @@ export function Catalog() {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { category, subcategory, slug } = useParams();
+  const [loading, setLoading] = useState<boolean>(true);
 
   const [filters, setFilters] = useState<Filters>(prepareQuery(searchParams, defaultFilter));
   const [searchSettings, setSearchSettings] = useState(defaultSearch);
   const [sortSettings, setSortSettings] = useState(defaultSort);
-  const { category, subcategory, slug } = useParams();
 
   const checkRoute = (urlSlugs: (string | undefined)[], data: CategoryList) => {
     const urlSlug = urlSlugs.filter(el => el !== undefined).join('/');
@@ -51,6 +53,7 @@ export function Catalog() {
     if (isExists.length === 0) {
       navigate('/404');
     }
+    setLoading(false);
   };
 
   const getCategories = async () => {
@@ -120,6 +123,10 @@ export function Catalog() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className={styles.catalog}>
