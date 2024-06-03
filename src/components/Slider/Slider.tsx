@@ -2,6 +2,7 @@ import { Image } from '@commercetools/platform-sdk';
 import { convertImagesToReactImageGalleryItems } from '@utils/utils';
 import { useRef, useState } from 'react';
 import ReactImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
+import 'react-image-gallery/styles/css/image-gallery.css';
 import styles from './Slider.module.scss';
 
 interface SliderProps {

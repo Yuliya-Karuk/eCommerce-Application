@@ -14,8 +14,8 @@ import { useToast } from '@contexts/toastProvider';
 import { assertValue, convertCentsToDollarsString, convertProductAttributesArrayToObject } from '@utils/utils';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
-import 'react-image-gallery/styles/css/image-gallery.css';
-import { useParams } from 'react-router-dom';
+
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from './productItem.module.scss';
 
 export function ProductItem() {
@@ -23,6 +23,8 @@ export function ProductItem() {
 
   assertValue(category, "can't find the product category");
   assertValue(slug, "can't find the product key (slug)");
+
+  const navigate = useNavigate();
 
   const [showHeart, setShowHeart] = useState(false);
   const [product, setProduct] = useState<ProductProjection>({} as ProductProjection);
@@ -37,6 +39,22 @@ export function ProductItem() {
         setLoading(true);
 
         const data = await sdkService.getProductProjectionByKey(slug);
+        const { categories } = data;
+        const [category1, category2] = categories;
+
+        const category1Slug = await sdkService.getCategoryById(category1.id).then(cat1 => cat1[0].slug['en-US']);
+        const category2Slug = category2
+          ? await sdkService.getCategoryById(category2.id).then(cat2 => cat2[0].slug['en-US'])
+          : null;
+
+        const isCategoriesCorrect =
+          (category === category1Slug && (!subcategory || subcategory === category2Slug)) ||
+          (category === category2Slug && (!subcategory || subcategory === category1Slug));
+
+        if (!isCategoriesCorrect) {
+          navigate('/404');
+        }
+
         setProduct(data);
         setActiveVariant(data.masterVariant);
 
