@@ -19,14 +19,14 @@ export const defaultFilter: Filters = {
   price: [],
 };
 
-export const defaultPriceBorder = ['5.99', '100.00'];
+export const defaultPriceLimits = ['5.99', '100.00'];
 
 export const searchIdentifier = 'text.en-US';
 
 export const defaultSearch: SearchSettings = {
   'text.en-US': '',
   fuzzy: true,
-  fuzzyLevel: 0,
+  fuzzyLevel: 1,
 };
 
 export const defaultSort: SortSettings = {

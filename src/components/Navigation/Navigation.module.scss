@@ -6,6 +6,7 @@
   overflow: hidden;
   color: $color-white;
   background-color: $color-bg-dark-alpha;
+  backdrop-filter: blur(10px);
   border: 1px solid $color-gray-dark;
   border-radius: 5px;
 

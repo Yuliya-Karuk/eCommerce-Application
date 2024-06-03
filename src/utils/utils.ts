@@ -1,12 +1,11 @@
 import {
-  Attribute,
   AttributeEnumType,
   AttributeSetType,
   Category,
   Image,
+  ProductProjection,
   ProductType,
 } from '@commercetools/platform-sdk';
-import { ProductAttributes } from '@components/ProductAttributes/ProductAttributesView';
 import {
   CategoryList,
   CustomCategory,
@@ -235,6 +234,10 @@ export function prepareQueryParams(
   }
 
   return queryParams;
+}
+
+export function dateSorting(productsArray: ProductProjection[]) {
+  return productsArray.sort((a, b) => new Date(a.lastModifiedAt).getTime() - new Date(b.lastModifiedAt).getTime());
 }
 
 interface KeyValue {

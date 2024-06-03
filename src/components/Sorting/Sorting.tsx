@@ -1,7 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import { SortSettings } from '@models/index';
 import classnames from 'classnames';
 import { useState } from 'react';
@@ -16,11 +12,6 @@ interface SortOption {
   value: string;
   label: string;
 }
-
-// sort: `price asc`, `price desc`,
-// sort: `name.en-US asc`
-// sort: `name.en-US desc`
-// currencyCode: "USD"
 
 const options: SortOption[] = [
   { value: '', label: 'Default' },
@@ -46,16 +37,31 @@ export const Sorting = ({ sortSettings, setSortSettings }: SortProps) => {
 
   return (
     <div className={styles.sort}>
-      <label htmlFor="sort">SORT BY:</label>
+      <p>SORT BY:</p>
       <div className={styles.selectContainer}>
-        <div className={styles.selectHeader} onClick={() => setIsOpen(!isOpen)}>
+        <button
+          id="sort"
+          type="button"
+          className={styles.selectHeader}
+          onClick={() => setIsOpen(!isOpen)}
+          aria-controls="listbox"
+          aria-haspopup="listbox"
+          tabIndex={0}
+          aria-expanded={isOpen}
+        >
           {selectedOption.label}
           <span className={classnames(styles.selectSpan, { [styles.open]: isOpen })} />
-        </div>
+        </button>
         {isOpen && (
-          <ul className={styles.selectList}>
+          <ul className={styles.selectList} role="listbox" id="listbox">
             {options.map(option => (
-              <li key={option.value} className={styles.selectItem} onClick={() => handleOptionClick(option)}>
+              <li
+                key={option.value}
+                className={styles.selectItem}
+                onClick={() => handleOptionClick(option)}
+                role="option"
+                aria-selected={selectedOption === option}
+              >
                 {option.label}
               </li>
             ))}

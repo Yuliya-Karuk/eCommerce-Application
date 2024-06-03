@@ -28,6 +28,10 @@
     background-color: $color-bg-dark-alpha;
     border: 1px solid $color-gray-dark;
     border-radius: 5px;
+
+    &[type='button'] {
+      @include animatebtn;
+    }
   }
 
   &-icon {

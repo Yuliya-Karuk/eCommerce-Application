@@ -11,10 +11,12 @@
     @include hover {
       color: $color-gray-dark;
     }
+    color: inherit;
   }
 }
 
 .breadcrumbs-link {
+  color: inherit;
   text-transform: capitalize;
 
   &:last-of-type {

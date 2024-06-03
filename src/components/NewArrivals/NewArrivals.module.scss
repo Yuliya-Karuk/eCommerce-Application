@@ -1,0 +1,51 @@
+.newarrivals {
+  padding: 4.5% 2%;
+  background-color: $color-bg-light;
+
+  &-body {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 8px;
+  }
+
+  &-header {
+    @include flex(space-between, center);
+    padding-bottom: 5.1%;
+  }
+
+  &-title {
+    @include adaptiveValue('font-size', 60px, 35px);
+    font-weight: 400;
+    color: $color-bg-dark;
+  }
+
+  &-shopall {
+    @include flex(center);
+    @include adaptiveValue('font-size', 18px, 14px);
+
+    @include hover {
+      background-color: $color-green-dark;
+    }
+    min-width: 70px;
+    min-height: 30px;
+    padding: 1.25% 2.6%;
+    font-family: Questrial, Arial, Helvetica, serif;
+    color: $color-white;
+    text-align: center;
+    background-color: $color-primary-bright;
+    border-radius: 5px;
+    transition: background-color 0.4s ease 0s;
+
+    &[type='button'] {
+      @include animatebtn;
+    }
+  }
+
+  &-list {
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(rem(300px), 1fr));
+    gap: 18px;
+    margin: 0 auto;
+  }
+}
