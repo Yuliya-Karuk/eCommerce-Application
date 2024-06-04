@@ -49,7 +49,7 @@
 }
 
 .buttons {
-  @include flex(_, _, _, 20px);
+  @include flex(null, null, null, 20px);
   display: flex;
   flex-wrap: wrap;
   width: 100%;

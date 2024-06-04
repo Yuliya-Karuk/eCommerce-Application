@@ -40,7 +40,7 @@
   padding: 10px 0;
 
   &.open {
-    @include flex(flex-start, flex-start, _, 5px);
+    @include flex(flex-start, flex-start, null, 5px);
     flex-wrap: wrap;
   }
 }

@@ -1,8 +1,6 @@
 %footerflex {
-  @include flex(space-between, null);
+  @include flex(space-between, null, null, 10px);
   padding: 10px;
-  row-gap: 10px;
-  column-gap: 10px;
 }
 
 %list-section {
@@ -12,7 +10,7 @@
 
 %font {
   font-family: Questrial, Arial, Helvetica, serif;
-  @include adaptiveValue('font-size', 16px, 12px);
+  @include adaptiveValue('font-size', 16px, 10px);
 }
 
 .footer {
@@ -26,6 +24,10 @@
 
     @include smalltablet {
       row-gap: 15px;
+    }
+
+    @include mobile {
+      padding: 0;
     }
   }
 
@@ -43,8 +45,7 @@
 
     @include smalltablet {
       flex-wrap: wrap;
-      row-gap: 25px;
-      column-gap: 35px;
+      gap: 25px;
     }
   }
 
@@ -79,6 +80,23 @@
 
     @include smalltablet {
       row-gap: 15px;
+    }
+  }
+
+  &-contacts,
+  &-opening-hours {
+    @include mobile {
+      order: 2;
+    }
+  }
+
+  &-shop {
+    text-align: end;
+
+    @include mobile {
+      width: 100%;
+      order: 1;
+      align-items: center;
     }
   }
 

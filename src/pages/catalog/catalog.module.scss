@@ -3,7 +3,7 @@
 }
 
 .catalog-container {
-  @include flex(flex-start, flex-start, 15px);
+  @include flex(flex-start, flex-start, null, 15px);
 }
 
 .catalog-content {
@@ -46,11 +46,17 @@
   @include smalltablet {
     display: block;
   }
+
+  @include smallmobile {
+    width: 100%;
+    max-width: calc(100% - 60px);
+  }
   display: none;
   width: 240px;
   padding: 10px 15px;
   font-family: Questrial, sans-serif;
   text-transform: uppercase;
+  color: inherit;
   border: 1px solid $color-gray-dark;
   border-radius: 5px;
 }
