@@ -1,6 +1,5 @@
 .links {
-  @include flex(center, center, column);
-  gap: 5px;
+  @include flex(center, center, column, 5px);
 }
 
 .to-main-link {
@@ -27,9 +26,7 @@
 }
 
 .link-wrapper {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
+  @include flex(center, _, _, 10px);
 
   .subtitle {
     color: $color-white;

@@ -1,6 +1,5 @@
 .filter {
-  @include flex(flex-start, flex-start, column);
-  gap: 10px;
+  @include flex(flex-start, flex-start, column, 10px);
   width: 100%;
   padding-bottom: 5px;
 }
@@ -38,11 +37,10 @@
 
 .colors-container {
   display: none;
-  gap: 5px;
   padding: 10px 0;
 
   &.open {
-    @include flex(flex-start, flex-start);
+    @include flex(flex-start, flex-start, _, 5px);
     flex-wrap: wrap;
   }
 }

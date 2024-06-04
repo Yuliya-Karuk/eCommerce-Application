@@ -1,6 +1,5 @@
 .filter {
-  @include flex(flex-start, flex-start, column);
-  gap: 10px;
+  @include flex(flex-start, flex-start, column, 10px);
   width: 100%;
   padding-bottom: 5px;
 }
@@ -8,11 +7,10 @@
 .filters-list {
   @include adaptiveValue('font-size', 16px, 14px);
   display: none;
-  gap: 15px;
   line-height: 1.2;
 
   &.open {
-    @include flex(flex-start, flex-start, column);
+    @include flex(flex-start, flex-start, column, 15px);
   }
 }
 

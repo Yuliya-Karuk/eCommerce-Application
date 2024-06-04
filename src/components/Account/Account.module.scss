@@ -1,7 +1,6 @@
 .form {
-  @include flex(flex-start, center, row);
+  @include flex(flex-start, center, row, 25px);
   flex-wrap: wrap;
-  gap: 25px;
   font-size: 1.5rem;
 
   input[type='date'] {
@@ -50,9 +49,9 @@
 }
 
 .buttons {
+  @include flex(_, _, _, 20px);
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
   width: 100%;
   margin-top: 1rem;
 

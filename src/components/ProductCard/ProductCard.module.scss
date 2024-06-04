@@ -1,6 +1,5 @@
 .product-card {
-  @include flex(flex-start, flex-start, column);
-  gap: 15px;
+  @include flex(flex-start, flex-start, column, 10px);
   width: 100%;
   font-family: Questrial, sans-serif;
 }
@@ -81,8 +80,7 @@
 
 .product-card-prices {
   @include adaptiveValue('font-size', 20px, 14px);
-  @include flex(flex-start, center);
-  gap: 10px;
+  @include flex(flex-start, center, _, 10px);
 
   .crossed {
     @include adaptiveValue('font-size', 18px, 12px);
