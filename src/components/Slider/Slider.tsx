@@ -1,6 +1,6 @@
 import { Image } from '@commercetools/platform-sdk';
 import { convertImagesToReactImageGalleryItems } from '@utils/utils';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import styles from './Slider.module.scss';
@@ -12,11 +12,19 @@ interface SliderProps {
 export function Slider({ images }: SliderProps) {
   const galleryRef = useRef<ReactImageGallery>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const slides: ReactImageGalleryItem[] = convertImagesToReactImageGalleryItems(images, isFullscreen, styles.sliderImg);
 
+  useEffect(() => {
+    if (galleryRef.current) {
+      galleryRef.current.slideToIndex(currentIndex);
+    }
+  }, [isFullscreen, currentIndex]);
+
   const handleImageClick = () => {
     if (galleryRef.current) {
+      setCurrentIndex(galleryRef.current.getCurrentIndex());
       if (isFullscreen) {
         galleryRef.current.exitFullScreen();
       } else {
