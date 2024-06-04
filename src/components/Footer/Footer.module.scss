@@ -90,9 +90,11 @@
     }
   }
 
-  &-shop {
+  &-opening-hours {
     text-align: end;
+  }
 
+  &-shop {
     @include mobile {
       width: 100%;
       order: 1;
