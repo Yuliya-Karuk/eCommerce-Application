@@ -16,12 +16,6 @@ export function Slider({ images }: SliderProps) {
 
   const slides: ReactImageGalleryItem[] = convertImagesToReactImageGalleryItems(images, isFullscreen, styles.sliderImg);
 
-  // useEffect(() => {
-  //   if (galleryRef.current) {
-  //     galleryRef.current.slideToIndex(currentIndex);
-  //   }
-  // }, [isFullscreen, currentIndex]);
-
   const handleImageClick = () => {
     if (galleryRef.current) {
       setCurrentIndex(galleryRef.current.getCurrentIndex());
@@ -60,7 +54,7 @@ export function Slider({ images }: SliderProps) {
       <ReactImageGallery
         ref={galleryRef}
         showNav={isFullscreen}
-        showBullets={!isFullscreen}
+        showBullets
         lazyLoad
         autoPlay
         showThumbnails={false}
@@ -73,7 +67,6 @@ export function Slider({ images }: SliderProps) {
         onMouseOver={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         startIndex={currentIndex}
-        disableThumbnailScroll
       />
     </div>
   );
