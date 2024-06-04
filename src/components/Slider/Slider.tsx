@@ -1,6 +1,6 @@
 import { Image } from '@commercetools/platform-sdk';
 import { convertImagesToReactImageGalleryItems } from '@utils/utils';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import ReactImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import styles from './Slider.module.scss';
@@ -16,11 +16,11 @@ export function Slider({ images }: SliderProps) {
 
   const slides: ReactImageGalleryItem[] = convertImagesToReactImageGalleryItems(images, isFullscreen, styles.sliderImg);
 
-  useEffect(() => {
-    if (galleryRef.current) {
-      galleryRef.current.slideToIndex(currentIndex);
-    }
-  }, [isFullscreen, currentIndex]);
+  // useEffect(() => {
+  //   if (galleryRef.current) {
+  //     galleryRef.current.slideToIndex(currentIndex);
+  //   }
+  // }, [isFullscreen, currentIndex]);
 
   const handleImageClick = () => {
     if (galleryRef.current) {
@@ -63,7 +63,7 @@ export function Slider({ images }: SliderProps) {
         showBullets={!isFullscreen}
         lazyLoad
         autoPlay
-        showThumbnails={isFullscreen}
+        showThumbnails={false}
         useBrowserFullscreen={false}
         items={slides}
         onScreenChange={handleScreenChange}
@@ -72,6 +72,8 @@ export function Slider({ images }: SliderProps) {
         onClick={handleImageClick}
         onMouseOver={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        startIndex={currentIndex}
+        disableThumbnailScroll
       />
     </div>
   );
