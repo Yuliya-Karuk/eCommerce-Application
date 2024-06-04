@@ -26,9 +26,27 @@ export function Slider({ images }: SliderProps) {
     }
   };
 
+  const handleMouseEnter = () => {
+    if (galleryRef.current) {
+      galleryRef.current.pause();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (galleryRef.current) {
+      galleryRef.current.play();
+    }
+  };
+
   const handleScreenChange = (isFullScreen: boolean) => {
     setIsFullscreen(isFullScreen);
+    if (isFullScreen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
   };
+
   return (
     <div className={styles.sliderWrapper}>
       <ReactImageGallery
@@ -42,7 +60,10 @@ export function Slider({ images }: SliderProps) {
         items={slides}
         onScreenChange={handleScreenChange}
         showFullscreenButton={false}
+        showPlayButton={false}
         onClick={handleImageClick}
+        onMouseOver={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       />
     </div>
   );
