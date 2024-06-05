@@ -1,0 +1,70 @@
+.cart {
+  @include flex(flex-end, flex-start, row, 50px);
+  flex-wrap: wrap;
+  margin: 30px 8px;
+  font-family: questrial, sans-serif;
+  font-size: 1.8rem;
+
+  .my-cart {
+    flex: 1 1 390px;
+
+    &-header {
+      font-family: questrial, sans-serif;
+      font-size: 2rem;
+      border-bottom: 1px solid $color-gray-dark;
+    }
+
+    .products-wrapper {
+      @include flex(flex-start, flex-start, column, 10px);
+      padding: 20px 0;
+      border-bottom: 1px solid $color-gray-dark;
+    }
+
+    .promo-code {
+      margin: 10px 0;
+    }
+  }
+
+  .order-summary {
+    @include flex(flex-start, flex-start, column, 10px);
+    flex: 0 1 350px;
+
+    &-header {
+      width: 100%;
+      font-family: questrial, sans-serif;
+      font-size: 2rem;
+      border-bottom: 1px solid $color-gray-dark;
+    }
+
+    .products-wrapper {
+      @include flex(flex-start, flex-start, column, 5px);
+      width: 100%;
+      padding: 10px 0;
+      border-bottom: 1px solid $color-gray-dark;
+    }
+
+    .checkout-button {
+      @extend %transition;
+      width: 280px;
+      padding: 8px;
+      font-size: 1.8rem;
+      color: $color-white;
+      background-color: $color-primary-bright;
+      border-radius: 5px;
+
+      &:hover {
+        background-color: $color-primary-dull;
+      }
+
+      @media (max-width: 540px) {
+        font-size: 1.8rem;
+      }
+    }
+  }
+
+  .separator {
+    display: block;
+    height: 1px;
+    background-color: $color-gray-dark;
+  }
+}

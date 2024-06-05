@@ -1,6 +1,6 @@
 .gramm {
-  background-color: $color-green-dark;
   padding: 4% 3%;
+  background-color: $color-green-dark;
 
   &-body {
     width: 100%;
@@ -8,8 +8,8 @@
 
   &-title {
     @include adaptiveValue('font-size', 80px, 48px);
-    text-align: center;
     padding-bottom: 3.3%;
+    text-align: center;
   }
 
   &-gallery {
@@ -19,36 +19,35 @@
     margin: 0 auto;
 
     &-item {
-      position: relative;
-      width: fit-content;
-      height: auto;
-      overflow: hidden;
-
-      img {
-        transition: transform 0.8s ease 0s;
-      }
-
       @include hover {
+        &::before {
+          @include flex(center);
+          @include adaptiveValue('font-size', 18px, 5px);
+          content: attr(title);
+          position: absolute;
+          z-index: 1;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          padding: 10%;
+          font-family: Questrial, Arial, Helvetica, serif;
+          text-align: center;
+          background-color: $color-gramm-alpha;
+          transition: all 0.8s ease 0s;
+        }
+
         img {
           transform: scale(1.1);
         }
+      }
+      position: relative;
+      overflow: hidden;
+      width: fit-content;
+      height: auto;
 
-        &::before {
-          content: attr(title);
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          top: 0;
-          left: 0;
-          @include flex(center);
-          padding: 10%;
-          background-color: $color-gramm-alpha;
-          @include adaptiveValue('font-size', 18px, 5px);
-          font-family: Questrial, Arial, Helvetica, serif;
-          text-align: center;
-          transition: all 0.8s ease 0s;
-          z-index: 1;
-        }
+      img {
+        transition: transform 0.8s ease 0s;
       }
     }
 

@@ -1,8 +1,8 @@
 %footerflex {
   @include flex(space-between, null);
-  padding: 10px;
   row-gap: 10px;
   column-gap: 10px;
+  padding: 10px;
 }
 
 %list-section {
@@ -11,8 +11,8 @@
 }
 
 %font {
-  font-family: Questrial, Arial, Helvetica, serif;
   @include adaptiveValue('font-size', 16px, 12px);
+  font-family: Questrial, Arial, Helvetica, serif;
 }
 
 .footer {
@@ -20,22 +20,21 @@
 
   &-body {
     @include flex(null, null, column);
-    row-gap: 25px;
-    padding: 0 15px;
-    margin-top: 5px;
 
     @include smalltablet {
       row-gap: 15px;
     }
+    row-gap: 25px;
+    margin-top: 5px;
+    padding: 0 15px;
   }
 
   &-logo {
-    padding: 25px 10px;
-    margin-top: 15px;
-
     @include smalltablet {
       display: none;
     }
+    margin-top: 15px;
+    padding: 25px 10px;
   }
 
   &-info {
@@ -61,15 +60,15 @@
   }
 
   &-copyright {
-    width: 100%;
     @extend %font;
-    text-align: center;
-    padding: 10px;
-    margin-bottom: 15px;
 
     @include smalltablet {
       margin-bottom: 5px;
     }
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    text-align: center;
   }
 
   &-contacts,
