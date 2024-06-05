@@ -1,6 +1,6 @@
 import heart from '@assets/heart.svg';
 import { sdkService } from '@commercetool/sdk.service';
-import { ProductProjection, ProductVariant } from '@commercetools/platform-sdk';
+import { CartUpdateAction, ProductProjection, ProductVariant } from '@commercetools/platform-sdk';
 import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
 import { Container } from '@components/Container/Container';
 import { Footer } from '@components/Footer/Footer';
@@ -10,11 +10,12 @@ import { ProductAttributes, ProductAttributesView } from '@components/ProductAtt
 import { ProductInfoSection } from '@components/ProductInfoSection/ProductInfoSection';
 import { QuantityInput } from '@components/QuantityInput/QuantityInput';
 import { Slider } from '@components/Slider/Slider';
+import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
+import { storage } from '@utils/storage';
 import { assertValue, convertCentsToDollarsString, convertProductAttributesArrayToObject } from '@utils/utils';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
-
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './productItem.module.scss';
 
@@ -25,6 +26,7 @@ export function ProductItem() {
   assertValue(slug, "can't find the product key (slug)");
 
   const navigate = useNavigate();
+  const { cart, setCart } = useCart();
 
   const [showHeart, setShowHeart] = useState(false);
   const [product, setProduct] = useState<ProductProjection>({} as ProductProjection);
@@ -106,8 +108,6 @@ export function ProductItem() {
     }
   });
 
-  // const { cart, setCart } = useCart();
-
   const handleFavoriteClick = () => {
     setShowHeart(true);
     setTimeout(() => {
@@ -115,15 +115,21 @@ export function ProductItem() {
     }, 400);
   };
 
-  const handleAddToCartClick = () => {
-    // console.log(cart.version);
-    // const order = {
-    //   action: 'addLineItem',
-    //   productId: product.id,
-    //   variantId: activeVariant.id,
-    //   quantity,
-    // };
-    // console.log(order);
+  const handleAddToCartClick = async () => {
+    const order: CartUpdateAction = {
+      action: 'addLineItem',
+      productId: product.id,
+      variantId: activeVariant.id,
+      quantity,
+    };
+    console.log(order);
+
+    const cartId = storage.getCartStore();
+    const cartVersion = cart.version;
+
+    assertValue(cartId, 'no cart id in LocalStorage');
+
+    setCart(await sdkService.addProductAnonymousCart(cartId, cartVersion, order));
   };
 
   return (
