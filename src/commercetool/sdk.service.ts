@@ -169,7 +169,7 @@ export class SdkService {
       .carts()
       .post({
         body: {
-          currency: 'EUR',
+          currency: 'USD',
         },
       })
       .execute();

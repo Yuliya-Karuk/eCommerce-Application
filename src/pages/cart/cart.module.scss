@@ -43,6 +43,13 @@
       border-bottom: 1px solid $color-gray-dark;
     }
 
+    .total-price-wrapper {
+      font-size: 2rem;
+      @include flex(space-between, center, row, 5px);
+      width: 100%;
+      justify-content: space-between;
+    }
+
     .checkout-button {
       @extend %transition;
       width: 280px;

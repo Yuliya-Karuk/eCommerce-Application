@@ -26,7 +26,9 @@ export function Cart() {
               <div>Product_name 2$</div>
               <div>Product_name 3$</div>
             </div>
-            <p>Total: 70$</p>
+            <div className={styles.totalPriceWrapper}>
+              Total: <span>70$</span>
+            </div>
             <button type="button" className={styles.checkoutButton}>
               Checkout
             </button>
