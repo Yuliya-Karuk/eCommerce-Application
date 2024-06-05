@@ -1,5 +1,6 @@
 import {
   ByProjectKeyRequestBuilder,
+  CartUpdateAction,
   Category,
   ClientResponse,
   createApiBuilderFromCtpClient,
@@ -162,6 +163,43 @@ export class SdkService {
 
     return category.body.results;
   }
+
+  public async createAnonymousCart() {
+    const data = await this.apiRoot
+      .carts()
+      .post({
+        body: {
+          currency: 'EUR',
+        },
+      })
+      .execute();
+    return data.body;
+  }
+
+  public async getAnonymousCart(cartId: string) {
+    const data = await this.apiRoot.carts().withId({ ID: cartId }).get().execute();
+    return data.body;
+  }
+
+  public async addProductAnonymousCart(cartId: string, cartVersion: number, action: CartUpdateAction) {
+    const data = await this.apiRoot
+      .carts()
+      .withId({ ID: cartId })
+      .post({
+        body: {
+          version: cartVersion,
+          actions: [action],
+        },
+      })
+      .execute();
+    return data.body;
+  }
+  // {
+  //   action: 'addLineItem',
+  //   productId,
+  //   variantId,
+  //   quantity,
+  // },
 }
 
 export const sdkService = new SdkService();

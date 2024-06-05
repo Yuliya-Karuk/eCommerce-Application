@@ -1,3 +1,4 @@
+import { CartProvider } from '@contexts/cartProvider';
 import { ToastProvider } from '@contexts/toastProvider';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -12,7 +13,9 @@ ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <AuthProvider>
       <ToastProvider>
-        <RouterProvider router={router} />
+        <CartProvider>
+          <RouterProvider router={router} />
+        </CartProvider>
       </ToastProvider>
     </AuthProvider>
   </React.StrictMode>
