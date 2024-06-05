@@ -116,7 +116,7 @@ export function ProductItem() {
       action: 'addLineItem',
       productId: product.id,
       variantId: activeVariant.id,
-      quantity: 1,
+      quantity,
     };
     console.log(order);
 
