@@ -52,11 +52,11 @@ export const UserMenu: FC = () => {
         </svg>
       </div>
 
-      <div className={styles.userMenuCart} data-tooltip={ToolTips.CART}>
+      <Link to={AppRoutes.CART_ROUTE} className={styles.userMenuCart} data-tooltip={ToolTips.CART}>
         <svg width={iconSizeNumber} height={iconSizeNumber}>
           <use xlinkHref={`${sprite}#cart`} />
         </svg>
-      </div>
+      </Link>
     </div>
   );
 };

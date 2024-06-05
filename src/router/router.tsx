@@ -1,4 +1,5 @@
 import { About } from '@pages/about/about';
+import { Cart } from '@pages/cart/cart';
 import { Catalog } from '@pages/catalog/catalog';
 import { Home } from '@pages/home/home';
 import { Login } from '@pages/login/login';
@@ -22,5 +23,6 @@ export const router = createBrowserRouter([
   { path: AppRoutes.PROFILE_ROUTE, element: <Profile /> },
   { path: `${AppRoutes.PRODUCTS_ROUTE}/:slug`, element: <ProductItem /> },
   { path: `${AppRoutes.PRODUCTS_ROUTE}/:slug/:key`, element: <ProductItem /> },
+  { path: AppRoutes.CART_ROUTE, element: <Cart /> },
   { path: '*', element: <NotFoundPage /> },
 ]);
