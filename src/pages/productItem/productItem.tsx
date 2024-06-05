@@ -106,6 +106,8 @@ export function ProductItem() {
     }
   });
 
+  // const { cart, setCart } = useCart();
+
   const handleFavoriteClick = () => {
     setShowHeart(true);
     setTimeout(() => {
@@ -114,6 +116,7 @@ export function ProductItem() {
   };
 
   const handleAddToCartClick = () => {
+    // console.log(cart.version);
     // const order = {
     //   action: 'addLineItem',
     //   productId: product.id,

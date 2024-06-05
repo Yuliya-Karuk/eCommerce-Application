@@ -1,7 +1,7 @@
 import { sdkService } from '@commercetool/sdk.service';
 import { Cart } from '@commercetools/platform-sdk';
 import { storage } from '@utils/storage';
-import { createContext, ReactNode, useEffect, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
 interface CartContextValue {
   cart: Cart;
@@ -25,9 +25,19 @@ export const CartProvider = ({ children }: CartProviderProps) => {
       setCart(data);
     };
 
-    // Запрашиваем данные корзины при загрузке компонента
     fetchCart();
   }, []);
 
   return <CartContext.Provider value={{ cart, setCart }}>{children}</CartContext.Provider>;
+};
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const useCart = () => {
+  const context = useContext(CartContext);
+
+  if (context === undefined) {
+    throw new Error('useCart hook must be used within a CartProvider');
+  }
+
+  return context;
 };
