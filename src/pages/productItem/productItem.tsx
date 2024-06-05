@@ -120,7 +120,7 @@ export function ProductItem() {
       action: 'addLineItem',
       productId: product.id,
       variantId: activeVariant.id,
-      quantity,
+      quantity: 1,
     };
     console.log(order);
 
@@ -129,7 +129,10 @@ export function ProductItem() {
 
     assertValue(cartId, 'no cart id in LocalStorage');
 
-    setCart(await sdkService.addProductAnonymousCart(cartId, cartVersion, order));
+    const data = await sdkService.addProductAnonymousCart(cartId, cartVersion, order);
+    console.log(data);
+
+    setCart(data);
   };
 
   return (
