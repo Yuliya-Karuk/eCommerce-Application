@@ -4,9 +4,10 @@ import { Container } from '@components/Container/Container';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
 import { Loader } from '@components/Loader/Loader';
+import { PriceView } from '@components/PriceView/PriceView';
 import { useToast } from '@contexts/toastProvider';
 import { storage } from '@utils/storage';
-import { assertValue } from '@utils/utils';
+import { assertValue, convertCentsToDollarsString } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import styles from './cart.module.scss';
 
@@ -56,13 +57,18 @@ export function Cart() {
             </div>
             <div className={styles.orderSummary}>
               <h2 className={styles.orderSummaryHeader}>Order summary</h2>
-              <div className={styles.productsWrapper}>
-                <div>Product_name 1$</div>
-                <div>Product_name 2$</div>
-                <div>Product_name 3$</div>
+              <div className={styles.orderSummaryLineWrapper}>
+                {cart.lineItems.map(item => (
+                  <div key={item.id} className={styles.orderLine}>
+                    {item.name['en-US']}
+                    <span className={styles.priceWrapper}>
+                      <PriceView price={item.price} />
+                    </span>
+                  </div>
+                ))}
               </div>
               <div className={styles.totalPriceWrapper}>
-                Total: <span>70$</span>
+                Total: <span>{convertCentsToDollarsString(cart.totalPrice.centAmount)}</span>
               </div>
               <button type="button" className={styles.checkoutButton}>
                 Checkout

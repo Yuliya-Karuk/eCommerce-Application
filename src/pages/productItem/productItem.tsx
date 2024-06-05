@@ -6,6 +6,7 @@ import { Container } from '@components/Container/Container';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
 import { Loader } from '@components/Loader/Loader';
+import { PriceView } from '@components/PriceView/PriceView';
 import { ProductAttributes, ProductAttributesView } from '@components/ProductAttributes/ProductAttributesView';
 import { ProductInfoSection } from '@components/ProductInfoSection/ProductInfoSection';
 import { QuantityInput } from '@components/QuantityInput/QuantityInput';
@@ -13,8 +14,7 @@ import { Slider } from '@components/Slider/Slider';
 import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
 import { storage } from '@utils/storage';
-import { assertValue, convertCentsToDollarsString, convertProductAttributesArrayToObject } from '@utils/utils';
-import classNames from 'classnames';
+import { assertValue, convertProductAttributesArrayToObject } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './productItem.module.scss';
@@ -88,13 +88,9 @@ export function ProductItem() {
   breadcrumbs.push(name);
 
   const { sku } = activeVariant;
-  const fullPrice: string = activeVariant.prices
-    ? convertCentsToDollarsString(activeVariant.prices[0].value.centAmount)
-    : '';
-  const priceWithDiscount = activeVariant.prices?.[0].discounted?.value.centAmount
-    ? convertCentsToDollarsString(activeVariant.prices[0].discounted.value.centAmount)
-    : '';
-  const hasDiscount = !!activeVariant.prices?.[0].discounted?.value.centAmount;
+  const price = activeVariant.prices?.[0];
+  assertValue(price, 'no price in active variant');
+
   const { images } = product.masterVariant;
   const { variants } = product;
   const { attributes } = activeVariant;
@@ -148,14 +144,7 @@ export function ProductItem() {
               {sku ? <div className={styles.sku}>SKU: {sku}</div> : ''}
               <div className={styles.priceLabel}>
                 Price:
-                <div
-                  className={classNames(styles.fullPrice, {
-                    [styles.fullPriceLineThrough]: hasDiscount,
-                  })}
-                >
-                  {fullPrice}
-                </div>
-                <div className={styles.priceWithDiscount}>{priceWithDiscount}</div>
+                <PriceView price={price} />
               </div>
 
               <ProductAttributesView

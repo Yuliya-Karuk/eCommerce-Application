@@ -36,18 +36,26 @@
       border-bottom: 1px solid $color-gray-dark;
     }
 
-    .products-wrapper {
+    &-line-wrapper {
       @include flex(flex-start, flex-start, column, 5px);
       width: 100%;
       padding: 10px 0;
       border-bottom: 1px solid $color-gray-dark;
+
+      .order-line {
+        @include flex(space-between, center, row, 5px);
+        width: 100%;
+
+        .price-wrapper {
+          @include flex(flex-start, end, row, 5px);
+        }
+      }
     }
 
     .total-price-wrapper {
       font-size: 2rem;
       @include flex(space-between, center, row, 5px);
       width: 100%;
-      justify-content: space-between;
     }
 
     .checkout-button {
