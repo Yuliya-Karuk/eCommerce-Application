@@ -1,0 +1,59 @@
+.cart-product-card {
+  @include flex(flex-start, flex-start, row, 5px);
+  align-items: stretch;
+  width: 100%;
+  height: auto;
+  padding-bottom: 10px;
+  border-bottom: 1px solid $color-gray-dark;
+
+  .image {
+    width: 80px;
+    margin-right: 10px;
+  }
+
+  .details {
+    @include flex(space-between, center, row, 5px);
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
+    height: auto;
+
+    .name-wrapper {
+      align-self: center;
+
+      .name {
+        font-size: 2rem;
+      }
+    }
+
+    .quantity-selector {
+      align-self: center;
+      border: 1px solid $color-gray-dark;
+
+      button,
+      input {
+        color: $color-white;
+        background-color: transparent;
+        border: none;
+      }
+    }
+
+    .price-wrapper {
+      @include flex(center, center, row, 10px);
+      height: auto;
+    }
+
+    .remove-button {
+      cursor: pointer;
+      align-self: start;
+      font-size: 3rem;
+      line-height: 1;
+      color: $color-gray-dark;
+      border: none;
+
+      &:hover {
+        color: $color-white;
+      }
+    }
+  }
+}

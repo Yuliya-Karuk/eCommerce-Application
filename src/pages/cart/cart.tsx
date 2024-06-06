@@ -1,3 +1,4 @@
+import { CartProductCard } from '@components/CartProductCard/CartProductCard';
 import { Container } from '@components/Container/Container';
 import { EmptyCartMessage } from '@components/EmptyCartMessage/EmptyCartMessage';
 import { Footer } from '@components/Footer/Footer';
@@ -18,6 +19,7 @@ export function Cart() {
   useEffect(() => {
     if (cart.lineItems?.length > 0) {
       setIsCartEmpty(false);
+      console.log(cart);
     } else {
       setIsCartEmpty(true);
     }
@@ -35,9 +37,9 @@ export function Cart() {
             <div className={styles.myCart}>
               <h2 className={styles.myCartHeader}>My cart</h2>
               <div className={styles.productsWrapper}>
-                <div>Product_Cart 1</div>
-                <div>Product_Cart 2</div>
-                <div>Product_Cart 3</div>
+                {cart.lineItems.map(item => (
+                  <CartProductCard key={item.id} product={item} />
+                ))}
               </div>
               <div className={styles.promoCode}>PromoCode</div>
               <div className={styles.note}>Notes Section</div>
