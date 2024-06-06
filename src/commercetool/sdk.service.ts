@@ -200,7 +200,7 @@ export class SdkService {
     return data.body.results;
   }
 
-  public async addProductToCart(cartId: string, cartVersion: number, action: CartUpdateAction) {
+  public async updateCart(cartId: string, cartVersion: number, action: CartUpdateAction) {
     const data = await this.apiRoot
       .carts()
       .withId({ ID: cartId })
@@ -218,6 +218,11 @@ export class SdkService {
   //   productId,
   //   variantId,
   //   quantity,
+  // },
+
+  // {
+  //   action: 'removeLineItem',
+  //   lineItemId: lineItemId,
   // },
 }
 

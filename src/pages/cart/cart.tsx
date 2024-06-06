@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { CartProductCard } from '@components/CartProductCard/CartProductCard';
 import { Container } from '@components/Container/Container';
 import { EmptyCartMessage } from '@components/EmptyCartMessage/EmptyCartMessage';

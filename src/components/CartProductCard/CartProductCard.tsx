@@ -1,4 +1,4 @@
-import { LineItem } from '@commercetools/platform-sdk';
+import { CartRemoveLineItemAction, LineItem } from '@commercetools/platform-sdk';
 import { PriceView } from '@components/PriceView/PriceView';
 import { QuantityInput } from '@components/QuantityInput/QuantityInput';
 import React, { useState } from 'react';
@@ -13,12 +13,26 @@ export const CartProductCard: React.FC<CartProductCardProps> = ({ product }) => 
 
   const [quantity, setQuantity] = useState(product.quantity);
 
-  function handleDeleteBtn(): void {
-    const item = {
-      id: product.id,
+  async function  handleDeleteBtn    (productId: string) => {
+    const action: CartRemoveLineItemAction = {
+      action: 'removeLineItem',
+      lineItemId: product.id,
     };
-    console.log(item);
-  }
+}
+  
+    const data = await sdkService.updateCart(cart.id, cart.version, action);
+    setCart(data);
+  };
+
+  const handleUpdateProductQuantity = async (productId: string, newQuantity: number) => {
+    const action: CartChangeLineItemQuantityAction = {
+      action: 'changeLineItemQuantity',
+      lineItemId: productId,
+      quantity: newQuantity,
+    };
+
+    const data = await sdkService.updateCart(cart.id, cart.version, action);
+  };
 
   return (
     <div className={styles.cartProductCard}>
