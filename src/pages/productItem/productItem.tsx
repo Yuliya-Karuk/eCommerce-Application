@@ -13,7 +13,6 @@ import { QuantityInput } from '@components/QuantityInput/QuantityInput';
 import { Slider } from '@components/Slider/Slider';
 import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
-import { storage } from '@utils/storage';
 import { assertValue, convertProductAttributesArrayToObject } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -33,7 +32,7 @@ export function ProductItem() {
   const [loading, setLoading] = useState<boolean>(true);
   const [activeVariant, setActiveVariant] = useState<ProductVariant>({} as ProductVariant);
   const [quantity, setQuantity] = useState(1);
-  const { customToast, errorNotify } = useToast();
+  const { customToast, errorNotify, successNotify } = useToast();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -119,13 +118,10 @@ export function ProductItem() {
       quantity,
     };
 
-    const cartId = storage.getCartStore();
-    const cartVersion = cart.version;
-
-    assertValue(cartId, 'no cart id in LocalStorage');
-
-    const data = await sdkService.updateCart(cartId, cartVersion, order);
-    // console.log(data);
+    const data = await sdkService.updateCart(cart.id, cart.version, order).then(cartData => {
+      successNotify('Product added successfully');
+      return cartData;
+    });
 
     setCart(data);
   };
@@ -172,6 +168,7 @@ export function ProductItem() {
           </div>
           <div className={styles.productDescription}>{product.description?.['en-US']}</div>
         </div>
+        {customToast({ position: 'top-center', autoClose: 3000 })};
       </Container>
       <Footer />
     </div>
