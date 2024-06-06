@@ -34,6 +34,7 @@ export function ProductItem() {
 
   const [showHeart, setShowHeart] = useState(false);
   const [isInCart, setIsInCart] = useState<boolean>(false);
+  const [cartItemId, setCartItemId] = useState<string | null>(null);
   const [product, setProduct] = useState<ProductProjection>({} as ProductProjection);
   const [loading, setLoading] = useState<boolean>(true);
   const [activeVariant, setActiveVariant] = useState<ProductVariant>({} as ProductVariant);
@@ -77,8 +78,16 @@ export function ProductItem() {
 
   useEffect(() => {
     const checkIfInCart = () => {
-      const inCart = cart.lineItems.some(item => item.variant.sku === activeVariant.sku);
-      setIsInCart(inCart);
+      const cartItem = cart.lineItems.find(
+        item => item.productId === product.id && item.variant.id === activeVariant.id
+      );
+      if (cartItem) {
+        setIsInCart(true);
+        setCartItemId(cartItem.id);
+      } else {
+        setIsInCart(false);
+        setCartItemId(null);
+      }
     };
 
     if (cart && activeVariant.sku) {
@@ -128,16 +137,16 @@ export function ProductItem() {
   };
 
   const handleAddToCartClick = async () => {
-    if (isInCart) {
+    if (isInCart && cartItemId) {
       const action: CartRemoveLineItemAction = {
         action: 'removeLineItem',
-        lineItemId: product.id,
+        lineItemId: cartItemId,
       };
 
       console.log(action);
       console.log(activeVariant);
-      // const data = await sdkService.updateCart(cart.id, cart.version, action);
-      // setCart(data);
+      const data = await sdkService.updateCart(cart.id, cart.version, action);
+      setCart(data);
     } else {
       const order: CartUpdateAction = {
         action: 'addLineItem',
