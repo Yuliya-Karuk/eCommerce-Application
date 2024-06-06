@@ -19,10 +19,21 @@
     height: auto;
 
     .name-wrapper {
+      @include flex(flex-start, flex-start, column, 5px);
+
       align-self: center;
 
       .name {
         font-size: 2rem;
+      }
+
+      .sku {
+        font-size: 1.7rem;
+        color: $color-gray-dark;
+      }
+
+      .size {
+        font-size: 1.6rem;
       }
     }
 

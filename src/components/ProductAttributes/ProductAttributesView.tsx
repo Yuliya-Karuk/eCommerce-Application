@@ -1,5 +1,5 @@
 import { ProductProjection, ProductVariant } from '@commercetools/platform-sdk';
-import { ColorsHex } from '@utils/constants';
+import { ColorsHex, SizeKey, sizeDescriptions } from '@utils/constants';
 import classNames from 'classnames';
 import styles from './ProductAttributesView.module.scss';
 
@@ -26,14 +26,6 @@ interface ColorOption {
   color: string;
   index: number;
 }
-
-type SizeKey = 'S' | 'M' | 'L';
-
-const sizeDescriptions: Record<SizeKey, string> = {
-  S: 'Small',
-  M: 'Medium',
-  L: 'Large',
-};
 
 export function ProductAttributesView({
   activeAttributes: { size, brand, color },

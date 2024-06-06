@@ -119,3 +119,11 @@ export const ColorsHex: { [key: string]: string } = {
   Gray: '#808080',
   Blue: '#697f8b',
 };
+
+export type SizeKey = 'S' | 'M' | 'L';
+
+export const sizeDescriptions: Record<SizeKey, string> = {
+  S: 'Small',
+  M: 'Medium',
+  L: 'Large',
+};
