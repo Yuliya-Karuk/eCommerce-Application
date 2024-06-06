@@ -1,9 +1,9 @@
 import { sdkService } from '@commercetool/sdk.service';
-import { CartRemoveLineItemAction, LineItem } from '@commercetools/platform-sdk';
+import { CartChangeLineItemQuantityAction, CartRemoveLineItemAction, LineItem } from '@commercetools/platform-sdk';
 import { PriceView } from '@components/PriceView/PriceView';
 import { QuantityInput } from '@components/QuantityInput/QuantityInput';
 import { useCart } from '@contexts/cartProvider';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './CartProductCard.module.scss';
 
 interface CartProductCardProps {
@@ -26,16 +26,21 @@ export function CartProductCard({ product }: CartProductCardProps) {
     setCart(data);
   }
 
-  // const handleUpdateProductQuantity = async (productId: string, newQuantity: number) => {
-  //   const action: CartChangeLineItemQuantityAction = {
-  //     action: 'changeLineItemQuantity',
-  //     lineItemId: productId,
-  //     quantity: newQuantity,
-  //   };
+  useEffect(() => {
+    const handleUpdateProductQuantity = async () => {
+      const action: CartChangeLineItemQuantityAction = {
+        action: 'changeLineItemQuantity',
+        lineItemId: product.id,
+        quantity,
+      };
 
-  //   const data = await sdkService.updateCart(cart.id, cart.version, action);
-  //   setCart(data);
-  // };
+      const data = await sdkService.updateCart(cart.id, cart.version, action);
+      setCart(data);
+    };
+
+    handleUpdateProductQuantity();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quantity]);
 
   return (
     <div className={styles.cartProductCard}>
