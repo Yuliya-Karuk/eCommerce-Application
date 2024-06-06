@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Container } from '@components/Container/Container';
+import { EmptyCartMessage } from '@components/EmptyCartMessage/EmptyCartMessage';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
-import { Loader } from '@components/Loader/Loader';
 import { PriceView } from '@components/PriceView/PriceView';
 import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
@@ -13,29 +12,14 @@ import styles from './cart.module.scss';
 export function Cart() {
   const { customToast } = useToast();
 
-  const [loading, setLoading] = useState<boolean>(true);
-  const { cart, setCart } = useCart();
-
-  // не нужно
-  // const cartId = storage.getCartStore();
-  // assertValue(cartId, 'no cart id in LocalStorage');
+  const [isCartEmpty, setIsCartEmpty] = useState<boolean>(true);
+  const { cart } = useCart();
 
   useEffect(() => {
-    // не нужно это все в хуке и его можно взять из любого компонента
-    // const getCart = async () => {
-    //   try {
-    //     setLoading(true);
-    //     const data = await sdkService.getCart(cartId);
-    //     setCart(data);
-    //     setLoading(false);
-    //   } catch (err) {
-    //     errorNotify((err as Error).message);
-    //   }
-    // };
-    // getCart();
-    if (Object.values(cart).length > 0) {
-      setLoading(false);
-      console.log(setCart);
+    if (cart.lineItems?.length > 0) {
+      setIsCartEmpty(false);
+    } else {
+      setIsCartEmpty(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart]);
@@ -44,8 +28,8 @@ export function Cart() {
     <>
       <Header />
       <Container>
-        {loading ? (
-          <Loader />
+        {isCartEmpty ? (
+          <EmptyCartMessage />
         ) : (
           <div className={styles.cart}>
             <div className={styles.myCart}>
