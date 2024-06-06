@@ -35,7 +35,7 @@
     }
 
     .price-quantity-wrapper {
-      @include flex(null, null, row, 10px);
+      @include flex(null, center, row, 10px);
       flex-wrap: wrap;
 
       .quantity-selector {
@@ -52,7 +52,6 @@
 
       .price-wrapper {
         @include flex(flex-end, center, row, 10px);
-        align-self: flex-end;
         min-width: 180px;
       }
     }

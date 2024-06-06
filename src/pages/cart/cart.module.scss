@@ -59,6 +59,7 @@
 
     .checkout-button {
       @extend %transition;
+      align-self: center;
       width: 280px;
       padding: 8px;
       font-size: 1.8rem;
