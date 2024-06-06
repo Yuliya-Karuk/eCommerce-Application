@@ -22,7 +22,7 @@ export function PriceView({ price }: PriceViewProps) {
       >
         {fullPrice}
       </div>
-      <div className={styles.priceWithDiscount}>{priceWithDiscount}</div>
+      {hasDiscount && <div className={styles.priceWithDiscount}>{priceWithDiscount}</div>}
     </>
   );
 }

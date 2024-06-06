@@ -59,17 +59,19 @@ export function CartProductCard({ product }: CartProductCardProps) {
           ) : (
             ''
           )}
-          {attributes.color ? <div className={styles.color}>{attributes.color} </div> : ''}
+          {attributes.color ? <div className={styles.color}>Color: {attributes.color} </div> : ''}
         </div>
-        <div className={styles.quantitySelector}>
-          <QuantityInput value={quantity} onChange={setQuantity} />
+        <div className={styles.priceQuantityWrapper}>
+          <div className={styles.quantitySelector}>
+            <QuantityInput value={quantity} onChange={setQuantity} />
+          </div>
+          <div className={styles.priceWrapper}>
+            <PriceView price={product.price} />
+          </div>
         </div>
-        <div className={styles.priceWrapper}>
-          <PriceView price={product.price} />
-          <button type="button" className={styles.removeButton} onClick={handleDeleteBtn}>
-            &times;
-          </button>
-        </div>
+        <button type="button" className={styles.removeButton} onClick={handleDeleteBtn}>
+          &times;
+        </button>
       </div>
     </div>
   );

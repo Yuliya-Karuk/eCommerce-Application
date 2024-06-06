@@ -1,8 +1,7 @@
 .cart-product-card {
-  @include flex(flex-start, flex-start, row, 5px);
-  align-items: stretch;
+  @include flex(flex-start, center, row, 5px);
+  position: relative;
   width: 100%;
-  height: auto;
   padding-bottom: 10px;
   border-bottom: 1px solid $color-gray-dark;
 
@@ -14,9 +13,7 @@
   .details {
     @include flex(space-between, center, row, 5px);
     flex-wrap: wrap;
-    align-items: stretch;
     width: 100%;
-    height: auto;
 
     .name-wrapper {
       @include flex(flex-start, flex-start, column, 5px);
@@ -31,30 +28,40 @@
         color: $color-gray-dark;
       }
 
-      .size {
+      .size,
+      .color {
         font-size: 1.6rem;
       }
     }
 
-    .quantity-selector {
-      align-self: center;
-      border: 1px solid $color-gray-dark;
+    .price-quantity-wrapper {
+      @include flex(null, null, row, 10px);
+      flex-wrap: wrap;
 
-      button,
-      input {
-        color: $color-white;
-        background-color: transparent;
-        border: none;
+      .quantity-selector {
+        align-self: center;
+        border: 1px solid $color-gray-dark;
+
+        button,
+        input {
+          color: $color-white;
+          background-color: transparent;
+          border: none;
+        }
       }
-    }
 
-    .price-wrapper {
-      @include flex(center, center, row, 10px);
-      height: auto;
+      .price-wrapper {
+        @include flex(flex-end, center, row, 10px);
+        align-self: flex-end;
+        min-width: 180px;
+      }
     }
 
     .remove-button {
       cursor: pointer;
+      position: absolute;
+      top: 0;
+      right: 0;
       align-self: start;
       font-size: 3rem;
       line-height: 1;
