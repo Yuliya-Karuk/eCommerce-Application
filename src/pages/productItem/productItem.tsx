@@ -1,6 +1,11 @@
 import heart from '@assets/heart.svg';
 import { sdkService } from '@commercetool/sdk.service';
-import { CartUpdateAction, ProductProjection, ProductVariant } from '@commercetools/platform-sdk';
+import {
+  CartRemoveLineItemAction,
+  CartUpdateAction,
+  ProductProjection,
+  ProductVariant,
+} from '@commercetools/platform-sdk';
 import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
 import { Container } from '@components/Container/Container';
 import { Footer } from '@components/Footer/Footer';
@@ -28,6 +33,7 @@ export function ProductItem() {
   const { cart, setCart } = useCart();
 
   const [showHeart, setShowHeart] = useState(false);
+  const [isInCart, setIsInCart] = useState<boolean>(false);
   const [product, setProduct] = useState<ProductProjection>({} as ProductProjection);
   const [loading, setLoading] = useState<boolean>(true);
   const [activeVariant, setActiveVariant] = useState<ProductVariant>({} as ProductVariant);
@@ -68,6 +74,17 @@ export function ProductItem() {
     getProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const checkIfInCart = () => {
+      const inCart = cart.lineItems.some(item => item.variant.sku === activeVariant.sku);
+      setIsInCart(inCart);
+    };
+
+    if (cart && activeVariant.sku) {
+      checkIfInCart();
+    }
+  }, [cart, activeVariant]);
 
   if (loading) {
     return (
@@ -111,19 +128,31 @@ export function ProductItem() {
   };
 
   const handleAddToCartClick = async () => {
-    const order: CartUpdateAction = {
-      action: 'addLineItem',
-      productId: product.id,
-      variantId: activeVariant.id,
-      quantity,
-    };
+    if (isInCart) {
+      const action: CartRemoveLineItemAction = {
+        action: 'removeLineItem',
+        lineItemId: product.id,
+      };
 
-    const data = await sdkService.updateCart(cart.id, cart.version, order).then(cartData => {
-      successNotify('Product added successfully');
-      return cartData;
-    });
+      console.log(action);
+      console.log(activeVariant);
+      // const data = await sdkService.updateCart(cart.id, cart.version, action);
+      // setCart(data);
+    } else {
+      const order: CartUpdateAction = {
+        action: 'addLineItem',
+        productId: product.id,
+        variantId: activeVariant.id,
+        quantity,
+      };
 
-    setCart(data);
+      const data = await sdkService.updateCart(cart.id, cart.version, order).then(cartData => {
+        successNotify('Product added successfully');
+        return cartData;
+      });
+
+      setCart(data);
+    }
   };
 
   return (
@@ -155,7 +184,7 @@ export function ProductItem() {
                 </div>
                 <div className={styles.buttonsWrapper}>
                   <button type="button" className={styles.addToCartButton} onClick={handleAddToCartClick}>
-                    add to cart
+                    {isInCart ? 'remove from cart' : 'add to cart'}
                   </button>
                   <button type="button" className={styles.addToFavoriteButton} onClick={handleFavoriteClick}>
                     <img src={heart} alt="add to favorite" />
