@@ -118,15 +118,14 @@ export function ProductItem() {
       variantId: activeVariant.id,
       quantity,
     };
-    console.log(order);
 
     const cartId = storage.getCartStore();
     const cartVersion = cart.version;
 
     assertValue(cartId, 'no cart id in LocalStorage');
 
-    const data = await sdkService.addProductAnonymousCart(cartId, cartVersion, order);
-    console.log(data);
+    const data = await sdkService.addProductToCart(cartId, cartVersion, order);
+    // console.log(data);
 
     setCart(data);
   };

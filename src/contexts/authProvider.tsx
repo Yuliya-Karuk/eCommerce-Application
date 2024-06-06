@@ -24,12 +24,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const login = () => {
     storage.setTokenStore(tokenController.get());
+    storage.removeCartStore();
     setIsLoggedIn(true);
     setIsLoginSuccess(true);
   };
 
   const logout = () => {
     storage.removeTokenStore();
+    storage.removeCartStore();
     setIsLoggedIn(false);
     setIsLoginSuccess(false);
   };

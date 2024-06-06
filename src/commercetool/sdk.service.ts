@@ -1,5 +1,6 @@
 import {
   ByProjectKeyRequestBuilder,
+  Cart,
   CartUpdateAction,
   Category,
   ClientResponse,
@@ -164,7 +165,7 @@ export class SdkService {
     return category.body.results;
   }
 
-  public async createAnonymousCart() {
+  public async createCart() {
     const data = await this.apiRoot
       .carts()
       .post({
@@ -176,12 +177,30 @@ export class SdkService {
     return data.body;
   }
 
-  public async getAnonymousCart(cartId: string) {
+  public async createAuthorizedCart() {
+    const data = await this.apiRoot
+      .me()
+      .carts()
+      .post({
+        body: {
+          currency: 'USD',
+        },
+      })
+      .execute();
+    return data.body;
+  }
+
+  public async getCart(cartId: string): Promise<Cart> {
     const data = await this.apiRoot.carts().withId({ ID: cartId }).get().execute();
     return data.body;
   }
 
-  public async addProductAnonymousCart(cartId: string, cartVersion: number, action: CartUpdateAction) {
+  public async getAuthorizedCarts(): Promise<Cart[]> {
+    const data = await this.apiRoot.me().carts().get().execute();
+    return data.body.results;
+  }
+
+  public async addProductToCart(cartId: string, cartVersion: number, action: CartUpdateAction) {
     const data = await this.apiRoot
       .carts()
       .withId({ ID: cartId })

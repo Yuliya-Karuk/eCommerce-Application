@@ -1,41 +1,44 @@
-import { sdkService } from '@commercetool/sdk.service';
-import { Cart as CartInterface } from '@commercetools/platform-sdk';
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Container } from '@components/Container/Container';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
 import { Loader } from '@components/Loader/Loader';
 import { PriceView } from '@components/PriceView/PriceView';
+import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
-import { storage } from '@utils/storage';
-import { assertValue, convertCentsToDollarsString } from '@utils/utils';
+import { convertCentsToDollarsString } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import styles from './cart.module.scss';
 
 export function Cart() {
-  const { customToast, errorNotify } = useToast();
+  const { customToast } = useToast();
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [cart, setCart] = useState<CartInterface>({} as CartInterface);
+  const { cart, setCart } = useCart();
 
-  const cartId = storage.getCartStore();
-  assertValue(cartId, 'no cart id in LocalStorage');
+  // не нужно
+  // const cartId = storage.getCartStore();
+  // assertValue(cartId, 'no cart id in LocalStorage');
 
   useEffect(() => {
-    const getCart = async () => {
-      try {
-        setLoading(true);
-        const data = await sdkService.getAnonymousCart(cartId);
-        setCart(data);
-        setLoading(false);
-      } catch (err) {
-        errorNotify((err as Error).message);
-      }
-    };
-    getCart();
+    // не нужно это все в хуке и его можно взять из любого компонента
+    // const getCart = async () => {
+    //   try {
+    //     setLoading(true);
+    //     const data = await sdkService.getCart(cartId);
+    //     setCart(data);
+    //     setLoading(false);
+    //   } catch (err) {
+    //     errorNotify((err as Error).message);
+    //   }
+    // };
+    // getCart();
+    if (Object.values(cart).length > 0) {
+      setLoading(false);
+      console.log(setCart);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  console.log(cart);
+  }, [cart]);
 
   return (
     <>
