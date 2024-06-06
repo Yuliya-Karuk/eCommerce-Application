@@ -45,6 +45,15 @@
         @include flex(space-between, center, row, 5px);
         width: 100%;
 
+        .name-wrapper {
+          @include flex(flex-start, flex-start, row, 5px);
+
+          .sku {
+            font-size: 1.4rem;
+            color: $color-gray-dark;
+          }
+        }
+
         .price-wrapper {
           @include flex(flex-start, end, row, 5px);
         }

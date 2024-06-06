@@ -4,7 +4,6 @@ import { Container } from '@components/Container/Container';
 import { EmptyCartMessage } from '@components/EmptyCartMessage/EmptyCartMessage';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
-import { PriceView } from '@components/PriceView/PriceView';
 import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
 import { convertCentsToDollarsString } from '@utils/utils';
@@ -50,9 +49,11 @@ export function Cart() {
               <div className={styles.orderSummaryLineWrapper}>
                 {cart.lineItems.map(item => (
                   <div key={item.id} className={styles.orderLine}>
-                    {item.name['en-US']}
+                    <div className={styles.nameWrapper}>
+                      {item.name['en-US']} <span className={styles.sku}>({item.variant.sku})</span> x {item.quantity}
+                    </div>
                     <span className={styles.priceWrapper}>
-                      <PriceView price={item.price} />
+                      {convertCentsToDollarsString(item.totalPrice.centAmount)}
                     </span>
                   </div>
                 ))}
