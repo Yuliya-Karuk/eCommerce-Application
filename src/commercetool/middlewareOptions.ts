@@ -39,6 +39,7 @@ export const anonymousMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
   credentials: {
     clientId: VITE_CTP_CLIENT_ID,
     clientSecret: VITE_CTP_CLIENT_SECRET,
+    anonymousId: '',
   },
   scopes: [VITE_CTP_SCOPES],
   tokenCache: tokenController,

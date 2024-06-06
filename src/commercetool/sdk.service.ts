@@ -1,13 +1,13 @@
 import {
   ByProjectKeyRequestBuilder,
   Cart,
-  CartUpdateAction,
   Category,
   ClientResponse,
   createApiBuilderFromCtpClient,
   Customer,
   CustomerDraft,
   CustomerSignInResult,
+  MyCartUpdateAction,
   MyCustomerChangePassword,
   MyCustomerUpdate,
   MyCustomerUpdateAction,
@@ -15,8 +15,9 @@ import {
   ProductType,
 } from '@commercetools/platform-sdk';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
-import { QueryParams } from '@models/index';
+import { LoginCartData, QueryParams } from '@models/index';
 import { storage } from '@utils/storage';
+import { isNotNullable } from '@utils/utils';
 import {
   anonymousMiddlewareOptions,
   httpMiddlewareOptions,
@@ -42,6 +43,10 @@ export class SdkService {
   }
 
   public createAnonymousClient() {
+    const anonymousId = crypto.randomUUID();
+    storage.setAnonId(anonymousId);
+    anonymousMiddlewareOptions.credentials.anonymousId = anonymousId;
+
     this.client = this.clientBuilder.withAnonymousSessionFlow(anonymousMiddlewareOptions).build();
 
     this.apiRoot = createApiBuilderFromCtpClient(this.client).withProjectKey({
@@ -59,26 +64,48 @@ export class SdkService {
     });
   }
 
-  private createWithPasswordClient(email: string, password: string) {
+  private async createWithPasswordClient(email: string, password: string) {
     const options = passwordAuthMiddlewareOptions;
     options.credentials.user = {
       username: email,
       password,
     };
 
+    tokenController.refresh();
+
     this.client = this.clientBuilder.withPasswordFlow(options).build();
 
     this.apiRoot = createApiBuilderFromCtpClient(this.client).withProjectKey({
       projectKey: VITE_CTP_PROJECT_KEY,
     });
+
+    this.requestForToken();
+  }
+
+  private async requestForToken() {
+    await this.apiRoot.me().get().execute();
+    storage.setTokenStore(tokenController.get());
   }
 
   public async loginUser(email: string, password: string): Promise<Customer> {
+    const auth: LoginCartData = {
+      email,
+      password,
+      activeCartSignInMode: 'MergeWithExistingCustomerCart',
+      updateProductData: true,
+      anonymousCartId: isNotNullable(storage.getCartStore()).cartId,
+      anonymousId: isNotNullable(storage.getCartStore()).anonymousId,
+    };
+
+    const result = await this.apiRoot
+      .me()
+      .login()
+      .post({
+        body: auth,
+      })
+      .execute();
+
     this.createWithPasswordClient(email, password);
-
-    tokenController.refresh();
-
-    const result = await this.apiRoot.me().login().post({ body: { email, password } }).execute();
     return result.body.customer;
   }
 
@@ -165,19 +192,19 @@ export class SdkService {
     return category.body.results;
   }
 
-  public async createCart() {
-    const data = await this.apiRoot
-      .carts()
-      .post({
-        body: {
-          currency: 'USD',
-        },
-      })
-      .execute();
-    return data.body;
-  }
+  // public async createCart() {
+  //   const data = await this.apiRoot
+  //     .carts()
+  //     .post({
+  //       body: {
+  //         currency: 'USD',
+  //       },
+  //     })
+  //     .execute();
+  //   return data.body;
+  // }
 
-  public async createAuthorizedCart() {
+  public async createCart() {
     const data = await this.apiRoot
       .me()
       .carts()
@@ -200,8 +227,9 @@ export class SdkService {
     return data.body.results;
   }
 
-  public async updateCart(cartId: string, cartVersion: number, action: CartUpdateAction) {
+  public async updateCart(cartId: string, cartVersion: number, action: MyCartUpdateAction) {
     const data = await this.apiRoot
+      .me()
       .carts()
       .withId({ ID: cartId })
       .post({
@@ -224,6 +252,25 @@ export class SdkService {
   //   action: 'removeLineItem',
   //   lineItemId: lineItemId,
   // },
+
+  public async setAnonymousId(cartId: string, cartVersion: number, id: string) {
+    const data = await this.apiRoot
+      .carts()
+      .withId({ ID: cartId })
+      .post({
+        body: {
+          version: cartVersion,
+          actions: [
+            {
+              action: 'setAnonymousId',
+              anonymousId: id,
+            },
+          ],
+        },
+      })
+      .execute();
+    return data.body;
+  }
 }
 
 export const sdkService = new SdkService();

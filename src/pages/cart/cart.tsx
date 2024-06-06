@@ -19,7 +19,6 @@ export function Cart() {
   useEffect(() => {
     if (cart.lineItems?.length > 0) {
       setIsCartEmpty(false);
-      console.log(cart);
     } else {
       setIsCartEmpty(true);
     }

@@ -21,28 +21,30 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   const { isLoggedIn } = useAuth();
 
   useEffect(() => {
-    console.log(isLoggedIn);
     const fetchCart = async () => {
       let data: Cart;
-      if (!storage.getCartStore() && isLoggedIn) {
-        console.log('loggenied - storage');
+      if (!isLoggedIn) {
+        if (!storage.getCartStore()) {
+          data = await sdkService.createCart();
+        } else {
+          data = await sdkService.getCart(isNotNullable(storage.getCartStore()).cartId);
+          const anonymousId = isNotNullable(storage.getAnonId());
+
+          if (data.anonymousId !== anonymousId) {
+            data = await sdkService.setAnonymousId(data.id, data.version, anonymousId);
+          }
+        }
+        storage.setCartStore(data.id, isNotNullable(data.anonymousId));
+      } else {
         const carts = await sdkService.getAuthorizedCarts();
         if (carts.length > 0) {
-          [data] = carts;
+          data = isNotNullable(carts.filter(oneCart => oneCart.cartState === 'Active')[0]);
         } else {
-          data = await sdkService.createAuthorizedCart();
+          data = await sdkService.createCart();
         }
-        storage.setCartStore(data.id);
-      } else if (!storage.getCartStore() && !isLoggedIn) {
-        data = await sdkService.createCart();
-        storage.setCartStore(data.id);
-        console.log('anonim - storage');
-      } else {
-        console.log('storage');
-        console.log(await sdkService.getAuthorizedCarts());
-        data = await sdkService.getCart(isNotNullable(storage.getCartStore()));
+        console.log(data);
       }
-      console.log(data);
+
       setCart(data);
     };
 
