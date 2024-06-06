@@ -39,8 +39,9 @@ export function CartProductCard({ product }: CartProductCardProps) {
       const data = await sdkService.updateCart(cart.id, cart.version, action);
       setCart(data);
     };
-
-    handleUpdateProductQuantity();
+    if (quantity !== product.quantity) {
+      handleUpdateProductQuantity();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quantity]);
 
