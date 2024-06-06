@@ -1,38 +1,41 @@
+import { sdkService } from '@commercetool/sdk.service';
 import { CartRemoveLineItemAction, LineItem } from '@commercetools/platform-sdk';
 import { PriceView } from '@components/PriceView/PriceView';
 import { QuantityInput } from '@components/QuantityInput/QuantityInput';
-import React, { useState } from 'react';
+import { useCart } from '@contexts/cartProvider';
+import { useState } from 'react';
 import styles from './CartProductCard.module.scss';
 
 interface CartProductCardProps {
   product: LineItem;
 }
 
-export const CartProductCard: React.FC<CartProductCardProps> = ({ product }) => {
+export function CartProductCard({ product }: CartProductCardProps) {
   const imageUrl = product.variant.images?.[0]?.url;
 
   const [quantity, setQuantity] = useState(product.quantity);
+  const { cart, setCart } = useCart();
 
-  async function  handleDeleteBtn    (productId: string) => {
+  async function handleDeleteBtn() {
     const action: CartRemoveLineItemAction = {
       action: 'removeLineItem',
       lineItemId: product.id,
     };
-}
-  
+
     const data = await sdkService.updateCart(cart.id, cart.version, action);
     setCart(data);
-  };
+  }
 
-  const handleUpdateProductQuantity = async (productId: string, newQuantity: number) => {
-    const action: CartChangeLineItemQuantityAction = {
-      action: 'changeLineItemQuantity',
-      lineItemId: productId,
-      quantity: newQuantity,
-    };
+  // const handleUpdateProductQuantity = async (productId: string, newQuantity: number) => {
+  //   const action: CartChangeLineItemQuantityAction = {
+  //     action: 'changeLineItemQuantity',
+  //     lineItemId: productId,
+  //     quantity: newQuantity,
+  //   };
 
-    const data = await sdkService.updateCart(cart.id, cart.version, action);
-  };
+  //   const data = await sdkService.updateCart(cart.id, cart.version, action);
+  //   setCart(data);
+  // };
 
   return (
     <div className={styles.cartProductCard}>
@@ -53,4 +56,4 @@ export const CartProductCard: React.FC<CartProductCardProps> = ({ product }) => 
       </div>
     </div>
   );
-};
+}
