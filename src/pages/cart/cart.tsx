@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { sdkService } from '@commercetool/sdk.service';
+import { CartChangeLineItemQuantityAction, CartRemoveLineItemAction } from '@commercetools/platform-sdk';
 import { Container } from '@components/Container/Container';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
@@ -15,27 +17,35 @@ export function Cart() {
 
   const [loading, setLoading] = useState<boolean>(true);
   const { cart, setCart } = useCart();
+  console.log(cart);
 
   // не нужно
   // const cartId = storage.getCartStore();
   // assertValue(cartId, 'no cart id in LocalStorage');
 
+  const handleRemoveFromCart = async (productId: string) => {
+    const action: CartRemoveLineItemAction = {
+      action: 'removeLineItem',
+      lineItemId: productId,
+    };
+
+    const data = await sdkService.updateCart(cart.id, cart.version, action);
+    setCart(data);
+  };
+
+  const handleUpdateProductQuantity = async (productId: string, newQuantity: number) => {
+    const action: CartChangeLineItemQuantityAction = {
+      action: 'changeLineItemQuantity',
+      lineItemId: productId,
+      quantity: newQuantity,
+    };
+
+    const data = await sdkService.updateCart(cart.id, cart.version, action);
+  };
+
   useEffect(() => {
-    // не нужно это все в хуке и его можно взять из любого компонента
-    // const getCart = async () => {
-    //   try {
-    //     setLoading(true);
-    //     const data = await sdkService.getCart(cartId);
-    //     setCart(data);
-    //     setLoading(false);
-    //   } catch (err) {
-    //     errorNotify((err as Error).message);
-    //   }
-    // };
-    // getCart();
     if (Object.values(cart).length > 0) {
       setLoading(false);
-      console.log(setCart);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart]);

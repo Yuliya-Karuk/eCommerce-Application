@@ -124,7 +124,7 @@ export function ProductItem() {
 
     assertValue(cartId, 'no cart id in LocalStorage');
 
-    const data = await sdkService.addProductToCart(cartId, cartVersion, order);
+    const data = await sdkService.updateCart(cartId, cartVersion, order);
     // console.log(data);
 
     setCart(data);
