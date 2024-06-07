@@ -93,7 +93,7 @@ export function ProductItem() {
     if (cart && activeVariant.sku) {
       checkIfInCart();
     }
-  }, [cart, activeVariant]);
+  }, [cart, activeVariant, product.id]);
 
   if (loading) {
     return (
