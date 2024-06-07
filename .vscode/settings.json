@@ -2,7 +2,7 @@
   "editor.formatOnSave": true,
   "stylelint.validate": ["css", "scss"],
   "editor.codeActionsOnSave": {
-    "source.fixAll.stylelint": true
+    "source.fixAll.stylelint": "explicit"
   },
   "[typescript][typescriptreact]": {
     "editor.codeActionsOnSave": {

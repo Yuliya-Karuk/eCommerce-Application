@@ -96,10 +96,15 @@ export function Cart() {
           className={styles.modal}
           overlayClassName={styles.modalOverlay}
         >
-          <h2>Are you sure you want to remove all items from your cart?</h2>
-          <button type="button" onClick={handleClearCart}>
-            Confirm
-          </button>
+          <h2 className={styles.modalText}>Are you sure you want to remove all items from your cart?</h2>
+          <div className={styles.buttonWrapper}>
+            <button className={styles.modalConfirmButton} type="button" onClick={handleClearCart}>
+              Confirm
+            </button>
+            <button className={styles.modalCancelButton} type="button" onClick={() => setModalIsOpen(false)}>
+              Cancel
+            </button>
+          </div>
         </Modal>
         {customToast({ position: 'top-center', autoClose: 5000 })}
       </Container>
