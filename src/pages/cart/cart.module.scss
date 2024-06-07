@@ -9,11 +9,31 @@
     @include flex(flex-start, flex-start, column, 10px);
     flex: 1 1 390px;
 
-    &-header {
-      width: 100%;
+    &-title {
+      // width: 100%;
       font-family: questrial, sans-serif;
       font-size: 2rem;
+    }
+
+    &-header {
+      width: 100%;
+      @include flex(space-between, center);
       border-bottom: 1px solid $color-gray-dark;
+    }
+
+    .clear-button {
+      @extend %transition;
+      @include adaptiveValue('font-size', 16px, 16px);
+
+      @include hover {
+        color: $color-bg-dark;
+        background-color: $color-white;
+      }
+      padding: 3px 15px;
+      color: $color-white;
+      border: 1px solid $color-white;
+      border-radius: 5px;
+      margin-bottom: 5px;
     }
 
     .products-wrapper {

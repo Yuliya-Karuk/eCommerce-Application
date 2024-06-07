@@ -52,7 +52,12 @@ export function Cart() {
         ) : (
           <div className={styles.cart}>
             <div className={styles.myCart}>
-              <h2 className={styles.myCartHeader}>My cart</h2>
+              <div className={styles.myCartHeader}>
+                <h2 className={styles.myCartTitle}>My cart</h2>
+                <button type="button" className={styles.clearButton} onClick={() => setModalIsOpen(true)}>
+                  Clear Cart
+                </button>
+              </div>
               <div className={styles.productsWrapper}>
                 {cart.lineItems.map(item => (
                   <CartProductCard key={item.id} product={item} />
