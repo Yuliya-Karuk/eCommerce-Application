@@ -1,6 +1,7 @@
 import {
   ByProjectKeyRequestBuilder,
   Cart,
+  CartUpdateAction,
   Category,
   ClientResponse,
   createApiBuilderFromCtpClient,
@@ -192,18 +193,6 @@ export class SdkService {
     return category.body.results;
   }
 
-  // public async createCart() {
-  //   const data = await this.apiRoot
-  //     .carts()
-  //     .post({
-  //       body: {
-  //         currency: 'USD',
-  //       },
-  //     })
-  //     .execute();
-  //   return data.body;
-  // }
-
   public async createCart() {
     const data = await this.apiRoot
       .me()
@@ -218,18 +207,48 @@ export class SdkService {
   }
 
   public async getCart(cartId: string): Promise<Cart> {
-    const data = await this.apiRoot.carts().withId({ ID: cartId }).get().execute();
+    const data = await this.apiRoot
+      .carts()
+      .withId({ ID: cartId })
+      .get({
+        queryArgs: {
+          expand: ['discountCodes[*].discountCode'],
+        },
+      })
+      .execute();
     return data.body;
   }
 
   public async getAuthorizedCarts(): Promise<Cart[]> {
-    const data = await this.apiRoot.me().carts().get().execute();
+    const data = await this.apiRoot
+      .me()
+      .carts()
+      .get({
+        queryArgs: {
+          expand: ['discountCodes[*].discountCode'],
+        },
+      })
+      .execute();
     return data.body.results;
   }
 
-  public async updateCart(cartId: string, cartVersion: number, action: MyCartUpdateAction) {
+  public async updateCart(cartId: string, cartVersion: number, actions: MyCartUpdateAction[]) {
     const data = await this.apiRoot
       .me()
+      .carts()
+      .withId({ ID: cartId })
+      .post({
+        body: {
+          version: cartVersion,
+          actions,
+        },
+      })
+      .execute();
+    return data.body;
+  }
+
+  public async setAnonymousId(cartId: string, cartVersion: number, action: CartUpdateAction) {
+    const data = await this.apiRoot
       .carts()
       .withId({ ID: cartId })
       .post({
@@ -241,33 +260,13 @@ export class SdkService {
       .execute();
     return data.body;
   }
-  // {
-  //   action: 'addLineItem',
-  //   productId,
-  //   variantId,
-  //   quantity,
-  // },
 
-  // {
-  //   action: 'removeLineItem',
-  //   lineItemId: lineItemId,
-  // },
-
-  public async setAnonymousId(cartId: string, cartVersion: number, id: string) {
+  public async removeCart(cartId: string, cartVersion: number) {
     const data = await this.apiRoot
+      .me()
       .carts()
       .withId({ ID: cartId })
-      .post({
-        body: {
-          version: cartVersion,
-          actions: [
-            {
-              action: 'setAnonymousId',
-              anonymousId: id,
-            },
-          ],
-        },
-      })
+      .delete({ queryArgs: { version: cartVersion } })
       .execute();
     return data.body;
   }

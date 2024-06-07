@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { sdkService } from '@commercetool/sdk.service';
 import { CartProductCard } from '@components/CartProductCard/CartProductCard';
 import { Container } from '@components/Container/Container';
 import { EmptyCartMessage } from '@components/EmptyCartMessage/EmptyCartMessage';
@@ -19,7 +20,7 @@ export function Cart() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const [isCartEmpty, setIsCartEmpty] = useState<boolean>(true);
-  const { cart } = useCart();
+  const { cart, setCart } = useCart();
   const [notes, setNotes] = useState<string>('');
 
   useEffect(() => {
@@ -35,8 +36,11 @@ export function Cart() {
     setNotes(event.target.value);
   };
 
-  const handleClearCart = () => {
+  const handleClearCart = async () => {
     setModalIsOpen(false);
+    await sdkService.removeCart(cart.id, cart.version);
+    const data = await sdkService.createCart();
+    setCart(data);
   };
 
   return (

@@ -1,5 +1,5 @@
 import { sdkService } from '@commercetool/sdk.service';
-import { Cart } from '@commercetools/platform-sdk';
+import { Cart, CartSetAnonymousIdAction } from '@commercetools/platform-sdk';
 import { storage } from '@utils/storage';
 import { isNotNullable } from '@utils/utils';
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
@@ -8,6 +8,8 @@ import { useAuth } from './authProvider';
 interface CartContextValue {
   cart: Cart;
   setCart: (data: Cart) => void;
+  promoCodeName: string;
+  setPromoCodeName: (data: string) => void;
 }
 
 const CartContext = createContext<CartContextValue>({} as CartContextValue);
@@ -18,6 +20,7 @@ interface CartProviderProps {
 
 export const CartProvider = ({ children }: CartProviderProps) => {
   const [cart, setCart] = useState({} as Cart);
+  const [promoCodeName, setPromoCodeName] = useState('');
   const { isLoggedIn } = useAuth();
 
   useEffect(() => {
@@ -31,27 +34,35 @@ export const CartProvider = ({ children }: CartProviderProps) => {
           const anonymousId = isNotNullable(storage.getAnonId());
 
           if (data.anonymousId !== anonymousId) {
-            data = await sdkService.setAnonymousId(data.id, data.version, anonymousId);
+            const action: CartSetAnonymousIdAction = {
+              action: 'setAnonymousId',
+              anonymousId,
+            };
+            data = await sdkService.setAnonymousId(data.id, data.version, action);
           }
         }
         storage.setCartStore(data.id, isNotNullable(data.anonymousId));
       } else {
         const carts = await sdkService.getAuthorizedCarts();
-        if (carts.length > 0) {
-          data = isNotNullable(carts.filter(oneCart => oneCart.cartState === 'Active')[0]);
+        const activeCart = carts.filter(oneCart => oneCart.cartState === 'Active')[0];
+        if (carts.length > 0 && activeCart) {
+          data = activeCart;
         } else {
           data = await sdkService.createCart();
         }
         console.log(data);
       }
 
+      setPromoCodeName(data.discountCodes[0]?.discountCode?.obj?.code || '');
       setCart(data);
     };
 
     fetchCart();
   }, [isLoggedIn]);
 
-  return <CartContext.Provider value={{ cart, setCart }}>{children}</CartContext.Provider>;
+  return (
+    <CartContext.Provider value={{ cart, setCart, promoCodeName, setPromoCodeName }}>{children}</CartContext.Provider>
+  );
 };
 
 // eslint-disable-next-line react-refresh/only-export-components

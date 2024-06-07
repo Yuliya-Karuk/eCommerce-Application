@@ -22,8 +22,14 @@
     background-color: $color-gray-dark;
     border-radius: 5px;
 
-    &:hover {
-      background-color: $color-gray-middle;
+    @include hover {
+      &:not(:disabled) {
+        background-color: $color-gray-middle;
+      }
+    }
+
+    &:disabled {
+      cursor: default;
     }
   }
 }

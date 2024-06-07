@@ -145,7 +145,7 @@ export function ProductItem() {
 
       console.log(action);
       console.log(activeVariant);
-      const data = await sdkService.updateCart(cart.id, cart.version, action);
+      const data = await sdkService.updateCart(cart.id, cart.version, [action]);
       setCart(data);
     } else {
       const order: CartUpdateAction = {
@@ -155,7 +155,7 @@ export function ProductItem() {
         quantity,
       };
 
-      const data = await sdkService.updateCart(cart.id, cart.version, order).then(cartData => {
+      const data = await sdkService.updateCart(cart.id, cart.version, [order]).then(cartData => {
         successNotify('Product added successfully');
         return cartData;
       });

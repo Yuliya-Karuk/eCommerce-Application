@@ -24,7 +24,7 @@ export function CartProductCard({ product }: CartProductCardProps) {
       lineItemId: product.id,
     };
 
-    const data = await sdkService.updateCart(cart.id, cart.version, action);
+    const data = await sdkService.updateCart(cart.id, cart.version, [action]);
     setCart(data);
   }
 
@@ -36,7 +36,7 @@ export function CartProductCard({ product }: CartProductCardProps) {
         quantity,
       };
 
-      const data = await sdkService.updateCart(cart.id, cart.version, action);
+      const data = await sdkService.updateCart(cart.id, cart.version, [action]);
       setCart(data);
     };
     if (quantity !== product.quantity) {
