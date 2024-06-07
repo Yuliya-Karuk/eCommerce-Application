@@ -16,6 +16,7 @@ export function Cart() {
 
   const [isCartEmpty, setIsCartEmpty] = useState<boolean>(true);
   const { cart } = useCart();
+  const [notes, setNotes] = useState<string>('');
 
   useEffect(() => {
     if (cart.lineItems?.length > 0) {
@@ -25,6 +26,10 @@ export function Cart() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart]);
+
+  const handleNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNotes(event.target.value);
+  };
 
   return (
     <>
@@ -41,8 +46,14 @@ export function Cart() {
                   <CartProductCard key={item.id} product={item} />
                 ))}
               </div>
-              <PromoCodeView />
-              <div className={styles.note}>Notes Section</div>
+              <div className={styles.notes}>
+                <textarea
+                  className={styles.noteInput}
+                  placeholder="Enter your notes here"
+                  value={notes}
+                  onChange={handleNotesChange}
+                />
+              </div>
             </div>
             <div className={styles.orderSummary}>
               <h2 className={styles.orderSummaryHeader}>Order summary</h2>
@@ -58,6 +69,7 @@ export function Cart() {
                   </div>
                 ))}
               </div>
+              <PromoCodeView />
               <div className={styles.totalPriceWrapper}>
                 Total: <span>{convertCentsToDollarsString(cart.totalPrice.centAmount)}</span>
               </div>
