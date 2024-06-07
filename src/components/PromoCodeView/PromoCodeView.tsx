@@ -6,8 +6,8 @@ import { useState } from 'react';
 import styles from './promoCodeView.module.scss';
 
 export function PromoCodeView() {
-  const [promoCode, setPromoCode] = useState<string>('');
   const { cart, setCart, promoCodeName, setPromoCodeName } = useCart();
+  const [promoCode, setPromoCode] = useState<string>(promoCodeName);
   const { errorNotify } = useToast();
 
   const handleApplyPromoCode = async () => {

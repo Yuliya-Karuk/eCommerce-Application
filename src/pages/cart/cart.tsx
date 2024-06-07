@@ -88,9 +88,6 @@ export function Cart() {
               <button type="button" className={styles.checkoutButton}>
                 Checkout
               </button>
-              <button type="button" className={styles.checkoutButton} onClick={() => setModalIsOpen(true)}>
-                Clear Cart
-              </button>
             </div>
           </div>
         )}
