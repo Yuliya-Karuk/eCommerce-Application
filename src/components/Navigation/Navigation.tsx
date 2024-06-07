@@ -38,7 +38,14 @@ export const Navigation: FC<NavigationProps> = ({ id, ...props }) => {
         <ul className={styles.menuList}>
           {paths.map(path => (
             <li key={path} className={styles.menuItem}>
-              <Link to={path}>{path.slice(1)[0].toUpperCase() + path.slice(2)}</Link>
+              <Link
+                to={path}
+                onClick={() => {
+                  document.body.classList.remove('lock');
+                }}
+              >
+                {path.slice(1)[0].toUpperCase() + path.slice(2)}
+              </Link>
             </li>
           ))}
         </ul>
