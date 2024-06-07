@@ -6,9 +6,11 @@
   font-size: 1.8rem;
 
   .my-cart {
+    @include flex(flex-start, flex-start, column, 10px);
     flex: 1 1 390px;
 
     &-header {
+      width: 100%;
       font-family: questrial, sans-serif;
       font-size: 2rem;
       border-bottom: 1px solid $color-gray-dark;
@@ -16,11 +18,7 @@
 
     .products-wrapper {
       @include flex(flex-start, flex-start, column, 10px);
-      padding: 10px 0;
-    }
-
-    .promo-code {
-      margin: 10px 0;
+      width: 100%;
     }
   }
 

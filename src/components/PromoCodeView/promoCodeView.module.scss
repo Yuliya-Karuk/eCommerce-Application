@@ -1,0 +1,26 @@
+.promo-code-view {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-family: questrial, sans-serif;
+  font-size: 1.8rem;
+
+  .promo-code-input {
+    flex-grow: 1;
+    padding: 8px 10px;
+    border-radius: 4px;
+  }
+
+  .promo-code-button {
+    @extend %transition;
+    cursor: pointer;
+    padding: 8px 20px;
+    color: $color-white;
+    background-color: $color-primary-bright;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: $color-primary-dull;
+    }
+  }
+}

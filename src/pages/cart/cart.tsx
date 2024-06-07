@@ -4,6 +4,7 @@ import { Container } from '@components/Container/Container';
 import { EmptyCartMessage } from '@components/EmptyCartMessage/EmptyCartMessage';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
+import { PromoCodeView } from '@components/PromoCodeView/PromoCodeView';
 import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
 import { convertCentsToDollarsString } from '@utils/utils';
@@ -40,7 +41,7 @@ export function Cart() {
                   <CartProductCard key={item.id} product={item} />
                 ))}
               </div>
-              <div className={styles.promoCode}>PromoCode</div>
+              <PromoCodeView />
               <div className={styles.note}>Notes Section</div>
             </div>
             <div className={styles.orderSummary}>
