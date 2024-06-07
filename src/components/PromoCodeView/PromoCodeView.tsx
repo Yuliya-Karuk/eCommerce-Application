@@ -1,11 +1,22 @@
+import { sdkService } from '@commercetool/sdk.service';
+import { MyCartAddDiscountCodeAction } from '@commercetools/platform-sdk';
+import { useCart } from '@contexts/cartProvider';
 import { useState } from 'react';
 import styles from './promoCodeView.module.scss';
 
 export function PromoCodeView() {
   const [promoCode, setPromoCode] = useState<string>('');
+  const { cart, setCart } = useCart();
 
-  const handleApplyPromoCode = () => {
-    console.log('Applying promo code:', promoCode);
+  const handleApplyPromoCode = async () => {
+    const action: MyCartAddDiscountCodeAction = {
+      action: 'addDiscountCode',
+      code: promoCode,
+    };
+
+    const data = await sdkService.updateCart(cart.id, cart.version, action);
+    console.log(data);
+    setCart(data);
   };
 
   return (
