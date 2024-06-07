@@ -1,0 +1,65 @@
+.about-banner {
+  padding: 35px 10px;
+
+  &-body {
+    @include flex(center, center, column, 24px);
+    row-gap: 20px;
+  }
+
+  &-title {
+    @include adaptiveValue('font-size', 90px, 35px);
+
+    @include smalltablet {
+      max-width: 100%;
+    }
+    max-width: 60%;
+    font-family: Forum, Arial, Helvetica, serif;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  &-info {
+    @include flex(center, center, column);
+    row-gap: 30px;
+    max-width: 51.5%;
+    @include adaptiveValue('font-size', 21px, 16px);
+    font-family: Questrial, Arial, Helvetica, serif;
+    text-align: center;
+    text-wrap: balance;
+
+    @include tablet {
+      max-width: 65%;
+    }
+
+    @include smalltablet {
+      max-width: 75%;
+    }
+
+    @include mobile {
+      max-width: 85%;
+    }
+
+    @include smallmobile {
+      max-width: 95%;
+    }
+  }
+
+  &-text {
+    font-family: Questrial, Arial, Helvetica, serif;
+    @include adaptiveValue('font-size', 18px, 14px);
+    line-height: 1.6;
+    text-align: justify;
+    text-wrap: balance;
+    text-indent: 2.5rem;
+
+    &::first-letter {
+      font-family: Corben, Arial, Helvetica, serif;
+      @include adaptiveValue('font-size', 38px, 34px);
+      text-transform: uppercase;
+      font-weight: 500;
+      font-style: italic;
+      line-height: 1;
+      letter-spacing: 0.25ex;
+    }
+  }
+}

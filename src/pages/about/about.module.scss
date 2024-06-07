@@ -1,0 +1,18 @@
+.main {
+  flex: 1 1 auto;
+}
+
+.hero {
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+  background: fixed #000 url('../../assets/About/about-page-header-bg.jpg') top center / cover no-repeat;
+
+  @include mobile {
+    min-height: 75vh;
+  }
+
+  @include smallmobile {
+    min-height: auto;
+  }
+}

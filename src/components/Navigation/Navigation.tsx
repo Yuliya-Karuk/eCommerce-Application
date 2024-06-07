@@ -9,7 +9,12 @@ interface NavigationProps {
 }
 
 export const Navigation: FC<NavigationProps> = ({ id, ...props }) => {
-  const paths: string[] = [AppRoutes.CATALOG_ROUTE, AppRoutes.LOGIN_ROUTE, AppRoutes.REGISTRATION_ROUTE];
+  const paths: string[] = [
+    AppRoutes.ABOUT_ROUTE,
+    AppRoutes.CATALOG_ROUTE,
+    AppRoutes.LOGIN_ROUTE,
+    AppRoutes.REGISTRATION_ROUTE,
+  ];
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isDesktop = useMediaQuery({ query: '(min-width: 769px)' });
 
