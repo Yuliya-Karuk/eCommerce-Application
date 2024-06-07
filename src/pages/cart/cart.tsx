@@ -9,10 +9,14 @@ import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
 import { convertCentsToDollarsString } from '@utils/utils';
 import { useEffect, useState } from 'react';
+import Modal from 'react-modal';
 import styles from './cart.module.scss';
+
+Modal.setAppElement('#root');
 
 export function Cart() {
   const { customToast } = useToast();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const [isCartEmpty, setIsCartEmpty] = useState<boolean>(true);
   const { cart } = useCart();
@@ -29,6 +33,10 @@ export function Cart() {
 
   const handleNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNotes(event.target.value);
+  };
+
+  const handleClearCart = () => {
+    setModalIsOpen(false);
   };
 
   return (
@@ -76,9 +84,23 @@ export function Cart() {
               <button type="button" className={styles.checkoutButton}>
                 Checkout
               </button>
+              <button type="button" className={styles.checkoutButton} onClick={() => setModalIsOpen(true)}>
+                Clear Cart
+              </button>
             </div>
           </div>
         )}
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={() => setModalIsOpen(false)}
+          className={styles.modal}
+          overlayClassName={styles.modalOverlay}
+        >
+          <h2>Are you sure you want to remove all items from your cart?</h2>
+          <button type="button" onClick={handleClearCart}>
+            Confirm
+          </button>
+        </Modal>
         {customToast({ position: 'top-center', autoClose: 5000 })}
       </Container>
       <Footer />
