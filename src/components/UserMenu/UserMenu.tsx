@@ -1,9 +1,11 @@
 import sprite from '@assets/sprite.svg';
 import { sdkService } from '@commercetool/sdk.service';
 import { useAuth } from '@contexts/authProvider';
+import { useCart } from '@contexts/cartProvider';
 import { AppRoutes } from '@router/routes';
+import { sumQuantities } from '@utils/utils';
 import classnames from 'classnames';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './UserMenu.module.scss';
 
@@ -16,11 +18,20 @@ enum ToolTips {
 export const UserMenu: FC = () => {
   const iconSizeNumber = 26;
   const { isLoggedIn, logout } = useAuth();
+  const { cart } = useCart();
+  const [productInCart, setProductInCart] = useState(0);
 
   const handleLogout = () => {
     sdkService.logoutUser();
     logout();
   };
+
+  useEffect(() => {
+    if (cart.lineItems !== undefined) {
+      const newProductInCart = sumQuantities(cart.lineItems);
+      setProductInCart(newProductInCart);
+    }
+  }, [cart]);
 
   return (
     <div className={styles.userMenu}>
@@ -56,6 +67,7 @@ export const UserMenu: FC = () => {
         <svg width={iconSizeNumber} height={iconSizeNumber}>
           <use xlinkHref={`${sprite}#cart`} />
         </svg>
+        <span>{productInCart}</span>
       </Link>
     </div>
   );

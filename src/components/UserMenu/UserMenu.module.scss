@@ -57,6 +57,26 @@
     }
     cursor: pointer;
   }
+
+  &-cart {
+    position: relative;
+    font-size: 16px;
+    font-family: Questrial, Arial, Helvetica, sans-serif;
+    @include flex(null, center, null, 10px);
+
+    span {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      padding: 2px;
+      display: block;
+      text-align: center;
+      background-color: $color-primary-bright;
+      border-radius: 50%;
+      right: -7px;
+      top: -7px;
+    }
+  }
 }
 
 [data-tooltip] {
