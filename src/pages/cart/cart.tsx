@@ -8,7 +8,8 @@ import { Header } from '@components/Header/Header';
 import { PromoCodeView } from '@components/PromoCodeView/PromoCodeView';
 import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
-import { convertCentsToDollarsString } from '@utils/utils';
+import { convertCentsToDollarsString, isNotNullable } from '@utils/utils';
+import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import styles from './cart.module.scss';
@@ -16,12 +17,19 @@ import styles from './cart.module.scss';
 Modal.setAppElement('#root');
 
 export function Cart() {
+  let price;
+  let discount;
   const { customToast } = useToast();
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const [isCartEmpty, setIsCartEmpty] = useState<boolean>(true);
-  const { cart, setCart } = useCart();
+  const { cart, setCart, promoCodeName, setPromoCodeName } = useCart();
   const [notes, setNotes] = useState<string>('');
+
+  if (promoCodeName) {
+    discount = isNotNullable(cart.discountOnTotalPrice?.discountedAmount.centAmount);
+    price = cart.totalPrice.centAmount + discount;
+  }
 
   useEffect(() => {
     if (cart.lineItems?.length > 0) {
@@ -41,6 +49,7 @@ export function Cart() {
     await sdkService.removeCart(cart.id, cart.version);
     const data = await sdkService.createCart();
     setCart(data);
+    setPromoCodeName('');
   };
 
   return (
@@ -87,6 +96,16 @@ export function Cart() {
                 ))}
               </div>
               <PromoCodeView />
+              {price && discount && (
+                <>
+                  <div className={classnames(styles.totalPriceWrapper, { [styles.price]: true })}>
+                    Price: <span>{convertCentsToDollarsString(price)}</span>
+                  </div>
+                  <div className={classnames(styles.totalPriceWrapper, { [styles.discount]: true })}>
+                    Discount: <span>{convertCentsToDollarsString(discount)}</span>
+                  </div>
+                </>
+              )}
               <div className={styles.totalPriceWrapper}>
                 Total: <span>{convertCentsToDollarsString(cart.totalPrice.centAmount)}</span>
               </div>

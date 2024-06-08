@@ -21,7 +21,8 @@ export function PromoCodeView() {
       setCart(data);
       setPromoCodeName(promoCode);
     } catch (e) {
-      setPromoCodeName('');
+      setPromoCode(promoCodeName);
+      // setPromoCodeName(promoCodeName);
       errorNotify((e as Error).message);
     }
   };
@@ -34,15 +35,9 @@ export function PromoCodeView() {
         onChange={e => setPromoCode(e.target.value)}
         placeholder="Enter promo code"
         className={styles.promoCodeInput}
-        disabled={!!promoCodeName}
       />
-      <button
-        type="button"
-        onClick={handleApplyPromoCode}
-        className={styles.promoCodeButton}
-        disabled={!!promoCodeName}
-      >
-        {promoCodeName ? 'Applied' : 'Apply'}
+      <button type="button" onClick={handleApplyPromoCode} className={styles.promoCodeButton}>
+        {promoCodeName === promoCode ? 'Applied' : 'Apply'}
       </button>
     </div>
   );

@@ -96,11 +96,23 @@
 
     .total-price-wrapper {
       @include flex(space-between, center, row, 5px);
-      border-top: 1px solid $color-gray-dark;
       width: 100%;
-      padding-top: 10px;
-      margin-bottom: 20px;
       font-size: 2.5rem;
+
+      &.price span {
+        color: $color-gray-middle;
+        text-decoration: line-through;
+      }
+
+      &.discount span {
+        color: $color-primary-bright;
+      }
+
+      &:last-of-type {
+        margin-bottom: 20px;
+        padding-top: 10px;
+        border-top: 1px solid $color-gray-dark;
+      }
     }
 
     .checkout-button {
