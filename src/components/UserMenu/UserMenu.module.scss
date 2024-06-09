@@ -60,20 +60,18 @@
 
   &-cart {
     position: relative;
-    font-size: 16px;
+    font-size: 12px;
     font-family: Questrial, Arial, Helvetica, sans-serif;
     @include flex(null, center, null, 10px);
 
     span {
       position: absolute;
-      width: 18px;
-      height: 18px;
-      padding: 2px;
+      padding: 3px 5px;
       display: block;
       text-align: center;
       background-color: $color-primary-bright;
-      border-radius: 50%;
-      right: -7px;
+      border-radius: 30px;
+      right: -12px;
       top: -7px;
     }
   }

@@ -1,5 +1,5 @@
 import { sdkService } from '@commercetool/sdk.service';
-import { MyCartAddDiscountCodeAction } from '@commercetools/platform-sdk';
+import { MyCartAddDiscountCodeAction, MyCartRemoveDiscountCodeAction } from '@commercetools/platform-sdk';
 import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
 import { useState } from 'react';
@@ -10,20 +10,36 @@ export function PromoCodeView() {
   const [promoCode, setPromoCode] = useState<string>(promoCodeName);
   const { errorNotify } = useToast();
 
-  const handleApplyPromoCode = async () => {
-    const action: MyCartAddDiscountCodeAction = {
-      action: 'addDiscountCode',
-      code: promoCode,
-    };
-
+  const updatePromoCode = async (action: MyCartRemoveDiscountCodeAction | MyCartAddDiscountCodeAction) => {
     try {
       const data = await sdkService.updateCart(cart.id, cart.version, [action]);
       setCart(data);
-      setPromoCodeName(promoCode);
+      setPromoCodeName(action.action === 'removeDiscountCode' ? '' : promoCode);
+      setPromoCode(action.action === 'removeDiscountCode' ? '' : promoCode);
     } catch (e) {
       setPromoCode(promoCodeName);
-      // setPromoCodeName(promoCodeName);
       errorNotify((e as Error).message);
+    }
+  };
+
+  const handleApplyPromoCode = async () => {
+    if (promoCodeName === '') {
+      const action: MyCartAddDiscountCodeAction = {
+        action: 'addDiscountCode',
+        code: promoCode,
+      };
+
+      updatePromoCode(action);
+    } else {
+      const action: MyCartRemoveDiscountCodeAction = {
+        action: 'removeDiscountCode',
+        discountCode: {
+          typeId: 'discount-code',
+          id: cart.discountCodes[0].discountCode.id,
+        },
+      };
+
+      updatePromoCode(action);
     }
   };
 
@@ -35,9 +51,15 @@ export function PromoCodeView() {
         onChange={e => setPromoCode(e.target.value)}
         placeholder="Enter promo code"
         className={styles.promoCodeInput}
+        disabled={promoCodeName === promoCode && promoCodeName !== ''}
       />
-      <button type="button" onClick={handleApplyPromoCode} className={styles.promoCodeButton}>
-        {promoCodeName === promoCode ? 'Applied' : 'Apply'}
+      <button
+        type="button"
+        onClick={handleApplyPromoCode}
+        className={styles.promoCodeButton}
+        disabled={promoCode === ''}
+      >
+        {promoCodeName !== promoCode || promoCodeName === '' ? 'Apply' : 'Remove'}
       </button>
     </div>
   );

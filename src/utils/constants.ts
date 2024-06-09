@@ -19,6 +19,9 @@ export const SuccessRemoveAddressMessage = 'Congratulations, your address was su
 
 export const NothingFoundByFiltering = "Sorry, we didn't find any products that meet your criteria.";
 
+export const promoCodeBanner =
+  "Enjoy 10% off with our summer promo code SUMMER2024, or get 15% off your first order with promo code FIRST! Don't miss out on these great deals!";
+
 export const countries: Country[] = [
   {
     name: 'Germany',

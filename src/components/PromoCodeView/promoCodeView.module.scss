@@ -16,7 +16,7 @@
 
   .promo-code-button {
     @extend %transition;
-    min-width: 102px;
+    min-width: 110px;
     cursor: pointer;
     padding: 8px 20px;
     color: $color-white;
@@ -31,6 +31,7 @@
 
     &:disabled {
       cursor: default;
+      opacity: 0.7;
     }
   }
 }

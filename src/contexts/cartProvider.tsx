@@ -53,7 +53,10 @@ export const CartProvider = ({ children }: CartProviderProps) => {
         console.log(data);
       }
 
-      setPromoCodeName(data.discountCodes[0]?.discountCode?.obj?.code || '');
+      if (data.discountCodes) {
+        const promoCode = data.discountCodes.filter(discount => discount.state === 'MatchesCart')[0];
+        setPromoCodeName(promoCode?.discountCode?.obj?.code || '');
+      }
       setCart(data);
     };
 

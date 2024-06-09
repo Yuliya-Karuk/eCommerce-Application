@@ -67,7 +67,7 @@ export const UserMenu: FC = () => {
         <svg width={iconSizeNumber} height={iconSizeNumber}>
           <use xlinkHref={`${sprite}#cart`} />
         </svg>
-        <span>{productInCart}</span>
+        <span>{productInCart > 99 ? '99+' : productInCart}</span>
       </Link>
     </div>
   );
