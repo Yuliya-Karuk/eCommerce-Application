@@ -45,7 +45,16 @@
 
     @include smalltablet {
       flex-wrap: wrap;
-      gap: 25px;
+      gap: 30px;
+    }
+
+    @include mobile {
+      column-gap: 15px;
+    }
+
+    @media all and (max-width: 350.5px) {
+      flex-direction: column;
+      row-gap: 25px;
     }
   }
 
@@ -83,22 +92,42 @@
     }
   }
 
-  &-contacts,
   &-opening-hours {
-    @include mobile {
+    @include smalltablet {
+      order: 3;
+    }
+
+    @include smalltablet {
       order: 2;
+      text-align: end;
+    }
+
+    @media all and (max-width: 350.5px) {
+      text-align: center;
     }
   }
 
-  &-opening-hours {
-    text-align: end;
+  &-contacts {
+    @include smalltablet {
+      order: 2;
+    }
+
+    @include mobile {
+      order: 1;
+    }
+
+    @media all and (max-width: 350.5px) {
+      text-align: center;
+    }
   }
 
   &-shop {
-    @include mobile {
-      width: 100%;
+    @include smalltablet {
       order: 1;
-      align-items: center;
+    }
+
+    @include mobile {
+      display: none;
     }
   }
 
