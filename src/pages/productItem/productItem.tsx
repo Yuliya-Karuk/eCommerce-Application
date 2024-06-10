@@ -143,9 +143,10 @@ export function ProductItem() {
         lineItemId: cartItemId,
       };
 
-      console.log(action);
-      console.log(activeVariant);
-      const data = await sdkService.updateCart(cart.id, cart.version, [action]);
+      const data = await sdkService.updateCart(cart.id, cart.version, [action]).then(cartData => {
+        successNotify('Product removed successfully');
+        return cartData;
+      });
       setCart(data);
     } else {
       const order: CartUpdateAction = {
@@ -179,14 +180,12 @@ export function ProductItem() {
                 Price:
                 <PriceView price={price} />
               </div>
-
               <ProductAttributesView
                 activeAttributes={convertProductAttributesArrayToObject(attributes)}
                 allAttributes={allAttributes}
                 setActiveVariant={setActiveVariant}
                 product={product}
               />
-
               <div className={styles.buttonsWrapper}>
                 <div className={styles.quantitySelector}>
                   <QuantityInput value={quantity} onChange={setQuantity} />
