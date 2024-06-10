@@ -11,16 +11,19 @@ import { FiltersComponent } from '@components/Filters/Filters';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
 import { Loader } from '@components/Loader/Loader';
+import { Pagination } from '@components/Pagination/Pagination';
 import { ProductCard } from '@components/ProductCard/ProductCard';
 import { Search } from '@components/Search/Search';
 import { Sorting } from '@components/Sorting/Sorting';
 import { useToast } from '@contexts/toastProvider';
 import { CategoryList, CustomCategory, Filters } from '@models/index';
 import { defaultFilter, defaultSearch, defaultSort, NothingFoundByFiltering, startCategory } from '@utils/constants';
-import { findCategoryBySlug, prepareQuery, prepareQueryParams, simplifyCategories } from '@utils/utils';
+import { findCategoryBySlug, isNotNullable, prepareQuery, prepareQueryParams, simplifyCategories } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import styles from './catalog.module.scss';
+
+const productPerPage = 5;
 
 const CatalogImages: { [key: string]: string } = {
   'All Products': catalogAll,
@@ -46,6 +49,9 @@ export function Catalog() {
   const [filters, setFilters] = useState<Filters>(prepareQuery(searchParams, defaultFilter));
   const [searchSettings, setSearchSettings] = useState(defaultSearch);
   const [sortSettings, setSortSettings] = useState(defaultSort);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const checkRoute = (urlSlugs: (string | undefined)[], data: CategoryList) => {
     const urlSlug = urlSlugs.filter(el => el !== undefined).join('/');
@@ -74,9 +80,11 @@ export function Catalog() {
     const filterParams = prepareQueryParams(filters, activeCategory.id, searchSettings, sortSettings);
 
     try {
-      const data = await sdkService.filterProductsByAttribute(filterParams);
-      setProducts(data);
-      if (data.length === 0) {
+      const data = await sdkService.filterProductsByAttribute(filterParams, 20, 0);
+      setProducts(data.results);
+      setTotalPages(Math.ceil(isNotNullable(data.total) / productPerPage));
+      console.log(Math.ceil(isNotNullable(data.total) / productPerPage));
+      if (data.results.length === 0) {
         errorNotify(NothingFoundByFiltering);
       }
     } catch (e) {
@@ -180,6 +188,7 @@ export function Catalog() {
                   products.map(product => <ProductCard categories={categories} key={product.id} product={product} />)}
               </ul>
             </div>
+            <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
           </div>
         </div>
       </Container>

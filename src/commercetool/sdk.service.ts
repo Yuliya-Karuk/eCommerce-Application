@@ -132,17 +132,19 @@ export class SdkService {
     return result.body;
   }
 
-  public async filterProductsByAttribute(filterArr: QueryParams) {
+  public async filterProductsByAttribute(filterArr: QueryParams, limit: number, offset: number) {
     const data = await this.apiRoot
       .productProjections()
       .search()
       .get({
         queryArgs: {
           ...filterArr,
+          limit,
+          offset,
         },
       })
       .execute();
-    return data.body.results;
+    return data.body;
   }
 
   public async getProductProjectionByKey(productKey: string): Promise<ProductProjection> {
