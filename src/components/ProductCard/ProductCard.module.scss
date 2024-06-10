@@ -1,6 +1,5 @@
 .product-card {
-  @include flex(flex-start, flex-start, column);
-  gap: 15px;
+  @include flex(flex-start, flex-start, column, 10px);
   width: 100%;
   font-family: Questrial, sans-serif;
 }
@@ -46,14 +45,14 @@
 
 .product-card-description {
   @extend %transition;
-  @include adaptiveValue('font-size', 24px, 14px);
+  @include adaptiveValue('font-size', 24px, 10px);
 
   @include smalltablet {
     padding: 10px 10px 0;
   }
 
   @include mobile {
-    -webkit-line-clamp: 12;
+    -webkit-line-clamp: 17;
   }
   position: absolute;
   z-index: 10;
@@ -67,7 +66,6 @@
   text-overflow: ellipsis;
   visibility: hidden;
   opacity: 0;
-  -webkit-line-clamp: 15;
 }
 
 .product-card-title {
@@ -81,8 +79,7 @@
 
 .product-card-prices {
   @include adaptiveValue('font-size', 20px, 14px);
-  @include flex(flex-start, center);
-  gap: 10px;
+  @include flex(flex-start, center, null, 10px);
 
   .crossed {
     @include adaptiveValue('font-size', 18px, 12px);

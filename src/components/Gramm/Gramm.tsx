@@ -29,7 +29,7 @@ export const Gramm: FC = () => {
                   key={Math.random().toString(36).slice(2)}
                   className={styles.grammGalleryItem}
                   href="https://www.instagram.com/sabatonofficial/"
-                  title="@wix: #wix, #website, #freewebsite, #websitetemplate, #wix.com"
+                  title="#sprout, #plants, #beauty, #fresh, #pots, #flowers, #weeds, #leaves"
                 >
                   <img
                     className={styles.grammGalleryImage}

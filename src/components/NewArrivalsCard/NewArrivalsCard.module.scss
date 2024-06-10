@@ -2,6 +2,7 @@
   &-item {
     @include flex(null, null, column);
     row-gap: 16px;
+    color: $color-bg-dark;
 
     @include bigdesktop {
       overflow: hidden;

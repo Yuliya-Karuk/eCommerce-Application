@@ -1,10 +1,9 @@
 .addresses {
-  @include flex(flex-start, flex-start, column);
+  @include flex(flex-start, flex-start, column, 15px);
 
   @include tablet {
     padding: 20px;
   }
-  gap: 15px;
   padding: 20px 40px;
   backdrop-filter: blur(10px);
 
@@ -38,9 +37,8 @@
 }
 
 .addresses-wrapper {
-  @include flex(flex-start, center, row);
+  @include flex(flex-start, center, row, 20px);
   flex-wrap: wrap;
-  gap: 20px;
 }
 
 .address-container {

@@ -2,8 +2,7 @@
   padding: 35px 10px;
 
   &-body {
-    @include flex(center, center, column);
-    row-gap: 24px;
+    @include flex(center, center, column, 24px);
   }
 
   &-title {
