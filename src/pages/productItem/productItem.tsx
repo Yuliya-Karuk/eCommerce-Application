@@ -20,7 +20,7 @@ import { QuantityInput } from '@components/QuantityInput/QuantityInput';
 import { Slider } from '@components/Slider/Slider';
 import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
-import { ProductAddToCart, ProductRemoveFRomCart } from '@utils/constants';
+import { ProductAddToCart, ProductRemoveFromCart } from '@utils/constants';
 import { assertValue, convertProductAttributesArrayToObject } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -93,7 +93,7 @@ export function ProductItem() {
       }
     };
 
-    if (cart && activeVariant.sku) {
+    if (Object.keys(cart).length > 0 && activeVariant.sku) {
       checkIfInCart();
     }
   }, [cart, activeVariant, product.id]);
@@ -159,7 +159,7 @@ export function ProductItem() {
         lineItemId: cartItemId,
       };
 
-      updateCart(action, ProductRemoveFRomCart);
+      updateCart(action, ProductRemoveFromCart);
     } else {
       const action: CartUpdateAction = {
         action: 'addLineItem',

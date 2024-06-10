@@ -13,7 +13,7 @@ import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
 import { CategoryList } from '@models/index';
 import { AppRoutes } from '@router/routes';
-import { ProductAddToCart, ProductRemoveFRomCart } from '@utils/constants';
+import { ProductAddToCart, ProductRemoveFromCart } from '@utils/constants';
 import {
   convertCentsToDollarsString,
   convertProductAttributesArrayToObject,
@@ -30,9 +30,14 @@ interface ProductCardProps {
   categories: CategoryList;
 }
 
+interface UpdateCart {
+  action: MyCartAddLineItemAction | MyCartRemoveLineItemAction;
+  message: string;
+}
+
 export const ProductCard = ({ categories, product }: ProductCardProps) => {
   let priceDiscounted;
-  const { successNotify, errorNotify } = useToast();
+  const { successNotify, promiseNotify } = useToast();
 
   const slugs = prepareProductSlugs(categories, product.categories).join('/');
   const productName = product.name['en-US'];
@@ -78,23 +83,26 @@ export const ProductCard = ({ categories, product }: ProductCardProps) => {
       }
     };
 
-    if (cart && activeVariant.sku) {
+    if (Object.keys(cart).length > 0 && activeVariant.sku) {
       checkIfInCart();
     }
   }, [cart, activeVariant, product.id]);
 
-  const updateCart = async (action: MyCartAddLineItemAction | MyCartRemoveLineItemAction, message: string) => {
+  const updateCart = async (updateData: UpdateCart) => {
     try {
-      const data = await sdkService.updateCart(cart.id, cart.version, [action]).then(cartData => {
-        successNotify(message);
+      const data = await sdkService.updateCart(cart.id, cart.version, [updateData.action]).then(cartData => {
+        successNotify(updateData.message);
         return cartData;
       });
 
       setCart(data);
-    } catch (e) {
-      errorNotify((e as Error).message);
+    } catch (error) {
+      const errorMessage = (error as Error).message || 'Unknown error';
+      throw new Error(errorMessage);
     }
   };
+
+  const notify = (userData: UpdateCart, PromiseMessage: string) => promiseNotify(userData, PromiseMessage, updateCart);
 
   const handleAddOrRemoveButtonClick = async () => {
     if (isInCart && cartItemId) {
@@ -103,7 +111,13 @@ export const ProductCard = ({ categories, product }: ProductCardProps) => {
         lineItemId: cartItemId,
       };
 
-      updateCart(action, ProductRemoveFRomCart);
+      notify(
+        {
+          action,
+          message: ProductRemoveFromCart,
+        },
+        'Removing'
+      );
     } else {
       const action: CartUpdateAction = {
         action: 'addLineItem',
@@ -112,7 +126,13 @@ export const ProductCard = ({ categories, product }: ProductCardProps) => {
         quantity: 1,
       };
 
-      updateCart(action, ProductAddToCart);
+      notify(
+        {
+          action,
+          message: ProductAddToCart,
+        },
+        'Adding'
+      );
     }
   };
 

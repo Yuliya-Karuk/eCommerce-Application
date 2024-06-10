@@ -24,7 +24,7 @@ export const promoCodeBanner =
 
 export const ProductAddToCart = 'The product has been successfully added to your cart!';
 
-export const ProductRemoveFRomCart = 'The product has been successfully removed from your cart!';
+export const ProductRemoveFromCart = 'The product has been successfully removed from your cart!';
 
 export const countries: Country[] = [
   {
