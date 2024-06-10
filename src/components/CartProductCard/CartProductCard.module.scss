@@ -18,6 +18,7 @@
     .name-wrapper {
       @include flex(flex-start, flex-start, column, 5px);
       align-self: center;
+      min-width: 200px;
 
       .name {
         font-size: 2rem;
