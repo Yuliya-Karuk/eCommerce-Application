@@ -1,9 +1,12 @@
 import template from '@assets/template.png';
-import { ProductProjection } from '@commercetools/platform-sdk';
+import { sdkService } from '@commercetool/sdk.service';
+import { CartRemoveLineItemAction, CartUpdateAction, ProductProjection } from '@commercetools/platform-sdk';
+import { useCart } from '@contexts/cartProvider';
 import { CategoryList } from '@models/index';
 import { AppRoutes } from '@router/routes';
 import { convertCentsToDollarsString, isNotNullable, prepareProductSlugs } from '@utils/utils';
 import classnames from 'classnames';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './ProductCard.module.scss';
 
@@ -24,6 +27,54 @@ export const ProductCard = ({ categories, product }: ProductCardProps) => {
   if (isDiscounted) {
     priceDiscounted = convertCentsToDollarsString(isNotNullable(pricesArr[0].discounted).value.centAmount);
   }
+  const { cart, setCart } = useCart();
+  const [isInCart, setIsInCart] = useState<boolean>(false);
+  const [cartItemId, setCartItemId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const checkIfInCart = () => {
+      const cartItem = cart.lineItems.find(
+        item => item.productId === product.id && item.variant.id === product.masterVariant.id
+      );
+      if (cartItem) {
+        setIsInCart(true);
+        setCartItemId(cartItem.id);
+      } else {
+        setIsInCart(false);
+        setCartItemId(null);
+      }
+    };
+
+    if (cart && product.masterVariant.sku) {
+      checkIfInCart();
+    }
+  }, [cart, product.masterVariant, product.id]);
+
+  const handleAddOrRemoveButtonClick = async () => {
+    if (isInCart && cartItemId) {
+      const action: CartRemoveLineItemAction = {
+        action: 'removeLineItem',
+        lineItemId: cartItemId,
+      };
+
+      const data = await sdkService.updateCart(cart.id, cart.version, [action]);
+      setCart(data);
+    } else {
+      const order: CartUpdateAction = {
+        action: 'addLineItem',
+        productId: product.id,
+        variantId: product.masterVariant.id,
+        quantity: 1,
+      };
+
+      const data = await sdkService.updateCart(cart.id, cart.version, [order]).then(cartData => {
+        // successNotify('Product added successfully');
+        return cartData;
+      });
+
+      setCart(data);
+    }
+  };
 
   return (
     <div className={styles.productCard}>
@@ -41,8 +92,8 @@ export const ProductCard = ({ categories, product }: ProductCardProps) => {
         </div>
         {isDiscounted && <div className={styles.productCardPriceDiscount}>{priceDiscounted}</div>}
       </div>
-      <button type="button" className={styles.productCardButton}>
-        Add to Cart
+      <button type="button" className={styles.productCardButton} onClick={handleAddOrRemoveButtonClick}>
+        {isInCart ? 'Remove from Cart' : 'Add to Cart'}
       </button>
     </div>
   );
