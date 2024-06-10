@@ -185,6 +185,7 @@ export function ProductItem() {
                 allAttributes={allAttributes}
                 setActiveVariant={setActiveVariant}
                 product={product}
+                isCatalog={false}
               />
               <div className={styles.buttonsWrapper}>
                 <div className={styles.quantitySelector}>

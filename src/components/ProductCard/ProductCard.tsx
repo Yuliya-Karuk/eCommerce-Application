@@ -1,10 +1,21 @@
 import template from '@assets/template.png';
 import { sdkService } from '@commercetool/sdk.service';
-import { CartRemoveLineItemAction, CartUpdateAction, ProductProjection } from '@commercetools/platform-sdk';
+import {
+  CartRemoveLineItemAction,
+  CartUpdateAction,
+  ProductProjection,
+  ProductVariant,
+} from '@commercetools/platform-sdk';
+import { ProductAttributes, ProductAttributesView } from '@components/ProductAttributes/ProductAttributesView';
 import { useCart } from '@contexts/cartProvider';
 import { CategoryList } from '@models/index';
 import { AppRoutes } from '@router/routes';
-import { convertCentsToDollarsString, isNotNullable, prepareProductSlugs } from '@utils/utils';
+import {
+  convertCentsToDollarsString,
+  convertProductAttributesArrayToObject,
+  isNotNullable,
+  prepareProductSlugs,
+} from '@utils/utils';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -16,6 +27,7 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ categories, product }: ProductCardProps) => {
+  console.log(product);
   let priceDiscounted;
   const slugs = prepareProductSlugs(categories, product.categories).join('/');
   const productName = product.name['en-US'];
@@ -76,6 +88,20 @@ export const ProductCard = ({ categories, product }: ProductCardProps) => {
     }
   };
 
+  const [activeVariant, setActiveVariant] = useState<ProductVariant>(product.masterVariant as ProductVariant);
+  const { variants } = product;
+  const { attributes } = activeVariant;
+  const allAttributes: ProductAttributes[] = [];
+
+  if (attributes) {
+    allAttributes.push(convertProductAttributesArrayToObject(product.masterVariant.attributes));
+  }
+  variants.forEach(variant => {
+    if (variant.attributes) {
+      allAttributes.push(convertProductAttributesArrayToObject(variant.attributes));
+    }
+  });
+
   return (
     <div className={styles.productCard}>
       <Link to={`${AppRoutes.PRODUCTS_ROUTE}/${slugs}/${product.key}`} className={styles.productCardImgContainer}>
@@ -92,6 +118,13 @@ export const ProductCard = ({ categories, product }: ProductCardProps) => {
         </div>
         {isDiscounted && <div className={styles.productCardPriceDiscount}>{priceDiscounted}</div>}
       </div>
+      <ProductAttributesView
+        activeAttributes={convertProductAttributesArrayToObject(attributes)}
+        allAttributes={allAttributes}
+        setActiveVariant={setActiveVariant}
+        product={product}
+        isCatalog
+      />
       <button type="button" className={styles.productCardButton} onClick={handleAddOrRemoveButtonClick}>
         {isInCart ? 'Remove from Cart' : 'Add to Cart'}
       </button>

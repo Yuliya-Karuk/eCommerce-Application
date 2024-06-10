@@ -15,6 +15,7 @@ export interface ProductAttributesViewProps {
   allAttributes: ProductAttributes[];
   setActiveVariant: React.Dispatch<React.SetStateAction<ProductVariant>>;
   product: ProductProjection;
+  isCatalog: boolean;
 }
 
 interface SizeOption {
@@ -32,6 +33,7 @@ export function ProductAttributesView({
   allAttributes,
   setActiveVariant,
   product,
+  isCatalog,
 }: ProductAttributesViewProps) {
   const sizes: SizeOption[] = [];
   const colors: ColorOption[] = [];
@@ -56,9 +58,9 @@ export function ProductAttributesView({
   };
 
   return (
-    <div className={styles.attributes}>
+    <div className={classNames(styles.attributes, { [styles.attributesCatalog]: isCatalog })}>
       {size && (
-        <div>
+        <div className={classNames(null, { [styles.variantBlock]: isCatalog })}>
           <div className={styles.title}>Size:</div>
           <div className={styles.options}>
             {sizes.length > 0 && (
@@ -88,7 +90,7 @@ export function ProductAttributesView({
       )}
 
       {color && (
-        <div>
+        <div className={classNames(null, { [styles.variantBlock]: isCatalog })}>
           <div className={styles.title}>Color:</div>
           <div className={styles.colorOptions}>
             {colors.length > 0 && (
@@ -113,7 +115,7 @@ export function ProductAttributesView({
       )}
 
       {brand && (
-        <div>
+        <div className={classNames(null, { [styles.brandBlock]: isCatalog })}>
           <div className={styles.title}>Brand:</div>
           <div className={styles.descriptionText}>{brand}</div>
         </div>
