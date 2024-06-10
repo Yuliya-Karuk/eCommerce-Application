@@ -16,8 +16,8 @@
     }
 
     &-header {
-      width: 100%;
       @include flex(space-between, center);
+      width: 100%;
       border-bottom: 1px solid $color-gray-dark;
     }
 
@@ -85,6 +85,13 @@
           .sku {
             font-size: 1.4rem;
             color: $color-gray-dark;
+            @media (max-width: 400px) {
+              font-size: 1rem;
+            }
+          }
+
+          @media (max-width: 400px) {
+            font-size: 1.4rem;
           }
         }
 
