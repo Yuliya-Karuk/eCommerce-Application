@@ -80,10 +80,12 @@ export function Catalog() {
     const filterParams = prepareQueryParams(filters, activeCategory.id, searchSettings, sortSettings);
 
     try {
-      const data = await sdkService.filterProductsByAttribute(filterParams, 20, 0);
+      const offset = (currentPage - 1) * productPerPage;
+      const data = await sdkService.filterProductsByAttribute(filterParams, productPerPage, offset);
+
       setProducts(data.results);
       setTotalPages(Math.ceil(isNotNullable(data.total) / productPerPage));
-      console.log(Math.ceil(isNotNullable(data.total) / productPerPage));
+
       if (data.results.length === 0) {
         errorNotify(NothingFoundByFiltering);
       }
@@ -111,7 +113,7 @@ export function Catalog() {
     getProducts();
     handleFilterUpdate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeCategory, filters, searchSettings, sortSettings]);
+  }, [activeCategory, filters, searchSettings, sortSettings, currentPage]);
 
   useEffect(() => {
     if (Object.keys(categories).length !== 0) {
