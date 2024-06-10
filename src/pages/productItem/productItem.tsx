@@ -206,7 +206,7 @@ export function ProductItem() {
           </div>
           <div className={styles.productDescription}>{product.description?.['en-US']}</div>
         </div>
-        {customToast({ position: 'top-center', autoClose: 3000 })};
+        {customToast({ position: 'top-center', autoClose: 3000 })}
       </Container>
       <Footer />
     </div>
