@@ -46,6 +46,10 @@
     font-family: Questrial, Arial, Helvetica, sans-serif;
     white-space: nowrap;
     transition: opacity 0.4s ease 0s;
+
+    .user-menu-logout:hover & {
+      opacity: 0.7 !important;
+    }
   }
 
   &-text,

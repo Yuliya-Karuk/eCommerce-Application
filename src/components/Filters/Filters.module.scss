@@ -1,5 +1,5 @@
 .filters {
-  @include flex(flex-start, flex-start, column);
+  @include flex(flex-start, flex-start, column, 10px);
 
   @include smalltablet {
     position: fixed;
@@ -26,7 +26,6 @@
       animation: burger-open 0.8s ease-in-out;
     }
   }
-  gap: 10px;
   width: 30%;
   max-width: 240px;
   font-family: Questrial, sans-serif;

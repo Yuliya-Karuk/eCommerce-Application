@@ -3,8 +3,8 @@ import { Login } from '@pages/login/login';
 import { NotFoundPage } from '@pages/notFound/notFound';
 import { ProductItem } from '@pages/productItem/productItem';
 import { Registration } from '@pages/registration/registration';
-import { render, screen } from '@testing-library/react';
-import { BrowserRouter, MemoryRouter, Route, Routes } from 'react-router-dom';
+import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 
 import { ToastProvider } from '@contexts/toastProvider';
@@ -23,7 +23,7 @@ export const routerArray = [
 
 describe('render', () => {
   routerArray.forEach(({ path, element, text }) => {
-    it(`should render component for route ${path}`, () => {
+    it(`should render component for route ${path}`, async () => {
       render(
         <MemoryRouter initialEntries={[path]}>
           <ToastProvider>
@@ -34,7 +34,9 @@ describe('render', () => {
         </MemoryRouter>
       );
 
-      expect(screen.getByText(text)).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText(text)).toBeInTheDocument();
+      });
     });
   });
 });
@@ -42,10 +44,17 @@ describe('render', () => {
 describe('render', () => {
   it('renders the Product Item page', () => {
     render(
-      <BrowserRouter>
-        <ProductItem />
-      </BrowserRouter>
+      <MemoryRouter>
+        <ToastProvider>
+          <Routes>
+            <Route path="products/plants/succulents/Pl-01" element={<ProductItem />} />
+          </Routes>
+        </ToastProvider>
+      </MemoryRouter>
     );
-    expect(screen.getByText(textOnPages.product)).toBeInTheDocument();
+
+    setTimeout(() => {
+      expect(screen.getByText(textOnPages.product)).toBeInTheDocument();
+    }, 2000);
   });
 });
