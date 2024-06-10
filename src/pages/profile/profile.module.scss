@@ -3,8 +3,7 @@
 }
 
 .profile-title {
-  @include flex(flex-start, center);
-  gap: 20px;
+  @include flex(flex-start, center, null, 20px);
   width: 100%;
   margin-top: 30px;
   padding: 20px 30px;
@@ -28,8 +27,7 @@
 }
 
 .profile-container {
-  @include flex(flex-start, flex-start, column);
-  gap: 15px;
+  @include flex(flex-start, flex-start, column, 15px);
 }
 
 .profile-menu {
@@ -63,12 +61,11 @@
 }
 
 .user-data {
-  @include flex(flex-start, flex-start, column);
+  @include flex(flex-start, flex-start, column, 15px);
 
   @include tablet {
     padding: 20px;
   }
-  gap: 15px;
   padding: 20px 40px;
   backdrop-filter: blur(10px);
 }
