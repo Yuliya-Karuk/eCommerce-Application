@@ -38,7 +38,7 @@ export function ProductAttributesView({
   const sizes: SizeOption[] = [];
   const colors: ColorOption[] = [];
 
-  if (allAttributes.length > 1) {
+  if (allAttributes.length >= 1) {
     allAttributes.forEach((attr, index) => {
       if (attr.size) {
         sizes.push({ size: attr.size, index });
