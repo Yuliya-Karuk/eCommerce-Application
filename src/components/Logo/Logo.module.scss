@@ -3,11 +3,11 @@
   @include adaptiveValue('font-size', 24px, 18px);
   font-family: Corben, Arial, Helvetica, serif;
 
-  @include overbigdesktop {
-    position: relative;
-    left: 50%;
-    transform: translateX(-112.5%);
-  }
+  // @include overbigdesktop {
+  //   position: relative;
+  //   left: 50%;
+  //   transform: translateX(-112.5%);
+  // }
 
   @include smalltablet {
     display: none;

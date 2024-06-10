@@ -1,0 +1,95 @@
+.developer {
+  &-body {
+    @include flex;
+    column-gap: 1px;
+
+    @include smalltablet {
+      flex-direction: column;
+    }
+  }
+
+  &-info {
+    @include flex(center, center, column);
+    color: $color-bg-dark;
+
+    @media all and (min-width: 912px) {
+      padding: 5%;
+    }
+
+    @include smalltablet {
+      row-gap: 5px;
+    }
+  }
+
+  &-name {
+    font-family: Forum, Arial, Helvetica, serif;
+    @include adaptiveValue('font-size', 40px, 20px);
+    letter-spacing: 0.5ex;
+
+    @include smalltablet {
+      padding-top: 10px;
+    }
+
+    a {
+      font-family: inherit;
+      font-size: inherit;
+      letter-spacing: inherit;
+    }
+  }
+
+  &-text {
+    padding: 5px 0;
+    font-family: Questrial, Arial, Helvetica, serif;
+    @include adaptiveValue('font-size', 18px, 14px);
+    line-height: 1.6;
+    max-width: 80%;
+
+    @include smalltablet {
+      max-width: 95%;
+      text-align: justify;
+    }
+  }
+
+  &-photo {
+    flex: 0 1 50%;
+
+    img {
+      max-width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+  }
+
+  &:nth-child(odd) {
+    background-color: $color-bg-light;
+
+    .developer {
+      &-body {
+        background-color: $color-bg-dark;
+      }
+
+      &-info {
+        background-color: $color-bg-light;
+        flex: 0 1 50%;
+      }
+    }
+  }
+
+  &:nth-child(even) {
+    .developer {
+      &-body {
+        flex-direction: row-reverse;
+        background-color: $color-bg-dark;
+
+        @include smalltablet {
+          flex-direction: column;
+        }
+      }
+
+      &-info {
+        background-color: $color-bg-light;
+        flex: 0 1 50%;
+      }
+    }
+  }
+}
