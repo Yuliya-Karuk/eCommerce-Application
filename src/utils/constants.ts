@@ -22,6 +22,10 @@ export const NothingFoundByFiltering = "Sorry, we didn't find any products that 
 export const promoCodeBanner =
   "Enjoy 10% off with our summer promo code SUMMER2024, or get 15% off your first order with promo code FIRST! Don't miss out on these great deals!";
 
+export const ProductAddToCart = 'The product has been successfully added to your cart!';
+
+export const ProductRemoveFRomCart = 'The product has been successfully removed from your cart!';
+
 export const countries: Country[] = [
   {
     name: 'Germany',

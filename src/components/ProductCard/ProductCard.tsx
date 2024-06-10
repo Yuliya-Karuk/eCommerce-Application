@@ -3,13 +3,17 @@ import { sdkService } from '@commercetool/sdk.service';
 import {
   CartRemoveLineItemAction,
   CartUpdateAction,
+  MyCartAddLineItemAction,
+  MyCartRemoveLineItemAction,
   ProductProjection,
   ProductVariant,
 } from '@commercetools/platform-sdk';
 import { ProductAttributes, ProductAttributesView } from '@components/ProductAttributes/ProductAttributesView';
 import { useCart } from '@contexts/cartProvider';
+import { useToast } from '@contexts/toastProvider';
 import { CategoryList } from '@models/index';
 import { AppRoutes } from '@router/routes';
+import { ProductAddToCart, ProductRemoveFRomCart } from '@utils/constants';
 import {
   convertCentsToDollarsString,
   convertProductAttributesArrayToObject,
@@ -27,66 +31,17 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ categories, product }: ProductCardProps) => {
-  console.log(product);
   let priceDiscounted;
+  const { successNotify, errorNotify } = useToast();
+
   const slugs = prepareProductSlugs(categories, product.categories).join('/');
   const productName = product.name['en-US'];
   const productDesc = isNotNullable(product.description)['en-US'];
   const productImg = isNotNullable(product.masterVariant.images)[0].url;
-  const pricesArr = isNotNullable(product.masterVariant.prices);
-  const price = convertCentsToDollarsString(pricesArr[0].value.centAmount);
-  const isDiscounted = Boolean(pricesArr[0].discounted);
-  if (isDiscounted) {
-    priceDiscounted = convertCentsToDollarsString(isNotNullable(pricesArr[0].discounted).value.centAmount);
-  }
+
   const { cart, setCart } = useCart();
   const [isInCart, setIsInCart] = useState<boolean>(false);
   const [cartItemId, setCartItemId] = useState<string | null>(null);
-
-  useEffect(() => {
-    const checkIfInCart = () => {
-      const cartItem = cart.lineItems.find(
-        item => item.productId === product.id && item.variant.id === product.masterVariant.id
-      );
-      if (cartItem) {
-        setIsInCart(true);
-        setCartItemId(cartItem.id);
-      } else {
-        setIsInCart(false);
-        setCartItemId(null);
-      }
-    };
-
-    if (cart && product.masterVariant.sku) {
-      checkIfInCart();
-    }
-  }, [cart, product.masterVariant, product.id]);
-
-  const handleAddOrRemoveButtonClick = async () => {
-    if (isInCart && cartItemId) {
-      const action: CartRemoveLineItemAction = {
-        action: 'removeLineItem',
-        lineItemId: cartItemId,
-      };
-
-      const data = await sdkService.updateCart(cart.id, cart.version, [action]);
-      setCart(data);
-    } else {
-      const order: CartUpdateAction = {
-        action: 'addLineItem',
-        productId: product.id,
-        variantId: product.masterVariant.id,
-        quantity: 1,
-      };
-
-      const data = await sdkService.updateCart(cart.id, cart.version, [order]).then(cartData => {
-        // successNotify('Product added successfully');
-        return cartData;
-      });
-
-      setCart(data);
-    }
-  };
 
   const [activeVariant, setActiveVariant] = useState<ProductVariant>(product.masterVariant as ProductVariant);
   const { variants } = product;
@@ -101,6 +56,65 @@ export const ProductCard = ({ categories, product }: ProductCardProps) => {
       allAttributes.push(convertProductAttributesArrayToObject(variant.attributes));
     }
   });
+
+  const pricesArr = isNotNullable(activeVariant.prices);
+  const price = convertCentsToDollarsString(pricesArr[0].value.centAmount);
+  const isDiscounted = Boolean(pricesArr[0].discounted);
+  if (isDiscounted) {
+    priceDiscounted = convertCentsToDollarsString(isNotNullable(pricesArr[0].discounted).value.centAmount);
+  }
+
+  useEffect(() => {
+    const checkIfInCart = () => {
+      const cartItem = cart.lineItems.find(
+        item => item.productId === product.id && item.variant.id === activeVariant.id
+      );
+      if (cartItem) {
+        setIsInCart(true);
+        setCartItemId(cartItem.id);
+      } else {
+        setIsInCart(false);
+        setCartItemId(null);
+      }
+    };
+
+    if (cart && activeVariant.sku) {
+      checkIfInCart();
+    }
+  }, [cart, activeVariant, product.id]);
+
+  const updateCart = async (action: MyCartAddLineItemAction | MyCartRemoveLineItemAction, message: string) => {
+    try {
+      const data = await sdkService.updateCart(cart.id, cart.version, [action]).then(cartData => {
+        successNotify(message);
+        return cartData;
+      });
+
+      setCart(data);
+    } catch (e) {
+      errorNotify((e as Error).message);
+    }
+  };
+
+  const handleAddOrRemoveButtonClick = async () => {
+    if (isInCart && cartItemId) {
+      const action: CartRemoveLineItemAction = {
+        action: 'removeLineItem',
+        lineItemId: cartItemId,
+      };
+
+      updateCart(action, ProductRemoveFRomCart);
+    } else {
+      const action: CartUpdateAction = {
+        action: 'addLineItem',
+        productId: product.id,
+        variantId: activeVariant.id,
+        quantity: 1,
+      };
+
+      updateCart(action, ProductAddToCart);
+    }
+  };
 
   return (
     <div className={styles.productCard}>

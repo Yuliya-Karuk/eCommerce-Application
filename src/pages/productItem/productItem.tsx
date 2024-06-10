@@ -3,6 +3,8 @@ import { sdkService } from '@commercetool/sdk.service';
 import {
   CartRemoveLineItemAction,
   CartUpdateAction,
+  MyCartAddLineItemAction,
+  MyCartRemoveLineItemAction,
   ProductProjection,
   ProductVariant,
 } from '@commercetools/platform-sdk';
@@ -18,6 +20,7 @@ import { QuantityInput } from '@components/QuantityInput/QuantityInput';
 import { Slider } from '@components/Slider/Slider';
 import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
+import { ProductAddToCart, ProductRemoveFRomCart } from '@utils/constants';
 import { assertValue, convertProductAttributesArrayToObject } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -136,32 +139,36 @@ export function ProductItem() {
     }, 400);
   };
 
-  const handleAddToCartClick = async () => {
+  const updateCart = async (action: MyCartAddLineItemAction | MyCartRemoveLineItemAction, message: string) => {
+    try {
+      const data = await sdkService.updateCart(cart.id, cart.version, [action]).then(cartData => {
+        successNotify(message);
+        return cartData;
+      });
+
+      setCart(data);
+    } catch (e) {
+      errorNotify((e as Error).message);
+    }
+  };
+
+  const handleAddOrRemoveButtonClick = async () => {
     if (isInCart && cartItemId) {
       const action: CartRemoveLineItemAction = {
         action: 'removeLineItem',
         lineItemId: cartItemId,
       };
 
-      const data = await sdkService.updateCart(cart.id, cart.version, [action]).then(cartData => {
-        successNotify('Product removed successfully');
-        return cartData;
-      });
-      setCart(data);
+      updateCart(action, ProductRemoveFRomCart);
     } else {
-      const order: CartUpdateAction = {
+      const action: CartUpdateAction = {
         action: 'addLineItem',
         productId: product.id,
         variantId: activeVariant.id,
         quantity,
       };
 
-      const data = await sdkService.updateCart(cart.id, cart.version, [order]).then(cartData => {
-        successNotify('Product added successfully');
-        return cartData;
-      });
-
-      setCart(data);
+      updateCart(action, ProductAddToCart);
     }
   };
 
@@ -192,7 +199,7 @@ export function ProductItem() {
                   <QuantityInput value={quantity} onChange={setQuantity} />
                 </div>
                 <div className={styles.buttonsWrapper}>
-                  <button type="button" className={styles.addToCartButton} onClick={handleAddToCartClick}>
+                  <button type="button" className={styles.addToCartButton} onClick={handleAddOrRemoveButtonClick}>
                     {isInCart ? 'remove from cart' : 'add to cart'}
                   </button>
                   <button type="button" className={styles.addToFavoriteButton} onClick={handleFavoriteClick}>
