@@ -83,7 +83,7 @@ export const ProductCard = ({ categories, product }: ProductCardProps) => {
       }
     };
 
-    if (Object.keys(cart).length > 0 && activeVariant.sku) {
+    if (cart && Object.keys(cart).length > 0 && activeVariant.sku) {
       checkIfInCart();
     }
   }, [cart, activeVariant, product.id]);

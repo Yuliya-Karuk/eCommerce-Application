@@ -19,6 +19,7 @@ import { ProductInfoSection } from '@components/ProductInfoSection/ProductInfoSe
 import { QuantityInput } from '@components/QuantityInput/QuantityInput';
 import { Slider } from '@components/Slider/Slider';
 import { useCart } from '@contexts/cartProvider';
+import { useCategories } from '@contexts/categoryProvider';
 import { useToast } from '@contexts/toastProvider';
 import { ProductAddToCart, ProductRemoveFromCart } from '@utils/constants';
 import { assertValue, convertProductAttributesArrayToObject } from '@utils/utils';
@@ -42,6 +43,8 @@ export function ProductItem() {
   const [loading, setLoading] = useState<boolean>(true);
   const [activeVariant, setActiveVariant] = useState<ProductVariant>({} as ProductVariant);
   const [quantity, setQuantity] = useState(1);
+
+  const { categories, checkProductRoute } = useCategories();
   const { customToast, errorNotify, successNotify } = useToast();
 
   useEffect(() => {
@@ -50,17 +53,8 @@ export function ProductItem() {
         setLoading(true);
 
         const data = await sdkService.getProductProjectionByKey(slug);
-        const { categories } = data;
-        const [category1, category2] = categories;
 
-        const category1Slug = await sdkService.getCategoryById(category1.id).then(cat1 => cat1[0].slug['en-US']);
-        const category2Slug = category2
-          ? await sdkService.getCategoryById(category2.id).then(cat2 => cat2[0].slug['en-US'])
-          : null;
-
-        const isCategoriesCorrect =
-          (category === category1Slug && (!subcategory || subcategory === category2Slug)) ||
-          (category === category2Slug && (!subcategory || subcategory === category1Slug));
+        const isCategoriesCorrect = checkProductRoute([category, subcategory], data.categories);
 
         if (!isCategoriesCorrect) {
           navigate('/404');
@@ -75,9 +69,11 @@ export function ProductItem() {
       }
     };
 
-    getProduct();
+    if (Object.keys(categories).length !== 0) {
+      getProduct();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [categories]);
 
   useEffect(() => {
     const checkIfInCart = () => {
