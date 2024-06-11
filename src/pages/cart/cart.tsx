@@ -87,7 +87,9 @@ export function Cart() {
                 {cart.lineItems.map(item => (
                   <div key={item.id} className={styles.orderLine}>
                     <div className={styles.nameWrapper}>
-                      {item.name['en-US']} <span className={styles.sku}>({item.variant.sku})</span> x {item.quantity}
+                      {item.quantity}
+                      <span className={styles.sku}>x</span>
+                      {item.name['en-US']} <span className={styles.sku}>({item.variant.sku})</span>
                     </div>
                     <span className={styles.priceWrapper}>
                       {convertCentsToDollarsString(item.totalPrice.centAmount)}
