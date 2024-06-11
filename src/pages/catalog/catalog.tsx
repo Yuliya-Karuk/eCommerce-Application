@@ -84,7 +84,7 @@ export function Catalog() {
 
   useEffect(() => {
     if (Object.keys(catalogCategories).length !== 0) {
-      if (!checkCatalogRoute([category, subcategory, slug], catalogCategories)) {
+      if (!checkCatalogRoute([category, subcategory, slug])) {
         navigate('/404');
       }
       setLoading(false);

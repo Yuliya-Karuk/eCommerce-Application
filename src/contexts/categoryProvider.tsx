@@ -9,7 +9,7 @@ import { useToast } from './toastProvider';
 interface CategoryContextValue {
   catalogCategories: CategoryList;
   categories: Category[];
-  checkCatalogRoute: (urlSlugs: (string | undefined)[], data: CategoryList) => boolean;
+  checkCatalogRoute: (urlSlugs: (string | undefined)[]) => boolean;
   checkProductRoute: (urlSlugs: (string | undefined)[], productCategories: CategoryReference[]) => boolean;
 }
 
@@ -25,9 +25,9 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
 
   const { errorNotify } = useToast();
 
-  const checkCatalogRoute = (urlSlugs: (string | undefined)[], data: CategoryList) => {
+  const checkCatalogRoute = (urlSlugs: (string | undefined)[]) => {
     const urlSlug = urlSlugs.filter(el => el !== undefined).join('/');
-    const isExists = Object.values(data).filter(el => el.slug.join('/') === urlSlug);
+    const isExists = Object.values(catalogCategories).filter(el => el.slug.join('/') === urlSlug);
     return isExists.length !== 0;
   };
 
@@ -41,15 +41,6 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
     const preparedUrlSlugs = urlSlugs.filter(el => el !== undefined);
 
     return preparedUrlSlugs.join('/') === slugs.join('/');
-
-    // const isCategoriesCorrect =
-    //   (category === category1Slug && (!subcategory || subcategory === category2Slug)) ||
-    //   (category === category2Slug && (!subcategory || subcategory === category1Slug));
-    // console.log(slugs);
-    // const [category1, category2] = productCategories;
-    // const slug1 = categories.filter(cat => cat.id === category1.id)[0].slug['en-US'];
-    // const slug2 = categories.filter(cat => cat.id === category2.id)[0].slug['en-US'];
-    // return true;
   };
 
   useEffect(() => {

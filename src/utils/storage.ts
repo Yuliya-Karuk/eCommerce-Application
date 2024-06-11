@@ -2,7 +2,6 @@ import { TokenStore } from '@commercetools/sdk-client-v2';
 import { CartStorage } from '@models/index';
 
 export class StorageService {
-  // рефактор надо
   private storageKey: string = 'sprout_token';
   private cartKey: string = 'sprout_cart';
   private anonKey: string = 'sprout_anon_id';
