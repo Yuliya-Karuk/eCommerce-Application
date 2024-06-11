@@ -23,7 +23,8 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import styles from './catalog.module.scss';
 
-const productPerPage = 5;
+const productPerPage = 3;
+const defaultPage = 1;
 
 const CatalogImages: { [key: string]: string } = {
   'All Products': catalogAll,
@@ -52,6 +53,7 @@ export function Catalog() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [shouldFetchProducts, setShouldFetchProducts] = useState(false);
 
   const checkRoute = (urlSlugs: (string | undefined)[], data: CategoryList) => {
     const urlSlug = urlSlugs.filter(el => el !== undefined).join('/');
@@ -110,10 +112,18 @@ export function Catalog() {
   };
 
   useEffect(() => {
-    getProducts();
-    handleFilterUpdate();
+    setCurrentPage(defaultPage);
+    setShouldFetchProducts(true);
+  }, [activeCategory, filters, searchSettings, sortSettings]);
+
+  useEffect(() => {
+    if (shouldFetchProducts) {
+      getProducts();
+      handleFilterUpdate();
+      setShouldFetchProducts(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeCategory, filters, searchSettings, sortSettings, currentPage]);
+  }, [currentPage, shouldFetchProducts]);
 
   useEffect(() => {
     if (Object.keys(categories).length !== 0) {
@@ -190,7 +200,12 @@ export function Catalog() {
                   products.map(product => <ProductCard categories={categories} key={product.id} product={product} />)}
               </ul>
             </div>
-            <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={setCurrentPage}
+              setShouldFetchProducts={setShouldFetchProducts}
+            />
           </div>
         </div>
       </Container>

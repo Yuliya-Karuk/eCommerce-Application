@@ -14,7 +14,13 @@
   @extend %transition;
   @include flex(center, center);
 
-  &:disabled {
+  @include smallmobile {
+    width: 25px;
+    height: 25px;
+    padding: 6px;
+  }
+
+  &:not(.empty):disabled {
     opacity: 0.7;
     cursor: default;
   }
