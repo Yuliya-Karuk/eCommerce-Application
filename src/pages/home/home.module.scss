@@ -17,9 +17,13 @@
 }
 
 .promo-code {
-  background-color: $color-green-dark;
-  @include flex(center);
   @extend %transition;
+  @include flex(center);
+
+  @include hover {
+    background: $color-primary-bright;
+  }
+  background-color: $color-green-dark;
 
   &-text {
     @include adaptiveValue('font-size', 20px, 12px);
@@ -29,9 +33,5 @@
     width: 70%;
     max-width: 800px;
     padding: 20px 0;
-  }
-
-  @include hover {
-    background: $color-primary-bright;
   }
 }

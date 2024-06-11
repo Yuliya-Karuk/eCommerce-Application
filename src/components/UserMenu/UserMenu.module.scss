@@ -63,10 +63,10 @@
   }
 
   &-cart {
+    @include flex(null, center, null, 10px);
     position: relative;
     font-size: 12px;
     font-family: Questrial, Arial, Helvetica, sans-serif;
-    @include flex(null, center, null, 10px);
 
     span {
       position: absolute;
