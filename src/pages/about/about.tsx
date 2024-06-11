@@ -1,3 +1,7 @@
+import binarionPhoto from '@assets/About/Binarion.jpg';
+import dimaPhoto from '@assets/About/Dima.jpg';
+import juliaPhoto from '@assets/About/Julia.jpg';
+import vitalPhoto from '@assets/About/Vital.jpg';
 import { AboutBanner } from '@components/AboutBanner/AboutBanner';
 import { Developer } from '@components/Developer/Developer';
 import { Footer } from '@components/Footer/Footer';
@@ -6,10 +10,6 @@ import { useAuth } from '@contexts/authProvider';
 import { useToast } from '@contexts/toastProvider';
 import { SuccessLoginMessage } from '@utils/constants';
 import { useEffect } from 'react';
-import binarionPhoto from '../../assets/About/Binarion.jpg';
-import dimaPhoto from '../../assets/About/Dima.jpg';
-import juliaPhoto from '../../assets/About/Julia.jpg';
-import vitalPhoto from '../../assets/About/Vital.jpg';
 import styles from './about.module.scss';
 
 const developers = [

@@ -39,12 +39,6 @@
   }
 }
 
-@mixin overbigdesktop {
-  @media (min-width: (1441px)) {
-    @content;
-  }
-}
-
 // Анимирование кнопки
 @mixin animatebtn($smax: 1, $smin: 0.95) {
   transform-origin: center center;

@@ -45,16 +45,11 @@
 
     @include smalltablet {
       flex-wrap: wrap;
-      gap: 30px;
+      gap: 25px;
     }
 
-    @include mobile {
-      column-gap: 15px;
-    }
-
-    @media all and (max-width: 350.5px) {
+    @media all and (max-width: 360.5px) {
       flex-direction: column;
-      row-gap: 25px;
     }
   }
 
@@ -94,39 +89,22 @@
 
   &-opening-hours {
     @include smalltablet {
-      order: 3;
-    }
-
-    @include smalltablet {
-      order: 2;
       text-align: end;
     }
 
-    @media all and (max-width: 350.5px) {
+    @media all and (max-width: 360.5px) {
       text-align: center;
     }
   }
 
   &-contacts {
-    @include smalltablet {
-      order: 2;
-    }
-
-    @include mobile {
-      order: 1;
-    }
-
-    @media all and (max-width: 350.5px) {
+    @media all and (max-width: 360.5px) {
       text-align: center;
     }
   }
 
   &-shop {
     @include smalltablet {
-      order: 1;
-    }
-
-    @include mobile {
       display: none;
     }
   }
