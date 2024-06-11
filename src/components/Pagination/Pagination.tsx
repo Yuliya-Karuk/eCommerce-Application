@@ -58,22 +58,18 @@ export const Pagination = ({ currentPage, totalPages, setCurrentPage, setShouldF
             <span aria-hidden="true" />
           </button>
         </li>
-        {
-          // Array.from({ length: totalPages }, (_, i) => i + 1)
-          //   .slice(0, 5)
-          paginationRange.map(el => (
-            <li key={el}>
-              <button
-                type="button"
-                className={classnames(styles.pgnButton, { [styles.active]: el === currentPage })}
-                onClick={() => setCurrentPage(el)}
-              >
-                {el}
-              </button>
-            </li>
-          ))
-        }
-        {totalPages > maxShownPages && (
+        {paginationRange.map(el => (
+          <li key={el}>
+            <button
+              type="button"
+              className={classnames(styles.pgnButton, { [styles.active]: el === currentPage })}
+              onClick={() => setCurrentPage(el)}
+            >
+              {el}
+            </button>
+          </li>
+        ))}
+        {totalPages > maxShownPages && paginationRange.length === 5 && (
           <li>
             <button type="button" className={classnames(styles.pgnButton, { [styles.empty]: true })} disabled>
               ...

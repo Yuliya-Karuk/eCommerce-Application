@@ -23,7 +23,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import styles from './catalog.module.scss';
 
-const productPerPage = 3;
+const productPerPage = 4;
 const defaultPage = 1;
 
 const CatalogImages: { [key: string]: string } = {

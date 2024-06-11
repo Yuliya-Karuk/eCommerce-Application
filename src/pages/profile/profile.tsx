@@ -53,7 +53,6 @@ export const Profile = () => {
             {Object.entries(tabs).map(([key, value]) => (
               <button
                 className={classnames(styles.profileMenuButton, { [styles.active]: value === activeTab })}
-                // className={styles.profileMenuButton}
                 key={key}
                 type="button"
                 onClick={() => setActiveTab(tabs[key])}
