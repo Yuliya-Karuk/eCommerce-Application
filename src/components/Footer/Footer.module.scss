@@ -47,6 +47,10 @@
       flex-wrap: wrap;
       gap: 25px;
     }
+
+    @media all and (max-width: 360.5px) {
+      flex-direction: column;
+    }
   }
 
   &-separator {
@@ -83,22 +87,25 @@
     }
   }
 
-  &-contacts,
   &-opening-hours {
-    @include mobile {
-      order: 2;
+    @include smalltablet {
+      text-align: end;
+    }
+
+    @media all and (max-width: 360.5px) {
+      text-align: center;
     }
   }
 
-  &-opening-hours {
-    text-align: end;
+  &-contacts {
+    @media all and (max-width: 360.5px) {
+      text-align: center;
+    }
   }
 
   &-shop {
-    @include mobile {
-      width: 100%;
-      order: 1;
-      align-items: center;
+    @include smalltablet {
+      display: none;
     }
   }
 
