@@ -30,6 +30,7 @@ export const Navigation: FC<NavigationProps> = ({ id, ...props }) => {
         className={isMenuOpen ? `${styles.burger} ${styles.active}` : styles.burger}
         role="button"
         aria-expanded={isMenuOpen}
+        aria-controls={id || 'menu'}
         aria-label={`${isMenuOpen ? 'Close' : 'Open'} menu`}
         tabIndex={0}
         onClick={() => {
@@ -39,7 +40,7 @@ export const Navigation: FC<NavigationProps> = ({ id, ...props }) => {
       >
         <span />
       </div>
-      <nav className={isMenuOpen ? `${styles.menu} ${styles.active}` : styles.menu} id={id} {...props}>
+      <nav className={isMenuOpen ? `${styles.menu} ${styles.active}` : styles.menu} id={id || 'menu'} {...props}>
         <ul className={styles.menuList}>
           {paths.map(path => (
             <li key={path} className={styles.menuItem}>
