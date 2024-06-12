@@ -1,8 +1,8 @@
+import { useClickOutside } from '@hooks/useClickOutside';
 import { AppRoutes } from '@router/routes';
 import { FC, useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Link, useLocation } from 'react-router-dom';
-import { useClickOutside } from 'src/hooks/useClickOutside';
 import styles from './Navigation.module.scss';
 
 interface NavigationProps {
