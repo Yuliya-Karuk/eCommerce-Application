@@ -1,7 +1,8 @@
 import { AppRoutes } from '@router/routes';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Link } from 'react-router-dom';
+import { useClickOutside } from 'src/hooks/useClickOutside';
 import styles from './Navigation.module.scss';
 
 interface NavigationProps {
@@ -17,10 +18,20 @@ export const Navigation: FC<NavigationProps> = ({ id, ...props }) => {
   ];
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isDesktop = useMediaQuery({ query: '(min-width: 769px)' });
+  const menuRef = useRef(null);
+  const onClickOutside = () => {
+    if (!isDesktop && isMenuOpen) {
+      setIsMenuOpen(false);
+      document.body.classList.toggle('lock', !isMenuOpen);
+    }
+  };
+
+  useClickOutside(menuRef, onClickOutside);
 
   useEffect(() => {
     if (isDesktop && isMenuOpen) {
       setIsMenuOpen(false);
+      document.body.classList.toggle('lock', !isMenuOpen);
     }
   }, [isDesktop, isMenuOpen]);
 
@@ -33,14 +44,20 @@ export const Navigation: FC<NavigationProps> = ({ id, ...props }) => {
         aria-controls={id || 'menu'}
         aria-label={`${isMenuOpen ? 'Close' : 'Open'} menu`}
         tabIndex={0}
-        onClick={() => {
+        onClick={e => {
+          e.stopPropagation();
           setIsMenuOpen(!isMenuOpen);
           document.body.classList.toggle('lock', !isMenuOpen);
         }}
       >
         <span />
       </div>
-      <nav className={isMenuOpen ? `${styles.menu} ${styles.active}` : styles.menu} id={id || 'menu'} {...props}>
+      <nav
+        className={isMenuOpen ? `${styles.menu} ${styles.active}` : styles.menu}
+        id={id || 'menu'}
+        ref={menuRef}
+        {...props}
+      >
         <ul className={styles.menuList}>
           {paths.map(path => (
             <li key={path} className={styles.menuItem}>
