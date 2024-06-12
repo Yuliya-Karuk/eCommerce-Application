@@ -4,6 +4,7 @@ export const useClickOutside = (ref: React.MutableRefObject<HTMLTemplateElement 
   const handleClick = (e: Event) => {
     e.stopPropagation();
     const target = e.target as HTMLTemplateElement;
+
     if (ref.current && !ref.current.contains(target)) {
       callback();
     }
