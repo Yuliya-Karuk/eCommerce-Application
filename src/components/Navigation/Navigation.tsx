@@ -1,7 +1,7 @@
 import { AppRoutes } from '@router/routes';
 import { FC, useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useClickOutside } from 'src/hooks/useClickOutside';
 import styles from './Navigation.module.scss';
 
@@ -16,6 +16,8 @@ export const Navigation: FC<NavigationProps> = ({ id, ...props }) => {
     AppRoutes.LOGIN_ROUTE,
     AppRoutes.REGISTRATION_ROUTE,
   ];
+  const location = useLocation();
+  const menuPaths = paths.map(path => (path === location.pathname ? AppRoutes.HOME_ROUTE : path));
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isDesktop = useMediaQuery({ query: '(min-width: 769px)' });
   const menuRef = useRef(null);
@@ -59,7 +61,7 @@ export const Navigation: FC<NavigationProps> = ({ id, ...props }) => {
         {...props}
       >
         <ul className={styles.menuList}>
-          {paths.map(path => (
+          {menuPaths.map(path => (
             <li key={path} className={styles.menuItem}>
               <Link
                 to={path}
@@ -67,7 +69,7 @@ export const Navigation: FC<NavigationProps> = ({ id, ...props }) => {
                   document.body.classList.remove('lock');
                 }}
               >
-                {path.slice(1)[0].toUpperCase() + path.slice(2)}
+                {path === AppRoutes.HOME_ROUTE ? 'Home' : path.slice(1)[0].toUpperCase() + path.slice(2)}
               </Link>
             </li>
           ))}
