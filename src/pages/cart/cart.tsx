@@ -45,7 +45,7 @@ export function Cart() {
   };
 
   return (
-    <>
+    <div className={styles.pageWrapper}>
       <Header />
       <Container>
         {isCartEmpty ? (
@@ -131,7 +131,8 @@ export function Cart() {
         </Modal>
         {customToast({ position: 'top-center', autoClose: 5000 })}
       </Container>
+      <div className={styles.specialEmptyContainer} />
       <Footer />
-    </>
+    </div>
   );
 }
