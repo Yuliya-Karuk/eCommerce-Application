@@ -22,7 +22,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isLoginSuccess, setIsLoginSuccess] = useState(false);
 
   const login = () => {
-    // storage.setTokenStore(tokenController.get());
     setIsLoggedIn(true);
     setIsLoginSuccess(true);
   };

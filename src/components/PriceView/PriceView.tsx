@@ -8,11 +8,11 @@ interface PriceViewProps {
 }
 
 export function PriceView({ price }: PriceViewProps) {
-  const fullPrice: string = price ? convertCentsToDollarsString(price.value.centAmount) : '';
-  const priceWithDiscount = price.discounted?.value.centAmount
-    ? convertCentsToDollarsString(price.discounted.value.centAmount)
-    : '';
+  const fullPrice: string = price && convertCentsToDollarsString(price.value.centAmount);
+  const priceWithDiscount =
+    price.discounted?.value.centAmount && convertCentsToDollarsString(price.discounted.value.centAmount);
   const hasDiscount = !!price.discounted?.value.centAmount;
+
   return (
     <>
       <div
