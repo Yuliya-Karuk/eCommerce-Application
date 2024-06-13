@@ -46,6 +46,7 @@
     @include smalltablet {
       flex-wrap: wrap;
       gap: 25px;
+      padding: 10px 0;
     }
 
     @media all and (max-width: 360.5px) {
@@ -88,9 +89,7 @@
   }
 
   &-opening-hours {
-    @include smalltablet {
-      text-align: end;
-    }
+    text-align: end;
 
     @media all and (max-width: 360.5px) {
       text-align: center;
