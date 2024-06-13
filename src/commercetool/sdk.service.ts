@@ -48,6 +48,8 @@ export class SdkService {
     storage.setAnonId(anonymousId);
     anonymousMiddlewareOptions.credentials.anonymousId = anonymousId;
 
+    tokenController.refresh();
+
     this.client = this.clientBuilder.withAnonymousSessionFlow(anonymousMiddlewareOptions).build();
 
     this.apiRoot = createApiBuilderFromCtpClient(this.client).withProjectKey({

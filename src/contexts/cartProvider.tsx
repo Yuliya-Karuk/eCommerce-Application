@@ -2,7 +2,7 @@ import { sdkService } from '@commercetool/sdk.service';
 import { Cart, CartSetAnonymousIdAction } from '@commercetools/platform-sdk';
 import { storage } from '@utils/storage';
 import { isNotNullable } from '@utils/utils';
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { useAuth } from './authProvider';
 
 interface CartContextValue {
@@ -22,6 +22,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   const [cart, setCart] = useState({} as Cart);
   const [promoCodeName, setPromoCodeName] = useState('');
   const { isLoggedIn } = useAuth();
+  const initialized = useRef(false);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -33,7 +34,8 @@ export const CartProvider = ({ children }: CartProviderProps) => {
           data = await sdkService.getCart(isNotNullable(storage.getCartStore()).cartId);
           const anonymousId = isNotNullable(storage.getAnonId());
 
-          if (data.anonymousId !== anonymousId) {
+          if (data.anonymousId !== anonymousId && !initialized.current) {
+            initialized.current = true;
             const action: CartSetAnonymousIdAction = {
               action: 'setAnonymousId',
               anonymousId,

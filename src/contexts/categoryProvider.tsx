@@ -3,7 +3,7 @@ import { Category, CategoryReference } from '@commercetools/platform-sdk';
 import { CategoryList } from '@models/index';
 import { startCategory } from '@utils/constants';
 import { simplifyCategories } from '@utils/utils';
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { useToast } from './toastProvider';
 
 interface CategoryContextValue {
@@ -22,7 +22,7 @@ interface CategoryProviderProps {
 export const CategoryProvider = ({ children }: CategoryProviderProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [catalogCategories, setCatalogCategories] = useState<CategoryList>({});
-
+  const initialized = useRef(false);
   const { errorNotify } = useToast();
 
   const checkCatalogRoute = (urlSlugs: (string | undefined)[]) => {
@@ -40,7 +40,9 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
 
     const preparedUrlSlugs = urlSlugs.filter(el => el !== undefined);
 
-    return preparedUrlSlugs.join('/') === slugs.join('/');
+    const isExist = !!Object.values(catalogCategories).find(el => el.slug.join('/') === preparedUrlSlugs.join('/'));
+    const isRight = preparedUrlSlugs.sort().toString() === slugs.sort().toString();
+    return isExist && isRight;
   };
 
   useEffect(() => {
@@ -57,7 +59,11 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
       }
     };
 
-    fetchCategories();
+    // fetchCategories();
+    if (!initialized.current) {
+      initialized.current = true;
+      fetchCategories();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
