@@ -54,12 +54,8 @@ export function CartProductCard({ product }: CartProductCardProps) {
         <div className={styles.nameWrapper}>
           <h3 className={styles.name}>{product.name['en-US']}</h3>
           <div className={styles.sku}>{product.variant.sku}</div>
-          {attributes.size ? (
-            <div className={styles.size}>Size: {sizeDescriptions[attributes.size as SizeKey]}</div>
-          ) : (
-            ''
-          )}
-          {attributes.color ? <div className={styles.color}>Color: {attributes.color} </div> : ''}
+          {attributes.size && <div className={styles.size}>Size: {sizeDescriptions[attributes.size as SizeKey]}</div>}
+          {attributes.color && <div className={styles.color}>Color: {attributes.color} </div>}
         </div>
         <div className={styles.priceQuantityWrapper}>
           <div className={styles.quantitySelector}>

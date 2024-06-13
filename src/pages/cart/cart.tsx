@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { sdkService } from '@commercetool/sdk.service';
 import { CartProductCard } from '@components/CartProductCard/CartProductCard';
 import { Container } from '@components/Container/Container';
@@ -10,7 +9,7 @@ import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
 import { convertCentsToDollarsString, isNotNullable } from '@utils/utils';
 import classnames from 'classnames';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Modal from 'react-modal';
 import styles from './cart.module.scss';
 
@@ -22,7 +21,6 @@ export function Cart() {
   const { customToast } = useToast();
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const [isCartEmpty, setIsCartEmpty] = useState<boolean>(true);
   const { cart, setCart, promoCodeName, setPromoCodeName } = useCart();
   const [notes, setNotes] = useState<string>('');
 
@@ -30,15 +28,7 @@ export function Cart() {
     discount = isNotNullable(cart.discountOnTotalPrice?.discountedAmount.centAmount);
     price = cart.totalPrice.centAmount + discount;
   }
-
-  useEffect(() => {
-    if (cart.lineItems?.length > 0) {
-      setIsCartEmpty(false);
-    } else {
-      setIsCartEmpty(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cart]);
+  const isCartEmpty = !(cart.lineItems?.length > 0);
 
   const handleNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNotes(event.target.value);
