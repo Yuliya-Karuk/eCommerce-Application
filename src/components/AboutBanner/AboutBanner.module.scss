@@ -62,25 +62,4 @@
       letter-spacing: 0.25ex;
     }
   }
-
-  &-logo {
-    transition: opacity 0.8s ease 0s;
-    opacity: 0.2;
-    overflow: hidden;
-
-    @include hover {
-      opacity: 0.75;
-    }
-
-    @include smalltablet {
-      opacity: 0.55;
-    }
-
-    svg {
-      display: block;
-      overflow: hidden;
-      max-width: 100%;
-      height: auto;
-    }
-  }
 }

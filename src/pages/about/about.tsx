@@ -3,6 +3,7 @@ import dimaPhoto from '@assets/About/Dima.jpg';
 import juliaPhoto from '@assets/About/Julia.jpg';
 import vitalPhoto from '@assets/About/Vital.jpg';
 import { AboutBanner } from '@components/AboutBanner/AboutBanner';
+import { AboutDescription } from '@components/AboutDescription/AboutDescription';
 import { Developer } from '@components/Developer/Developer';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
@@ -61,6 +62,7 @@ export function About() {
           <Header />
           <AboutBanner />
         </div>
+        <AboutDescription />
         <div className={styles.aboutDevelopers}>
           {developers.map(dev => (
             <Developer key={dev.name} name={dev.name} text={dev.text} photo={dev.photo} link={dev.link} />

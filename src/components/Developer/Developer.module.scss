@@ -25,6 +25,7 @@
     font-family: Forum, Arial, Helvetica, serif;
     @include adaptiveValue('font-size', 40px, 20px);
     letter-spacing: 0.5ex;
+    text-wrap: balance;
 
     @include smalltablet {
       padding-top: 10px;
@@ -42,6 +43,7 @@
     font-family: Questrial, Arial, Helvetica, serif;
     @include adaptiveValue('font-size', 18px, 14px);
     line-height: 1.6;
+    text-wrap: balance;
     max-width: 80%;
 
     @include smalltablet {
