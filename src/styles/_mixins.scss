@@ -58,6 +58,7 @@
   justify-content: $js;
 }
 
+// не ипользуется - удалить
 @mixin iflex($js: stretch, $ai: $js, $dir: null) {
   display: inline-flex;
   flex-direction: $dir;
@@ -100,7 +101,7 @@
   }
 }
 
-// Стили фокусировки
+// Стили фокусировки -  не ипользуется - удалить
 @mixin focused {
   @supports not selector(:focus-visible) {
     &:focus {

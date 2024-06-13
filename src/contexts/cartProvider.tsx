@@ -50,7 +50,6 @@ export const CartProvider = ({ children }: CartProviderProps) => {
         } else {
           data = await sdkService.createCart();
         }
-        console.log(data);
       }
 
       if (data.discountCodes) {

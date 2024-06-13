@@ -96,10 +96,10 @@ export function ProductAttributesView({
             {colors.length > 0 && (
               <div className={styles.optionsVariants}>
                 {colors.map(({ color: c, index }) => (
-                  // eslint-disable-next-line jsx-a11y/control-has-associated-label
                   <button
                     type="button"
                     key={c}
+                    aria-label="color button"
                     tabIndex={0}
                     className={classNames(styles.colorButton, {
                       [styles.active]: c === color,
