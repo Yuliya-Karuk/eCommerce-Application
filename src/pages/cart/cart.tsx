@@ -1,9 +1,11 @@
+/* eslint-disable no-nested-ternary */
 import { sdkService } from '@commercetool/sdk.service';
 import { CartProductCard } from '@components/CartProductCard/CartProductCard';
 import { Container } from '@components/Container/Container';
 import { EmptyCartMessage } from '@components/EmptyCartMessage/EmptyCartMessage';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
+import { Loader } from '@components/Loader/Loader';
 import { PromoCodeView } from '@components/PromoCodeView/PromoCodeView';
 import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
@@ -47,7 +49,11 @@ export function Cart() {
       <Header />
       <Container>
         {isCartEmpty ? (
-          <EmptyCartMessage />
+          cart.lineItems ? (
+            <EmptyCartMessage />
+          ) : (
+            <Loader />
+          )
         ) : (
           <div className={styles.cart}>
             <div className={styles.myCart}>
