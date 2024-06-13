@@ -1,9 +1,13 @@
 .cart {
   @include flex(flex-end, flex-start, row, 50px);
+  @include smalltablet {
+    min-height: calc(100dvh - $header-smalltablet-height - $footer-smalltablet-height);
+  }
   flex-wrap: wrap;
   margin: 30px 8px;
   font-family: questrial, sans-serif;
   font-size: 1.8rem;
+  min-height: calc(100dvh - $header-height - $footer-height);
 
   .my-cart {
     @include flex(flex-start, flex-start, column, 10px);
@@ -139,12 +143,6 @@
         font-size: 1.8rem;
       }
     }
-  }
-
-  .separator {
-    display: block;
-    height: 1px;
-    background-color: $color-gray-dark;
   }
 }
 
