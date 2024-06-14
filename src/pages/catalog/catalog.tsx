@@ -23,7 +23,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import styles from './catalog.module.scss';
 
-const productPerPage = 4;
+const productPerPage = 6;
 const defaultPage = 1;
 
 const CatalogImages: { [key: string]: string } = {
@@ -58,18 +58,21 @@ export function Catalog() {
   const getProducts = async () => {
     const filterParams = prepareQueryParams(filters, activeCategory.id, searchSettings, sortSettings);
 
-    try {
-      const offset = (currentPage - 1) * productPerPage;
-      const data = await sdkService.filterProductsByAttribute(filterParams, productPerPage, offset);
+    if ((activeCategory.id !== '' && category !== undefined) || (category === undefined && activeCategory.id === '')) {
+      setLoading(true);
+      try {
+        const offset = (currentPage - 1) * productPerPage;
+        const data = await sdkService.filterProductsByAttribute(filterParams, productPerPage, offset);
 
-      setProducts(data.results);
-      setTotalPages(Math.ceil(isNotNullable(data.total) / productPerPage));
+        setProducts(data.results);
+        setTotalPages(Math.ceil(isNotNullable(data.total) / productPerPage));
 
-      if (data.results.length === 0) {
-        errorNotify(NothingFoundByFiltering);
+        // if (data.results.length === 0) {
+        //   errorNotify(NothingFoundByFiltering);
+        // }
+      } catch (e) {
+        errorNotify((e as Error).message);
       }
-    } catch (e) {
-      errorNotify((e as Error).message);
     }
   };
 
@@ -107,7 +110,6 @@ export function Catalog() {
       if (!checkCatalogRoute([category, subcategory, slug])) {
         navigate('/404');
       }
-      setLoading(false);
 
       const active = findCategoryBySlug(catalogCategories, location.pathname);
       setActiveCategory(active);
@@ -128,9 +130,12 @@ export function Catalog() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
-  if (loading) {
-    return <MySkeleton />;
-  }
+  useEffect(() => {
+    // if (products.length > 0) {
+    setLoading(false);
+    // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [products]);
 
   return (
     <div className={styles.catalog}>
@@ -177,11 +182,19 @@ export function Catalog() {
             <Sorting sortSettings={sortSettings} setSortSettings={setSortSettings} />
             <div className={styles.catalogProducts}>
               <ul className={styles.catalogList}>
-                {Object.values(catalogCategories).length > 0 &&
+                {loading &&
+                  Array.from({ length: productPerPage }, (_, i) => i).map(el => (
+                    <div key={el} className={styles.skeletonContainer}>
+                      <MySkeleton />
+                    </div>
+                  ))}
+                {!loading &&
+                  Object.values(catalogCategories).length > 0 &&
                   products.map(product => (
                     <ProductCard categories={catalogCategories} key={product.id} product={product} />
                   ))}
               </ul>
+              {products.length < 1 && <div className={styles.emptyCart}>{NothingFoundByFiltering}</div>}
             </div>
             <Pagination
               currentPage={currentPage}
