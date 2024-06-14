@@ -43,19 +43,6 @@
 
         .price-label {
           @include flex(flex-start, end, row, 5px);
-
-          .full-price {
-            &-line-through {
-              font-size: 2rem;
-              color: $color-gray-dark;
-              text-decoration: line-through;
-            }
-          }
-
-          .price-with-discount {
-            font-weight: bold;
-            color: $color-primary-bright;
-          }
         }
 
         .buttons-wrapper {

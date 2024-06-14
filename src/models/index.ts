@@ -69,3 +69,15 @@ export interface PriceOrder {
 export interface AlphabetOrder {
   sort: string;
 }
+
+export interface CartStorage {
+  cartId: string;
+  anonymousId: string;
+}
+
+export interface LoginCartData extends LoginFormData {
+  activeCartSignInMode: 'MergeWithExistingCustomerCart';
+  updateProductData: boolean;
+  anonymousCartId: string;
+  anonymousId: string;
+}

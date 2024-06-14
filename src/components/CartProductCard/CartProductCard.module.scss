@@ -1,0 +1,80 @@
+.cart-product-card {
+  @include flex(flex-start, center, row, 5px);
+  position: relative;
+  width: 100%;
+  padding-bottom: 10px;
+  border-bottom: 1px solid $color-gray-dark;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .image {
+    width: 80px;
+    margin-right: 10px;
+  }
+
+  .details {
+    @include flex(space-between, center, row, 5px);
+    flex-wrap: wrap;
+    width: 100%;
+
+    .name-wrapper {
+      @include flex(flex-start, flex-start, column, 5px);
+      align-self: center;
+      min-width: 200px;
+
+      .name {
+        font-size: 2rem;
+      }
+
+      .sku {
+        font-size: 1.7rem;
+        color: $color-gray-dark;
+      }
+
+      .size,
+      .color {
+        font-size: 1.6rem;
+      }
+    }
+
+    .price-quantity-wrapper {
+      @include flex(null, center, row, 10px);
+      flex-wrap: wrap;
+
+      .quantity-selector {
+        align-self: center;
+        border: 1px solid $color-gray-dark;
+
+        button,
+        input {
+          color: $color-white;
+          background-color: transparent;
+          border: none;
+        }
+      }
+
+      .price-wrapper {
+        @include flex(flex-end, center, row, 10px);
+        min-width: 180px;
+      }
+    }
+
+    .remove-button {
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      right: 0;
+      align-self: start;
+      font-size: 3rem;
+      line-height: 1;
+      color: $color-gray-dark;
+      border: none;
+
+      &:hover {
+        color: $color-white;
+      }
+    }
+  }
+}

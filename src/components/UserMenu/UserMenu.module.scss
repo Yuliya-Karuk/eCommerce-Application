@@ -61,46 +61,63 @@
     }
     cursor: pointer;
   }
-}
 
-[data-tooltip] {
-  position: relative;
-
-  &::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    right: 100%;
-    top: calc(100% + 3px);
-    min-width: max-content;
+  &-cart {
+    @include flex(null, center, null, 10px);
+    position: relative;
+    font-size: 12px;
     font-family: Questrial, Arial, Helvetica, sans-serif;
-    @include adaptiveValue('font-size', 16px, 15px);
-    color: $color-white;
-    background-color: $color-bg-dark-alpha;
-    box-shadow: inset 0 0 15px 3px $color-bg-dark-alpha;
-    border: 1px solid $color-gray-dark;
-    border-radius: 5px 0 5px 5px;
-    opacity: 0;
-    padding: 5px 10px;
-    visibility: hidden;
-    transition:
-      opacity 0.4s ease-in-out,
-      visibility 0.4s ease-in-out;
-    overflow: hidden;
-    z-index: 1;
-    cursor: default;
-    pointer-events: none;
-  }
 
-  @include hover {
-    &::after {
-      opacity: 1;
-      visibility: visible;
+    span {
+      position: absolute;
+      padding: 3px 5px;
+      display: block;
+      text-align: center;
+      background-color: $color-primary-bright;
+      border-radius: 30px;
+      right: -12px;
+      top: -7px;
     }
   }
 }
 
+[data-tooltip] {
+  @include hover {
+    &::after {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+  position: relative;
+
+  &::after {
+    @include adaptiveValue('font-size', 16px, 15px);
+    pointer-events: none;
+    cursor: default;
+    content: attr(data-tooltip);
+    position: absolute;
+    z-index: 1;
+    top: calc(100% + 3px);
+    right: 100%;
+    overflow: hidden;
+    min-width: max-content;
+    padding: 5px 10px;
+    font-family: Questrial, Arial, Helvetica, sans-serif;
+    color: $color-white;
+    visibility: hidden;
+    opacity: 0;
+    background-color: $color-bg-dark-alpha;
+    border: 1px solid $color-gray-dark;
+    border-radius: 5px 0 5px 5px;
+    box-shadow: inset 0 0 15px 3px $color-bg-dark-alpha;
+    transition:
+      opacity 0.4s ease-in-out,
+      visibility 0.4s ease-in-out;
+  }
+}
+
 .hidden {
-  opacity: 0;
-  visibility: hidden;
   pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
 }

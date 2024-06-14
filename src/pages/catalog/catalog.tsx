@@ -1,4 +1,7 @@
-/* eslint-disable max-lines-per-function */
+import catalogAll from '@assets/catalog-all.webp';
+import catalogCollections from '@assets/catalog-collections.webp';
+import catalogPlants from '@assets/catalog-plants.webp';
+import catalogPots from '@assets/catalog-pots.webp';
 import { sdkService } from '@commercetool/sdk.service';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
@@ -11,10 +14,11 @@ import { Pagination } from '@components/Pagination/Pagination';
 import { ProductCard } from '@components/ProductCard/ProductCard';
 import { Search } from '@components/Search/Search';
 import { Sorting } from '@components/Sorting/Sorting';
+import { useCategories } from '@contexts/categoryProvider';
 import { useToast } from '@contexts/toastProvider';
-import { CategoryList, CustomCategory, Filters } from '@models/index';
+import { CustomCategory, Filters } from '@models/index';
 import { defaultFilter, defaultSearch, defaultSort, NothingFoundByFiltering, startCategory } from '@utils/constants';
-import { findCategoryBySlug, isNotNullable, prepareQuery, prepareQueryParams, simplifyCategories } from '@utils/utils';
+import { findCategoryBySlug, isNotNullable, prepareQuery, prepareQueryParams } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import styles from './catalog.module.scss';
@@ -22,18 +26,18 @@ import styles from './catalog.module.scss';
 const productPerPage = 4;
 const defaultPage = 1;
 
-// const CatalogImages: { [key: string]: string } = {
-//   'All Products': catalogAll,
-//   Plants: catalogPlants,
-//   Pots: catalogPots,
-//   Collections: catalogCollections,
-// };
+const CatalogImages: { [key: string]: string } = {
+  'All Products': catalogAll,
+  Plants: catalogPlants,
+  Pots: catalogPots,
+  Collections: catalogCollections,
+};
 
 export function Catalog() {
   const [isFilterShown, setIsFilterShown] = useState(false);
   const { customToast, errorNotify } = useToast();
 
-  const [categories, setCategories] = useState<CategoryList>({});
+  const { catalogCategories, checkCatalogRoute } = useCategories();
   const [activeCategory, setActiveCategory] = useState<CustomCategory>(startCategory);
   const [products, setProducts] = useState<ProductProjection[]>([]);
 
@@ -50,29 +54,6 @@ export function Catalog() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [shouldFetchProducts, setShouldFetchProducts] = useState(false);
-
-  const checkRoute = (urlSlugs: (string | undefined)[], data: CategoryList) => {
-    const urlSlug = urlSlugs.filter(el => el !== undefined).join('/');
-    const isExists = Object.values(data).filter(el => el.slug.join('/') === urlSlug);
-    if (isExists.length === 0) {
-      navigate('/404');
-    }
-    setLoading(false);
-  };
-
-  const getCategories = async () => {
-    try {
-      const data = await sdkService.getCategories();
-      const preparedData = simplifyCategories(data);
-      preparedData.default = startCategory;
-
-      checkRoute([category, subcategory, slug], preparedData);
-
-      setCategories(preparedData);
-    } catch (e) {
-      errorNotify((e as Error).message);
-    }
-  };
 
   const getProducts = async () => {
     const filterParams = prepareQueryParams(filters, activeCategory.id, searchSettings, sortSettings);
@@ -122,15 +103,19 @@ export function Catalog() {
   }, [currentPage, shouldFetchProducts]);
 
   useEffect(() => {
-    if (Object.keys(categories).length !== 0) {
-      const active = findCategoryBySlug(categories, location.pathname);
+    if (Object.keys(catalogCategories).length !== 0) {
+      if (!checkCatalogRoute([category, subcategory, slug])) {
+        navigate('/404');
+      }
+      setLoading(false);
+
+      const active = findCategoryBySlug(catalogCategories, location.pathname);
       setActiveCategory(active);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categories, location]);
+  }, [catalogCategories, location]);
 
   useEffect(() => {
-    getCategories();
     handleFilterUpdate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -168,7 +153,7 @@ export function Catalog() {
         />
         <div className={styles.catalogContainer}>
           <FiltersComponent
-            categories={categories}
+            categories={catalogCategories}
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
             isFilterShown={isFilterShown}
@@ -177,13 +162,13 @@ export function Catalog() {
             errorNotify={errorNotify}
           />
           <div className={styles.catalogContent}>
-            {/* <div className={styles.catalogImgContainer}>
+            <div className={styles.catalogImgContainer}>
               <img
                 className={styles.catalogImg}
                 src={CatalogImages[activeCategory.name] || CatalogImages.Plants}
                 alt="catalog img"
               />
-            </div> */}
+            </div>
             <h2>{activeCategory.name}</h2>
             <button className={styles.buttonFilters} type="button" onClick={() => setIsFilterShown(!isFilterShown)}>
               Filters
@@ -192,9 +177,10 @@ export function Catalog() {
             <Sorting sortSettings={sortSettings} setSortSettings={setSortSettings} />
             <div className={styles.catalogProducts}>
               <ul className={styles.catalogList}>
-                {loading && <MySkeleton />}
-                {Object.values(categories).length > 0 &&
-                  products.map(product => <ProductCard categories={categories} key={product.id} product={product} />)}
+                {Object.values(catalogCategories).length > 0 &&
+                  products.map(product => (
+                    <ProductCard categories={catalogCategories} key={product.id} product={product} />
+                  ))}
               </ul>
             </div>
             <Pagination

@@ -7,17 +7,17 @@
 
   button {
     @extend %transition;
-    color: inherit;
 
     @include hover {
       color: $color-gray-dark;
     }
+    color: inherit;
   }
 }
 
 .breadcrumbs-link {
-  text-transform: capitalize;
   color: inherit;
+  text-transform: capitalize;
 
   &:last-of-type {
     pointer-events: none;

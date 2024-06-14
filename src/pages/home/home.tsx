@@ -7,7 +7,7 @@ import { Header } from '@components/Header/Header';
 import { NewArrivals } from '@components/NewArrivals/NewArrivals';
 import { useAuth } from '@contexts/authProvider';
 import { useToast } from '@contexts/toastProvider';
-import { SuccessLoginMessage } from '@utils/constants';
+import { promoCodeBanner, SuccessLoginMessage } from '@utils/constants';
 import { useEffect } from 'react';
 import styles from './home.module.scss';
 
@@ -30,6 +30,9 @@ export function Home() {
   return (
     <>
       <div className={styles.main}>
+        <div className={styles.promoCode}>
+          <span className={styles.promoCodeText}>{promoCodeBanner}</span>
+        </div>
         <div className={styles.hero}>
           <Header />
           <Banner />

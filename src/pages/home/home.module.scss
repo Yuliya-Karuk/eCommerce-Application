@@ -3,16 +3,35 @@
 }
 
 .hero {
-  width: 100%;
-  height: auto;
-  min-height: 100vh;
-  background: fixed #000 url('../../assets/topbg.jpg') top center / cover no-repeat;
-
   @include mobile {
     min-height: 75vh;
   }
 
   @include smallmobile {
     min-height: auto;
+  }
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+  background: fixed #000 url('../../assets/topbg.jpg') top center / cover no-repeat;
+}
+
+.promo-code {
+  @extend %transition;
+  @include flex(center);
+
+  @include hover {
+    background: $color-primary-bright;
+  }
+  background-color: $color-green-dark;
+
+  &-text {
+    @include adaptiveValue('font-size', 20px, 12px);
+    font-family: Forum, serif;
+    text-align: center;
+    display: block;
+    width: 70%;
+    max-width: 800px;
+    padding: 20px 0;
   }
 }

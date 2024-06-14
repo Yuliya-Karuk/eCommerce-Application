@@ -18,7 +18,7 @@ interface ToastProviderProps {
 
 export const ToastProvider = ({ children }: ToastProviderProps) => {
   const customToast = function CustomToast({ position, autoClose }: ToastContainerProps) {
-    return <ToastContainer position={position} autoClose={autoClose} />;
+    return <ToastContainer position={position} autoClose={autoClose} className="Toastify" />;
   };
 
   const promiseNotify = <T,>(userData: T, action: string, callback: (userData: T) => Promise<unknown>) => {
