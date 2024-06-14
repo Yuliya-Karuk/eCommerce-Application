@@ -108,6 +108,8 @@
     padding-top: 75px;
     visibility: hidden;
     background-color: $color-bg-dark-alpha-adaptive;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
     transition:
       left 0.3s ease 0s,
       visibility 0.3s ease 0s;
