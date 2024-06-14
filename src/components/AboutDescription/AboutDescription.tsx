@@ -5,7 +5,7 @@ import styles from './AboutDescription.module.scss';
 
 const rsscoolInfo =
   'Welcome to our eCommerce application, project completed as part of the final task at RS School! Our team of three collaboratively developed the frontend of this platform, focusing on delivering an exceptional user experience. We designed and implemented responsive layouts, built reusable components with React.js, and essential React libraries. We followed Scrum methodology for efficient project management, with regular sprints and reviews. Our mentor provided continuous feedback and quality assurance, ensuring the application met industry standards. This project showcases our effective teamwork, technical skills, and commitment to creating a high-quality product.';
-const rsscoolUrl = 'https://app.rs.school/';
+const rsscoolUrl = 'https://rs.school/';
 
 export const AboutDescription: FC = () => {
   const logoWidth = 350;
