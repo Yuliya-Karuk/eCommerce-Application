@@ -126,10 +126,16 @@
   }
 
   &-link {
-    @extend %transition;
+    transition:
+      opacity 0.4s ease 0s,
+      text-shadow 0.8s ease 0s;
 
     @include hover {
       opacity: 0.7;
+    }
+
+    @include focused {
+      @include luxtext;
     }
   }
 }

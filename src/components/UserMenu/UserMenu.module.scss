@@ -14,12 +14,6 @@
 
   &-logout {
     @include flex(center);
-
-    @include hover {
-      .usermenu-text {
-        opacity: 0.7;
-      }
-    }
     column-gap: 5px;
     min-width: fit-content;
     padding: 7px 15px;
@@ -27,9 +21,20 @@
     background-color: $color-bg-dark-alpha;
     border: 1px solid $color-gray-dark;
     border-radius: 5px;
+    transition: box-shadow 0.8s ease 0s;
+
+    @include hover {
+      .usermenu-text {
+        opacity: 0.7;
+      }
+    }
 
     &[type='button'] {
       @include animatebtn;
+    }
+
+    @include focused {
+      @include luxtext;
     }
   }
 
@@ -60,6 +65,16 @@
       opacity: 0.7 !important;
     }
     cursor: pointer;
+  }
+
+  &-promo,
+  &-profile,
+  &-cart {
+    transition: filter 0.8s ease 0s;
+
+    @include focused {
+      @include luximage;
+    }
   }
 }
 

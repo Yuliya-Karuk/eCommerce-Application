@@ -203,7 +203,7 @@
   }
 }
 
-@mixin luxtext($shadow: $color-bg-light, $color: white, $bg: null) {
+@mixin luxtext($shadow: $color-bg-light, $color: $color-bg-light, $bg: null) {
   color: $color;
   text-shadow:
     0 0 rem(10px) $shadow,

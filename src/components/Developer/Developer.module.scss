@@ -35,6 +35,19 @@
       font-family: inherit;
       font-size: inherit;
       letter-spacing: inherit;
+      transition:
+        text-shadow 0.8s ease 0s,
+        color 0.4s ease 0s;
+
+      @include focused {
+        @include luxtext($color-bg-dark);
+      }
+    }
+
+    @include hover {
+      a {
+        @include luxtext($color-bg-dark);
+      }
     }
   }
 

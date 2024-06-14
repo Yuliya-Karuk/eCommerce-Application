@@ -26,6 +26,11 @@
     @include hover {
       background-color: $color-green-dark;
     }
+
+    @include focused {
+      background-color: $color-green-dark;
+      @include luxtext;
+    }
     min-width: 70px;
     min-height: 30px;
     padding: 1.25% 2.6%;
@@ -34,7 +39,9 @@
     text-align: center;
     background-color: $color-primary-bright;
     border-radius: 5px;
-    transition: background-color 0.4s ease 0s;
+    transition:
+      background-color 0.4s ease 0s,
+      text-shadow 0.8s ease 0s;
 
     &[type='button'] {
       @include animatebtn;
