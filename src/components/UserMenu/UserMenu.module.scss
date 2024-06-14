@@ -10,6 +10,7 @@
   svg {
     display: block;
     color: inherit;
+    transition: filter 0.8s ease 0s;
   }
 
   &-logout {
@@ -21,27 +22,29 @@
     background-color: $color-bg-dark-alpha;
     border: 1px solid $color-gray-dark;
     border-radius: 5px;
-    transition: box-shadow 0.8s ease 0s;
-
-    @include hover {
-      .usermenu-text {
-        opacity: 0.7;
-      }
-    }
 
     &[type='button'] {
       @include animatebtn;
     }
 
+    @include hover {
+      svg {
+        @include luximage;
+      }
+    }
+
     @include focused {
-      @include luxtext;
+      span {
+        @include luxtext($color-bg-light, $color-white);
+      }
     }
   }
 
   &-icon {
-    overflow: hidden;
     width: 100%;
     height: 100%;
+    border-radius: 5px;
+    overflow: hidden;
   }
 
   &-text {
@@ -50,30 +53,30 @@
     min-width: max-content;
     font-family: Questrial, Arial, Helvetica, sans-serif;
     white-space: nowrap;
-    transition: opacity 0.4s ease 0s;
+    transition: text-shadow 0.8s ease 0s;
 
     .user-menu-logout:hover & {
-      opacity: 0.7 !important;
+      @include luxtext($color-bg-light, $color-white);
     }
   }
 
-  &-text,
+  &-logout,
   &-promo,
   &-profile,
   &-cart {
-    @include hover {
-      opacity: 0.7 !important;
-    }
+    color: $color-white;
     cursor: pointer;
-  }
 
-  &-promo,
-  &-profile,
-  &-cart {
-    transition: filter 0.8s ease 0s;
+    @include hover {
+      svg {
+        @include luximage;
+      }
+    }
 
     @include focused {
-      @include luximage;
+      svg {
+        @include luximage;
+      }
     }
   }
 }
@@ -108,7 +111,7 @@
 
   @include hover {
     &::after {
-      opacity: 1;
+      opacity: 0.76;
       visibility: visible;
     }
   }

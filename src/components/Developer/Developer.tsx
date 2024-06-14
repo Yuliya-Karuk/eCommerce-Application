@@ -20,12 +20,14 @@ export const Developer: FC<DeveloperI> = ({ name, text, photo, link }) => {
           <div className={styles.developerPhoto}>
             <img src={photo} alt={name} width={photoSize} height={photoSize} loading="lazy" />
           </div>
+
           <div className={styles.developerInfo}>
             <h3 className={styles.developerName}>
               <Link to={link} title="Link to the developer's repository">
                 {name}
               </Link>
             </h3>
+
             <div className={styles.developerText}>{text}</div>
           </div>
         </div>

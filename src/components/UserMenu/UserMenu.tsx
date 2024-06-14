@@ -40,6 +40,7 @@ export const UserMenu: FC = () => {
       <Link
         to={AppRoutes.PROFILE_ROUTE}
         className={classnames(styles.userMenuProfile, { [styles.hidden]: !isLoggedIn })}
+        aria-label={ToolTips.PROFILE}
         data-tooltip={ToolTips.PROFILE}
       >
         <svg width={iconSizeNumber} height={iconSizeNumber}>
@@ -47,17 +48,22 @@ export const UserMenu: FC = () => {
         </svg>
       </Link>
 
-      <div className={styles.userMenuPromo} data-tooltip={ToolTips.PROMO}>
+      <button type="button" className={styles.userMenuPromo} aria-label={ToolTips.PROMO} data-tooltip={ToolTips.PROMO}>
         <svg width={iconSizeNumber} height={iconSizeNumber}>
           <use xlinkHref={`${sprite}#present`} />
         </svg>
-      </div>
+      </button>
 
-      <div className={styles.userMenuCart} data-tooltip={ToolTips.CART}>
+      <Link
+        to={AppRoutes.CART_ROUTE}
+        className={styles.userMenuCart}
+        aria-label={ToolTips.CART}
+        data-tooltip={ToolTips.CART}
+      >
         <svg width={iconSizeNumber} height={iconSizeNumber}>
           <use xlinkHref={`${sprite}#cart`} />
         </svg>
-      </div>
+      </Link>
     </div>
   );
 };
