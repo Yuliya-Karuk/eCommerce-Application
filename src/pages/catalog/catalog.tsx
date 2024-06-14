@@ -5,25 +5,23 @@ import catalogPots from '@assets/catalog-pots.webp';
 import { sdkService } from '@commercetool/sdk.service';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
+import { CatalogProducts } from '@components/CatalogProducts/CatalogProducts';
 import { Container } from '@components/Container/Container';
 import { FiltersComponent } from '@components/Filters/Filters';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
-import { MySkeleton } from '@components/MySkeleton/MySkeleton';
 import { Pagination } from '@components/Pagination/Pagination';
-import { ProductCard } from '@components/ProductCard/ProductCard';
 import { Search } from '@components/Search/Search';
 import { Sorting } from '@components/Sorting/Sorting';
 import { useCategories } from '@contexts/categoryProvider';
 import { useToast } from '@contexts/toastProvider';
 import { CustomCategory, Filters } from '@models/index';
-import { defaultFilter, defaultSearch, defaultSort, NothingFoundByFiltering, startCategory } from '@utils/constants';
+import { defaultFilter, defaultSearch, defaultSort, productPerPage, startCategory } from '@utils/constants';
 import { findCategoryBySlug, isNotNullable, prepareQuery, prepareQueryParams } from '@utils/utils';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import styles from './catalog.module.scss';
 
-const productPerPage = 6;
 const defaultPage = 1;
 
 const CatalogImages: { [key: string]: string } = {
@@ -66,10 +64,6 @@ export function Catalog() {
 
         setProducts(data.results);
         setTotalPages(Math.ceil(isNotNullable(data.total) / productPerPage));
-
-        // if (data.results.length === 0) {
-        //   errorNotify(NothingFoundByFiltering);
-        // }
       } catch (e) {
         errorNotify((e as Error).message);
       }
@@ -131,9 +125,7 @@ export function Catalog() {
   }, [searchParams]);
 
   useEffect(() => {
-    // if (products.length > 0) {
     setLoading(false);
-    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products]);
 
@@ -180,22 +172,7 @@ export function Catalog() {
             </button>
             <Search searchSettings={searchSettings} setSearchSettings={setSearchSettings} />
             <Sorting sortSettings={sortSettings} setSortSettings={setSortSettings} />
-            <div className={styles.catalogProducts}>
-              <ul className={styles.catalogList}>
-                {loading &&
-                  Array.from({ length: productPerPage }, (_, i) => i).map(el => (
-                    <div key={el} className={styles.skeletonContainer}>
-                      <MySkeleton />
-                    </div>
-                  ))}
-                {!loading &&
-                  Object.values(catalogCategories).length > 0 &&
-                  products.map(product => (
-                    <ProductCard categories={catalogCategories} key={product.id} product={product} />
-                  ))}
-              </ul>
-              {products.length < 1 && <div className={styles.emptyCart}>{NothingFoundByFiltering}</div>}
-            </div>
+            <CatalogProducts loading={loading} products={products} catalogCategories={catalogCategories} />
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

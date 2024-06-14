@@ -34,7 +34,7 @@ export const Pagination = ({ currentPage, totalPages, setCurrentPage, setShouldF
   }, [currentPage]);
 
   return (
-    <nav aria-label="Page navigation">
+    <nav className={styles.paginationNav} aria-label="Page navigation">
       <ul className={styles.pagination}>
         <li>
           <button
@@ -82,7 +82,7 @@ export const Pagination = ({ currentPage, totalPages, setCurrentPage, setShouldF
             className={classnames(styles.pgnButton, { [styles.next]: true })}
             onClick={() => setCurrentPage(currentPage + 1)}
             aria-label="Next"
-            disabled={currentPage === totalPages}
+            disabled={currentPage === totalPages || totalPages === 0}
           >
             <span aria-hidden="true" />
           </button>
@@ -93,7 +93,7 @@ export const Pagination = ({ currentPage, totalPages, setCurrentPage, setShouldF
             className={classnames(styles.pgnButton, { [styles.last]: true })}
             onClick={() => setCurrentPage(totalPages)}
             aria-label="Last"
-            disabled={currentPage === totalPages}
+            disabled={currentPage === totalPages || totalPages === 0}
           >
             <span aria-hidden="true" />
           </button>

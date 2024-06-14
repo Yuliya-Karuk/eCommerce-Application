@@ -1,3 +1,9 @@
+.pagination-nav {
+  @include flex(center);
+  margin-top: auto;
+  width: 100%;
+}
+
 .pagination {
   @include flex(flex-start, center, null, 5px);
   @include adaptiveValue('font-size', 16px, 14px);
@@ -5,12 +11,6 @@
 }
 
 .pgn-button {
-  width: 30px;
-  height: 30px;
-  padding: 8px;
-  color: inherit;
-  border: 1px solid $color-white;
-  border-radius: 5px;
   @extend %transition;
   @include flex(center, center);
 
@@ -19,6 +19,19 @@
     height: 25px;
     padding: 6px;
   }
+
+  @include hover {
+    &:not(:disabled) {
+      border: 1px solid $color-primary-bright;
+      background-color: $color-primary-bright;
+    }
+  }
+  width: 30px;
+  height: 30px;
+  padding: 8px;
+  color: inherit;
+  border: 1px solid $color-white;
+  border-radius: 5px;
 
   &:not(.empty):disabled {
     opacity: 0.7;
@@ -58,12 +71,5 @@
     border: 1px solid $color-primary-bright;
     cursor: default;
     pointer-events: none;
-  }
-
-  @include hover {
-    &:not(:disabled) {
-      border: 1px solid $color-primary-bright;
-      background-color: $color-primary-bright;
-    }
   }
 }

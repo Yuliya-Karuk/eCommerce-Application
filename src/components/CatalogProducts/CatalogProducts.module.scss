@@ -1,0 +1,33 @@
+.catalog-products {
+  width: 100%;
+}
+
+.catalog-list {
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+
+  @media screen and (max-width: 480px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.skeleton-container {
+  width: 100%;
+  display: flex;
+  flex-grow: 1;
+  aspect-ratio: 3 / 4;
+
+  span {
+    width: 100%;
+  }
+}
+
+.empty-cart {
+  @include adaptiveValue('font-size', 26px, 20px);
+  padding: 20px;
+  text-align: center;
+}

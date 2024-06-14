@@ -134,3 +134,5 @@ export const sizeDescriptions: Record<SizeKey, string> = {
   M: 'Medium',
   L: 'Large',
 };
+
+export const productPerPage = 6;
