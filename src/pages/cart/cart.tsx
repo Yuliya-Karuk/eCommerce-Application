@@ -105,7 +105,10 @@ export function Cart() {
                 </>
               )}
               <div className={styles.totalPriceWrapper}>
-                Total: <span>{convertCentsToDollarsString(cart.totalPrice.centAmount)}</span>
+                Total:
+                <span className={classnames({ [styles.discountedFinalPrice]: discount })}>
+                  {convertCentsToDollarsString(cart.totalPrice.centAmount)}
+                </span>
               </div>
               <button type="button" className={styles.checkoutButton}>
                 Checkout

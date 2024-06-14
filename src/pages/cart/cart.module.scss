@@ -118,6 +118,10 @@
       }
 
       &.discount span {
+        color: $color-white;
+      }
+
+      .discounted-final-price {
         color: $color-primary-bright;
       }
 
