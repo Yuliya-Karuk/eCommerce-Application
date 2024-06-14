@@ -1,8 +1,4 @@
 /* eslint-disable max-lines-per-function */
-import catalogAll from '@assets/catalog-all.webp';
-import catalogCollections from '@assets/catalog-collections.webp';
-import catalogPlants from '@assets/catalog-plants.webp';
-import catalogPots from '@assets/catalog-pots.webp';
 import { sdkService } from '@commercetool/sdk.service';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { Breadcrumbs } from '@components/Breadcrumbs/Breadcrumbs';
@@ -10,7 +6,7 @@ import { Container } from '@components/Container/Container';
 import { FiltersComponent } from '@components/Filters/Filters';
 import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
-import { Loader } from '@components/Loader/Loader';
+import { MySkeleton } from '@components/MySkeleton/MySkeleton';
 import { Pagination } from '@components/Pagination/Pagination';
 import { ProductCard } from '@components/ProductCard/ProductCard';
 import { Search } from '@components/Search/Search';
@@ -26,12 +22,12 @@ import styles from './catalog.module.scss';
 const productPerPage = 4;
 const defaultPage = 1;
 
-const CatalogImages: { [key: string]: string } = {
-  'All Products': catalogAll,
-  Plants: catalogPlants,
-  Pots: catalogPots,
-  Collections: catalogCollections,
-};
+// const CatalogImages: { [key: string]: string } = {
+//   'All Products': catalogAll,
+//   Plants: catalogPlants,
+//   Pots: catalogPots,
+//   Collections: catalogCollections,
+// };
 
 export function Catalog() {
   const [isFilterShown, setIsFilterShown] = useState(false);
@@ -148,7 +144,7 @@ export function Catalog() {
   }, [searchParams]);
 
   if (loading) {
-    return <Loader />;
+    return <MySkeleton />;
   }
 
   return (
@@ -181,13 +177,13 @@ export function Catalog() {
             errorNotify={errorNotify}
           />
           <div className={styles.catalogContent}>
-            <div className={styles.catalogImgContainer}>
+            {/* <div className={styles.catalogImgContainer}>
               <img
                 className={styles.catalogImg}
                 src={CatalogImages[activeCategory.name] || CatalogImages.Plants}
                 alt="catalog img"
               />
-            </div>
+            </div> */}
             <h2>{activeCategory.name}</h2>
             <button className={styles.buttonFilters} type="button" onClick={() => setIsFilterShown(!isFilterShown)}>
               Filters
@@ -196,6 +192,7 @@ export function Catalog() {
             <Sorting sortSettings={sortSettings} setSortSettings={setSortSettings} />
             <div className={styles.catalogProducts}>
               <ul className={styles.catalogList}>
+                {loading && <MySkeleton />}
                 {Object.values(categories).length > 0 &&
                   products.map(product => <ProductCard categories={categories} key={product.id} product={product} />)}
               </ul>
