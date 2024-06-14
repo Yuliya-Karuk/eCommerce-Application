@@ -88,6 +88,10 @@
     box-shadow: 0 0 0 50px $color-input-bg inset;
     -webkit-text-fill-color: $color-white;
   }
+
+  option {
+    color: $default-text-color;
+  }
 }
 
 .orange {
