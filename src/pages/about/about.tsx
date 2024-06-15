@@ -16,25 +16,25 @@ import styles from './about.module.scss';
 const developers = [
   {
     name: 'Dzmitry Yarmoshkin',
-    text: '25 years old, Minsk, Belarus. Web developer from EPAM. Teacher and mentor at RS School. He is interested in programming, creating and improving interfaces. Follows the latest trends and innovations in the world of technology. Team mentor.',
+    text: "25 years old, Minsk, Belarus. Web developer from EPAM. Teacher and mentor at RS School. He is interested in programming, creating and improving interfaces. Follows the latest trends and innovations in the world of technology. Actively assisted and provided valuable advice on the use of various technologies, thoroughly reviewed pull requests, and offered insightful comments on how to improve the code. Was a constant source of support and guidance at every stage of the application's development. Team mentor.",
     photo: dimaPhoto,
     link: 'https://github.com/SpaNb4',
   },
   {
     name: 'Julia',
-    text: '30 years old, Minsk, Belarus. Scrum Master. I am ready to make every effort to become a Frontend developer. He is interested in programming, including JavaScript and TypeScript. Prefers to work with React. Engaged in the creation and improvement of interfaces, strives for personal and professional growth. Team leader.',
+    text: '30 years old, Minsk, Belarus. Scrum Master. I am ready to make every effort to become a Frontend developer. He is interested in programming, including JavaScript and TypeScript. Prefers to work with React. Developed the catalog page, including all filters and the search bar. She actively participated in the development of the profile page, designed and implemented the cart page, and worked extensively with the CommerceTools SDK, ensuring all server requests were efficiently handled. Julia also created the basic project setup to kickstart the development process. Team leader.',
     photo: juliaPhoto,
     link: 'https://github.com/yuliya-karuk',
   },
   {
     name: 'Vital',
-    text: '37 years old, Minsk, Belarus. Passionate about JavaScript and TypeScript. Actively uses React to create interactive web applications, creates and improves interfaces, strives for constant growth and improvement of his skills. Follows the latest trends and innovations in the world of technology. In his free time, he enjoys learning new programming languages and optimizing existing projects.',
+    text: '37 years old, Minsk, Belarus. Passionate about JavaScript and TypeScript. Actively uses React to create interactive web applications, creates and improves interfaces, strives for constant growth and improvement of his skills. Follows the latest trends and innovations in the world of technology. Developed the registration and login forms, created the product page, and actively contributed to the profile page development. Was also instrumental in designing and implementing the cart page. Additionally, he consistently provided valuable suggestions for improving the overall user experience and interface enhancements.',
     photo: vitalPhoto,
     link: 'https://github.com/Vitali86',
   },
   {
     name: 'B!n@r!0n',
-    text: '39 years old, Minsk, Belarus. Former system administrator. He is interested in programming, including JavaScript and TypeScript. Engaged in the creation and improvement of interfaces, strives for constant growth and improvement of his skills. Follows the latest trends and innovations in the world of technology. In his free time, he enjoys learning new programming languages and optimizing existing projects.',
+    text: "39 years old, Minsk, Belarus. Former system administrator. He is interested in programming, including JavaScript and TypeScript. Engaged in the creation and improvement of interfaces, strives for constant growth and improvement of his skills. Follows the latest trends and innovations in the world of technology. Implemented a stunning Home page, significantly improved the build optimization process, and crafted an engaging About Us page, as well as the site navigation menu. Additionally, they consistently proposed innovative ideas to enhance the application's user interface, ensuring an exceptional user experience.",
     photo: binarionPhoto,
     link: 'https://github.com/GreyAdmiral',
   },
