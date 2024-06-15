@@ -19,10 +19,9 @@ import {
   SearchSettings,
   SortSettings,
 } from '@models/index';
-import { AppRoutes } from '@router/routes';
 import { RegisterOptions } from 'react-hook-form';
 import { ReactImageGalleryItem } from 'react-image-gallery';
-import { UpdateAddressActions, countries, searchIdentifier } from './constants';
+import { countries, searchIdentifier, UpdateAddressActions } from './constants';
 
 export function isNotNullable<T>(value: T, errorMessage?: string): NonNullable<T> {
   if (value === undefined || value === null) {
@@ -377,27 +376,3 @@ export const prepareAddressRequest = (
 
   throw new Error('There is no such action for change address');
 };
-
-export function changeMenuRouteName(path: string) {
-  let routeName: string = '';
-
-  switch (path) {
-    case AppRoutes.HOME_ROUTE:
-      routeName = 'Home';
-      break;
-
-    case `${AppRoutes.CATALOG_ROUTE}/plants`:
-      routeName = 'Plants';
-      break;
-
-    case `${AppRoutes.CATALOG_ROUTE}/pots`:
-      routeName = 'Pots';
-      break;
-
-    default:
-      routeName = path.slice(1)[0].toUpperCase() + path.slice(2);
-      break;
-  }
-
-  return routeName;
-}
