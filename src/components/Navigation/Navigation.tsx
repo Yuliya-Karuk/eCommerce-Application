@@ -1,23 +1,24 @@
+import { useChangeRoute } from '@hooks/useChangeRoute';
 import { useClickOutside } from '@hooks/useClickOutside';
 import { AppRoutes } from '@router/routes';
 import { FC, useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styles from './Navigation.module.scss';
 
 interface NavigationProps {
   id?: string;
 }
 
+const paths: string[] = [
+  AppRoutes.ABOUT_ROUTE,
+  AppRoutes.CATALOG_ROUTE,
+  AppRoutes.LOGIN_ROUTE,
+  AppRoutes.REGISTRATION_ROUTE,
+];
+
 export const Navigation: FC<NavigationProps> = ({ id, ...props }) => {
-  const paths: string[] = [
-    AppRoutes.ABOUT_ROUTE,
-    AppRoutes.CATALOG_ROUTE,
-    AppRoutes.LOGIN_ROUTE,
-    AppRoutes.REGISTRATION_ROUTE,
-  ];
-  const location = useLocation();
-  const menuPaths = paths.map(path => (path === location.pathname ? AppRoutes.HOME_ROUTE : path));
+  const menuPaths = useChangeRoute(paths);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isDesktop = useMediaQuery({ query: '(min-width: 769px)' });
   const menuRef = useRef(null);
