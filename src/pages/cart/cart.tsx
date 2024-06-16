@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import { sdkService } from '@commercetool/sdk.service';
+import { CartModal } from '@components/CartModal/CartModal';
 import { CartProductCard } from '@components/CartProductCard/CartProductCard';
 import { Container } from '@components/Container/Container';
 import { EmptyCartMessage } from '@components/EmptyCartMessage/EmptyCartMessage';
@@ -12,10 +13,7 @@ import { useToast } from '@contexts/toastProvider';
 import { convertCentsToDollarsString, isNotNullable } from '@utils/utils';
 import classnames from 'classnames';
 import { useState } from 'react';
-import Modal from 'react-modal';
 import styles from './cart.module.scss';
-
-Modal.setAppElement('#root');
 
 export function Cart() {
   const { customToast } = useToast();
@@ -118,26 +116,11 @@ export function Cart() {
             </div>
           </div>
         )}
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={() => setModalIsOpen(false)}
-          className={styles.modal}
-          overlayClassName={styles.modalOverlay}
-        >
-          <h2 className={styles.modalText}>Are you sure you want to remove all items from your cart?</h2>
-          <div className={styles.buttonWrapper}>
-            <button className={styles.modalConfirmButton} type="button" onClick={handleClearCart}>
-              Confirm
-            </button>
-            <button className={styles.modalCancelButton} type="button" onClick={() => setModalIsOpen(false)}>
-              Cancel
-            </button>
-          </div>
-        </Modal>
-        {customToast({ position: 'top-center', autoClose: 5000 })}
+        <CartModal modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} handleClearCart={handleClearCart} />
       </Container>
       <div className={styles.specialEmptyContainer} />
       <Footer />
+      {customToast({ position: 'top-center', autoClose: 5000 })}
     </div>
   );
 }
