@@ -16,12 +16,7 @@ export const CatalogProducts = (catalogProductsProps: CatalogProductsProps) => {
   return (
     <div className={styles.catalogProducts}>
       <ul className={styles.catalogList}>
-        {loading &&
-          Array.from({ length: productPerPage }, (_, i) => i).map(el => (
-            <div key={el} className={styles.skeletonContainer}>
-              <MySkeleton />
-            </div>
-          ))}
+        {loading && Array.from({ length: productPerPage }, (_, i) => i).map(el => <MySkeleton key={el} />)}
         {!loading &&
           Object.values(catalogCategories).length > 0 &&
           products.map(product => <ProductCard categories={catalogCategories} key={product.id} product={product} />)}
