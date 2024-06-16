@@ -108,6 +108,7 @@
     padding-top: 75px;
     visibility: hidden;
     background-color: $color-bg-dark-alpha-adaptive;
+    backdrop-filter: blur(10px);
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     transition:
