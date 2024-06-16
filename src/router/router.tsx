@@ -1,4 +1,5 @@
 import { About } from '@pages/about/about';
+import { Cart } from '@pages/cart/cart';
 import { Catalog } from '@pages/catalog/catalog';
 import { Home } from '@pages/home/home';
 import { Login } from '@pages/login/login';
@@ -17,5 +18,6 @@ export const router = createBrowserRouter([
   { path: `${AppRoutes.CATALOG_ROUTE}/:category?/:subcategory?`, element: <Catalog /> },
   { path: `${AppRoutes.PRODUCTS_ROUTE}/:category?/:subcategory?/:slug`, element: <ProductItem /> },
   { path: AppRoutes.ABOUT_ROUTE, element: <About /> },
+  { path: AppRoutes.CART_ROUTE, element: <Cart /> },
   { path: '*', element: <NotFoundPage /> },
 ]);

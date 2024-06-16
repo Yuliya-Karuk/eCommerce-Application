@@ -1,9 +1,9 @@
 .about {
+  @include membrane(3.85);
   position: relative;
   background: fixed $color-gray-light url('../../assets/aboutbg.jpg') bottom center / cover no-repeat;
   background-blend-mode: multiply;
   width: 100%;
-  @include membrane(3.85);
 
   &-body {
     @include flex(center, center, column);
@@ -20,15 +20,12 @@
   }
 
   &-title {
-    font-family: Forum, Arial, Helvetica, serif;
     @include adaptiveValue('font-size', 80px, 25px);
+    font-family: Forum, Arial, Helvetica, serif;
   }
 
   &-text {
-    max-width: 45%;
     @include adaptiveValue('font-size', 18px, 14px);
-    font-family: Questrial, Arial, Helvetica, serif;
-    line-height: 1.6;
 
     @include bigdesktop {
       max-width: 57%;
@@ -50,5 +47,8 @@
     @include smallmobile {
       max-width: 97%;
     }
+    max-width: 45%;
+    font-family: Questrial, Arial, Helvetica, serif;
+    line-height: 1.6;
   }
 }

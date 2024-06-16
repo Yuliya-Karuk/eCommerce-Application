@@ -3,6 +3,7 @@
 
   @include smalltablet {
     margin-right: 0;
+    margin-left: auto;
   }
   column-gap: 12px;
   margin-right: 2%;
@@ -10,14 +11,21 @@
   svg {
     display: block;
     color: inherit;
+    transition: filter 0.8s ease 0s;
   }
 
   &-logout {
     @include flex(center);
 
     @include hover {
-      .usermenu-text {
-        opacity: 0.7;
+      svg {
+        @include luximage;
+      }
+    }
+
+    @include focused {
+      span {
+        @include luxtext;
       }
     }
     column-gap: 5px;
@@ -31,12 +39,13 @@
     &[type='button'] {
       @include animatebtn;
     }
-  }
 
-  &-icon {
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
+    &-icon {
+      width: 100%;
+      height: 100%;
+      border-radius: 5px;
+      overflow: hidden;
+    }
   }
 
   &-text {
@@ -45,35 +54,48 @@
     min-width: max-content;
     font-family: Questrial, Arial, Helvetica, sans-serif;
     white-space: nowrap;
-    transition: opacity 0.4s ease 0s;
+    transition: text-shadow 0.8s ease 0s;
 
     .user-menu-logout:hover & {
-      opacity: 0.7 !important;
+      @include luxtext;
     }
   }
 
-  &-text,
-  &-promo,
-  &-profile,
-  &-cart {
+  &-logout,
+  &-icon {
     @include hover {
-      opacity: 0.7 !important;
+      svg {
+        @include luximage;
+      }
     }
+
+    @include focused {
+      svg {
+        @include luximage;
+      }
+    }
+    color: $color-white;
     cursor: pointer;
   }
 }
 
 [data-tooltip] {
+  @include hover {
+    &::after {
+      opacity: 0.76;
+      visibility: visible;
+    }
+  }
   position: relative;
 
   &::after {
+    @include adaptiveValue('font-size', 16px, 15px);
     content: attr(data-tooltip);
     position: absolute;
     right: 100%;
     top: calc(100% + 3px);
     min-width: max-content;
     font-family: Questrial, Arial, Helvetica, sans-serif;
-    @include adaptiveValue('font-size', 16px, 15px);
     color: $color-white;
     background-color: $color-bg-dark-alpha;
     box-shadow: inset 0 0 15px 3px $color-bg-dark-alpha;
@@ -89,13 +111,6 @@
     z-index: 1;
     cursor: default;
     pointer-events: none;
-  }
-
-  @include hover {
-    &::after {
-      opacity: 1;
-      visibility: visible;
-    }
   }
 }
 
