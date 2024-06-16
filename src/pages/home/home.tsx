@@ -5,7 +5,7 @@ import { Footer } from '@components/Footer/Footer';
 import { Gramm } from '@components/Gramm/Gramm';
 import { Header } from '@components/Header/Header';
 import { NewArrivals } from '@components/NewArrivals/NewArrivals';
-import { useAuth } from '@contexts/authProvider';
+import { useAuth } from '@contexts//authProvider';
 import { useToast } from '@contexts/toastProvider';
 import { promoCodeBanner, SuccessLoginMessage } from '@utils/constants';
 import { useEffect } from 'react';
