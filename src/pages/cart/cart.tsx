@@ -10,6 +10,7 @@ import { Loader } from '@components/Loader/Loader';
 import { PromoCodeView } from '@components/PromoCodeView/PromoCodeView';
 import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
+import { storage } from '@utils/storage';
 import { convertCentsToDollarsString, isNotNullable } from '@utils/utils';
 import classnames from 'classnames';
 import { useState } from 'react';
@@ -31,6 +32,7 @@ export function Cart() {
     setModalIsOpen(false);
     await sdkService.removeCart(cart.id, cart.version);
     const data = await sdkService.createCart();
+    storage.setCartStore(data.id, isNotNullable(data.anonymousId));
     setCart(data);
     setPromoCodeName('');
   };
