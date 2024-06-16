@@ -5,8 +5,12 @@
     @include bigdesktop {
       overflow: hidden;
     }
-    color: $color-bg-dark;
+
+    @include bigdesktop {
+      overflow: hidden;
+    }
     row-gap: 16px;
+    color: $color-bg-dark;
   }
 
   &-card-image {
