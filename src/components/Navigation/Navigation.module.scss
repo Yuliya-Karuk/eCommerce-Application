@@ -25,11 +25,10 @@
     transition: background-color 0.4s ease 0s;
 
     a {
-      padding: 13px 17px;
-
       @include focused {
         @include luxtext;
       }
+      padding: 13px 17px;
     }
   }
 }

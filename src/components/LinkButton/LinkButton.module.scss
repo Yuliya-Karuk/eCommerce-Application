@@ -1,7 +1,5 @@
 .link-button {
   @include adaptiveValue('font-size', 18px, 14px);
-  min-width: 142px;
-  text-align: center;
 
   @include hover {
     background-color: $color-bg-dark-alpha;
@@ -10,11 +8,13 @@
   }
 
   @include focused {
+    @include luxtext;
     background-color: $color-bg-dark-alpha;
     border-color: $color-bg-dark-alpha;
     box-shadow: rgb(0 0 0 / 60%);
-    @include luxtext;
   }
+  min-width: 142px;
+  text-align: center;
   overflow: hidden;
   margin-top: 20px;
   padding: 15px 22px;

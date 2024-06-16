@@ -16,6 +16,18 @@
 
   &-logout {
     @include flex(center);
+
+    @include hover {
+      svg {
+        @include luximage;
+      }
+    }
+
+    @include focused {
+      span {
+        @include luxtext;
+      }
+    }
     column-gap: 5px;
     min-width: fit-content;
     padding: 7px 15px;
@@ -34,18 +46,6 @@
       border-radius: 5px;
       overflow: hidden;
     }
-
-    @include hover {
-      svg {
-        @include luximage;
-      }
-    }
-
-    @include focused {
-      span {
-        @include luxtext;
-      }
-    }
   }
 
   &-text {
@@ -63,9 +63,6 @@
 
   &-logout,
   &-icon {
-    color: $color-white;
-    cursor: pointer;
-
     @include hover {
       svg {
         @include luximage;
@@ -77,20 +74,28 @@
         @include luximage;
       }
     }
+    color: $color-white;
+    cursor: pointer;
   }
 }
 
 [data-tooltip] {
+  @include hover {
+    &::after {
+      opacity: 0.76;
+      visibility: visible;
+    }
+  }
   position: relative;
 
   &::after {
+    @include adaptiveValue('font-size', 16px, 15px);
     content: attr(data-tooltip);
     position: absolute;
     right: 100%;
     top: calc(100% + 3px);
     min-width: max-content;
     font-family: Questrial, Arial, Helvetica, sans-serif;
-    @include adaptiveValue('font-size', 16px, 15px);
     color: $color-white;
     background-color: $color-bg-dark-alpha;
     box-shadow: inset 0 0 15px 3px $color-bg-dark-alpha;
@@ -106,13 +111,6 @@
     z-index: 1;
     cursor: default;
     pointer-events: none;
-  }
-
-  @include hover {
-    &::after {
-      opacity: 0.76;
-      visibility: visible;
-    }
   }
 }
 

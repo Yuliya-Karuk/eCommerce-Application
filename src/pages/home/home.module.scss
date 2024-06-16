@@ -3,13 +3,6 @@
 }
 
 .hero {
-  width: 100%;
-  height: auto;
-  min-height: 100vh;
-  background: fixed #000 url('../../assets/topbg.jpg') top center / cover no-repeat;
-  padding-left: 15px;
-  padding-right: 15px;
-
   @include mobile {
     min-height: 75vh;
   }
@@ -17,4 +10,10 @@
   @include smallmobile {
     min-height: auto;
   }
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+  background: fixed #000 url('../../assets/topbg.jpg') top center / cover no-repeat;
+  padding-left: 15px;
+  padding-right: 15px;
 }

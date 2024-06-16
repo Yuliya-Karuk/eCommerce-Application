@@ -1,11 +1,11 @@
 .logo {
   @include flex(center, center, column);
   @include adaptiveValue('font-size', 24px, 18px);
-  font-family: Corben, Arial, Helvetica, serif;
 
   @include smalltablet {
     display: none;
   }
+  font-family: Corben, Arial, Helvetica, serif;
 
   &-image {
     position: relative;
@@ -37,8 +37,6 @@
 }
 
 .header-link {
-  transition: filter 0.8s ease 0s;
-
   @include hover {
     @include luximage;
   }
@@ -46,4 +44,5 @@
   @include focused {
     @include luximage;
   }
+  transition: filter 0.8s ease 0s;
 }

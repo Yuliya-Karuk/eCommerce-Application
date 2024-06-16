@@ -51,14 +51,13 @@
 }
 
 .select-item {
-  cursor: pointer;
-  padding: 10px;
-  border-bottom: 1px solid $color-gray-dark;
-
   @include hover {
     color: $color-bg-dark;
     background-color: $color-white;
   }
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 1px solid $color-gray-dark;
 
   &:last-child {
     border-bottom: none;

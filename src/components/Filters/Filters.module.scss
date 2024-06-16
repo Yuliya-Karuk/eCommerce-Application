@@ -56,12 +56,12 @@
 .filters-button {
   @extend %transition;
   @include adaptiveValue('font-size', 16px, 16px);
-  color: $color-white;
 
   @include hover {
     color: $color-bg-dark;
     background-color: $color-white;
   }
+  color: $color-white;
   width: 100%;
   padding: 8px 16px;
   border: 1px solid $color-white;

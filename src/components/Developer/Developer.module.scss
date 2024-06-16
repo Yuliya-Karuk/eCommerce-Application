@@ -1,47 +1,31 @@
 .developer {
   &-body {
     @include flex;
-    column-gap: 1px;
 
     @include smalltablet {
       flex-direction: column;
     }
+    column-gap: 1px;
   }
 
   &-info {
     @include flex(center, center, column);
+
+    @include smalltablet {
+      row-gap: 5px;
+    }
     color: $color-bg-dark;
 
     @media all and (min-width: 912px) {
       padding: 5%;
     }
-
-    @include smalltablet {
-      row-gap: 5px;
-    }
   }
 
   &-name {
-    font-family: Forum, Arial, Helvetica, serif;
     @include adaptiveValue('font-size', 40px, 20px);
-    letter-spacing: 0.5ex;
-    text-wrap: balance;
 
     @include smalltablet {
       padding-top: 10px;
-    }
-
-    a {
-      font-family: inherit;
-      font-size: inherit;
-      letter-spacing: inherit;
-      transition:
-        text-shadow 0.8s ease 0s,
-        color 0.4s ease 0s;
-
-      @include focused {
-        @include luxtext($color-bg-dark);
-      }
     }
 
     @include hover {
@@ -49,20 +33,35 @@
         @include luxtext($color-bg-dark);
       }
     }
+    font-family: Forum, Arial, Helvetica, serif;
+    letter-spacing: 0.5ex;
+    text-wrap: balance;
+
+    a {
+      @include focused {
+        @include luxtext($color-bg-dark);
+      }
+      font-family: inherit;
+      font-size: inherit;
+      letter-spacing: inherit;
+      transition:
+        text-shadow 0.8s ease 0s,
+        color 0.4s ease 0s;
+    }
   }
 
   &-text {
-    padding: 5px 0;
-    font-family: Questrial, Arial, Helvetica, serif;
     @include adaptiveValue('font-size', 18px, 14px);
-    line-height: 1.6;
-    text-wrap: balance;
-    max-width: 80%;
 
     @include smalltablet {
       max-width: 95%;
       text-align: justify;
     }
+    padding: 5px 0;
+    font-family: Questrial, Arial, Helvetica, serif;
+    line-height: 1.6;
+    text-wrap: balance;
+    max-width: 80%;
   }
 
   &-photo {
@@ -93,12 +92,11 @@
   &:nth-child(even) {
     .developer {
       &-body {
-        flex-direction: row-reverse;
-        background-color: $color-bg-dark;
-
         @include smalltablet {
           flex-direction: column;
         }
+        flex-direction: row-reverse;
+        background-color: $color-bg-dark;
       }
 
       &-info {
