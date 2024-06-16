@@ -14,6 +14,7 @@ import styles from './login.module.scss';
 
 export function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const { errorNotify } = useToast();
 
   const {
     register,
@@ -30,8 +31,7 @@ export function Login() {
       login();
     } catch (error) {
       sdkService.createAnonymousClient();
-      const errorMessage = (error as Error).message || 'Unknown error';
-      throw new Error(errorMessage);
+      errorNotify((error as Error).message);
     }
   };
 
