@@ -15,11 +15,13 @@ const mockProduct = {
     id: 1,
     sku: 'test-sku',
     prices: [{ value: { currencyCode: 'USD', centAmount: 1000 } }],
-    images: [{ url: 'https://via.placeholder.com/150' }],
+    images: [{ url: 'https://via.placeholder.com/150' }, { url: 'https://via.placeholder.com/150' }],
     attributes: [{ name: 'details', value: 'Test details' }],
   },
   variants: [],
 };
+
+const path = '/products/:category/:slug';
 
 describe('ProductItem', () => {
   beforeEach(() => {
@@ -31,7 +33,7 @@ describe('ProductItem', () => {
       <MemoryRouter>
         <ToastProvider>
           <Routes>
-            <Route path="products/plants/succulents/Pl-01" element={<ProductItem />} />
+            <Route path={path} element={<ProductItem />} />
           </Routes>
         </ToastProvider>
       </MemoryRouter>
@@ -47,7 +49,7 @@ describe('ProductItem', () => {
       <MemoryRouter>
         <ToastProvider>
           <Routes>
-            <Route path="products/plants/succulents/Pl-01" element={<ProductItem />} />
+            <Route path={path} element={<ProductItem />} />
           </Routes>
         </ToastProvider>
       </MemoryRouter>
@@ -68,7 +70,7 @@ describe('ProductItem', () => {
       <MemoryRouter>
         <ToastProvider>
           <Routes>
-            <Route path="products/plants/succulents/Pl-01" element={<ProductItem />} />
+            <Route path={path} element={<ProductItem />} />
           </Routes>
         </ToastProvider>
       </MemoryRouter>
@@ -91,7 +93,7 @@ describe('ProductItem', () => {
       <MemoryRouter>
         <ToastProvider>
           <Routes>
-            <Route path="products/plants/succulents/Pl-01" element={<ProductItem />} />
+            <Route path={path} element={<ProductItem />} />
           </Routes>
         </ToastProvider>
       </MemoryRouter>
@@ -112,7 +114,7 @@ describe('ProductItem', () => {
       <MemoryRouter>
         <ToastProvider>
           <Routes>
-            <Route path="products/plants/succulents/Pl-01" element={<ProductItem />} />
+            <Route path={path} element={<ProductItem />} />
           </Routes>
         </ToastProvider>
       </MemoryRouter>
@@ -124,6 +126,58 @@ describe('ProductItem', () => {
       expect(screen.getByText('Price:')).toBeInTheDocument();
       expect(screen.getByText('$10.00')).toBeInTheDocument();
       expect(screen.getByText('Test details')).toBeInTheDocument();
+    }, 2000);
+  });
+
+  it('renders slider', () => {
+    render(
+      <MemoryRouter>
+        <ToastProvider>
+          <Routes>
+            <Route path={path} element={<ProductItem />} />
+          </Routes>
+        </ToastProvider>
+      </MemoryRouter>
+    );
+    setTimeout(() => {
+      expect(screen.getByRole('showThumbnails', { name: 'true' })).toBeInTheDocument();
+    }, 2000);
+  });
+
+  it('enters fullscreen mode on image click in slider', () => {
+    render(
+      <MemoryRouter>
+        <ToastProvider>
+          <Routes>
+            <Route path={path} element={<ProductItem />} />
+          </Routes>
+        </ToastProvider>
+      </MemoryRouter>
+    );
+
+    setTimeout(() => {
+      const image = screen.getByRole('showThumbnails', { name: 'true' });
+      fireEvent.click(image);
+      expect(document.body.style.overflow).toBe('hidden');
+    }, 2000);
+  });
+
+  it('exits fullscreen mode on image click when already in fullscreen in slider', () => {
+    render(
+      <MemoryRouter>
+        <ToastProvider>
+          <Routes>
+            <Route path={path} element={<ProductItem />} />
+          </Routes>
+        </ToastProvider>
+      </MemoryRouter>
+    );
+
+    setTimeout(() => {
+      const image = screen.getByRole('showThumbnails', { name: 'true' });
+      fireEvent.click(image);
+      fireEvent.click(image);
+      expect(document.body.style.overflow).toBe('');
     }, 2000);
   });
 });
