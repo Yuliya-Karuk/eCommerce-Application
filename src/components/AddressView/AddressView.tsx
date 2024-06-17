@@ -118,7 +118,7 @@ export function AddressView(props: AddressViewProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
       <fieldset className={styles.fieldset}>
-        <legend>{`Address ${id}`}</legend>
+        <legend>Address</legend>
         <label htmlFor={`country-${id}`} className={styles.label}>
           Country:{!address ? <span className={styles.orange}>*</span> : ''}
           <select

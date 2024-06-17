@@ -27,13 +27,17 @@
       position: absolute;
       top: rem(18px);
       left: rem(18px);
-      color: $color-white;
-      background-color: $color-green-dark;
+      padding: 2px 10px;
       font-family: Questrial, Arial, Helvetica, serif;
       line-height: 1.4;
-      border-radius: 5px;
-      padding: 2px 10px;
+      color: $color-white;
       text-align: center;
+      background-color: $color-green-dark;
+      border-radius: 5px;
+    }
+
+    @media all and (max-width: 1180px) {
+      min-width: 200px;
     }
 
     @media all and (max-width: 1180px) {

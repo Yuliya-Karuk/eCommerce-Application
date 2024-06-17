@@ -37,7 +37,7 @@ interface UpdateCart {
 
 export const ProductCard = ({ categories, product }: ProductCardProps) => {
   let priceDiscounted;
-  const { successNotify, promiseNotify } = useToast();
+  const { successNotify, errorNotify, promiseNotify } = useToast();
 
   const slugs = prepareProductSlugs(categories, product.categories).join('/');
   const productName = product.name['en-US'];
@@ -97,8 +97,7 @@ export const ProductCard = ({ categories, product }: ProductCardProps) => {
 
       setCart(data);
     } catch (error) {
-      const errorMessage = (error as Error).message || 'Unknown error';
-      throw new Error(errorMessage);
+      errorNotify((error as Error).message);
     }
   };
 

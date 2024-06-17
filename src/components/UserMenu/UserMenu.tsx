@@ -35,7 +35,7 @@ export const UserMenu: FC = () => {
   };
 
   useEffect(() => {
-    if (cart.lineItems !== undefined) {
+    if (cart && cart.lineItems !== undefined) {
       const newProductInCart = sumQuantities(cart.lineItems);
       setProductInCart(newProductInCart);
     }

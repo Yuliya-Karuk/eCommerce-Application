@@ -21,7 +21,7 @@ import styles from './registration.module.scss';
 // eslint-disable-next-line max-lines-per-function
 export function Registration() {
   const { isLoggedIn, login } = useAuth();
-  const { customToast, promiseNotify } = useToast();
+  const { customToast, promiseNotify, errorNotify } = useToast();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const {
     register,
@@ -58,8 +58,7 @@ export function Registration() {
       await sdkService.loginUser(userData.email, userData.password as string);
       login();
     } catch (error) {
-      const errorMessage = (error as Error).message || 'Unknown error';
-      throw new Error(errorMessage);
+      errorNotify((error as Error).message);
     }
   };
 

@@ -8,6 +8,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 
 import { ToastProvider } from '@contexts/toastProvider';
+import { Cart } from '@pages/cart/cart';
 import { AppRoutes } from '../router/routes';
 
 const textOnPages = {
@@ -55,6 +56,26 @@ describe('render', () => {
 
     setTimeout(() => {
       expect(screen.getByText(textOnPages.product)).toBeInTheDocument();
+    }, 2000);
+  });
+});
+
+describe('render', () => {
+  it('renders the Cart page', async () => {
+    render(
+      <MemoryRouter>
+        <ToastProvider>
+          <Routes>
+            <Route path={AppRoutes.CART_ROUTE} element={<Cart />} />
+          </Routes>
+        </ToastProvider>
+      </MemoryRouter>
+    );
+
+    setTimeout(() => {
+      const firstText = screen.getByText('My cart');
+      const secondText = screen.getByText('Your shopping cart is empty. Add some items to get started!');
+      expect(firstText || secondText).toBeInTheDocument();
     }, 2000);
   });
 });
