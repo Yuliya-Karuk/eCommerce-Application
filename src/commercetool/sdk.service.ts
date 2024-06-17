@@ -133,6 +133,7 @@ export class SdkService {
 
   public async getCategories(): Promise<Category[]> {
     const data = await this.apiRoot.categories().get().execute();
+    console.log(data);
     return data.body.results;
   }
 
