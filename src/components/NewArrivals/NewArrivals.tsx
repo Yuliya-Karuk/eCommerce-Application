@@ -4,7 +4,7 @@ import { Container } from '@components/Container/Container';
 import { CategoryList } from '@models/index';
 import { AppRoutes } from '@router/routes';
 import { dateSorting, simplifyCategories } from '@utils/utils';
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { NewArrivalsCard } from '../NewArrivalsCard/NewArrivalsCard';
 import styles from './NewArrivals.module.scss';
@@ -14,22 +14,22 @@ export const NewArrivals: FC = ({ ...props }) => {
   const [categories, setCategories] = useState<CategoryList>({});
   const cardNumber = 4;
 
-  const updateProductsState = async () => {
+  const updateProductsState = useCallback(async () => {
     const prods = await sdkService.getProducts();
     const sortedProds = dateSorting(prods);
     setProducts(sortedProds.slice(0, cardNumber));
-  };
+  }, []);
 
-  const getCategories = async () => {
+  const getCategories = useCallback(async () => {
     const data = await sdkService.getCategories();
     const preparedData = simplifyCategories(data);
     setCategories(preparedData);
-  };
+  }, []);
 
   useEffect(() => {
     updateProductsState();
     getCategories();
-  }, []);
+  }, [getCategories, updateProductsState]);
 
   return (
     <section className={styles.newarrivals}>
