@@ -2,12 +2,13 @@
   display: flex;
   flex-direction: column;
   height: 100dvh;
+  margin: 0 15px;
 }
 
 .cart {
   @include flex(flex-end, flex-start, row, 50px);
   flex-wrap: wrap;
-  margin: 30px 8px;
+  margin: 30px 0;
   font-family: questrial, sans-serif;
   font-size: 1.8rem;
 
