@@ -22,7 +22,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   const [cart, setCart] = useState({} as Cart);
   const [promoCodeName, setPromoCodeName] = useState('');
   const { isLoggedIn } = useAuth();
-  const initialized = useRef(false);
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -34,8 +34,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
           data = await sdkService.getCart(isNotNullable(storage.getCartStore()).cartId);
           const anonymousId = isNotNullable(storage.getAnonId());
 
-          if (data.anonymousId !== anonymousId && !initialized.current) {
-            initialized.current = true;
+          if (data.anonymousId !== anonymousId) {
             const action: CartSetAnonymousIdAction = {
               action: 'setAnonymousId',
               anonymousId,
@@ -47,6 +46,13 @@ export const CartProvider = ({ children }: CartProviderProps) => {
       } else {
         const carts = await sdkService.getAuthorizedCarts();
         const activeCart = carts.filter(oneCart => oneCart.cartState === 'Active')[0];
+
+        carts.forEach(oneCart => {
+          if (oneCart.id !== activeCart.id) {
+            sdkService.removeCart(oneCart.id, oneCart.version);
+          }
+        });
+
         if (carts.length > 0 && activeCart) {
           data = activeCart;
         } else {
@@ -61,7 +67,12 @@ export const CartProvider = ({ children }: CartProviderProps) => {
       setCart(data);
     };
 
-    fetchCart();
+    if (isInitialMount.current || !isLoggedIn) {
+      isInitialMount.current = false;
+      fetchCart();
+    } else {
+      fetchCart();
+    }
   }, [isLoggedIn]);
 
   return (
