@@ -22,7 +22,7 @@ export function ProductInfoSection({ productInfoText }: ProductInfoSectionProps)
           aria-expanded={expandedSection === 'productInfo'}
         >
           Product Info
-          <span className={styles.icon}>{expandedSection === 'productInfo' ? '+' : '-'}</span>
+          <span className={styles.icon}>{expandedSection === 'productInfo' ? '-' : '+'}</span>
         </button>
         <div className={styles.content} data-expanded={expandedSection === 'productInfo'}>
           <p className={styles.text}>{productInfoText}</p>
@@ -36,7 +36,7 @@ export function ProductInfoSection({ productInfoText }: ProductInfoSectionProps)
           aria-expanded={expandedSection === 'returnPolicy'}
         >
           Return & Refund Policy
-          <span className={styles.icon}>{expandedSection === 'returnPolicy' ? '+' : '-'}</span>
+          <span className={styles.icon}>{expandedSection === 'returnPolicy' ? '-' : '+'}</span>
         </button>
         <div className={styles.content} data-expanded={expandedSection === 'returnPolicy'}>
           <p className={styles.text}>
@@ -53,7 +53,7 @@ export function ProductInfoSection({ productInfoText }: ProductInfoSectionProps)
           aria-expanded={expandedSection === 'shippingInfo'}
         >
           Shipping Info
-          <span className={styles.icon}>{expandedSection === 'shippingInfo' ? '+' : '-'}</span>
+          <span className={styles.icon}>{expandedSection === 'shippingInfo' ? '-' : '+'}</span>
         </button>
         <div className={styles.content} data-expanded={expandedSection === 'shippingInfo'}>
           <p className={styles.text}>
