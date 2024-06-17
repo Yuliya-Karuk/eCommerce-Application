@@ -7,11 +7,11 @@
 
   &-body {
     @include flex(center, center, column);
-    width: 100%;
-    padding: 5.5%;
-    row-gap: 20px;
     position: relative;
     z-index: 1;
+    row-gap: 20px;
+    width: 100%;
+    padding: 5.5%;
   }
 
   &-title,

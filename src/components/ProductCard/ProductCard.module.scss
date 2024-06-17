@@ -41,6 +41,7 @@
   @extend %transition;
   width: 100%;
   height: auto;
+  aspect-ratio: 3 / 4;
 }
 
 .product-card-description {
@@ -100,10 +101,10 @@
     color: $color-bg-dark;
     background-color: $color-white;
   }
-  color: $color-white;
   width: 100%;
   margin-top: auto;
   padding: 8px 16px;
+  color: $color-white;
   border: 1px solid $color-white;
   border-radius: 5px;
 }

@@ -103,7 +103,6 @@ export function AddressView(props: AddressViewProps) {
     setIsDefaultAddress(!isDefaultAddress);
     setIsDefaultAddressCheckboxChanged(!isDefaultAddressCheckboxChanged);
     trigger();
-    // setDataEdited(!dataEdited);
   };
 
   const onSubmit = (data: BaseAddress) => {

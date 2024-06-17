@@ -1,6 +1,6 @@
 .gramm {
-  background-color: $color-green-dark;
   padding: 4% 3%;
+  background-color: $color-green-dark;
 
   &-body {
     width: 100%;
@@ -8,8 +8,8 @@
 
   &-title {
     @include adaptiveValue('font-size', 80px, 48px);
-    text-align: center;
     padding-bottom: 3.3%;
+    text-align: center;
   }
 
   &-gallery {

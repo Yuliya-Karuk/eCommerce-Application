@@ -47,3 +47,35 @@
     text-align: justify;
   }
 }
+
+.attributes-catalog {
+  width: 100%;
+  gap: 10px;
+
+  .title,
+  .description-text {
+    @include adaptiveValue('font-size', 20px, 14px);
+    padding: 0;
+    color: $color-gray-middle;
+  }
+
+  .options-variants {
+    color: $color-gray-middle;
+  }
+
+  .options {
+    .active {
+      color: $color-primary-bright;
+    }
+  }
+}
+
+.variant-block {
+  @include flex(space-between, center);
+  width: 100%;
+}
+
+.brand-block {
+  @include flex(space-between, center);
+  width: 100%;
+}

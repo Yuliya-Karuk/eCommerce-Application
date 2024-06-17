@@ -9,9 +9,7 @@ $layoutMinWidth: 320px;
 // Ширина ограничивающего контейнера (0 = нет ограничения)
 $container: 1476px;
 
-// Включить адаптив без брейк-поинтов:
-// true = да,
-// false = нет
+// Включить адаптив без брейк-поинтов: true = да, false = нет
 $responsiveType: true;
 
 // Общий отступ у контейнера
@@ -20,11 +18,7 @@ $containerPadding: 30;
 
 // Ширина контейнера с отступами
 $containerWidth: $container + $containerPadding;
-
-// Цвет текста по-умолчанию
 $default-text-color: #000;
-
-// Цвет бургера
 $color-bg-light: #d9d4c9;
 $color-bg-slider: #e4dccf;
 $color-bg-dark: #050505;

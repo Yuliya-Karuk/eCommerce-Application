@@ -77,6 +77,24 @@
     color: $color-white;
     cursor: pointer;
   }
+
+  &-cart {
+    @include flex(null, center, null, 10px);
+    position: relative;
+    font-size: 12px;
+    font-family: Questrial, Arial, Helvetica, sans-serif;
+
+    span {
+      position: absolute;
+      padding: 3px 5px;
+      display: block;
+      text-align: center;
+      background-color: $color-primary-bright;
+      border-radius: 30px;
+      right: -12px;
+      top: -7px;
+    }
+  }
 }
 
 [data-tooltip] {

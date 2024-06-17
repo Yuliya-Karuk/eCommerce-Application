@@ -1,11 +1,14 @@
 import {
   ByProjectKeyRequestBuilder,
+  Cart,
+  CartUpdateAction,
   Category,
   ClientResponse,
   createApiBuilderFromCtpClient,
   Customer,
   CustomerDraft,
   CustomerSignInResult,
+  MyCartUpdateAction,
   MyCustomerChangePassword,
   MyCustomerUpdate,
   MyCustomerUpdateAction,
@@ -13,8 +16,9 @@ import {
   ProductType,
 } from '@commercetools/platform-sdk';
 import { Client, ClientBuilder } from '@commercetools/sdk-client-v2';
-import { QueryParams } from '@models/index';
+import { LoginCartData, QueryParams } from '@models/index';
 import { storage } from '@utils/storage';
+import { isNotNullable } from '@utils/utils';
 import {
   anonymousMiddlewareOptions,
   httpMiddlewareOptions,
@@ -40,6 +44,12 @@ export class SdkService {
   }
 
   public createAnonymousClient() {
+    const anonymousId = crypto.randomUUID();
+    storage.setAnonId(anonymousId);
+    anonymousMiddlewareOptions.credentials.anonymousId = anonymousId;
+
+    tokenController.refresh();
+
     this.client = this.clientBuilder.withAnonymousSessionFlow(anonymousMiddlewareOptions).build();
 
     this.apiRoot = createApiBuilderFromCtpClient(this.client).withProjectKey({
@@ -57,26 +67,48 @@ export class SdkService {
     });
   }
 
-  private createWithPasswordClient(email: string, password: string) {
+  private async createWithPasswordClient(email: string, password: string) {
     const options = passwordAuthMiddlewareOptions;
     options.credentials.user = {
       username: email,
       password,
     };
 
+    tokenController.refresh();
+
     this.client = this.clientBuilder.withPasswordFlow(options).build();
 
     this.apiRoot = createApiBuilderFromCtpClient(this.client).withProjectKey({
       projectKey: VITE_CTP_PROJECT_KEY,
     });
+
+    this.requestForToken();
+  }
+
+  private async requestForToken() {
+    await this.apiRoot.me().get().execute();
+    storage.setTokenStore(tokenController.get());
   }
 
   public async loginUser(email: string, password: string): Promise<Customer> {
+    const auth: LoginCartData = {
+      email,
+      password,
+      activeCartSignInMode: 'MergeWithExistingCustomerCart',
+      updateProductData: true,
+      anonymousCartId: isNotNullable(storage.getCartStore()).cartId,
+      anonymousId: isNotNullable(storage.getCartStore()).anonymousId,
+    };
+
+    const result = await this.apiRoot
+      .me()
+      .login()
+      .post({
+        body: auth,
+      })
+      .execute();
+
     this.createWithPasswordClient(email, password);
-
-    tokenController.refresh();
-
-    const result = await this.apiRoot.me().login().post({ body: { email, password } }).execute();
     return result.body.customer;
   }
 
@@ -132,17 +164,19 @@ export class SdkService {
     return result.body;
   }
 
-  public async filterProductsByAttribute(filterArr: QueryParams) {
+  public async filterProductsByAttribute(filterArr: QueryParams, limit: number, offset: number) {
     const data = await this.apiRoot
       .productProjections()
       .search()
       .get({
         queryArgs: {
           ...filterArr,
+          limit,
+          offset,
         },
       })
       .execute();
-    return data.body.results;
+    return data.body;
   }
 
   public async getProductProjectionByKey(productKey: string): Promise<ProductProjection> {
@@ -161,6 +195,84 @@ export class SdkService {
       .execute();
 
     return category.body.results;
+  }
+
+  public async createCart() {
+    const data = await this.apiRoot
+      .me()
+      .carts()
+      .post({
+        body: {
+          currency: 'USD',
+        },
+      })
+      .execute();
+    return data.body;
+  }
+
+  public async getCart(cartId: string): Promise<Cart> {
+    const data = await this.apiRoot
+      .carts()
+      .withId({ ID: cartId })
+      .get({
+        queryArgs: {
+          expand: ['discountCodes[*].discountCode'],
+        },
+      })
+      .execute();
+    return data.body;
+  }
+
+  public async getAuthorizedCarts(): Promise<Cart[]> {
+    const data = await this.apiRoot
+      .me()
+      .carts()
+      .get({
+        queryArgs: {
+          expand: ['discountCodes[*].discountCode'],
+        },
+      })
+      .execute();
+    return data.body.results;
+  }
+
+  public async updateCart(cartId: string, cartVersion: number, actions: MyCartUpdateAction[]) {
+    const data = await this.apiRoot
+      .me()
+      .carts()
+      .withId({ ID: cartId })
+      .post({
+        body: {
+          version: cartVersion,
+          actions,
+        },
+      })
+      .execute();
+    return data.body;
+  }
+
+  public async setAnonymousId(cartId: string, cartVersion: number, action: CartUpdateAction) {
+    const data = await this.apiRoot
+      .carts()
+      .withId({ ID: cartId })
+      .post({
+        body: {
+          version: cartVersion,
+          actions: [action],
+        },
+      })
+      .execute();
+    return data.body;
+  }
+
+  public async removeCart(cartId: string, cartVersion: number) {
+    const data = await this.apiRoot
+      .me()
+      .carts()
+      .withId({ ID: cartId })
+      .delete({ queryArgs: { version: cartVersion } })
+      .execute();
+    return data.body;
   }
 }
 

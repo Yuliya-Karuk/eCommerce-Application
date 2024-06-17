@@ -1,5 +1,4 @@
 /* eslint-disable react-refresh/only-export-components */
-import { tokenController } from '@commercetool/token.service';
 import { storage } from '@utils/storage';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
@@ -23,13 +22,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isLoginSuccess, setIsLoginSuccess] = useState(false);
 
   const login = () => {
-    storage.setTokenStore(tokenController.get());
     setIsLoggedIn(true);
     setIsLoginSuccess(true);
   };
 
   const logout = () => {
     storage.removeTokenStore();
+    storage.removeCartStore();
     setIsLoggedIn(false);
     setIsLoginSuccess(false);
   };

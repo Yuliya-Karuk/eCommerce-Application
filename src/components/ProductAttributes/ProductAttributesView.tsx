@@ -1,5 +1,5 @@
 import { ProductProjection, ProductVariant } from '@commercetools/platform-sdk';
-import { ColorsHex } from '@utils/constants';
+import { ColorsHex, SizeKey, sizeDescriptions } from '@utils/constants';
 import classNames from 'classnames';
 import styles from './ProductAttributesView.module.scss';
 
@@ -15,6 +15,7 @@ export interface ProductAttributesViewProps {
   allAttributes: ProductAttributes[];
   setActiveVariant: React.Dispatch<React.SetStateAction<ProductVariant>>;
   product: ProductProjection;
+  isCatalog: boolean;
 }
 
 interface SizeOption {
@@ -27,24 +28,17 @@ interface ColorOption {
   index: number;
 }
 
-type SizeKey = 'S' | 'M' | 'L';
-
-const sizeDescriptions: Record<SizeKey, string> = {
-  S: 'Small',
-  M: 'Medium',
-  L: 'Large',
-};
-
 export function ProductAttributesView({
   activeAttributes: { size, brand, color },
   allAttributes,
   setActiveVariant,
   product,
+  isCatalog,
 }: ProductAttributesViewProps) {
   const sizes: SizeOption[] = [];
   const colors: ColorOption[] = [];
 
-  if (allAttributes.length > 1) {
+  if (allAttributes.length >= 1) {
     allAttributes.forEach((attr, index) => {
       if (attr.size) {
         sizes.push({ size: attr.size, index });
@@ -64,9 +58,9 @@ export function ProductAttributesView({
   };
 
   return (
-    <div className={styles.attributes}>
+    <div className={classNames(styles.attributes, { [styles.attributesCatalog]: isCatalog })}>
       {size && (
-        <div>
+        <div className={classNames(null, { [styles.variantBlock]: isCatalog })}>
           <div className={styles.title}>Size:</div>
           <div className={styles.options}>
             {sizes.length > 0 && (
@@ -96,16 +90,16 @@ export function ProductAttributesView({
       )}
 
       {color && (
-        <div>
+        <div className={classNames(null, { [styles.variantBlock]: isCatalog })}>
           <div className={styles.title}>Color:</div>
           <div className={styles.colorOptions}>
             {colors.length > 0 && (
               <div className={styles.optionsVariants}>
                 {colors.map(({ color: c, index }) => (
-                  // eslint-disable-next-line jsx-a11y/control-has-associated-label
                   <button
                     type="button"
                     key={c}
+                    aria-label="color button"
                     tabIndex={0}
                     className={classNames(styles.colorButton, {
                       [styles.active]: c === color,
@@ -121,7 +115,7 @@ export function ProductAttributesView({
       )}
 
       {brand && (
-        <div>
+        <div className={classNames(null, { [styles.brandBlock]: isCatalog })}>
           <div className={styles.title}>Brand:</div>
           <div className={styles.descriptionText}>{brand}</div>
         </div>

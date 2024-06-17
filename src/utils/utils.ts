@@ -5,6 +5,7 @@ import {
   BaseAddress,
   Category,
   Image,
+  LineItem,
   MyCustomerUpdateAction,
   ProductProjection,
   ProductType,
@@ -376,3 +377,7 @@ export const prepareAddressRequest = (
 
   throw new Error('There is no such action for change address');
 };
+
+export function sumQuantities(items: LineItem[]): number {
+  return items.reduce((total, item) => total + item.quantity, 0);
+}

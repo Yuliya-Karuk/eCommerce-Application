@@ -33,6 +33,11 @@ h4 {
   font-family: Questrial, serif;
 }
 
+input:disabled,
+select:disabled {
+  cursor: not-allowed;
+}
+
 .wrapper {
   @include flex(null, null, column);
   overflow-x: hidden;
@@ -82,4 +87,19 @@ h4 {
 svg {
   @extend %taphighlight;
   @extend %noselect;
+}
+
+.Toastify {
+  .Toastify__toast-container {
+    min-width: 420px;
+    width: 30%;
+    @media screen and (max-width: 480px) {
+      width: 100%;
+    }
+  }
+
+  .Toastify__toast {
+    font-size: 2rem;
+    padding: 15px 10px;
+  }
 }

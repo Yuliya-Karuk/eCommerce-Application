@@ -2,9 +2,11 @@ import sprite from '@assets/sprite.svg';
 import { sdkService } from '@commercetool/sdk.service';
 import { Modal } from '@components/Modal/Modal';
 import { useAuth } from '@contexts/authProvider';
+import { useCart } from '@contexts/cartProvider';
 import { AppRoutes } from '@router/routes';
+import { sumQuantities } from '@utils/utils';
 import classnames from 'classnames';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './UserMenu.module.scss';
 
@@ -21,6 +23,8 @@ const promoText =
 export const UserMenu: FC = () => {
   const iconSizeNumber = 26;
   const { isLoggedIn, logout } = useAuth();
+  const { cart } = useCart();
+  const [productInCart, setProductInCart] = useState(0);
   const location = useLocation();
   const isProfile = location.pathname === AppRoutes.PROFILE_ROUTE;
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -29,6 +33,13 @@ export const UserMenu: FC = () => {
     sdkService.logoutUser();
     logout();
   };
+
+  useEffect(() => {
+    if (cart.lineItems !== undefined) {
+      const newProductInCart = sumQuantities(cart.lineItems);
+      setProductInCart(newProductInCart);
+    }
+  }, [cart]);
 
   return (
     <>
@@ -74,13 +85,14 @@ export const UserMenu: FC = () => {
 
         <Link
           to={AppRoutes.CART_ROUTE}
-          className={styles.userMenuIcon}
-          aria-label={ToolTips.CART}
+          className={classnames(styles.userMenuIcon, { [styles.userMenuCart]: true })}
           data-tooltip={ToolTips.CART}
+          aria-label={ToolTips.CART}
         >
           <svg width={iconSizeNumber} height={iconSizeNumber}>
             <use xlinkHref={`${sprite}#cart`} />
           </svg>
+          <span>{productInCart > 99 ? '99+' : productInCart}</span>
         </Link>
       </div>
 
