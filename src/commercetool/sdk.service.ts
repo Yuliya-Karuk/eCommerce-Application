@@ -133,7 +133,6 @@ export class SdkService {
 
   public async getCategories(): Promise<Category[]> {
     const data = await this.apiRoot.categories().get().execute();
-    console.log(data);
     return data.body.results;
   }
 
@@ -183,19 +182,6 @@ export class SdkService {
   public async getProductProjectionByKey(productKey: string): Promise<ProductProjection> {
     const data = await this.apiRoot.productProjections().withKey({ key: productKey }).get().execute();
     return data.body;
-  }
-
-  public async getCategoryById(id: string): Promise<Category[]> {
-    const category = await this.apiRoot
-      .categories()
-      .get({
-        queryArgs: {
-          where: `id="${id}"`,
-        },
-      })
-      .execute();
-
-    return category.body.results;
   }
 
   public async createCart() {
