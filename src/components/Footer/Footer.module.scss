@@ -126,7 +126,7 @@
 
   &-link {
     @include hover {
-      opacity: 0.7;
+      @include luxtext;
     }
 
     @include focused {
