@@ -11,7 +11,7 @@ export const Banner: FC = () => {
         <div className={styles.bannerBody}>
           <h1 className={styles.bannerTitle}>Is There Such a Thing as Too Many Plants?</h1>
           <div className={styles.bannerText}>Discover the latest addition to your growing plant collection</div>
-          <LinkButton to={AppRoutes.CATALOG_ROUTE}>Shop Plants</LinkButton>
+          <LinkButton to={`${AppRoutes.CATALOG_ROUTE}/plants`}>Shop Plants</LinkButton>
         </div>
       </Container>
     </div>
