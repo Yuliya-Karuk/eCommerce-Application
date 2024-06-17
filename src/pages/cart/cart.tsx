@@ -8,6 +8,7 @@ import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
 import { Loader } from '@components/Loader/Loader';
 import { PromoCodeView } from '@components/PromoCodeView/PromoCodeView';
+import { useAuth } from '@contexts/authProvider';
 import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
 import { storage } from '@utils/storage';
@@ -19,6 +20,7 @@ import styles from './cart.module.scss';
 export function Cart() {
   const { customToast } = useToast();
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const { isLoggedIn } = useAuth();
   const { cart, setCart, promoCodeName, setPromoCodeName } = useCart();
   const [notes, setNotes] = useState<string>('');
 
@@ -32,7 +34,9 @@ export function Cart() {
     setModalIsOpen(false);
     await sdkService.removeCart(cart.id, cart.version);
     const data = await sdkService.createCart();
-    storage.setCartStore(data.id, isNotNullable(data.anonymousId));
+    if (!isLoggedIn) {
+      storage.setCartStore(data.id, isNotNullable(data.anonymousId));
+    }
     setCart(data);
     setPromoCodeName('');
   };
