@@ -29,7 +29,6 @@ export const Modal: FC<React.PropsWithChildren & IModalProps> = ({ isOpenModal, 
         modalRoot.remove();
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   });
 
   if (isOpenModal) {
