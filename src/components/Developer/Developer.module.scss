@@ -1,0 +1,108 @@
+.developer {
+  &-body {
+    @include flex;
+
+    @include smalltablet {
+      flex-direction: column;
+    }
+    column-gap: 1px;
+  }
+
+  &-info {
+    @include flex(center, center, column);
+
+    @include smalltablet {
+      row-gap: 5px;
+    }
+    color: $color-bg-dark;
+
+    @media all and (min-width: 912px) {
+      padding: 5%;
+    }
+  }
+
+  &-name {
+    @include adaptiveValue('font-size', 40px, 20px);
+
+    @include smalltablet {
+      padding-top: 10px;
+    }
+
+    @include hover {
+      a {
+        @include luxtext($color-bg-dark);
+      }
+    }
+    font-family: Forum, Arial, Helvetica, serif;
+    letter-spacing: 0.5ex;
+    text-wrap: balance;
+
+    a {
+      @include focused {
+        @include luxtext($color-bg-dark);
+      }
+      font-family: inherit;
+      font-size: inherit;
+      letter-spacing: inherit;
+      transition:
+        text-shadow 0.8s ease 0s,
+        color 0.4s ease 0s;
+    }
+  }
+
+  &-text {
+    @include adaptiveValue('font-size', 18px, 14px);
+
+    @include smalltablet {
+      max-width: 95%;
+      text-align: justify;
+    }
+    padding: 5px 0;
+    font-family: Questrial, Arial, Helvetica, serif;
+    line-height: 1.6;
+    text-wrap: balance;
+    max-width: 80%;
+  }
+
+  &-photo {
+    flex: 0 1 50%;
+
+    img {
+      max-width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+  }
+
+  &:nth-child(odd) {
+    background-color: $color-bg-light;
+
+    .developer {
+      &-body {
+        background-color: $color-bg-dark;
+      }
+
+      &-info {
+        background-color: $color-bg-light;
+        flex: 0 1 50%;
+      }
+    }
+  }
+
+  &:nth-child(even) {
+    .developer {
+      &-body {
+        @include smalltablet {
+          flex-direction: column;
+        }
+        flex-direction: row-reverse;
+        background-color: $color-bg-dark;
+      }
+
+      &-info {
+        background-color: $color-bg-light;
+        flex: 0 1 50%;
+      }
+    }
+  }
+}

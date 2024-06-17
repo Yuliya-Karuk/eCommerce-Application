@@ -1,0 +1,84 @@
+.about {
+  &-description {
+    background-color: $color-bg-light;
+
+    &-body {
+      @include flex;
+
+      @include smalltablet {
+        flex-direction: column;
+      }
+      flex-direction: row-reverse;
+      column-gap: 1px;
+      background-color: $color-bg-dark;
+    }
+
+    &-info {
+      @include flex(center, center);
+
+      @include smalltablet {
+        padding: 15px 0;
+      }
+      flex: 0 1 50%;
+      background-color: $color-bg-light;
+      color: $color-bg-dark;
+
+      @media all and (min-width: 912px) {
+        padding: 4.75%;
+      }
+
+      @media all and (max-width: 911.5px) {
+        padding: 25px;
+      }
+    }
+
+    &-text {
+      @include adaptiveValue('font-size', 18px, 14px);
+
+      @include smalltablet {
+        max-width: 95%;
+        text-align: justify;
+      }
+      font-family: Questrial, Arial, Helvetica, serif;
+      line-height: 1.6;
+      text-wrap: balance;
+      text-indent: 2.5rem;
+      max-width: 80%;
+
+      &::first-letter {
+        @include adaptiveValue('font-size', 38px, 34px);
+        font-family: Corben, Arial, Helvetica, serif;
+        text-transform: uppercase;
+        font-weight: 500;
+        line-height: 1;
+        letter-spacing: 0.1ex;
+      }
+    }
+
+    &-logo {
+      @include flex(center, center);
+      flex: 0 1 50%;
+      background-color: $color-green-dark;
+      text-align: center;
+      padding: 10px;
+    }
+
+    &-link {
+      @include hover {
+        @include luximage($color-error);
+      }
+
+      @include focused {
+        @include luximage($color-error);
+      }
+      transition: filter 0.8s ease 0s;
+      overflow: hidden;
+
+      img {
+        max-width: 100%;
+        height: auto;
+        object-fit: cover;
+      }
+    }
+  }
+}

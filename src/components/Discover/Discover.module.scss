@@ -80,6 +80,16 @@
       }
     }
 
+    @include focused {
+      &::before {
+        opacity: 0;
+      }
+
+      img {
+        transform: scale(1.1);
+      }
+    }
+
     &::before {
       @include flex(center);
       @include adaptiveValue('font-size', 34px, 20px);

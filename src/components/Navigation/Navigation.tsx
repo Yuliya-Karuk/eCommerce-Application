@@ -1,5 +1,7 @@
+import { useChangeRoute } from '@hooks/useChangeRoute';
+import { useClickOutside } from '@hooks/useClickOutside';
 import { AppRoutes } from '@router/routes';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Link } from 'react-router-dom';
 import styles from './Navigation.module.scss';
@@ -8,14 +10,31 @@ interface NavigationProps {
   id?: string;
 }
 
+const paths: string[] = [
+  AppRoutes.ABOUT_ROUTE,
+  AppRoutes.CATALOG_ROUTE,
+  AppRoutes.LOGIN_ROUTE,
+  AppRoutes.REGISTRATION_ROUTE,
+];
+
 export const Navigation: FC<NavigationProps> = ({ id, ...props }) => {
-  const paths: string[] = [AppRoutes.CATALOG_ROUTE, AppRoutes.LOGIN_ROUTE, AppRoutes.REGISTRATION_ROUTE];
+  const menuPaths = useChangeRoute(paths);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isDesktop = useMediaQuery({ query: '(min-width: 769px)' });
+  const menuRef = useRef(null);
+  const onClickOutside = () => {
+    if (!isDesktop && isMenuOpen) {
+      setIsMenuOpen(false);
+      document.body.classList.toggle('lock', !isMenuOpen);
+    }
+  };
+
+  useClickOutside(menuRef, onClickOutside);
 
   useEffect(() => {
     if (isDesktop && isMenuOpen) {
       setIsMenuOpen(false);
+      document.body.classList.toggle('lock', !isMenuOpen);
     }
   }, [isDesktop, isMenuOpen]);
 
@@ -25,18 +44,25 @@ export const Navigation: FC<NavigationProps> = ({ id, ...props }) => {
         className={isMenuOpen ? `${styles.burger} ${styles.active}` : styles.burger}
         role="button"
         aria-expanded={isMenuOpen}
+        aria-controls={id || 'menu'}
         aria-label={`${isMenuOpen ? 'Close' : 'Open'} menu`}
         tabIndex={0}
-        onClick={() => {
+        onClick={e => {
+          e.stopPropagation();
           setIsMenuOpen(!isMenuOpen);
           document.body.classList.toggle('lock', !isMenuOpen);
         }}
       >
         <span />
       </div>
-      <nav className={isMenuOpen ? `${styles.menu} ${styles.active}` : styles.menu} id={id} {...props}>
+      <nav
+        className={isMenuOpen ? `${styles.menu} ${styles.active}` : styles.menu}
+        id={id || 'menu'}
+        ref={menuRef}
+        {...props}
+      >
         <ul className={styles.menuList}>
-          {paths.map(path => (
+          {menuPaths.map(path => (
             <li key={path} className={styles.menuItem}>
               <Link
                 to={path}
@@ -44,7 +70,7 @@ export const Navigation: FC<NavigationProps> = ({ id, ...props }) => {
                   document.body.classList.remove('lock');
                 }}
               >
-                {path.slice(1)[0].toUpperCase() + path.slice(2)}
+                {path === AppRoutes.HOME_ROUTE ? 'Home' : path.slice(1)[0].toUpperCase() + path.slice(2)}
               </Link>
             </li>
           ))}

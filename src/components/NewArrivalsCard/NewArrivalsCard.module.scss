@@ -5,10 +5,6 @@
     @include bigdesktop {
       overflow: hidden;
     }
-
-    @include bigdesktop {
-      overflow: hidden;
-    }
     row-gap: 16px;
     color: $color-bg-dark;
   }
@@ -43,6 +39,10 @@
     @media all and (max-width: 1180px) {
       min-width: 200px;
     }
+
+    @media all and (max-width: 1180px) {
+      min-width: 200px;
+    }
   }
 
   &-card-info {
@@ -71,6 +71,12 @@
       color: $color-gray-light;
       background-color: $color-bg-dark;
     }
+
+    @include focused {
+      @include luxtext;
+      color: $color-gray-light;
+      background-color: $color-bg-dark;
+    }
     margin-right: 20px;
     margin-left: 20px;
     padding: 9px 17px;
@@ -81,6 +87,7 @@
     border-radius: 5px;
     transition:
       background-color 0.4s ease 0s,
+      text-shadow 0.8s ease 0s,
       color 0.4s ease 0s;
 
     &[type='button'] {

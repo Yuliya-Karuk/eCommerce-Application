@@ -7,6 +7,23 @@
 
   &-body {
     @include flex(space-between, center);
+
+    @include tablet {
+      > a {
+        display: none;
+      }
+    }
     position: relative;
+    margin-top: 10px;
+
+    @media all and (min-width: 1025px) {
+      min-height: 100px;
+
+      > a {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-25%);
+      }
+    }
   }
 }

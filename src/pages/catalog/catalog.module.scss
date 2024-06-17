@@ -3,7 +3,7 @@
 }
 
 .catalog-container {
-  @include flex(flex-start, flex-start, null, 15px);
+  @include flex(flex-start, stretch, null, 15px);
 }
 
 .catalog-content {
