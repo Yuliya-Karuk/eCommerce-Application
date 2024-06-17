@@ -204,4 +204,29 @@
   }
 }
 
+@mixin luxtext($shadow: $color-bg-light, $color: $color-white, $bg: null) {
+  color: $color;
+  text-shadow:
+    0 0 rem(10px) $shadow,
+    0 0 rem(30px) $shadow,
+    0 0 rem(80px) $shadow,
+    0 0 rem(120px) $shadow,
+    0 0 rem(200px) $shadow;
+}
+
+// Эффект плодсветки по периметру блока
+@mixin luxbox($color: $color-bg-light) {
+  box-shadow:
+    0 0 rem(10px) $color,
+    0 0 rem(30px) $color,
+    0 0 rem(80px) $color,
+    0 0 rem(120px) $color,
+    0 0 rem(200px) $color;
+}
+
+// Эффект плодсветки по контуру изображения
+@mixin luximage($color: $color-bg-light) {
+  filter: drop-shadow(0 0 rem(10px) $color);
+}
+
 // ========================================================================================

@@ -35,3 +35,14 @@
     text-align: center;
   }
 }
+
+.header-link {
+  @include hover {
+    @include luximage;
+  }
+
+  @include focused {
+    @include luximage;
+  }
+  transition: filter 0.8s ease 0s;
+}

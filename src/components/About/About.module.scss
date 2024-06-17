@@ -1,9 +1,9 @@
 .about {
   @include membrane(3.85);
   position: relative;
-  width: 100%;
   background: fixed $color-gray-light url('../../assets/aboutbg.jpg') bottom center / cover no-repeat;
   background-blend-mode: multiply;
+  width: 100%;
 
   &-body {
     @include flex(center, center, column);

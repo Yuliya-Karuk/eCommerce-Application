@@ -25,16 +25,40 @@
           @include adaptiveValue('font-size', 18px, 5px);
           content: attr(title);
           position: absolute;
-          z-index: 1;
-          top: 0;
-          left: 0;
           width: 100%;
           height: 100%;
+          top: 0;
+          left: 0;
           padding: 10%;
+          background-color: $color-gramm-alpha;
           font-family: Questrial, Arial, Helvetica, serif;
           text-align: center;
-          background-color: $color-gramm-alpha;
           transition: all 0.8s ease 0s;
+          z-index: 1;
+        }
+
+        img {
+          transform: scale(1.1);
+        }
+      }
+
+      @include focused {
+        &::before {
+          @include flex(center);
+          @include adaptiveValue('font-size', 18px, 5px);
+          @include luxtext;
+          content: attr(title);
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          padding: 10%;
+          background-color: $color-gramm-alpha;
+          font-family: Questrial, Arial, Helvetica, serif;
+          text-align: center;
+          transition: all 0.8s ease 0s;
+          z-index: 1;
         }
 
         img {
@@ -42,9 +66,9 @@
         }
       }
       position: relative;
-      overflow: hidden;
       width: fit-content;
       height: auto;
+      overflow: hidden;
 
       img {
         transition: transform 0.8s ease 0s;

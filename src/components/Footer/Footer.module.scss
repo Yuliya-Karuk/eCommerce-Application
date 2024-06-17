@@ -26,16 +26,17 @@
     @include mobile {
       padding: 0;
     }
+    row-gap: 25px;
+    padding: 0 15px;
+    margin-top: 5px;
   }
 
   &-logo {
     @include smalltablet {
       display: none;
     }
-    margin-top: 15px;
     padding: 25px 10px;
-    width: fit-content;
-    align-self: center;
+    margin-top: 15px;
   }
 
   &-info {
@@ -44,6 +45,11 @@
     @include smalltablet {
       flex-wrap: wrap;
       gap: 25px;
+      padding: 10px 0;
+    }
+
+    @media all and (max-width: 360.5px) {
+      flex-direction: column;
     }
   }
 
@@ -66,9 +72,9 @@
       margin-bottom: 5px;
     }
     width: 100%;
-    margin-bottom: 15px;
-    padding: 10px;
     text-align: center;
+    padding: 10px;
+    margin-bottom: 15px;
   }
 
   &-contacts,
@@ -81,22 +87,23 @@
     }
   }
 
-  &-contacts,
   &-opening-hours {
-    @include mobile {
-      order: 2;
+    text-align: end;
+
+    @media all and (max-width: 360.5px) {
+      text-align: center;
     }
   }
 
-  &-opening-hours {
-    text-align: end;
+  &-contacts {
+    @media all and (max-width: 360.5px) {
+      text-align: center;
+    }
   }
 
   &-shop {
-    @include mobile {
-      width: 100%;
-      order: 1;
-      align-items: center;
+    @include smalltablet {
+      display: none;
     }
   }
 
@@ -118,10 +125,15 @@
   }
 
   &-link {
-    @extend %transition;
-
     @include hover {
       opacity: 0.7;
     }
+
+    @include focused {
+      @include luxtext;
+    }
+    transition:
+      opacity 0.4s ease 0s,
+      text-shadow 0.8s ease 0s;
   }
 }
