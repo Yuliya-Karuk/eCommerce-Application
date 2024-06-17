@@ -7,6 +7,7 @@
   height: 100%;
   background-color: $color-discovery-gradient-middle;
   padding: 10px;
+  cursor: pointer;
 
   &-body {
     @include adaptiveValue('font-size', 24px, 18px);
@@ -21,6 +22,7 @@
     text-align: center;
     max-width: 50%;
     padding: 15px;
+    cursor: auto;
     overflow: hidden;
   }
 }
