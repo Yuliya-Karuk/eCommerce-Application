@@ -11,6 +11,18 @@
 
   &-body {
     @include adaptiveValue('font-size', 24px, 18px);
+
+    @include tablet {
+      max-width: 65%;
+    }
+
+    @include smalltablet {
+      max-width: 75%;
+    }
+
+    @include mobile {
+      max-width: 85%;
+    }
     color: $color-white;
     background-color: $color-bg-dark-alpha;
     border: 1px solid $color-gray-dark;
