@@ -10,14 +10,17 @@ const contacts = [
   {
     name: 'Address',
     value: 'Minsk, K. Marks Street, 38',
+    link: 'https://yandex.by/maps/157/minsk/house/Zk4YcwFkSkwGQFtpfXVxcXhiZQ==/?ll=27.564392%2C53.900411&z=16.65',
   },
   {
     name: 'Phone',
     value: '+375-17-222-37-78',
+    link: 'tel:+375-17-222-37-78',
   },
   {
     name: 'Email',
     value: 'udp@udp.gov.by',
+    link: 'mailto:udp@udp.gov.by',
   },
 ];
 
@@ -72,7 +75,9 @@ export const Footer: FC = () => {
               <ul className={styles.footerList}>
                 {contacts.map(item => (
                   <li key={Math.random().toString(36).slice(2)} className={styles.footerListItem}>
-                    {`${item.name}: ${item.value}`}
+                    <Link to={item.link} className={styles.footerLink}>
+                      {`${item.name}: ${item.value}`}
+                    </Link>
                   </li>
                 ))}
               </ul>
