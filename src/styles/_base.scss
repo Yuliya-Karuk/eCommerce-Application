@@ -11,6 +11,10 @@ html {
 
 body {
   background-color: $color-bg-dark;
+
+  :not(.mobile) & {
+    overflow: overlay;
+  }
 }
 
 h1 {

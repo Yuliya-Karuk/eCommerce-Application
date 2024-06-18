@@ -1,4 +1,5 @@
 .modal {
+  @extend %taphighlight;
   @include flex(center);
   position: fixed;
   top: 0;
