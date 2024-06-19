@@ -22,64 +22,72 @@ interface CartProviderProps {
 export const CartProvider = ({ children }: CartProviderProps) => {
   const [cart, setCart] = useState({} as Cart);
   const [promoCodeName, setPromoCodeName] = useState('');
+  const [previousState, setPreviousState] = useState<boolean | null>(null);
   const { isLoggedIn } = useAuth();
-  const hasFetched = useRef(false);
+  const isInitial = useRef(true);
   const { errorNotify } = useToast();
 
-  useEffect(() => {
-    if (hasFetched.current) {
-      hasFetched.current = false;
-      return;
-    }
-
-    const fetchCart = async () => {
-      let data: Cart;
-      try {
-        if (!isLoggedIn) {
-          if (!storage.getCartStore()) {
-            data = await sdkService.createCart();
-          } else {
-            data = await sdkService.getCart(isNotNullable(storage.getCartStore()).cartId);
-            const anonymousId = isNotNullable(storage.getAnonId());
-
-            if (data.anonymousId !== anonymousId) {
-              const action: CartSetAnonymousIdAction = {
-                action: 'setAnonymousId',
-                anonymousId,
-              };
-              data = await sdkService.setAnonymousId(data.id, data.version, action);
-            }
-          }
-          storage.setCartStore(data.id, isNotNullable(data.anonymousId));
+  const fetchCart = async () => {
+    let data: Cart;
+    try {
+      if (!isLoggedIn) {
+        if (!storage.getCartStore()) {
+          data = await sdkService.createCart();
         } else {
-          const carts = await sdkService.getAuthorizedCarts();
-          const activeCart = carts.filter(oneCart => oneCart.cartState === 'Active')[0];
+          data = await sdkService.getCart(isNotNullable(storage.getCartStore()).cartId);
+          const anonymousId = isNotNullable(storage.getAnonId());
 
-          carts.forEach(oneCart => {
-            if (oneCart.id !== activeCart.id) {
-              sdkService.removeCart(oneCart.id, oneCart.version);
-            }
-          });
-
-          if (carts.length > 0 && activeCart) {
-            data = activeCart;
-          } else {
-            data = await sdkService.createCart();
+          if (data.anonymousId !== anonymousId) {
+            const action: CartSetAnonymousIdAction = {
+              action: 'setAnonymousId',
+              anonymousId,
+            };
+            data = await sdkService.setAnonymousId(data.id, data.version, action);
           }
         }
+        storage.setCartStore(data.id, isNotNullable(data.anonymousId));
+        setPreviousState(false);
+      } else {
+        const carts = await sdkService.getAuthorizedCarts();
+        const activeCart = carts.filter(oneCart => oneCart.cartState === 'Active')[0];
 
-        if (data.discountCodes) {
-          const promoCode = data.discountCodes.filter(discount => discount.state === 'MatchesCart')[0];
-          setPromoCodeName(promoCode?.discountCode?.obj?.code || '');
+        carts.forEach(oneCart => {
+          if (oneCart.id !== activeCart.id) {
+            sdkService.removeCart(oneCart.id, oneCart.version);
+          }
+        });
+
+        if (carts.length > 0 && activeCart) {
+          data = activeCart;
+        } else {
+          data = await sdkService.createCart();
         }
-        setCart(data);
-      } catch (err) {
-        errorNotify((err as Error).message);
+        setPreviousState(true);
       }
-    };
 
-    fetchCart();
-    hasFetched.current = true;
+      if (data.discountCodes) {
+        const promoCode = data.discountCodes.filter(discount => discount.state === 'MatchesCart')[0];
+        setPromoCodeName(promoCode?.discountCode?.obj?.code || '');
+      }
+      setCart(data);
+    } catch (err) {
+      errorNotify((err as Error).message);
+    }
+  };
+
+  useEffect(() => {
+    if (isInitial.current) {
+      fetchCart();
+      isInitial.current = false;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (previousState !== isLoggedIn && previousState !== null) {
+      fetchCart();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
   return (
