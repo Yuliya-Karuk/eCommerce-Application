@@ -1,9 +1,9 @@
 import { sdkService } from '@commercetool/sdk.service';
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { Container } from '@components/Container/Container';
-import { CategoryList } from '@models/index';
+import { useCategories } from '@contexts/categoryProvider';
 import { AppRoutes } from '@router/routes';
-import { dateSorting, simplifyCategories } from '@utils/utils';
+import { dateSorting } from '@utils/utils';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { NewArrivalsCard } from '../NewArrivalsCard/NewArrivalsCard';
@@ -11,7 +11,7 @@ import styles from './NewArrivals.module.scss';
 
 export const NewArrivals: FC = ({ ...props }) => {
   const [products, setProducts] = useState<ProductProjection[]>([]);
-  const [categories, setCategories] = useState<CategoryList>({});
+  const { catalogCategories } = useCategories();
   const cardNumber = 4;
 
   const updateProductsState = useCallback(async () => {
@@ -20,16 +20,9 @@ export const NewArrivals: FC = ({ ...props }) => {
     setProducts(sortedProds.slice(0, cardNumber));
   }, []);
 
-  const getCategories = useCallback(async () => {
-    const data = await sdkService.getCategories();
-    const preparedData = simplifyCategories(data);
-    setCategories(preparedData);
-  }, []);
-
   useEffect(() => {
     updateProductsState();
-    getCategories();
-  }, [getCategories, updateProductsState]);
+  }, [updateProductsState]);
 
   return (
     <section className={styles.newarrivals}>
@@ -43,9 +36,9 @@ export const NewArrivals: FC = ({ ...props }) => {
           </div>
 
           <div className={styles.newarrivalsList} {...props}>
-            {Object.values(categories).length > 0 &&
+            {Object.values(catalogCategories).length > 0 &&
               products.map((product: ProductProjection) => {
-                return <NewArrivalsCard key={product.id} product={product} categories={categories} />;
+                return <NewArrivalsCard key={product.id} product={product} categories={catalogCategories} />;
               })}
           </div>
         </div>

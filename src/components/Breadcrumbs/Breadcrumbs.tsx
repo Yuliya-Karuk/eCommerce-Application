@@ -41,7 +41,11 @@ export const Breadcrumbs = ({
         Home
       </button>
       <img src={Colors[backColor]} className={styles.breadcrumbsImg} alt="arrow img" />
-      <button type="button" onClick={() => handleNavigation(AppRoutes.CATALOG_ROUTE)}>
+      <button
+        disabled={Object.entries(preparedSlugs).length === 0}
+        type="button"
+        onClick={() => handleNavigation(AppRoutes.CATALOG_ROUTE)}
+      >
         Catalog
       </button>
       {Object.entries(preparedSlugs).map(([name, slug]) => (
