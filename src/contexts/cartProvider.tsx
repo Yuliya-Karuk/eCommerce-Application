@@ -4,6 +4,7 @@ import { storage } from '@utils/storage';
 import { isNotNullable } from '@utils/utils';
 import { createContext, ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { useAuth } from './authProvider';
+import { useToast } from './toastProvider';
 
 interface CartContextValue {
   cart: Cart;
@@ -22,57 +23,63 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   const [cart, setCart] = useState({} as Cart);
   const [promoCodeName, setPromoCodeName] = useState('');
   const { isLoggedIn } = useAuth();
-  const isInitialMount = useRef(true);
+  const hasFetched = useRef(false);
+  const { errorNotify } = useToast();
 
   useEffect(() => {
+    if (hasFetched.current) {
+      hasFetched.current = false;
+      return;
+    }
+
     const fetchCart = async () => {
       let data: Cart;
-      if (!isLoggedIn) {
-        if (!storage.getCartStore()) {
-          data = await sdkService.createCart();
-        } else {
-          data = await sdkService.getCart(isNotNullable(storage.getCartStore()).cartId);
-          const anonymousId = isNotNullable(storage.getAnonId());
+      try {
+        if (!isLoggedIn) {
+          if (!storage.getCartStore()) {
+            data = await sdkService.createCart();
+          } else {
+            data = await sdkService.getCart(isNotNullable(storage.getCartStore()).cartId);
+            const anonymousId = isNotNullable(storage.getAnonId());
 
-          if (data.anonymousId !== anonymousId) {
-            const action: CartSetAnonymousIdAction = {
-              action: 'setAnonymousId',
-              anonymousId,
-            };
-            data = await sdkService.setAnonymousId(data.id, data.version, action);
+            if (data.anonymousId !== anonymousId) {
+              const action: CartSetAnonymousIdAction = {
+                action: 'setAnonymousId',
+                anonymousId,
+              };
+              data = await sdkService.setAnonymousId(data.id, data.version, action);
+            }
+          }
+          storage.setCartStore(data.id, isNotNullable(data.anonymousId));
+        } else {
+          const carts = await sdkService.getAuthorizedCarts();
+          const activeCart = carts.filter(oneCart => oneCart.cartState === 'Active')[0];
+
+          carts.forEach(oneCart => {
+            if (oneCart.id !== activeCart.id) {
+              sdkService.removeCart(oneCart.id, oneCart.version);
+            }
+          });
+
+          if (carts.length > 0 && activeCart) {
+            data = activeCart;
+          } else {
+            data = await sdkService.createCart();
           }
         }
-        storage.setCartStore(data.id, isNotNullable(data.anonymousId));
-      } else {
-        const carts = await sdkService.getAuthorizedCarts();
-        const activeCart = carts.filter(oneCart => oneCart.cartState === 'Active')[0];
 
-        carts.forEach(oneCart => {
-          if (oneCart.id !== activeCart.id) {
-            sdkService.removeCart(oneCart.id, oneCart.version);
-          }
-        });
-
-        if (carts.length > 0 && activeCart) {
-          data = activeCart;
-        } else {
-          data = await sdkService.createCart();
+        if (data.discountCodes) {
+          const promoCode = data.discountCodes.filter(discount => discount.state === 'MatchesCart')[0];
+          setPromoCodeName(promoCode?.discountCode?.obj?.code || '');
         }
+        setCart(data);
+      } catch (err) {
+        errorNotify((err as Error).message);
       }
-
-      if (data.discountCodes) {
-        const promoCode = data.discountCodes.filter(discount => discount.state === 'MatchesCart')[0];
-        setPromoCodeName(promoCode?.discountCode?.obj?.code || '');
-      }
-      setCart(data);
     };
 
-    if (isInitialMount.current || !isLoggedIn) {
-      isInitialMount.current = false;
-      fetchCart();
-    } else {
-      fetchCart();
-    }
+    fetchCart();
+    hasFetched.current = true;
   }, [isLoggedIn]);
 
   return (
