@@ -19,6 +19,7 @@ export function CartProductCard({ product, loading, setLoading }: CartProductCar
   const imageUrl = product.variant.images?.[0]?.url;
 
   const [quantity, setQuantity] = useState(product.quantity);
+  const [oldQuantity, setOldQuantity] = useState(product.quantity);
   const { cart, setCart } = useCart();
   const { errorNotify } = useToast();
 
@@ -39,7 +40,7 @@ export function CartProductCard({ product, loading, setLoading }: CartProductCar
   useEffect(() => {
     const handleUpdateProductQuantity = async () => {
       setLoading(true);
-
+      setOldQuantity(product.quantity);
       try {
         const action: CartChangeLineItemQuantityAction = {
           action: 'changeLineItemQuantity',
@@ -49,8 +50,10 @@ export function CartProductCard({ product, loading, setLoading }: CartProductCar
 
         const data = await sdkService.updateCart(cart.id, cart.version, [action]);
         setCart(data);
+        setOldQuantity(quantity);
       } catch (e) {
         errorNotify((e as Error).message);
+        setQuantity(oldQuantity);
       }
 
       setLoading(false);
