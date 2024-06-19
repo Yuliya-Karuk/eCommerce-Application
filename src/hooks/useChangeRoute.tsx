@@ -5,7 +5,6 @@ import { useLocation } from 'react-router-dom';
 export const useChangeRoute = (array: string[]) => {
   const location = useLocation();
   const { isLoggedIn } = useAuth();
-  console.log(location.pathname, array);
   let result = array.map(path => (location.pathname.includes(path) ? AppRoutes.HOME_ROUTE : path));
 
   if (isLoggedIn) {
