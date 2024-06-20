@@ -1,4 +1,5 @@
 .link-button {
+  @extend %taphighlight;
   @include adaptiveValue('font-size', 18px, 14px);
 
   @include hover {

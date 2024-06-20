@@ -15,6 +15,7 @@
   }
 
   &-item {
+    @extend %taphighlight;
     @include adaptiveValue('font-size', 16px, 14px);
 
     @include hover {

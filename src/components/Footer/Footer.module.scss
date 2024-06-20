@@ -118,6 +118,7 @@
 
   &-list-item {
     @extend %font;
+    @extend %taphighlight;
 
     a {
       @extend %font;

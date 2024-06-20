@@ -12,7 +12,7 @@ interface LogoProps {
 
 export const Logo: FC<LogoProps> = ({ spritePaths, title, width, height, ...props }) => {
   return (
-    <Link className={styles.homeLink} to={AppRoutes.HOME_ROUTE}>
+    <Link className={styles.homeLink} to={AppRoutes.HOME_ROUTE} title="Go to Home">
       <div className={styles.logo} {...props}>
         <div className={styles.logoImage}>
           <svg width={width} height={height}>

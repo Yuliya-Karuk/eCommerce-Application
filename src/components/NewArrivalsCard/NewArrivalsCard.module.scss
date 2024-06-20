@@ -43,22 +43,20 @@
     @media all and (max-width: 1180px) {
       min-width: 200px;
     }
-
-    @media all and (max-width: 1180px) {
-      min-width: 200px;
-    }
   }
 
   &-card-info {
     @include flex(null, null, column);
     row-gap: 4px;
     padding: 0 20px;
+    flex: 1 1 auto;
   }
 
   &-card-title {
     @include adaptiveValue('font-size', 28px, 20px);
     font-family: Forum, Arial, Helvetica, serif;
     line-height: 1.25;
+    flex: 1 1 auto;
   }
 
   &-card-coast {
@@ -68,6 +66,7 @@
   }
 
   &-card-button {
+    @extend %taphighlight;
     @include flex(center);
     @include adaptiveValue('font-size', 16px, 14px);
 
