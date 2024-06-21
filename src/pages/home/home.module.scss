@@ -22,6 +22,10 @@
   @extend %transition;
   @include flex(center);
 
+  @include smalltablet {
+    display: none;
+  }
+
   @include hover {
     background: $color-primary-bright;
   }

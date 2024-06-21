@@ -39,6 +39,28 @@
   }
 }
 
+// ========================== Для линтера стилей ==================================
+
+@mixin hdWidth {
+  @media (max-width: (1280px)) {
+    @content;
+  }
+}
+
+@mixin figmaLayotWidth {
+  @media (max-width: (1150px)) {
+    @content;
+  }
+}
+
+@mixin middleTabletWidth {
+  @media (max-width: (899.5px)) {
+    @content;
+  }
+}
+
+// ================================================================================
+
 // Анимирование кнопки
 @mixin animatebtn($smax: 1, $smin: 0.95) {
   transform-origin: center center;

@@ -23,15 +23,20 @@ export const Profile = () => {
   const [activeTab, setActiveTab] = useState(tabs.account);
   const [customerData, setCustomerData] = useState<Customer>({} as Customer);
   const { isLoggedIn } = useAuth();
-  const { customToast } = useToast();
+  const { customToast, errorNotify } = useToast();
 
   const getCustomerData = async () => {
-    const customer = await sdkService.getCustomerData();
-    setCustomerData(customer);
+    try {
+      const customer = await sdkService.getCustomerData();
+      setCustomerData(customer);
+    } catch (err) {
+      errorNotify((err as Error).message);
+    }
   };
 
   useEffect(() => {
     getCustomerData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!isLoggedIn) {

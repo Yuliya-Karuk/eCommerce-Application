@@ -63,6 +63,8 @@
 
   &-logout,
   &-icon {
+    @extend %taphighlight;
+
     @include hover {
       svg {
         @include luximage;

@@ -1,3 +1,4 @@
+import { ScrollToTop } from '@components/ScrollToTop/ScrollToTop';
 import { About } from '@pages/about/about';
 import { Cart } from '@pages/cart/cart';
 import { Catalog } from '@pages/catalog/catalog';
@@ -12,6 +13,7 @@ import { AppRoutes } from './routes';
 
 export const AppRouter = () => (
   <BrowserRouter>
+    <ScrollToTop />
     <Routes>
       <Route path={AppRoutes.HOME_ROUTE} element={<Home />} />
       <Route path={AppRoutes.LOGIN_ROUTE} element={<Login />} />

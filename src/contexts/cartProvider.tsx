@@ -2,8 +2,9 @@ import { sdkService } from '@commercetool/sdk.service';
 import { Cart, CartSetAnonymousIdAction } from '@commercetools/platform-sdk';
 import { storage } from '@utils/storage';
 import { isNotNullable } from '@utils/utils';
-import { createContext, ReactNode, useContext, useEffect, useRef, useState } from 'react';
+import { ReactNode, createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useAuth } from './authProvider';
+import { useToast } from './toastProvider';
 
 interface CartContextValue {
   cart: Cart;
@@ -21,12 +22,14 @@ interface CartProviderProps {
 export const CartProvider = ({ children }: CartProviderProps) => {
   const [cart, setCart] = useState({} as Cart);
   const [promoCodeName, setPromoCodeName] = useState('');
+  const [previousState, setPreviousState] = useState<boolean | null>(null);
   const { isLoggedIn } = useAuth();
-  const isInitialMount = useRef(true);
+  const isInitial = useRef(true);
+  const { errorNotify } = useToast();
 
-  useEffect(() => {
-    const fetchCart = async () => {
-      let data: Cart;
+  const fetchCart = async () => {
+    let data: Cart;
+    try {
       if (!isLoggedIn) {
         if (!storage.getCartStore()) {
           data = await sdkService.createCart();
@@ -43,6 +46,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
           }
         }
         storage.setCartStore(data.id, isNotNullable(data.anonymousId));
+        setPreviousState(false);
       } else {
         const carts = await sdkService.getAuthorizedCarts();
         const activeCart = carts.filter(oneCart => oneCart.cartState === 'Active')[0];
@@ -58,6 +62,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
         } else {
           data = await sdkService.createCart();
         }
+        setPreviousState(true);
       }
 
       if (data.discountCodes) {
@@ -65,14 +70,24 @@ export const CartProvider = ({ children }: CartProviderProps) => {
         setPromoCodeName(promoCode?.discountCode?.obj?.code || '');
       }
       setCart(data);
-    };
+    } catch (err) {
+      errorNotify((err as Error).message);
+    }
+  };
 
-    if (isInitialMount.current || !isLoggedIn) {
-      isInitialMount.current = false;
+  useEffect(() => {
+    if (isInitial.current) {
       fetchCart();
-    } else {
+      isInitial.current = false;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (previousState !== isLoggedIn && previousState !== null) {
       fetchCart();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
   return (

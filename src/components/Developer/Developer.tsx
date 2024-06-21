@@ -11,7 +11,7 @@ interface DeveloperI {
 }
 
 export const Developer: FC<DeveloperI> = ({ name, text, photo, link }) => {
-  const photoSize = 761;
+  const photoSize = 738;
 
   return (
     <div className={styles.developer}>

@@ -5,6 +5,7 @@
   @include smalltablet {
     display: none;
   }
+  width: fit-content;
   font-family: Corben, Arial, Helvetica, serif;
 
   &-image {
@@ -36,7 +37,7 @@
   }
 }
 
-.header-link {
+.home-link {
   @include hover {
     @include luximage;
   }
@@ -44,5 +45,7 @@
   @include focused {
     @include luximage;
   }
+  width: fit-content;
   transition: filter 0.8s ease 0s;
+  margin: 0 auto;
 }

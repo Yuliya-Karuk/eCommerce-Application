@@ -14,11 +14,12 @@
     @include smalltablet {
       row-gap: 5px;
     }
-    color: $color-bg-dark;
 
-    @media all and (min-width: 912px) {
-      padding: 5%;
+    @include tablet {
+      padding: 2.5%;
     }
+    color: $color-bg-dark;
+    padding: 5%;
   }
 
   &-name {
@@ -69,8 +70,9 @@
 
     img {
       max-width: 100%;
-      height: auto;
+      height: 100%;
       object-fit: cover;
+      object-position: center;
     }
   }
 
