@@ -118,6 +118,7 @@
 
   &-list-item {
     @extend %font;
+    @extend %taphighlight;
 
     a {
       @extend %font;
@@ -126,7 +127,7 @@
 
   &-link {
     @include hover {
-      opacity: 0.7;
+      @include luxtext;
     }
 
     @include focused {

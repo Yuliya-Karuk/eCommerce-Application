@@ -1,4 +1,5 @@
 import { useClickOutside } from '@hooks/useClickOutside';
+import { useLockScroll } from '@hooks/useLockScroll';
 import { FC, useEffect, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './Modal.module.scss';
@@ -18,6 +19,7 @@ export const Modal: FC<React.PropsWithChildren & IModalProps> = ({ isOpenModal, 
   }, []);
 
   useClickOutside(modalRef, onClose);
+  useLockScroll(isOpenModal);
 
   useEffect(() => {
     if (isOpenModal) {
@@ -29,7 +31,6 @@ export const Modal: FC<React.PropsWithChildren & IModalProps> = ({ isOpenModal, 
         modalRoot.remove();
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   });
 
   if (isOpenModal) {

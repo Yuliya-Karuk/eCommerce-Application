@@ -38,7 +38,10 @@ export function Input<T extends FieldValues>(props: InputProps<T>) {
         ) : null}
       </label>
       <input
-        className={classnames(styles.input, { [styles.invalid]: isInvalid })}
+        className={classnames(styles.input, {
+          [styles.invalid]: isInvalid,
+          [styles.withEye]: name === 'password',
+        })}
         id={name}
         required={required}
         type={type}

@@ -43,6 +43,12 @@ export function PromoCodeView() {
     }
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleApplyPromoCode();
+    }
+  };
+
   return (
     <div className={styles.promoCodeView}>
       <input
@@ -50,6 +56,7 @@ export function PromoCodeView() {
         value={promoCode}
         onChange={e => setPromoCode(e.target.value)}
         placeholder="Enter promo code"
+        onKeyUp={handleKeyPress}
         className={styles.promoCodeInput}
         disabled={promoCodeName === promoCode && promoCodeName !== ''}
       />

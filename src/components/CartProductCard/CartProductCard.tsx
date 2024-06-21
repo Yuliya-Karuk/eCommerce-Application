@@ -3,6 +3,7 @@ import { CartChangeLineItemQuantityAction, CartRemoveLineItemAction, LineItem } 
 import { PriceView } from '@components/PriceView/PriceView';
 import { QuantityInput } from '@components/QuantityInput/QuantityInput';
 import { useCart } from '@contexts/cartProvider';
+import { useToast } from '@contexts/toastProvider';
 import { SizeKey, sizeDescriptions } from '@utils/constants';
 import { convertProductAttributesArrayToObject } from '@utils/utils';
 import { useEffect, useState } from 'react';
@@ -10,35 +11,54 @@ import styles from './CartProductCard.module.scss';
 
 interface CartProductCardProps {
   product: LineItem;
+  loading: boolean;
+  setLoading: (data: boolean) => void;
 }
 
-export function CartProductCard({ product }: CartProductCardProps) {
+export function CartProductCard({ product, loading, setLoading }: CartProductCardProps) {
   const imageUrl = product.variant.images?.[0]?.url;
 
   const [quantity, setQuantity] = useState(product.quantity);
+  const [oldQuantity, setOldQuantity] = useState(product.quantity);
   const { cart, setCart } = useCart();
+  const { errorNotify } = useToast();
 
   async function handleDeleteBtn() {
-    const action: CartRemoveLineItemAction = {
-      action: 'removeLineItem',
-      lineItemId: product.id,
-    };
-
-    const data = await sdkService.updateCart(cart.id, cart.version, [action]);
-    setCart(data);
-  }
-
-  useEffect(() => {
-    const handleUpdateProductQuantity = async () => {
-      const action: CartChangeLineItemQuantityAction = {
-        action: 'changeLineItemQuantity',
+    try {
+      const action: CartRemoveLineItemAction = {
+        action: 'removeLineItem',
         lineItemId: product.id,
-        quantity,
       };
 
       const data = await sdkService.updateCart(cart.id, cart.version, [action]);
       setCart(data);
+    } catch (e) {
+      errorNotify((e as Error).message);
+    }
+  }
+
+  useEffect(() => {
+    const handleUpdateProductQuantity = async () => {
+      setLoading(true);
+      setOldQuantity(product.quantity);
+      try {
+        const action: CartChangeLineItemQuantityAction = {
+          action: 'changeLineItemQuantity',
+          lineItemId: product.id,
+          quantity,
+        };
+
+        const data = await sdkService.updateCart(cart.id, cart.version, [action]);
+        setCart(data);
+        setOldQuantity(quantity);
+      } catch (e) {
+        errorNotify((e as Error).message);
+        setQuantity(oldQuantity);
+      }
+
+      setLoading(false);
     };
+
     if (quantity !== product.quantity) {
       handleUpdateProductQuantity();
     }
@@ -59,13 +79,13 @@ export function CartProductCard({ product }: CartProductCardProps) {
         </div>
         <div className={styles.priceQuantityWrapper}>
           <div className={styles.quantitySelector}>
-            <QuantityInput value={quantity} onChange={setQuantity} />
+            <QuantityInput value={quantity} onChange={setQuantity} loading={loading} />
           </div>
           <div className={styles.priceWrapper}>
             <PriceView price={product.price} />
           </div>
         </div>
-        <button type="button" className={styles.removeButton} onClick={handleDeleteBtn}>
+        <button type="button" className={styles.removeButton} onClick={handleDeleteBtn} disabled={loading}>
           &times;
         </button>
       </div>

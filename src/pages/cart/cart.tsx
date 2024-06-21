@@ -8,6 +8,7 @@ import { Footer } from '@components/Footer/Footer';
 import { Header } from '@components/Header/Header';
 import { Loader } from '@components/Loader/Loader';
 import { PromoCodeView } from '@components/PromoCodeView/PromoCodeView';
+import { useAuth } from '@contexts/authProvider';
 import { useCart } from '@contexts/cartProvider';
 import { useToast } from '@contexts/toastProvider';
 import { storage } from '@utils/storage';
@@ -17,10 +18,12 @@ import { useState } from 'react';
 import styles from './cart.module.scss';
 
 export function Cart() {
-  const { customToast } = useToast();
+  const { customToast, errorNotify } = useToast();
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const { isLoggedIn } = useAuth();
   const { cart, setCart, promoCodeName, setPromoCodeName } = useCart();
   const [notes, setNotes] = useState<string>('');
+  const [loading, setLoading] = useState(false);
 
   const isCartEmpty = !(cart.lineItems?.length > 0);
 
@@ -29,12 +32,18 @@ export function Cart() {
   };
 
   const handleClearCart = async () => {
-    setModalIsOpen(false);
-    await sdkService.removeCart(cart.id, cart.version);
-    const data = await sdkService.createCart();
-    storage.setCartStore(data.id, isNotNullable(data.anonymousId));
-    setCart(data);
-    setPromoCodeName('');
+    try {
+      setModalIsOpen(false);
+      await sdkService.removeCart(cart.id, cart.version);
+      const data = await sdkService.createCart();
+      if (!isLoggedIn) {
+        storage.setCartStore(data.id, isNotNullable(data.anonymousId));
+      }
+      setCart(data);
+      setPromoCodeName('');
+    } catch (e) {
+      errorNotify((e as Error).message);
+    }
   };
 
   return (
@@ -58,7 +67,7 @@ export function Cart() {
               </div>
               <div className={styles.productsWrapper}>
                 {cart.lineItems.map(item => (
-                  <CartProductCard key={item.id} product={item} />
+                  <CartProductCard key={item.id} product={item} loading={loading} setLoading={setLoading} />
                 ))}
               </div>
               <div className={styles.notes}>

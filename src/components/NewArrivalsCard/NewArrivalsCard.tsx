@@ -2,7 +2,7 @@ import { ProductProjection } from '@commercetools/platform-sdk';
 import { CategoryList } from '@models/index';
 import { AppRoutes } from '@router/routes';
 import { convertCentsToDollarsString, prepareProductSlugs } from '@utils/utils';
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import templateImage from '../../assets/template.png';
 import styles from './NewArrivalsCard.module.scss';
@@ -14,7 +14,10 @@ interface NewArrivalsCardProps {
 
 export const NewArrivalsCard: FC<NewArrivalsCardProps> = ({ product, categories, ...props }) => {
   const [isImgHover, setIsImgHover] = useState(false);
-  const slugs = prepareProductSlugs(categories, product.categories).join('/');
+  const slugs = useMemo(
+    () => prepareProductSlugs(categories, product.categories).join('/'),
+    [categories, product.categories]
+  );
 
   return (
     <article className={styles.newarrivalsItem} id={product.id} {...props}>
