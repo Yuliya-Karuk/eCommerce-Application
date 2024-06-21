@@ -8,7 +8,9 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 
 import { ToastProvider } from '@contexts/toastProvider';
+import { About } from '@pages/about/about';
 import { Cart } from '@pages/cart/cart';
+import { Catalog } from '@pages/catalog/catalog';
 import { AppRoutes } from '../router/routes';
 
 const textOnPages = {
@@ -19,6 +21,7 @@ export const routerArray = [
   { path: AppRoutes.HOME_ROUTE, element: <Home />, text: 'Sprout' },
   { path: AppRoutes.LOGIN_ROUTE, element: <Login />, text: 'Log in' },
   { path: AppRoutes.REGISTRATION_ROUTE, element: <Registration />, text: 'Registration' },
+  { path: AppRoutes.ABOUT_ROUTE, element: <About />, text: 'All About Sprout' },
   { path: '/undefined', element: <NotFoundPage />, text: 'Feel free to continue browsing the site.' },
 ];
 
@@ -76,6 +79,24 @@ describe('render', () => {
       const firstText = screen.getByText('My cart');
       const secondText = screen.getByText('Your shopping cart is empty. Add some items to get started!');
       expect(firstText || secondText).toBeInTheDocument();
+    }, 2000);
+  });
+});
+
+describe('render', () => {
+  it('renders the Catalog Page', async () => {
+    render(
+      <MemoryRouter>
+        <ToastProvider>
+          <Routes>
+            <Route path={AppRoutes.CATALOG_ROUTE} element={<Catalog />} />
+          </Routes>
+        </ToastProvider>
+      </MemoryRouter>
+    );
+
+    setTimeout(() => {
+      expect(screen.getByText('Browse by')).toBeInTheDocument();
     }, 2000);
   });
 });

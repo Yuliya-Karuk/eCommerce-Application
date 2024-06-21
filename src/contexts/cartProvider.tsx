@@ -2,7 +2,7 @@ import { sdkService } from '@commercetool/sdk.service';
 import { Cart, CartSetAnonymousIdAction } from '@commercetools/platform-sdk';
 import { storage } from '@utils/storage';
 import { isNotNullable } from '@utils/utils';
-import { createContext, ReactNode, useContext, useEffect, useRef, useState } from 'react';
+import { ReactNode, createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useAuth } from './authProvider';
 import { useToast } from './toastProvider';
 

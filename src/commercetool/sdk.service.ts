@@ -184,19 +184,6 @@ export class SdkService {
     return data.body;
   }
 
-  public async getCategoryById(id: string): Promise<Category[]> {
-    const category = await this.apiRoot
-      .categories()
-      .get({
-        queryArgs: {
-          where: `id="${id}"`,
-        },
-      })
-      .execute();
-
-    return category.body.results;
-  }
-
   public async createCart() {
     const data = await this.apiRoot
       .me()

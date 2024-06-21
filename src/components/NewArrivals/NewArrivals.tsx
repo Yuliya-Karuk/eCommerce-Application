@@ -36,7 +36,8 @@ export const NewArrivals: FC = ({ ...props }) => {
           </div>
 
           <div className={styles.newarrivalsList} {...props}>
-            {Object.values(catalogCategories).length > 0 &&
+            {catalogCategories &&
+              Object.values(catalogCategories).length > 0 &&
               products.map((product: ProductProjection) => {
                 return <NewArrivalsCard key={product.id} product={product} categories={catalogCategories} />;
               })}
