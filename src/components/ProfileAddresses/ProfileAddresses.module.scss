@@ -1,0 +1,49 @@
+.addresses {
+  @include flex(flex-start, flex-start, column, 15px);
+
+  @include tablet {
+    padding: 20px;
+  }
+  padding: 20px 40px;
+  backdrop-filter: blur(10px);
+
+  .addresses-header-wrapper {
+    @include flex(flex-start, center, row, 20px);
+  }
+}
+
+.heading {
+  @include adaptiveValue('font-size', 48px, 24px);
+  padding: 20px;
+  border-bottom: 1px solid $color-gray-dark;
+}
+
+.add-new-address-btn {
+  @extend %transition;
+  @include flex(center, center);
+
+  @include hover {
+    color: $color-input-bg;
+    background-color: $color-white;
+  }
+  width: 45px;
+  height: 45px;
+  margin: 0 auto;
+  padding-bottom: 5px;
+  font-size: 4rem;
+  color: $color-white;
+  border: 1px solid $color-white;
+  border-radius: 5px;
+}
+
+.addresses-wrapper {
+  @include flex(flex-start, center, row, 20px);
+  flex-wrap: wrap;
+}
+
+.address-container {
+  @include smalltablet {
+    width: 100%;
+  }
+  display: flex;
+}

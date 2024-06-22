@@ -1,0 +1,139 @@
+.burger {
+  display: none;
+}
+
+.menu {
+  overflow: hidden;
+  color: $color-white;
+  background-color: $color-bg-dark-alpha;
+  backdrop-filter: blur(10px);
+  border: 1px solid $color-gray-dark;
+  border-radius: 5px;
+
+  &-list {
+    display: flex;
+  }
+
+  &-item {
+    @extend %taphighlight;
+    @include adaptiveValue('font-size', 16px, 14px);
+
+    @include hover {
+      background-color: $color-primary-bright;
+    }
+    cursor: pointer;
+    font-family: Questrial, Arial, Helvetica, sans-serif;
+    transition: background-color 0.4s ease 0s;
+
+    a {
+      @include focused {
+        @include luxtext;
+      }
+      padding: 13px 17px;
+    }
+  }
+}
+
+@include smalltablet {
+  .burger {
+    position: absolute;
+    z-index: 1002;
+    top: 10px;
+    left: 0;
+    display: inline-block;
+    width: 30px;
+    height: 24px;
+    transition: transform 0.35s ease 0s;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background-color: $color-bg-light;
+      border-radius: 4px;
+      transition: all 0.3s ease 0s;
+    }
+
+    &::before {
+      top: 0;
+    }
+
+    &::after {
+      bottom: 0;
+    }
+
+    span {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      width: 100%;
+      height: 4px;
+      background-color: $color-bg-light;
+      border-radius: 4px;
+      transition: all 0.3s ease 0s;
+    }
+
+    &.active {
+      transform: translateX(225px);
+
+      &::before {
+        top: 50%;
+        transform: translateY(-50%) rotate(45deg);
+      }
+
+      &::after {
+        top: 50%;
+        transform: translateY(-50%) rotate(-45deg);
+      }
+
+      span {
+        transform: scale(0);
+      }
+    }
+  }
+
+  .menu {
+    position: fixed;
+    z-index: 1001;
+    top: 0;
+    left: -100%;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    max-width: 320px;
+    padding-top: 75px;
+    visibility: hidden;
+    background-color: $color-bg-dark-alpha-adaptive;
+    backdrop-filter: blur(10px);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: none;
+    transition:
+      left 0.3s ease 0s,
+      visibility 0.3s ease 0s;
+
+    &-list {
+      flex-direction: column;
+      height: 100%;
+      padding-left: 10px;
+    }
+
+    &-item {
+      @include adaptiveValue('font-size', 32px, 24px);
+      width: fit-content;
+    }
+
+    &.active {
+      left: 0;
+      visibility: visible;
+    }
+  }
+}
+
+.hidden {
+  display: none;
+}

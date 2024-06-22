@@ -1,0 +1,51 @@
+.logo {
+  @include flex(center, center, column);
+  @include adaptiveValue('font-size', 24px, 18px);
+
+  @include smalltablet {
+    display: none;
+  }
+  width: fit-content;
+  font-family: Corben, Arial, Helvetica, serif;
+
+  &-image {
+    position: relative;
+    overflow: hidden;
+    width: fit-content;
+    height: 100%;
+    color: $color-white;
+
+    &::before {
+      content: 'S';
+      position: absolute;
+      bottom: 16.5%;
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-block;
+      font-family: Corben, Arial, Helvetica, serif;
+      font-size: var(--logo-font-size, 24px);
+    }
+
+    svg {
+      display: block;
+      color: inherit;
+    }
+  }
+
+  &-text {
+    text-align: center;
+  }
+}
+
+.home-link {
+  @include hover {
+    @include luximage;
+  }
+
+  @include focused {
+    @include luximage;
+  }
+  width: fit-content;
+  transition: filter 0.8s ease 0s;
+  margin: 0 auto;
+}

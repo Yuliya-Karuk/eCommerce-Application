@@ -1,0 +1,40 @@
+.label {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.input {
+  width: 100%;
+  margin-top: 5px;
+  padding: 10px;
+  color: $color-white;
+  background-color: $color-input-bg;
+  border: 2px solid $color-white;
+  border-radius: 5px;
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:hover {
+    box-shadow: 0 0 0 50px $color-input-bg inset;
+    -webkit-text-fill-color: $color-white;
+  }
+}
+
+.with-eye {
+  padding-right: 35px;
+}
+
+.invalid {
+  border-color: $color-invalid-input;
+}
+
+.orange {
+  color: $color-error;
+}
+
+.show-password-wrapper {
+  @include flex(space-between, center);
+}

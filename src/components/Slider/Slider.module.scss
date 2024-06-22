@@ -1,0 +1,37 @@
+.slider-wrapper {
+  @include flex(center);
+  position: relative;
+  flex: 0 1 40%;
+  margin: 0 auto;
+  background-color: $color-bg-slider;
+
+  .slider-img {
+    width: 38dvw;
+    height: 46dvw;
+
+    & img {
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  @media (max-width: 650px) {
+    flex: 0 1 100%;
+
+    .slider-img {
+      width: 100%;
+      height: 500px;
+    }
+  }
+
+  @media (min-width: 1800px) {
+    flex: 0 1 100%;
+    max-width: 560px;
+
+    .slider-img {
+      width: 100%;
+      max-width: 560px;
+      height: 600px;
+    }
+  }
+}

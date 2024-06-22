@@ -1,0 +1,71 @@
+.profile {
+  padding: 0 15px;
+}
+
+.profile-title {
+  @include flex(flex-start, center, null, 20px);
+  width: 100%;
+  margin-top: 30px;
+  padding: 20px 30px;
+  background-color: $color-green-dark;
+}
+
+.avatar-container {
+  padding: 5px;
+  border: 1px solid $color-gray-dark;
+  border-radius: 50%;
+
+  .avatar {
+    width: 50px;
+  }
+}
+
+.profile-heading {
+  @include adaptiveValue('font-size', 90px, 35px);
+  font-family: Forum, serif;
+  text-align: center;
+}
+
+.profile-container {
+  @include flex(flex-start, flex-start, column, 15px);
+}
+
+.profile-menu {
+  @include flex(flex-start, center);
+  width: fit-content;
+  border: 1px solid $color-gray-dark;
+  border-radius: 5px;
+}
+
+.profile-menu-button {
+  @include adaptiveValue('font-size', 16px, 14px);
+
+  @include hover {
+    background-color: $color-primary-bright;
+  }
+  cursor: pointer;
+  padding: 10px 15px;
+  font-family: Questrial, Arial, Helvetica, sans-serif;
+  color: $color-white;
+  transition: background-color 0.4s ease 0s;
+
+  &.active {
+    background-color: $color-primary-bright;
+  }
+}
+
+.profile-content {
+  width: 100%;
+  background: center no-repeat url('../../assets/subscription.webp');
+  background-size: cover;
+}
+
+.user-data {
+  @include flex(flex-start, flex-start, column, 15px);
+
+  @include tablet {
+    padding: 20px;
+  }
+  padding: 20px 40px;
+  backdrop-filter: blur(10px);
+}

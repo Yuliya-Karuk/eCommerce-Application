@@ -1,0 +1,21 @@
+@use 'sass:math';
+
+// Перевод в rem-ы
+@function rem($pixels, $context: $defTextSize) {
+  @return #{math.div(parseInt($pixels), parseInt($context))}rem;
+}
+
+// Перевод в em-ы
+@function em($pixels, $context: $defTextSize) {
+  @return #{math.div(parseInt($pixels), parseInt($context))}em;
+}
+
+// Перевод в проценты
+@function percent($pixels, $size) {
+  @return math.div(math.percentage(parseInt($pixels)), parseInt($size));
+}
+
+// Получение целочисленного значения
+@function parseInt($value) {
+  @return math.div($value, $value * 0 + 1);
+}
