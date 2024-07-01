@@ -1,4 +1,7 @@
 .page-wrapper {
+  @include mobile {
+    margin: 0;
+  }
   display: flex;
   flex-direction: column;
   height: 100dvh;

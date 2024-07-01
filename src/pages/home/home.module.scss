@@ -5,6 +5,7 @@
 .hero {
   @include mobile {
     min-height: 75vh;
+    padding: 0;
   }
 
   @include smallmobile {

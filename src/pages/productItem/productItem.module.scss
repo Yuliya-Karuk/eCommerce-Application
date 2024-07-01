@@ -1,5 +1,9 @@
 .page-wrapper {
   @include flex(null, null, column, 30px);
+
+  @include mobile {
+    padding: 0;
+  }
   padding: 20px;
   background-color: $color-bg-dark;
 
@@ -10,6 +14,10 @@
 
   .wrapper {
     @include flex(flex-start, flex-start, column, 15px);
+
+    @include mobile {
+      padding: 15px;
+    }
     max-width: 1476px;
     padding: 35px;
     font-family: Forum, serif;

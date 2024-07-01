@@ -1,11 +1,13 @@
 .newarrivals {
+  @include mobile {
+    padding: 15px 0;
+  }
   padding: 4.5% 2%;
   background-color: $color-bg-light;
 
   &-body {
     width: 100%;
     margin: 0 auto;
-    padding: 0 8px;
   }
 
   &-header {
