@@ -1,0 +1,140 @@
+%footerflex {
+  @include flex(space-between, null, null, 10px);
+  padding: 10px;
+}
+
+%list-section {
+  @include flex(null, null, column);
+  row-gap: 25px;
+}
+
+%font {
+  @include adaptiveValue('font-size', 16px, 10px);
+  font-family: Questrial, Arial, Helvetica, serif;
+}
+
+.footer {
+  padding: 5px;
+
+  &-body {
+    @include flex(null, null, column);
+
+    @include smalltablet {
+      row-gap: 15px;
+    }
+
+    @include mobile {
+      padding: 0;
+    }
+    row-gap: 25px;
+    padding: 0 15px;
+    margin-top: 5px;
+  }
+
+  &-logo {
+    @include smalltablet {
+      display: none;
+    }
+    padding: 25px 10px;
+    margin-top: 15px;
+  }
+
+  &-info {
+    @extend %footerflex;
+
+    @include smalltablet {
+      flex-wrap: wrap;
+      gap: 25px;
+      padding: 10px 0;
+    }
+
+    @media all and (max-width: 360.5px) {
+      flex-direction: column;
+    }
+  }
+
+  &-separator {
+    display: block;
+    height: 1px;
+    background-color: $color-gray-dark;
+
+    &:first-of-type {
+      @include smalltablet {
+        display: none;
+      }
+    }
+  }
+
+  &-copyright {
+    @extend %font;
+
+    @include smalltablet {
+      margin-bottom: 5px;
+    }
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 15px;
+  }
+
+  &-contacts,
+  &-shop,
+  &-opening-hours {
+    @extend %list-section;
+
+    @include smalltablet {
+      row-gap: 15px;
+    }
+  }
+
+  &-opening-hours {
+    text-align: end;
+
+    @media all and (max-width: 360.5px) {
+      text-align: center;
+    }
+  }
+
+  &-contacts {
+    @media all and (max-width: 360.5px) {
+      text-align: center;
+    }
+  }
+
+  &-shop {
+    @include smalltablet {
+      display: none;
+    }
+  }
+
+  &-list {
+    @extend %list-section;
+    row-gap: 10px;
+  }
+
+  &-title {
+    @include adaptiveValue('font-size', 21px, 16px);
+  }
+
+  &-list-item {
+    @extend %font;
+    @extend %taphighlight;
+
+    a {
+      @extend %font;
+    }
+  }
+
+  &-link {
+    @include hover {
+      @include luxtext;
+    }
+
+    @include focused {
+      @include luxtext;
+    }
+    transition:
+      opacity 0.4s ease 0s,
+      text-shadow 0.8s ease 0s;
+  }
+}

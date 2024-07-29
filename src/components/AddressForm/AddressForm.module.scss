@@ -1,0 +1,67 @@
+.user-shipping-address-section {
+  @include flex(flex-start, left, column);
+  position: relative;
+  flex: 1 1 300px;
+  padding: 15px;
+  border: 1px solid $color-white;
+}
+
+.user-billing-address-section {
+  @include flex(flex-start, left, column);
+  position: relative;
+  flex: 1 1 300px;
+  padding: 15px;
+  border: 1px solid $color-white;
+}
+
+.address-error {
+  align-self: flex-start;
+  height: 4rem;
+  color: $color-error;
+  text-align: left;
+}
+
+.country-error {
+  align-self: inherit;
+  height: 2rem;
+  color: inherit;
+  text-align: inherit;
+}
+
+.label {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.select {
+  width: 100%;
+  margin-top: 5px;
+  padding: 10px;
+  color: $color-white;
+  background-color: $color-input-bg;
+  border: 2px solid $color-white;
+  border-radius: 5px;
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:hover {
+    box-shadow: 0 0 0 50px $color-input-bg inset;
+    -webkit-text-fill-color: $color-white;
+  }
+}
+
+.orange {
+  color: $color-error;
+}
+
+.checkbox-label {
+  align-self: flex-start;
+
+  .checkbox {
+    transform: scale(1.2);
+    margin-right: 8px;
+  }
+}

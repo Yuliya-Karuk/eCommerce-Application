@@ -1,0 +1,82 @@
+.attributes {
+  @include flex(flex-start, flex-start, column, 20px);
+
+  .title {
+    padding-bottom: 8px;
+    font-size: 2rem;
+    color: $color-gray-dark;
+  }
+
+  .options {
+    @include flex(flex-start, end, row, 5px);
+
+    &-variants {
+      @include flex(flex-start, end, row, 5px);
+      color: $color-gray-dark;
+
+      > * {
+        font-size: 1.5rem;
+        color: inherit;
+        text-decoration: underline;
+      }
+
+      .active {
+        cursor: default;
+        font-size: 2rem;
+        font-weight: bold;
+        color: $default-text-color;
+        text-decoration: none;
+      }
+
+      .color-button {
+        width: 20px;
+        height: 20px;
+        border: 1px solid $color-gray-dark;
+        border-radius: 50%;
+
+        &.active {
+          transform: scale(1.5);
+          border-color: #fff;
+        }
+      }
+    }
+  }
+
+  .description-text {
+    font-size: 2rem;
+    text-align: justify;
+  }
+}
+
+.attributes-catalog {
+  width: 100%;
+  gap: 10px;
+
+  .title,
+  .description-text {
+    @include adaptiveValue('font-size', 20px, 14px);
+    padding: 0;
+    color: $color-gray-middle;
+  }
+
+  .options-variants {
+    color: $color-gray-middle;
+  }
+
+  .options {
+    .active {
+      color: $color-primary-bright;
+      line-height: 1;
+    }
+  }
+}
+
+.variant-block {
+  @include flex(space-between, center);
+  width: 100%;
+}
+
+.brand-block {
+  @include flex(space-between, center);
+  width: 100%;
+}

@@ -1,0 +1,108 @@
+.form {
+  @include flex(flex-start, left, column);
+  @include font(2rem, 400, normal);
+  position: relative;
+  flex: 1 1 300px;
+  font-family: Forum, serif;
+
+  .fieldset {
+    padding: 15px;
+    border: 1px solid $color-white;
+  }
+
+  input,
+  .select {
+    background-color: rgba(5 5 5 / 20%);
+    border: 1px solid $color-white;
+  }
+
+  input:disabled,
+  .select:disabled {
+    color: $color-gray-middle;
+    border-color: $color-input-bg;
+  }
+
+  .buttons {
+    @include flex(flex-start, flex-start, row, 20px);
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 1rem;
+
+    .submit-button,
+    .edit-button {
+      @extend %transition;
+
+      @include hover {
+        &:enabled:hover {
+          color: $color-white;
+          background-color: $color-input-bg;
+        }
+      }
+      flex: 1 1 45%;
+      padding: 10px 5px;
+      color: $default-text-color;
+      background-color: $color-white;
+      border-radius: 5px;
+
+      &.hidden {
+        display: none;
+      }
+
+      &:disabled {
+        cursor: default;
+        color: $color-gray-dark;
+        background-color: $color-gray-middle;
+      }
+    }
+  }
+}
+
+.error {
+  min-width: 272px;
+  height: 2rem;
+  font-size: 1.3rem;
+  color: $color-error;
+  white-space: normal;
+}
+
+.label {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.select {
+  width: 100%;
+  margin-top: 5px;
+  padding: 10px;
+  color: $color-white;
+  background-color: $color-input-bg;
+  border: 2px solid $color-white;
+  border-radius: 5px;
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:hover {
+    box-shadow: 0 0 0 50px $color-input-bg inset;
+    -webkit-text-fill-color: $color-white;
+  }
+
+  option {
+    color: $default-text-color;
+  }
+}
+
+.orange {
+  color: $color-error;
+}
+
+.checkbox-label {
+  align-self: flex-start;
+
+  .checkbox {
+    transform: scale(1.2);
+    margin-right: 8px;
+  }
+}

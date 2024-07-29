@@ -1,0 +1,43 @@
+.links {
+  @include flex(center, center, column, 5px);
+}
+
+.to-main-link {
+  cursor: pointer;
+  width: fit-content;
+  text-decoration: underline;
+}
+
+.title {
+  margin: 20px 0 10px;
+  font-size: 7rem;
+  font-weight: 200;
+  color: $color-white;
+
+  @media screen and (max-width: 500px) {
+    font-size: 6rem;
+    transition: font-size 0.5s ease;
+  }
+
+  @media screen and (max-width: 430px) {
+    font-size: 5rem;
+    transition: font-size 0.5s ease;
+  }
+}
+
+.link-wrapper {
+  @include flex(center, null, null, 10px);
+
+  .subtitle {
+    color: $color-white;
+  }
+
+  .link {
+    color: $color-white;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

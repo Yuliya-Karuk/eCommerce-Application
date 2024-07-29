@@ -1,0 +1,41 @@
+.promo-code-view {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  align-items: center;
+  font-family: questrial, sans-serif;
+  font-size: 1.8rem;
+  margin: 30px 0;
+
+  .promo-code-input {
+    flex-grow: 1;
+    padding: 8px 10px;
+    border-radius: 4px;
+    background-color: $color-bg-light;
+
+    @media (max-width: 400px) {
+      width: 180px;
+    }
+  }
+
+  .promo-code-button {
+    @extend %transition;
+
+    @include hover {
+      &:not(:disabled) {
+        background-color: $color-gray-middle;
+      }
+    }
+    min-width: 110px;
+    cursor: pointer;
+    padding: 8px 20px;
+    color: $color-white;
+    background-color: $color-gray-dark;
+    border-radius: 5px;
+
+    &:disabled {
+      cursor: default;
+      opacity: 0.7;
+    }
+  }
+}

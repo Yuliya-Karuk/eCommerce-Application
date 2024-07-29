@@ -1,0 +1,254 @@
+@use 'sass:math';
+
+@mixin font($font-size, $font-weight, $line-height, $letter-spacing: normal, $text-transform: none) {
+  font-size: $font-size;
+  font-weight: $font-weight;
+  line-height: $line-height;
+  text-transform: $text-transform;
+  letter-spacing: $letter-spacing;
+}
+
+// Брейкпоинты
+@mixin bigdesktop {
+  @media (max-width: (1440.5px)) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: (1024.5px)) {
+    @content;
+  }
+}
+
+@mixin smalltablet {
+  @media (max-width: (768.5px)) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (max-width: (576.5px)) {
+    @content;
+  }
+}
+
+@mixin smallmobile {
+  @media (max-width: (414.5px)) {
+    @content;
+  }
+}
+
+// ========================== Для линтера стилей ==================================
+
+@mixin hdWidth {
+  @media (max-width: (1280px)) {
+    @content;
+  }
+}
+
+@mixin figmaLayotWidth {
+  @media (max-width: (1150px)) {
+    @content;
+  }
+}
+
+@mixin middleTabletWidth {
+  @media (max-width: (899.5px)) {
+    @content;
+  }
+}
+
+// ================================================================================
+
+// Анимирование кнопки
+@mixin animatebtn($smax: 1, $smin: 0.95) {
+  transform-origin: center center;
+  transition: all ease-out 255ms;
+
+  &:active {
+    transform: scale($smin);
+  }
+}
+
+// Флексы
+@mixin flex($js: null, $ai: $js, $dir: null, $gap: null) {
+  display: flex;
+  flex-direction: $dir;
+  gap: $gap;
+  align-items: $ai;
+  justify-content: $js;
+}
+
+// не ипользуется - удалить
+@mixin iflex($js: stretch, $ai: $js, $dir: null) {
+  display: inline-flex;
+  flex-direction: $dir;
+  align-items: $ai;
+  justify-content: $js;
+}
+
+// Адаптивная графика
+@mixin responsiveImage($membrane: false, $of: cover) {
+  position: relative;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: $of;
+  }
+
+  @if $membrane {
+    @include membrane;
+  }
+}
+
+// Эффект пленки над объектом
+@mixin membrane($opacity: 1, $color: black) {
+  &::before {
+    pointer-events: none;
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: $opacity * 0.1;
+    background-color: $color;
+  }
+}
+
+// Стили фокусировки -  не ипользуется - удалить
+@mixin focused {
+  @supports not selector(:focus-visible) {
+    &:focus {
+      @content;
+    }
+  }
+
+  @supports selector(:focus-visible) {
+    &:focus-visible {
+      @content;
+    }
+  }
+}
+
+// Стили наведения
+@mixin hover {
+  @media (any-hover: hover) and (hover: hover) and (pointer: fine) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+// Адаптивное свойство
+@mixin adaptiveValue($property, $start, $end, $from: $containerWidth, $to: $layoutMinWidth, $keepSize: 0) {
+  $startSize: parseInt($start);
+  $minSize: parseInt($end);
+  $widthFrom: parseInt($from);
+  $widthTo: parseInt($to);
+  $containerAd: parseInt($container);
+  $containerWidthAd: parseInt($containerWidth);
+  $layoutWidthAd: parseInt($layoutWidth);
+  $layoutMinWidthAd: parseInt($layoutMinWidth);
+  $divider: 16;
+
+  @if ($startSize==0) {
+    $startSize: 0.000001;
+  }
+
+  @if ($minSize==0) {
+    $minSize: 0.000001;
+  }
+
+  // Для calc();
+  $addSize: math.div($startSize - $minSize, $divider);
+
+  @if ($widthFrom == $containerWidthAd and $containerAd == 0) {
+    $widthFrom: $layoutWidthAd;
+  }
+
+  // Брейк-поинты в EM
+  $widthFromMedia: em($widthFrom);
+  $widthToMedia: em($widthTo);
+
+  // Формула плавающего значения
+  // Источник: https://css-tricks.com/linearly-scale-font-size-with-css-clamp-based-on-the-viewport/
+  $slope: math.div(($startSize - $minSize), ($widthFrom - $widthTo));
+  $yIntersection: -$widthTo * $slope + $minSize;
+
+  @if ($yIntersection==0) {
+    $yIntersection: 0.000001;
+  }
+
+  $flyValue: #{rem($yIntersection)}' + ' #{$slope * 100}vw;
+
+  // Получение значения свойства
+  $propertyValue: #{'clamp(' rem($minSize) ',' $flyValue ',' rem($startSize) ')'};
+
+  // Если отрицательные значения
+  @if ($minSize > $startSize) {
+    $propertyValue: #{'clamp(' rem($startSize) ',' $flyValue ',' rem($minSize) ')'};
+  }
+
+  // Если поддерживается clamp();
+  @supports (#{$property}: $propertyValue) {
+    #{$property}: $propertyValue;
+  }
+
+  // Если не поддерживается clamp();
+  @supports not (#{$property}: $propertyValue) {
+    #{$property}: calc(
+      #{rem($minSize)} + #{$addSize} * (100vw - #{rem($widthTo)}) / #{math.div($widthFrom, $divider) - math.div(
+          $widthTo,
+          $divider
+        )}
+    );
+  }
+
+  // Устанавливаем значения по умолчанию
+  @if $widthFrom != $containerWidthAd and $widthFrom != $layoutWidthAd and $keepSize != 1 and $keepSize != 2 {
+    @media (min-width: $widthFromMedia) {
+      #{$property}: inherit;
+    }
+  }
+
+  @if $widthTo != $layoutMinWidthAd and $keepSize != 1 and $keepSize != 3 {
+    @media (max-width: $widthToMedia) {
+      #{$property}: inherit;
+    }
+  }
+}
+
+@mixin luxtext($shadow: $color-bg-light, $color: $color-white, $bg: null) {
+  color: $color;
+  text-shadow:
+    0 0 rem(10px) $shadow,
+    0 0 rem(30px) $shadow,
+    0 0 rem(80px) $shadow,
+    0 0 rem(120px) $shadow,
+    0 0 rem(200px) $shadow;
+}
+
+// Эффект плодсветки по периметру блока
+@mixin luxbox($color: $color-bg-light) {
+  box-shadow:
+    0 0 rem(10px) $color,
+    0 0 rem(30px) $color,
+    0 0 rem(80px) $color,
+    0 0 rem(120px) $color,
+    0 0 rem(200px) $color;
+}
+
+// Эффект плодсветки по контуру изображения
+@mixin luximage($color: $color-bg-light) {
+  filter: drop-shadow(0 0 rem(10px) $color);
+}
+
+// ========================================================================================
